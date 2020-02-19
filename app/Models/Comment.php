@@ -48,7 +48,7 @@ class Comment extends Model
     public function children(): HasMany
     {
         return $this->hasMany(self::class, 'parent_id')
-                    ->orderBy('created_at');
+            ->orderBy('created_at');
     }
 
     /**

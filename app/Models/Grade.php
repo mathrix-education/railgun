@@ -91,7 +91,7 @@ class Grade extends Model
     public function disciplines(): BelongsToMany
     {
         return $this->belongsToMany(Discipline::class, 'chapters')
-                    ->groupBy(['grade_id', 'discipline_id']);
+            ->groupBy(['grade_id', 'discipline_id']);
     }
 
     /**

@@ -16,6 +16,74 @@ use function trim;
 class MathParser
 {
     /**
+     * Check if the given string is an equation (single or block).
+     *
+     * @param string $str The entry string.
+     *
+     * @return bool
+     */
+    public static function isMath(string $str): bool
+    {
+        return self::isInlineMath($str) || self::isBlockMath($str);
+    }
+
+    /**
+     * Check if the given string is a inline equation (i.e. starts and ends with a single dollar).
+     *
+     * @param string $str The entry string.
+     *
+     * @return bool
+     */
+    public static function isInlineMath(string $str): bool
+    {
+        $startsWithSingleDollar = strpos($str, '$') === 0 && $str[1] !== '$';
+        $endsWithSingleDollar   = $str[-1] === '$' && $str[-2] !== '$';
+
+        return $startsWithSingleDollar && $endsWithSingleDollar;
+    }
+
+    /**
+     * Check if the given string is a block equation (i.e. starts and ends with a double dollar).
+     *
+     * @param string $str The entry string.
+     *
+     * @return bool
+     */
+    public static function isBlockMath(string $str): bool
+    {
+        $startsWithDoubleDollar = strpos($str, '$$') === 0;
+        $endsWithDoubleDollar   = substr($str, -2) === '$$';
+
+        return $startsWithDoubleDollar && $endsWithDoubleDollar;
+    }
+
+    public static function toWall(string $str)
+    {
+        $parsed = self::extract($str);
+        $buffer = [];
+        $wall   = [];
+
+        foreach ($parsed as $item) {
+            if (self::isBlockMath($item)) {
+                if (!empty($buffer)) {
+                    $wall[] = BrickFactory::text(implode(' ', $buffer));
+                }
+
+                $wall[] = BrickFactory::equation($item);
+                $buffer = [];
+            } else {
+                $buffer[] = $item;
+            }
+        }
+
+        if (!empty($buffer)) {
+            $wall[] = BrickFactory::text(implode(' ', $buffer));
+        }
+
+        return array_values($wall);
+    }
+
+    /**
      * Extract math (inline and block equations) from a string.
      *
      * @param string $str The entry string.
@@ -74,73 +142,5 @@ class MathParser
         });
 
         return $parsed;
-    }
-
-    /**
-     * Check if the given string is a inline equation (i.e. starts and ends with a single dollar).
-     *
-     * @param string $str The entry string.
-     *
-     * @return bool
-     */
-    public static function isInlineMath(string $str): bool
-    {
-        $startsWithSingleDollar = strpos($str, '$') === 0 && $str[1] !== '$';
-        $endsWithSingleDollar   = $str[-1] === '$' && $str[-2] !== '$';
-
-        return $startsWithSingleDollar && $endsWithSingleDollar;
-    }
-
-    /**
-     * Check if the given string is a block equation (i.e. starts and ends with a double dollar).
-     *
-     * @param string $str The entry string.
-     *
-     * @return bool
-     */
-    public static function isBlockMath(string $str): bool
-    {
-        $startsWithDoubleDollar = strpos($str, '$$') === 0;
-        $endsWithDoubleDollar   = substr($str, -2) === '$$';
-
-        return $startsWithDoubleDollar && $endsWithDoubleDollar;
-    }
-
-    /**
-     * Check if the given string is an equation (single or block).
-     *
-     * @param string $str The entry string.
-     *
-     * @return bool
-     */
-    public static function isMath(string $str): bool
-    {
-        return self::isInlineMath($str) || self::isBlockMath($str);
-    }
-
-    public static function toWall(string $str)
-    {
-        $parsed = self::extract($str);
-        $buffer = [];
-        $wall   = [];
-
-        foreach ($parsed as $item) {
-            if (self::isBlockMath($item)) {
-                if (!empty($buffer)) {
-                    $wall[] = BrickFactory::text(implode(' ', $buffer));
-                }
-
-                $wall[] = BrickFactory::equation($item);
-                $buffer = [];
-            } else {
-                $buffer[] = $item;
-            }
-        }
-
-        if (!empty($buffer)) {
-            $wall[] = BrickFactory::text(implode(' ', $buffer));
-        }
-
-        return array_values($wall);
     }
 }

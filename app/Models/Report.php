@@ -8,14 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 use Railgun\Models\Traits\Randomizable;
 
 /**
- * @property-read  int $id
+ * @property-read  int    $id
  * @property-read  string $type
- * @property string $content
- * @property string $status
- * @property string $reportable_type
- * @property int $reportable_id
- * @property-read string $created_at
- * @property-read string $updated_at
+ * @property string       $content
+ * @property string       $status
+ * @property string       $reportable_type
+ * @property int          $reportable_id
+ * @property-read string  $created_at
+ * @property-read string  $updated_at
  */
 class Report extends Model
 {

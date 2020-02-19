@@ -42,7 +42,7 @@ class Exam extends Model
     ];
 
     protected $casts = [
-        'content'  => 'array',
+        'content' => 'array',
         'visible' => 'boolean',
     ];
 

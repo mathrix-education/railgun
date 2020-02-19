@@ -14,8 +14,8 @@ $factory->define(Country::class, static function (Generator $faker) {
     $name = ucfirst($faker->country);
 
     return [
-        'name' => $name,
-        'slug' => Str::slug($name),
+        'name'    => $name,
+        'slug'    => Str::slug($name),
         'visible' => $faker->boolean(95),
     ];
 });

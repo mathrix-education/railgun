@@ -56,6 +56,28 @@ class InteractionsCommand extends V7Command
         $this->interactions = new Collection();
     }
 
+    private function generateMappings(string $table, string $class): void
+    {
+        DB::table($table)
+            ->tap(fn() => $this->line("Generating $table mappings"))
+            ->get(['id', 'mapping'])
+            ->mapWithKeys(static function (stdClass $raw) use ($table) {
+                $parts   = explode('-', $raw->mapping);
+                $modelId = (int)$parts[1];
+
+                return [
+                    $modelId => [
+                        'interactable_type' => Str::singular($table),
+                        'interactable_id'   => $raw->id,
+                    ],
+                ];
+            })
+            ->tap(function (Collection $data) use ($table, $class) {
+                $this->mappings[$class] = array_merge($this->mappings[$class], $data->toArray());
+                $this->info(sprintf('> Got %s %s', $data->count(), $table));
+            });
+    }
+
     private function export(): void
     {
         $this->line('Exporting marks table');
@@ -80,28 +102,6 @@ class InteractionsCommand extends V7Command
         $restoreProcess->setTimeout(300);
         $restoreProcess->setTty(Process::isTtySupported());
         $restoreProcess->run();
-    }
-
-    private function generateMappings(string $table, string $class): void
-    {
-        DB::table($table)
-            ->tap(fn() => $this->line("Generating $table mappings"))
-            ->get(['id', 'mapping'])
-            ->mapWithKeys(static function (stdClass $raw) use ($table) {
-                $parts   = explode('-', $raw->mapping);
-                $modelId = (int)$parts[1];
-
-                return [
-                    $modelId => [
-                        'interactable_type' => Str::singular($table),
-                        'interactable_id'   => $raw->id,
-                    ],
-                ];
-            })
-            ->tap(function (Collection $data) use ($table, $class) {
-                $this->mappings[$class] = array_merge($this->mappings[$class], $data->toArray());
-                $this->info(sprintf('> Got %s %s', $data->count(), $table));
-            });
     }
 
     private function build(): void

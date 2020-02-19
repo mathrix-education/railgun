@@ -70,13 +70,38 @@ trait Orderable
     }
 
     /**
-     * Get the order column.
+     * Get the maximum order matching the order groups.
      *
-     * @return string
+     * @return int
      */
-    public function getOrderColumn(): string
+    public function getMaxOrder(): int
     {
-        return property_exists($this, 'orderColumn') ? $this->orderColumn : 'order';
+        /** @var Orderable $max */
+        $max = $this->getQueryOrder()
+            ->orderByDesc($this->getOrderColumn())
+            ->get([$this->getOrderColumn()])
+            ->first();
+
+        return $max->{$max->getOrderColumn()};
+    }
+
+    /**
+     * Get the query matching the order groups.
+     *
+     * @param bool $original Use original values instead.
+     *
+     * @return Builder
+     */
+    public function getQueryOrder(bool $original = false): Builder
+    {
+        $query = self::query();
+
+        foreach ($this->getOrderGroups() as $orderColumn) {
+            $value = !$original ? $this->{$orderColumn} : $this->getOriginal($orderColumn);
+            $query = $query->where($orderColumn, '=', $value);
+        }
+
+        return $query;
     }
 
     /**
@@ -87,6 +112,16 @@ trait Orderable
     public function getOrderGroups(): array
     {
         return property_exists($this, 'orderGroups') ? $this->orderGroups : [];
+    }
+
+    /**
+     * Get the order column.
+     *
+     * @return string
+     */
+    public function getOrderColumn(): string
+    {
+        return property_exists($this, 'orderColumn') ? $this->orderColumn : 'order';
     }
 
     /**
@@ -112,50 +147,15 @@ trait Orderable
     }
 
     /**
-     * Get the query matching the order groups.
-     *
-     * @param bool $original Use original values instead.
-     *
-     * @return Builder
-     */
-    public function getQueryOrder(bool $original = false): Builder
-    {
-        $query = self::query();
-
-        foreach ($this->getOrderGroups() as $orderColumn) {
-            $value = !$original ? $this->{$orderColumn} : $this->getOriginal($orderColumn);
-            $query = $query->where($orderColumn, '=', $value);
-        }
-
-        return $query;
-    }
-
-    /**
-     * Get the maximum order matching the order groups.
-     *
-     * @return int
-     */
-    public function getMaxOrder(): int
-    {
-        /** @var Orderable $max */
-        $max = $this->getQueryOrder()
-                    ->orderByDesc($this->getOrderColumn())
-                    ->get([$this->getOrderColumn()])
-                    ->first();
-
-        return $max->{$max->getOrderColumn()};
-    }
-
-    /**
      * Push a model at the given order.
      */
     public function pushOrder(): void
     {
         $column = $this->getOrderColumn();
         $this->getQueryOrder()
-             ->where($this->getKeyName(), '!=', $this->getKey())
-             ->where($column, '>=', $this->getOrder())
-             ->increment($column);
+            ->where($this->getKeyName(), '!=', $this->getKey())
+            ->where($column, '>=', $this->getOrder())
+            ->increment($column);
     }
 
     /**
@@ -167,9 +167,9 @@ trait Orderable
         $column    = $this->getOrderColumn();
 
         $this->getQueryOrder(true)
-             ->where($this->getKeyName(), '!=', $this->getKey())
-             ->where($column, '>', $prevOrder)
-             ->decrement($column);
+            ->where($this->getKeyName(), '!=', $this->getKey())
+            ->where($column, '>', $prevOrder)
+            ->decrement($column);
     }
 
     /**
@@ -184,12 +184,12 @@ trait Orderable
 
         if ($order > $previousOrder) {
             $query->where($column, '>', $previousOrder)
-                  ->where($column, '<=', $order)
-                  ->decrement($column);
+                ->where($column, '<=', $order)
+                ->decrement($column);
         } elseif ($order < $previousOrder) {
             $query->where($column, '<', $previousOrder)
-                  ->where($column, '>=', $order)
-                  ->increment($column);
+                ->where($column, '>=', $order)
+                ->increment($column);
         }
     }
 }

@@ -21,7 +21,8 @@ class CreateCommentsTriggers extends Migration
         });
 
         $triggers = [
-            /** @lang MySQL */<<<MYSQL
+            /** @lang MySQL */
+            <<<MYSQL
             create trigger on_vote_insert_update_comment_score
                 after insert on `votes`
                 for each row
@@ -33,7 +34,8 @@ class CreateCommentsTriggers extends Migration
                 where `comments`.`id` = new.`comment_id`;
             end;
             MYSQL,
-            /** @lang MySQL */<<<MYSQL
+            /** @lang MySQL */
+            <<<MYSQL
             create trigger on_vote_update_update_comment_score
                 after update on `votes`
                 for each row
@@ -51,7 +53,8 @@ class CreateCommentsTriggers extends Migration
                 where `comments`.`id` = new.`comment_id`;
             end;
             MYSQL,
-            /** @lang MySQL */<<<MYSQL
+            /** @lang MySQL */
+            <<<MYSQL
             create trigger on_vote_insert_delete_comment_score
                 after delete on `votes`
                 for each row

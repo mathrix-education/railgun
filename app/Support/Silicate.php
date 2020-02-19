@@ -21,16 +21,6 @@ class Silicate
     private const WALL_CACHE_SIZE = 100;
 
     /**
-     * Get a faker instance.
-     *
-     * @return Generator
-     */
-    private static function faker(): Generator
-    {
-        return app(Generator::class);
-    }
-
-    /**
      * Generate a random TextBrick.
      *
      * @return array
@@ -42,6 +32,16 @@ class Silicate
             'kind' => 'text',
             'text' => self::faker()->text,
         ];
+    }
+
+    /**
+     * Get a faker instance.
+     *
+     * @return Generator
+     */
+    private static function faker(): Generator
+    {
+        return app(Generator::class);
     }
 
     /**

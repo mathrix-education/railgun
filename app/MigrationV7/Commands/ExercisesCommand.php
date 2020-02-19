@@ -7,9 +7,11 @@ namespace Railgun\MigrationV7\Commands;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use function collect;
-use function count;
+use Railgun\MigrationV7\Silicate\ExerciseConverter;
+use stdClass;
+use const JSON_THROW_ON_ERROR;
 use function implode;
+use function json_encode;
 
 class ExercisesCommand extends V7Command
 {
@@ -21,7 +23,10 @@ class ExercisesCommand extends V7Command
     {
         $this->title('Migrating modules => exercises');
 
-        $query = DB::table('modules')
+        $iterator  = 0;
+        $subjectId = null;
+
+        DB::table('modules')
             ->where('type', '=', 'mcq')
             ->join('subjects', static function (JoinClause $join) {
                 $join->on(
@@ -43,26 +48,30 @@ class ExercisesCommand extends V7Command
                 "CONCAT('module-', modules.id) AS mapping",
             ]))
             ->orderBy('subjects.id')
-            ->distinct();
+            ->distinct()
+            ->get()
+            ->tap(fn(Collection $data) => $this->line("Found {$data->count()} exercises"))
+            ->map(static function (stdClass $exercise) use (&$iterator, &$subjectId) {
+                // Convert fronts and backs to Silicate format
+                $exercise               = ExerciseConverter::new()->convert($exercise);
+                $exercise->questions    = json_encode($exercise->questions, JSON_THROW_ON_ERROR, 512);
+                $exercise->choices      = json_encode($exercise->choices, JSON_THROW_ON_ERROR, 512);
+                $exercise->solutions    = json_encode($exercise->solutions, JSON_THROW_ON_ERROR, 512);
+                $exercise->explanations = json_encode($exercise->explanations, JSON_THROW_ON_ERROR, 512);
 
-        $exercises = $query->get()->toArray();
-        $this->line('Found ' . count($exercises) . ' exercises');
-        $iterator  = 0;
-        $subjectId = null;
+                // Set order
+                if ($subjectId !== $exercise->subject_id) {
+                    // Subject id has changed
+                    $iterator  = 0;
+                    $subjectId = $exercise->subject_id;
+                }
 
-        foreach ($exercises as $key => $exercise) {
-            if ($subjectId !== $exercise->subject_id) {
-                $iterator  = 0;
-                $subjectId = $exercise->subject_id;
-            }
+                $exercise->order = $iterator;
+                $iterator++;
 
-            $exercise->order = $iterator;
-            $exercises[$key] = (array)$exercise;
-            $iterator++;
-        }
-
-        collect($exercises)->chunk(self::CHUNK_SIZE)->each(static function (Collection $exercises) {
-            DB::table('exercises')->insert($exercises->toArray());
-        });
+                return (array)$exercise;
+            })
+            ->chunk(self::CHUNK_SIZE)
+            ->each(fn(Collection $data) => DB::table('exercises')->insert($data->toArray()));
     }
 }

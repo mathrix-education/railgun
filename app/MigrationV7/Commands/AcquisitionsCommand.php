@@ -24,7 +24,7 @@ class AcquisitionsCommand extends V7Command
             ->query('pack')
             ->unionAll($this->query('training'))
             ->get()
-            ->unique(fn (stdClass $a) => sprintf('%s-%s-%s', $a->user_id, $a->product_type, $a->product_id))
+            ->unique(fn(stdClass $a) => sprintf('%s-%s-%s', $a->user_id, $a->product_type, $a->product_id))
             ->map(fn(stdClass $acquisition) => (array)$acquisition)
             ->tap(function (Collection $acquisitions) {
                 $this->line("Found {$acquisitions->count()} acquisitions");

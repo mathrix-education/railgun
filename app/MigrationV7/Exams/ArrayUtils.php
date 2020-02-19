@@ -52,6 +52,28 @@ class ArrayUtils
     }
 
     /**
+     * @param array $matrix
+     *
+     * @return bool
+     */
+    public static function isIntegerMatrix(array $matrix): bool
+    {
+        foreach ($matrix as $line) {
+            if (!is_array($line)) {
+                continue;
+            }
+
+            $res = self::isIntegerArray($line);
+
+            if (!$res) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Check that an array is only composed of integers.
      *
      * @param array $array
@@ -78,14 +100,14 @@ class ArrayUtils
      *
      * @return bool
      */
-    public static function isIntegerMatrix(array $matrix): bool
+    public static function isStringMatrix(array $matrix): bool
     {
         foreach ($matrix as $line) {
             if (!is_array($line)) {
                 continue;
             }
 
-            $res = self::isIntegerArray($line);
+            $res = self::isStringArray($line);
 
             if (!$res) {
                 return false;
@@ -110,28 +132,6 @@ class ArrayUtils
 
         foreach ($line as $value) {
             if (!is_string($value)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * @param array $matrix
-     *
-     * @return bool
-     */
-    public static function isStringMatrix(array $matrix): bool
-    {
-        foreach ($matrix as $line) {
-            if (!is_array($line)) {
-                continue;
-            }
-
-            $res = self::isStringArray($line);
-
-            if (!$res) {
                 return false;
             }
         }

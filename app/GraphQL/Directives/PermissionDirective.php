@@ -63,6 +63,16 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
     }
 
     /**
+     * @inheritDoc
+     */
+    public function transform($argumentValue)
+    {
+        $this->checkScope();
+
+        return $argumentValue;
+    }
+
+    /**
      * Check that the current user has the required scope.
      *
      * @throws Exception
@@ -99,16 +109,6 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
         if (count($result) < $min) {
             throw new MissingScope($scopes);
         }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function transform($argumentValue)
-    {
-        $this->checkScope();
-
-        return $argumentValue;
     }
 
     /**

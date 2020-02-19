@@ -67,8 +67,8 @@ class Chapter extends Model
     public function courseNotions(): HasMany
     {
         return $this->hasMany(Notion::class)
-                    ->where('type', '=', 'course')
-                    ->orderBy('order');
+            ->where('type', '=', 'course')
+            ->orderBy('order');
     }
 
     /**
@@ -77,8 +77,8 @@ class Chapter extends Model
     public function subjectNotions(): HasMany
     {
         return $this->hasMany(Notion::class)
-                    ->where('type', '=', 'subject')
-                    ->orderBy('order');
+            ->where('type', '=', 'subject')
+            ->orderBy('order');
     }
 
     /**

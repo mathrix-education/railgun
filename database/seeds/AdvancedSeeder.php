@@ -25,12 +25,35 @@ class AdvancedSeeder extends Seeder
     }
 
     /**
-     * @param string $message
-     * @param int    $type
+     * @param string    $model      The model class.
+     * @param int|array $options    The options.
+     * @param array     $attributes The overridden attributes.
+     *
+     * @return Collection
      */
-    protected function writeln(string $message, $type = SymfonyStyle::OUTPUT_NORMAL)
+    protected function seedFactory(string $model, $options = [], $attributes = []): Collection
     {
-        $this->command->getOutput()->writeln($message, $type);
+        $count = 100;
+
+        if (is_int($options)) {
+            $count = $options;
+        } elseif (isset($options['count']) && is_int($options['count'])) {
+            $count = $options['count'];
+        }
+
+        if (!isset($options['name'])) {
+            $data = collect(factory($model, $count)->raw($attributes));
+        } else {
+            $data = collect(factory($model, $count, $options['name'])->raw($attributes));
+        }
+
+        if (!isset($options['seed']) || $options['seed']) {
+            $table = $options['table'] ?? $this->getModelTable($model);
+            $this->writeFactoryMessage($model, $table);
+            $this->seedCollection($data, $table);
+        }
+
+        return $data;
     }
 
     /**
@@ -58,6 +81,15 @@ class AdvancedSeeder extends Seeder
     {
         $table ??= $this->getModelTable($model);
         $this->writeln("Seeding <info>$table</info> from <info>$model</info> factory");
+    }
+
+    /**
+     * @param string $message
+     * @param int    $type
+     */
+    protected function writeln(string $message, $type = SymfonyStyle::OUTPUT_NORMAL)
+    {
+        $this->command->getOutput()->writeln($message, $type);
     }
 
     /**
@@ -91,38 +123,6 @@ class AdvancedSeeder extends Seeder
 
         $progress->finish();
         $this->command->getOutput()->newLine(2);
-    }
-
-    /**
-     * @param string    $model      The model class.
-     * @param int|array $options    The options.
-     * @param array     $attributes The overridden attributes.
-     *
-     * @return Collection
-     */
-    protected function seedFactory(string $model, $options = [], $attributes = []): Collection
-    {
-        $count = 100;
-
-        if (is_int($options)) {
-            $count = $options;
-        } elseif (isset($options['count']) && is_int($options['count'])) {
-            $count = $options['count'];
-        }
-
-        if (!isset($options['name'])) {
-            $data = collect(factory($model, $count)->raw($attributes));
-        } else {
-            $data = collect(factory($model, $count, $options['name'])->raw($attributes));
-        }
-
-        if (!isset($options['seed']) || $options['seed']) {
-            $table = $options['table'] ?? $this->getModelTable($model);
-            $this->writeFactoryMessage($model, $table);
-            $this->seedCollection($data, $table);
-        }
-
-        return $data;
     }
 
     /**

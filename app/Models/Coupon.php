@@ -9,13 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 use Railgun\Models\Traits\Randomizable;
 
 /**
- * @property-read int           $id
- * @property string             $type
- * @property int                $value
- * @property int                $counter
- * @property Carbon             $expires_at
- * @property-read Carbon        $created_at
- * @property-read Carbon        $updated_at
+ * @property-read int    $id
+ * @property string      $type
+ * @property int         $value
+ * @property int         $counter
+ * @property Carbon      $expires_at
+ * @property-read Carbon $created_at
+ * @property-read Carbon $updated_at
  */
 class Coupon extends Model
 {

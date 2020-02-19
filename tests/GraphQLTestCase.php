@@ -16,11 +16,6 @@ class GraphQLTestCase extends BaseTestCase
     /** @var stdClass|array $contentCache */
     private $contentCache;
 
-    protected function getGraphQLEndpoint(): string
-    {
-        return config('lighthouse.route.uri');
-    }
-
     /**
      * Query the GraphQL API.
      *
@@ -37,6 +32,22 @@ class GraphQLTestCase extends BaseTestCase
         }
 
         $this->json('post', $this->getGraphQLEndpoint(), $data, $headers);
+    }
+
+    protected function getGraphQLEndpoint(): string
+    {
+        return config('lighthouse.route.uri');
+    }
+
+    /**
+     * Get the GraphQL response data.
+     * Shortcut for getContent('data').
+     *
+     * @return mixed
+     */
+    protected function getData()
+    {
+        return $this->getContent('data');
     }
 
     /**
@@ -58,17 +69,6 @@ class GraphQLTestCase extends BaseTestCase
         }
 
         return data_get($this->contentCache, $path, $default);
-    }
-
-    /**
-     * Get the GraphQL response data.
-     * Shortcut for getContent('data').
-     *
-     * @return mixed
-     */
-    protected function getData()
-    {
-        return $this->getContent('data');
     }
 
     /**

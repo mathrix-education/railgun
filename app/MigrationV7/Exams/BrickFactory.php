@@ -46,6 +46,36 @@ class BrickFactory
         ];
     }
 
+    public static function image(string $src, string $alt = '', bool $displayAlt = false): array
+    {
+        return [
+            'uuid'       => StringUtils::uuid(),
+            'kind'       => 'image',
+            'src'        => StringUtils::mtrim($src),
+            'alt'        => StringUtils::mtrim($alt),
+            'displayAlt' => $displayAlt,
+        ];
+    }
+
+    public static function table(array $matrix): array
+    {
+        return [
+            'uuid'   => StringUtils::uuid(),
+            'kind'   => 'table',
+            'matrix' => $matrix,
+        ];
+    }
+
+    public static function list(array $items, string $type = 'ul'): array
+    {
+        return [
+            'uuid'  => StringUtils::uuid(),
+            'kind'  => 'list',
+            'type'  => $type,
+            'items' => $items,
+        ];
+    }
+
     public static function question(array $question, array $explanations, array $points, $children = []): array
     {
         $data = [

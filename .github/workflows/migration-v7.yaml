@@ -56,7 +56,7 @@ jobs:
           name: malformed-exams
           path: storage/artifacts/malformed-exams
       - name: Restore generated database
-        if: "!contains(github.event.head_commit.message, 'db:restore')"
+        if: "contains(github.event.head_commit.message, 'db:restore')"
         run: |
           DATE=$(date +%F_%H-%M-%S)
           DB_SOURCE="mathrix_education_testing"
