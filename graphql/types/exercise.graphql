@@ -4,7 +4,7 @@ type Exercise {
     questions: [SilicateWall!]!
     choices: [[SilicateWall!]!]!
     solutions: [[Int!]!]!
-    examplations: [SilicateWall!]!
+    explanations: [SilicateWall!]!
     order: Int!
     created_at: DateTime!
     updated_at: DateTime!
