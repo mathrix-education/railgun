@@ -17,14 +17,14 @@ use function implode;
  */
 class CommentsCommand extends V7Command
 {
-    private const REPORT_TABLES = ['courses', 'exercises', 'flashcards', 'exams'];
+    private const COMMENTABLE_TABLES = ['courses', 'exercises', 'flashcards', 'exams'];
 
     protected $signature = 'v7:comments';
 
     public function handle(): void
     {
-        collect(self::REPORT_TABLES)
-            ->tap(fn() => $this->title('Migrating polymorphic reports'))
+        collect(self::COMMENTABLE_TABLES)
+            ->tap(fn() => $this->title('Migrating polymorphic comments'))
             ->map(static function (string $table) {
                 return DB::table($table)
                     ->selectRaw(implode(',', [
