@@ -81,6 +81,12 @@
     "optimize-autoloader": true
   },
   "scripts": {
+    "post-install-cmd": [
+      "[ $COMPOSER_DEV_MODE -eq 0 ] || bin/artisan lighthouse:ide-helper"
+    ],
+    "post-update-cmd": [
+      "[ $COMPOSER_DEV_MODE -eq 0 ] || bin/artisan lighthouse:ide-helper"
+    ],
     "test": "phpunit",
     "test:cover": "phpunit --testdox --log-junit=storage/artifacts/phpunit-junit.xml --coverage-clover=storage/artifacts/phpunit-coverage.xml --coverage-text",
     "lint": "phpcs --report=source",

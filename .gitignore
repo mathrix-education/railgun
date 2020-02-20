@@ -1,26 +1,22 @@
 # IDEA software
-/.idea/dataSources.*
-/.idea/dictionaries
-/.idea/httpRequests/
-/.idea/markdown*
-/.idea/*.iml
-/.idea/**/workspace.xml
-/.idea/dataSources/
-/.idea/modules.xml
-/.idea/php.xml
-/.idea/deployment.xml
-/.idea/vagrant.xml
+.idea/dataSources.*
+.idea/dictionaries
+.idea/httpRequests/
+.idea/markdown*
+.idea/*.iml
+.idea/**/workspace.xml
+.idea/dataSources/
+.idea/modules.xml
+.idea/deployment.xml
+.idea/vagrant.xml
 
 # Vendors
-/vendor/
+vendor/
 
 # Generated files
-/docs/output.yaml
-/storage/code-coverage/
+storage/code-coverage/
 .phpunit.result.cache
+schema-directives.graphql
 
 # Secrets
-/.env
-/environments/*/*
-!/environments/*/*.enc
-!/environments/testing/*
+.env
