@@ -7,16 +7,22 @@ namespace Tests\GraphQL;
 use Illuminate\Support\Facades\Artisan;
 use Tests\BaseTestCase;
 
+/**
+ * @testdox GraphQL schema
+ */
 class SchemaTest extends BaseTestCase
 {
-    public function testSchemaIntegrity()
+    /**
+     * @testdox is validated with lighthouse:validate-schema command
+     */
+    public function testSchemaIntegrity(): void
     {
         $exit   = Artisan::call('lighthouse:validate-schema');
         $output = Artisan::output();
-        $this->assertEquals(0, $exit, <<<MESSAGE
-        Schema validation failed: lighthouse:validate-schema exited with code $exit
-        $output
-        MESSAGE
+        $this->assertEquals(
+            0,
+            $exit,
+            "Schema validation failed: lighthouse:validate-schema exited with code $exit\n$output"
         );
     }
 }

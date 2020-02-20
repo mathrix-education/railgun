@@ -22,7 +22,8 @@ class LoginBasicTest extends GraphQLTestCase
         loginBasic(email: $email, password: $password) {
             token
         }
-    }';
+    }
+    ';
 
     /**
      * @testdox returns a JWT on success

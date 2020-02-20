@@ -1,0 +1,13 @@
+type EdDSAPublicKey {
+    "The key format."
+    kty: String!
+    "The curve."
+    crv: String!
+    "The public number."
+    x: String!
+}
+
+extend type Query {
+    "Get the Edwards Curve public key."
+    loginPublicKey: EdDSAPublicKey!
+}

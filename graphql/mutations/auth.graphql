@@ -3,20 +3,6 @@ type JWT {
     token: String!
 }
 
-type ECCPublicKey {
-    kty: String!
-    crv: String!
-    x: String!
-    y: String!
-}
-
-extend type Query {
-    """
-    Get the Ellipitic Curve Cryptography public key.
-    """
-    loginPublicKey: ECCPublicKey!
-}
-
 extend type Mutation {
     """
     Login a user into the application using email/password credentials.
@@ -27,4 +13,9 @@ extend type Mutation {
     Login a user into the application using its Facebook token.
     """
     loginFacebook(access_token: String!): JWT!
+
+    """
+    Login a user into the application using its Google access token.
+    """
+    loginWithGoogle(access_token: String!): JWT!
 }
