@@ -37,6 +37,9 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->instance('path.config', $this->app->configPath());
 
+        // Headers
+        $this->app->middleware([ImpersonateMiddleware::class]);
+
         // Singletons
         $this->app->singleton(ExceptionHandler::class, Handler::class);
         $this->app->singleton(KernelContract::class, Kernel::class);
