@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Laravel\Lumen\Auth\Authorizable;
 use Railgun\Models\Traits\FacebookUser;
 use Railgun\Models\Traits\Randomizable;
@@ -121,6 +122,18 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function votes(): HasMany
     {
         return $this->hasMany(Vote::class);
+    }
+
+    public function packs(): MorphToMany
+    {
+        return $this->morphedByMany(Pack::class, 'product', 'acquisitions')
+            ->as(Acquisition::class);
+    }
+
+    public function trainings(): MorphToMany
+    {
+        return $this->morphedByMany(Training::class, 'product', 'acquisitions')
+            ->as(Acquisition::class);
     }
 
     /*

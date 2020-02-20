@@ -7,6 +7,7 @@ namespace Railgun\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Railgun\Models\Traits\Acquerable;
 use Railgun\Models\Traits\Orderable;
 use Railgun\Models\Traits\Randomizable;
 
@@ -23,6 +24,7 @@ use Railgun\Models\Traits\Randomizable;
  */
 class Pack extends Model
 {
+    use Acquerable;
     use Orderable;
     use Randomizable;
 

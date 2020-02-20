@@ -39,7 +39,10 @@ if (!function_exists('hasScope')) {
      */
     function hasScope(?User $user, string $scope): bool
     {
-        return $user instanceof User && $user->hasScope($scope);
+        return $user instanceof User && (
+                in_array('*', $user->scopes, true)
+                || in_array($scope, $user->scopes, true)
+            );
     }
 }
 

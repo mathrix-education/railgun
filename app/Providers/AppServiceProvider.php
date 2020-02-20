@@ -18,10 +18,13 @@ use Nuwave\Lighthouse\LighthouseServiceProvider;
 use Nuwave\Lighthouse\Tracing\TracingServiceProvider;
 use Railgun\Console\Kernel;
 use Railgun\Exceptions\Handler;
+use Railgun\Middleware\ImpersonateMiddleware;
 use Railgun\MigrationV7\MigrationV7ServiceProvider;
 use Railgun\Models\Comment;
 use Railgun\Models\Notion;
+use Railgun\Models\Pack;
 use Railgun\Models\Post;
+use Railgun\Models\Training;
 use Railgun\Models\User;
 use Sentry\Laravel\ServiceProvider as SentryServiceProvider;
 use function in_array;
@@ -61,10 +64,12 @@ class AppServiceProvider extends ServiceProvider
         // MorphMap
         Relation::morphMap([
             // Models
-            'notion'  => Notion::class,
-            'post'    => Post::class,
-            'comment' => Comment::class,
-            'user'    => User::class,
+            'notion'   => Notion::class,
+            'pack'     => Pack::class,
+            'training' => Training::class,
+            'post'     => Post::class,
+            'comment'  => Comment::class,
+            'user'     => User::class,
         ]);
     }
 }

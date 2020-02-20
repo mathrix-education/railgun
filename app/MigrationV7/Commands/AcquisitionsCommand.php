@@ -10,6 +10,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use stdClass;
+use function array_merge;
 use function implode;
 use function sprintf;
 
@@ -20,8 +21,7 @@ class AcquisitionsCommand extends V7Command
     public function handle(): void
     {
         $this->title('Migrating purchases => acquisitions');
-        $this
-            ->query('pack')
+        $this->query('pack')
             ->unionAll($this->query('training'))
             ->get()
             ->unique(fn(stdClass $a) => sprintf('%s-%s-%s', $a->user_id, $a->product_type, $a->product_id))
@@ -30,6 +30,35 @@ class AcquisitionsCommand extends V7Command
                 $this->line("Found {$acquisitions->count()} acquisitions");
                 DB::table('acquisitions')->insert($acquisitions->toArray());
             });
+
+        // Add the missing training acquisitions
+        $mappings = DB::table('pack_training')->get()->toArray();
+        $packs    = [];
+
+        foreach ($mappings as $mapping) {
+            if (!isset($packs[$mapping->pack_id])) {
+                $packs[$mapping->pack_id] = [];
+            }
+
+            $packs[$mapping->pack_id][] = $mapping->training_id;
+        }
+
+        $packAcquisitions = DB::table('acquisitions')
+            ->where('product_type', '=', 'pack')
+            ->get();
+
+        $trainingAcquisitions = [];
+
+        foreach ($packAcquisitions as $packAcquisition) {
+            foreach ($mappings[$packAcquisition->product_id] as $trainingId) {
+                $trainingAcquisitions[] = array_merge((array)$packAcquisition, [
+                    'product_type' => 'training',
+                    'product_id'   => $trainingId,
+                ]);
+            }
+        }
+
+        DB::table('acquisitions')->insertOrIgnore($trainingAcquisitions);
     }
 
     private function query($type): Builder

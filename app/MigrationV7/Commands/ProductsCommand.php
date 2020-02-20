@@ -142,6 +142,18 @@ class ProductsCommand extends V7Command
             })
             ->toArray();
 
+        // Set type to sections
+        DB::table('products')
+            ->where('type', '=', 'training')
+            ->select(['id'])
+            ->get()
+            ->pluck('id')
+            ->tap(static function (Collection $trainingIds) {
+                DB::table('products')
+                    ->whereIn('parent_id', $trainingIds->toArray())
+                    ->update(['type' => 'section']);
+            });
+
         DB::table('products')
             ->join(DB::raw('products AS products2'), static function (JoinClause $join) {
                 $join->on('products.parent_id', '=', 'products2.id')
@@ -194,6 +206,18 @@ class ProductsCommand extends V7Command
                 return [$oldId => $section->id];
             })
             ->toArray();
+
+        // Set type to lesson
+        DB::table('products')
+            ->where('type', '=', 'section')
+            ->select(['id'])
+            ->get()
+            ->pluck('id')
+            ->tap(static function (Collection $trainingIds) {
+                DB::table('products')
+                    ->whereIn('parent_id', $trainingIds->toArray())
+                    ->update(['type' => 'lesson']);
+            });
 
         DB::table('products')
             ->join(DB::raw('products AS products2'), static function (JoinClause $join) {

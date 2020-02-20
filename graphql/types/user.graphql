@@ -13,4 +13,7 @@ type User {
     braintree_id: String
     created_at: DateTime!
     updated_at: DateTime!
+    # Relations
+    packs: [Pack!]! @morphMany
+    trainings: [Training!]! @morphMany
 }
