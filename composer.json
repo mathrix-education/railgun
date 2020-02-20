@@ -1,5 +1,5 @@
 {
-  "name": "mathrix-education/education-api",
+  "name": "mathrix-education/railgun",
   "description": "The Mathrix Education Lumen API.",
   "version": "7.0.0",
   "type": "project",
@@ -31,7 +31,7 @@
     "ext-json": "*",
     "ext-simplexml": "*",
     "ext-zip": "*",
-    "braintree/braintree_php": "4.5.0",
+    "braintree/braintree_php": "^4.6",
     "google/cloud-kms": "v1.7.0",
     "guzzlehttp/guzzle": "6.3.3",
     "illuminate/redis": "^6.12",
@@ -41,7 +41,7 @@
     "nuwave/lighthouse": "^4.8",
     "ramsey/uuid": "3.8.0",
     "sentry/sentry-laravel": "1.5.0",
-    "stripe/stripe-php": "7.17.0",
+    "stripe/stripe-php": "^7.17.0",
     "vlucas/phpdotenv": "3.6.0",
     "web-token/jwt-signature-algorithm-eddsa": "^2.1"
   },
@@ -52,7 +52,7 @@
     "mathrix-education/coding-standard": "1.0.0",
     "mockery/mockery": "1.2.2",
     "nyholm/psr7": "1.2.1",
-    "phpunit/phpunit": "8.2.4",
+    "phpunit/phpunit": "^8.2",
     "squizlabs/php_codesniffer": "3.5.3",
     "symfony/psr-http-message-bridge": "1.2.0",
     "symfony/yaml": "4.2.8"
