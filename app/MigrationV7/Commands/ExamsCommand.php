@@ -156,11 +156,7 @@ class ExamsCommand extends V7Command
             $this->exportMalformed($malformed);
         }
 
-        return $valid->map(static function (stdClass $exam) {
-            $exam->content = json_encode($exam->content, JSON_THROW_ON_ERROR, 512);
-
-            return $exam;
-        });
+        return $valid;
     }
 
     /**
