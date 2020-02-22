@@ -6,9 +6,10 @@ namespace Railgun\GraphQL\Mutations;
 
 use Google_Client;
 use GraphQL\Type\Definition\ResolveInfo;
+use JsonException;
 use Mathrix\Lumen\JWT\Drivers\Driver;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use Railgun\Exceptions\InvalidCredentials;
+use Railgun\Exceptions\InvalidAuthToken;
 use Railgun\Models\User;
 
 class LoginWithGoogle
@@ -23,21 +24,23 @@ class LoginWithGoogle
     }
 
     /**
+     * @link https://developers.google.com/identity/sign-in/web/backend-auth#calling-the-tokeninfo-endpoint
+     *
      * @param null           $rootValue
      * @param mixed[]        $args
      * @param GraphQLContext $context
      * @param ResolveInfo    $resolveInfo
      *
      * @return mixed
+     *
+     * @throws JsonException
      */
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // See https://developers.google.com/identity/sign-in/web/backend-auth#calling-the-tokeninfo-endpoint for
-        // payload content
         $payload = $this->client->verifyIdToken($args['accessToken']);
 
         if (!$payload) {
-            throw new InvalidCredentials();
+            throw new InvalidAuthToken('Google');
         }
 
         $user = User::query()
@@ -45,9 +48,8 @@ class LoginWithGoogle
             ->first();
 
         if ($user === null) {
-            $user        = new User();
-            $user->email = $payload['email'];
-
+            $user            = new User();
+            $user->email     = $payload['email'];
             $user->username  = $payload['name'];
             $user->firstname = $payload['given_name'];
             $user->lastname  = $payload['family_name'];
