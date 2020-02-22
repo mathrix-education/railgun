@@ -16,7 +16,7 @@ class GoogleServiceProvider extends ServiceProvider
             Google_Client::class,
             static function () {
                 return new Google_Client([
-                    'client_id'                  => env('GOOGLE_CLIENT_ID'),
+                    'client_id' => env('GOOGLE_CLIENT_ID'),
                 ]);
             }
         );
