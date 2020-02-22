@@ -34,7 +34,7 @@ class LoginWithGoogle
     {
         // See https://developers.google.com/identity/sign-in/web/backend-auth#calling-the-tokeninfo-endpoint for
         // payload content
-        $payload = $this->client->verifyIdToken($args['access_token']);
+        $payload = $this->client->verifyIdToken($args['accessToken']);
 
         if (!$payload) {
             throw new InvalidCredentials();
