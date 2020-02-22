@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Railgun\GraphQL\Mutations;
 
+use Facebook\Exceptions\FacebookAuthenticationException;
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
 use GraphQL\Type\Definition\ResolveInfo;
 use JsonException;
 use Mathrix\Lumen\JWT\Drivers\Driver;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use Railgun\Exceptions\InvalidAuthToken;
 use Railgun\Models\User;
 use function array_merge_recursive;
 
@@ -18,6 +20,8 @@ use function array_merge_recursive;
  */
 class LoginWithFacebook
 {
+    public const GET_ME_URL = '/me?fields=id,first_name,last_name,email';
+
     private Facebook $facebook;
     private Driver   $driver;
 
@@ -41,14 +45,22 @@ class LoginWithFacebook
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo): array
     {
         $accessToken = $args['accessToken'];
-        $response    = $this->facebook->get('/me?fields=id,first_name,last_name,email', $accessToken);
-        $graphUser   = $response->getGraphUser();
+
+        try {
+            $response = $this->facebook->get(self::GET_ME_URL, $accessToken);
+        } catch (FacebookAuthenticationException $authenticationException) {
+            // Handle invalid token with standard GraphQL UI-friendly error
+            throw new InvalidAuthToken('Facebook');
+        }
+
+        $graphUser = $response->getGraphUser();
 
         $user = User::query()
             ->where('metadata->facebook->id', '=', $graphUser->getId())
             ->first();
 
         if ($user === null) {
+            // User does not exists, this is a registration
             $user            = new User();
             $user->firstname = $graphUser->getFirstName();
             $user->lastname  = $graphUser->getLastName();
