@@ -64,6 +64,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(TracingServiceProvider::class);
         $this->app->register(GraphQLPlaygroundServiceProvider::class);
         $this->app->register(RedisServiceProvider::class);
+        $this->app->register(GoogleServiceProvider::class);
 
         Gate::define('scope', static function (?User $user, string $scope) {
             return $user !== null && in_array($scope, $user->scopes);

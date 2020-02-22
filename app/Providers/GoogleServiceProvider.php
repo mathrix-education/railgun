@@ -8,7 +8,7 @@ use Google_Client;
 use Illuminate\Support\ServiceProvider;
 use function env;
 
-class GoogleClientServiceProvider extends ServiceProvider
+class GoogleServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
