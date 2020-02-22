@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Railgun\Providers;
 
+use Facebook\Facebook;
 use Illuminate\Contracts\Console\Kernel as KernelContract;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -27,6 +28,7 @@ use Railgun\Models\Post;
 use Railgun\Models\Training;
 use Railgun\Models\User;
 use Sentry\Laravel\ServiceProvider as SentryServiceProvider;
+use function env;
 use function in_array;
 
 /**
@@ -56,6 +58,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(TracingServiceProvider::class);
         $this->app->register(GraphQLPlaygroundServiceProvider::class);
         $this->app->register(RedisServiceProvider::class);
+        $this->app->register(GoogleServiceProvider::class);
         $this->app->register(FacebookServiceProvider::class);
 
         Gate::define('scope', static function (?User $user, string $scope) {

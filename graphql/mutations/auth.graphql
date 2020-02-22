@@ -18,6 +18,8 @@ extend type Mutation {
 
     """
     Login a user into the application using its Google access token.
+    A token can be retrieved using the Google JS SDK, as explained here
+    https://developers.google.com/identity/sign-in/web/sign-in
     """
-    loginWithGoogle(access_token: String!): JWT!
+    loginWithGoogle(accessToken: String!): JWT!
 }
