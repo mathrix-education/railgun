@@ -1,13 +1,13 @@
 # IDEA software
-.idea/
+/.idea/
 
 # Vendors
-vendor/
+/vendor/
 
 # Generated files
-storage/code-coverage/
-.phpunit.result.cache
-schema-directives.graphql
+/storage/code-coverage/
+/.phpunit.result.cache
+/schema-directives.graphql
 
 # Secrets
-.env
+/.env
