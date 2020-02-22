@@ -13,7 +13,7 @@ use Railgun\Models\User;
 
 class LoginWithGoogle
 {
-    private Driver          $driver;
+    private Driver           $driver;
     private Google_Client   $client;
 
     public function __construct(Driver $driver, Google_Client $client)
@@ -32,9 +32,7 @@ class LoginWithGoogle
      */
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        // See https://developers.google.com/identity/sign-in/web/backend-auth#calling-the-tokeninfo-endpoint for
-        // payload content
-        $payload = $this->client->verifyIdToken($args['accessToken']);
+        $payload = $this->client->verifyIdToken($args['access_token']);
 
         if (!$payload) {
             throw new InvalidCredentials();
@@ -42,12 +40,12 @@ class LoginWithGoogle
 
         $user = User::query()
             ->where('metadata->google->id', '=', $payload['sub'])
+            ->get(['id', 'password', 'scopes'])
             ->first();
 
         if ($user === null) {
             $user            = new User();
             $user->email     = $payload['email'];
-
             $user->username  = $payload['name'];
             $user->firstname = $payload['given_name'];
             $user->lastname  = $payload['family_name'];
