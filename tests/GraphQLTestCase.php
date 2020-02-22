@@ -63,7 +63,7 @@ class GraphQLTestCase extends BaseTestCase
         if (!isset($this->contentCache)) {
             try {
                 $this->contentCache = json_decode($this->response->getContent(), false, 512, JSON_THROW_ON_ERROR);
-            } /** @noinspection PhpUndefinedClassInspection */ catch (JsonException $exception) {
+            } catch (JsonException $exception) {
                 return $default;
             }
         }
