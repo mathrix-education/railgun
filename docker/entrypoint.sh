@@ -3,6 +3,7 @@ cmd=${1:-run}
 
 case $cmd in
 run)
+    php /var/www/bin/artisan lighthouse:clear-cache
     php-fpm
     ;;
 migrate)
