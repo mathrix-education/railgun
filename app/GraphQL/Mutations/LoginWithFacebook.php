@@ -7,17 +7,21 @@ namespace Railgun\GraphQL\Mutations;
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
 use GraphQL\Type\Definition\ResolveInfo;
+use Illuminate\Contracts\Auth\Authenticatable;
 use JsonException;
 use Mathrix\Lumen\JWT\Drivers\Driver;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Railgun\Models\User;
 use function array_merge_recursive;
+use function dd;
 
 /**
  * Login with a Facebook access token
  */
 class LoginWithFacebook
 {
+    public const GET_ME_URL = '/me?fields=id,first_name,last_name,email';
+
     private Facebook $facebook;
     private Driver   $driver;
 
@@ -41,7 +45,7 @@ class LoginWithFacebook
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo): array
     {
         $accessToken = $args['accessToken'];
-        $response    = $this->facebook->get('/me?fields=id,first_name,last_name,email', $accessToken);
+        $response    = $this->facebook->get(self::GET_ME_URL, $accessToken);
         $graphUser   = $response->getGraphUser();
 
         $user = User::query()

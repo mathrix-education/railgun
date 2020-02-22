@@ -2,19 +2,22 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="bootstrap/app.php"
+         cacheResult="false"
          cacheResultFile="storage/framework/cache/phpunit-cache.php"
-         colors="true">
-<testsuites>
-    <testsuite name="API Test Suite">
-        <directory>./tests/GraphQL</directory>
-    </testsuite>
-</testsuites>
-<filter>
-    <whitelist processUncoveredFilesFromWhitelist="true">
-        <directory suffix=".php">./app</directory>
-        <exclude>
-            <directory>./app/MigrationV7</directory>
-        </exclude>
-    </whitelist>
-</filter>
+         colors="true"
+         processIsolation="true"
+>
+    <testsuites>
+        <testsuite name="API Test Suite">
+            <directory>./tests/GraphQL</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./app</directory>
+            <exclude>
+                <directory>./app/MigrationV7</directory>
+            </exclude>
+        </whitelist>
+    </filter>
 </phpunit>
