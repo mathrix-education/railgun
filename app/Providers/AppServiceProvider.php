@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Railgun\Providers;
 
-use Facebook\Facebook;
 use Illuminate\Contracts\Console\Kernel as KernelContract;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -28,7 +27,6 @@ use Railgun\Models\Post;
 use Railgun\Models\Training;
 use Railgun\Models\User;
 use Sentry\Laravel\ServiceProvider as SentryServiceProvider;
-use function env;
 use function in_array;
 
 /**

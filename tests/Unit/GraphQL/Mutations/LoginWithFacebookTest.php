@@ -94,18 +94,18 @@ class LoginWithFacebookTest extends BaseTestCase
         // Mock GraphUser
         $graphUser = Mockery::mock(GraphUser::class);
         $graphUser->expects('getId')->withNoArgs()->andReturns($this->facebookId)->twice();
-        $graphUser->expects('getEmail')->withNoArgs()->andReturns($this->faker->email)->once();
-        $graphUser->expects('getFirstName')->withNoArgs()->andReturns($this->faker->firstName)->once();
-        $graphUser->expects('getLastName')->withNoArgs()->andReturns($this->faker->lastName)->once();
+        $graphUser->expects('getEmail')->withNoArgs()->andReturns($this->faker->email);
+        $graphUser->expects('getFirstName')->withNoArgs()->andReturns($this->faker->firstName);
+        $graphUser->expects('getLastName')->withNoArgs()->andReturns($this->faker->lastName);
 
         // Mock Facebook
         $this->mockFacebook($graphUser);
 
         // Mock User
         $user = Mockery::mock('overload:' . User::class, Authenticatable::class);
-        $user->expects('query->where->first')->withNoArgs()->andReturnNull()->once();
-        $user->expects('save')->withNoArgs()->andReturnNull()->once();
-        $user->expects('getAuthIdentifier')->withAnyArgs()->andReturns($this->userId)->once();
+        $user->expects('query->where->first')->withNoArgs()->andReturnNull();
+        $user->expects('save')->withNoArgs()->andReturnNull();
+        $user->expects('getAuthIdentifier')->withAnyArgs()->andReturns($this->userId);
 
         // Call the mutation
         $data = $this->execute();
@@ -122,12 +122,12 @@ class LoginWithFacebookTest extends BaseTestCase
     {
         // Mock GraphUser
         $graphUser = Mockery::mock(GraphUser::class);
-        $graphUser->expects('getId')->withNoArgs()->andReturns($this->facebookId)->once();
+        $graphUser->expects('getId')->withNoArgs()->andReturns($this->facebookId);
 
         // Mock User
         $user = Mockery::mock('overload:' . User::class, Authenticatable::class);
-        $user->expects('query->where->first')->withNoArgs()->andReturns($user)->once();
-        $user->expects('getAuthIdentifier')->withAnyArgs()->andReturns($this->userId)->once();
+        $user->expects('query->where->first')->withNoArgs()->andReturns($user);
+        $user->expects('getAuthIdentifier')->withAnyArgs()->andReturns($this->userId);
 
         // Mock Facebook
         $this->mockFacebook($graphUser);

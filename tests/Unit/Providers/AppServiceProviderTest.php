@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Providers;
+namespace Tests\Unit\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Railgun\Models\User;
@@ -11,7 +11,7 @@ use function factory;
 
 class AppServiceProviderTest extends BaseTestCase
 {
-    public function testScopeGate()
+    public function testScopeGate(): void
     {
         /** @var User $user */
         $user         = factory(User::class)->create();

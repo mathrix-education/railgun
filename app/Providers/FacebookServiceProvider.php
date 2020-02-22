@@ -13,7 +13,7 @@ use function env;
  */
 class FacebookServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $this->app->singleton(Facebook::class, static function () {
             return new Facebook([
