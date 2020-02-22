@@ -22,10 +22,16 @@ class LoginWithGoogleTest extends BaseTestCase
     public function testInvoke(): void
     {
         $this->mock(Google_Client::class, static function (MockInterface $googleClient) {
-            $payload = [];
+            $payload = [
+                'sub' => base64_encode(random_bytes(64)),
+                'email' => 'test@test.test',
+                'name' => 'test',
+                'given_name' => 'test',
+                'family_name' => 'test',
+            ];
 
             $googleClient->expects('verifyIdToken')
-                ->withArgs([base64_encode(random_bytes(64))])
+                ->withArgs(['test'])
                 ->andReturns($payload);
         });
 
