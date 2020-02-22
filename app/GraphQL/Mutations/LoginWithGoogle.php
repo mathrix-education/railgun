@@ -45,8 +45,8 @@ class LoginWithGoogle
             ->first();
 
         if ($user === null) {
-            $user            = new User();
-            $user->email     = $payload['email'];
+            $user        = new User();
+            $user->email = $payload['email'];
 
             $user->username  = $payload['name'];
             $user->firstname = $payload['given_name'];
