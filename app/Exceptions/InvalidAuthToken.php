@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace Railgun\Exceptions;
 
 use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Throwable;
+use function trans;
 
 /**
- * Thrown when a user which account has been created through Facebook tries to reset his password.
+ * Thrown an authentication is invalid.
  */
-class FacebookPasswordReset extends BadRequestHttpException implements RendersErrorsExtensions
+class InvalidAuthToken extends AccessDeniedHttpException implements RendersErrorsExtensions
 {
-    public function __construct(?Throwable $previous = null)
+    public function __construct(string $source = 'API', ?Throwable $previous = null)
     {
-        parent::__construct('Unable to reset a password', $previous, 0, []);
+        parent::__construct(trans('auth.invalid_token', ['source' => $source]), $previous, 0, []);
     }
 
     /**

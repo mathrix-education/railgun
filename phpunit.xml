@@ -5,11 +5,13 @@
          cacheResult="false"
          cacheResultFile="storage/framework/cache/phpunit-cache.php"
          colors="true"
-         processIsolation="true"
 >
     <testsuites>
-        <testsuite name="API Test Suite">
+        <testsuite name="GraphQL Test Suite">
             <directory>./tests/GraphQL</directory>
+        </testsuite>
+        <testsuite name="Unit Test Suite">
+            <directory>./tests/Unit</directory>
         </testsuite>
     </testsuites>
     <filter>

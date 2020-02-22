@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace Tests\Unit\GraphQL\Mutations;
 
 use Exception;
+use Facebook\Exceptions\FacebookAuthenticationException;
 use Facebook\Facebook;
 use Facebook\GraphNodes\GraphUser;
 use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Laravel\Lumen\Testing\DatabaseTransactions;
 use Mockery;
 use Mockery\MockInterface;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use Railgun\Exceptions\InvalidAuthToken;
 use Railgun\GraphQL\Mutations\LoginWithFacebook;
 use Railgun\Models\User;
 use Tests\BaseTestCase;
@@ -135,5 +136,24 @@ class LoginWithFacebookTest extends BaseTestCase
         $data = $this->execute();
 
         $this->assertNotEmpty($data['token']);
+    }
+
+    /**
+     * @testdox throws an error when providing an invalid Facebook token.
+     * @covers ::__construct
+     * @covers ::__invoke
+     * @uses    \Railgun\Exceptions\InvalidAuthToken
+     */
+    public function testInvalidToken(): void
+    {
+        $this->expectException(InvalidAuthToken::class);
+
+        $this->mock(Facebook::class, static function (MockInterface $facebook) {
+            $facebook->expects('get')
+                ->withAnyArgs()
+                ->andThrows(new FacebookAuthenticationException());
+        });
+
+        $this->execute();
     }
 }

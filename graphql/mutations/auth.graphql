@@ -11,6 +11,8 @@ extend type Mutation {
 
     """
     Login a user into the application using its Facebook token.
+    A token can be retrieved using the Facebook JS SDK, as explained here
+    https://developers.facebook.com/docs/php/howto/example_access_token_from_javascript/
     """
     loginWithFacebook(accessToken: String!): JWT!
 
