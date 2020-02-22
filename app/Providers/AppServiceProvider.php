@@ -48,12 +48,6 @@ class AppServiceProvider extends ServiceProvider
         // Singletons
         $this->app->singleton(ExceptionHandler::class, Handler::class);
         $this->app->singleton(KernelContract::class, Kernel::class);
-        $this->app->singleton(Facebook::class, static function () {
-            return new Facebook([
-                'app_id'     => env('FACEBOOK_APP_ID'),
-                'app_secret' => env('FACEBOOK_APP_SECRET'),
-            ]);
-        });
 
         // Vendor service providers
         $this->app->register(SentryServiceProvider::class);
@@ -65,6 +59,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(GraphQLPlaygroundServiceProvider::class);
         $this->app->register(RedisServiceProvider::class);
         $this->app->register(GoogleServiceProvider::class);
+        $this->app->register(FacebookServiceProvider::class);
 
         Gate::define('scope', static function (?User $user, string $scope) {
             return $user !== null && in_array($scope, $user->scopes);
