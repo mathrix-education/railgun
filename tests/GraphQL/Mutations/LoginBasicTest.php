@@ -42,6 +42,7 @@ class LoginBasicTest extends GraphQLTestCase
 
         $token = $this->getContent('data.loginBasic.token');
 
+        /** @var Driver $driver */
         $driver  = app()->make(Driver::class);
         $payload = json_decode($driver->unserialize($token)->getPayload(), false, 512, JSON_THROW_ON_ERROR);
 

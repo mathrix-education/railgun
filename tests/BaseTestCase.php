@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use Closure;
 use Faker\Factory as FakerFactory;
 use Faker\Generator;
 use Laravel\Lumen\Testing\TestCase;
+use Mockery;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
@@ -14,6 +17,8 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  */
 abstract class BaseTestCase extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /** @var Generator */
     public $faker;
 
@@ -36,5 +41,10 @@ abstract class BaseTestCase extends TestCase
     public function createApplication()
     {
         return require __DIR__ . '/../bootstrap/app.php';
+    }
+
+    protected function mock($class, Closure $mockCallback)
+    {
+        $this->app->instance($class, Mockery::mock($class, $mockCallback));
     }
 }
