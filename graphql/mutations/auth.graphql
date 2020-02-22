@@ -12,7 +12,7 @@ extend type Mutation {
     """
     Login a user into the application using its Facebook token.
     """
-    loginFacebook(access_token: String!): JWT!
+    loginWithFacebook(accessToken: String!): JWT!
 
     """
     Login a user into the application using its Google access token.
