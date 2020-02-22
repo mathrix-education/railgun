@@ -12,7 +12,6 @@ class LoginGoogleTest
 
     public function testLoginGoogleFail(): void
     {
-
     }
 
     public function testLoginGoogleRegister(): void
