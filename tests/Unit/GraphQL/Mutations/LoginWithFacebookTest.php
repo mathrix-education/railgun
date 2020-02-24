@@ -8,26 +8,25 @@ use Exception;
 use Facebook\Exceptions\FacebookAuthenticationException;
 use Facebook\Facebook;
 use Facebook\GraphNodes\GraphUser;
-use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Mockery;
 use Mockery\MockInterface;
-use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Railgun\Exceptions\InvalidAuthToken;
 use Railgun\GraphQL\Mutations\LoginWithFacebook;
 use Railgun\Models\User;
-use Tests\BaseTestCase;
+use Tests\Unit\GraphQLUnitTestCase;
 use function base64_encode;
 use function random_bytes;
 
 /**
+ * @testdox [Unit] Mutation loginWithFacebook
  * @coversDefaultClass \Railgun\GraphQL\Mutations\LoginWithFacebook
  * @uses                \Mathrix\Lumen\JWT\Drivers\Driver
  *
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
  */
-class LoginWithFacebookTest extends BaseTestCase
+class LoginWithFacebookTest extends GraphQLUnitTestCase
 {
     private string $accessToken;
     private int    $userId;
@@ -45,23 +44,6 @@ class LoginWithFacebookTest extends BaseTestCase
         $this->accessToken = base64_encode(random_bytes(64));
         $this->userId      = $this->faker->numberBetween(1, 100);
         $this->facebookId  = $this->faker->randomNumber(5);
-    }
-
-    /**
-     * Execute the LoginWithFacebook mutation.
-     *
-     * @return mixed
-     */
-    private function execute()
-    {
-        $mutation = $this->app->make(LoginWithFacebook::class);
-
-        return $mutation(
-            null,
-            ['accessToken' => $this->accessToken],
-            Mockery::mock(GraphQLContext::class),
-            Mockery::mock(ResolveInfo::class)
-        );
     }
 
     /**
@@ -83,7 +65,7 @@ class LoginWithFacebookTest extends BaseTestCase
     }
 
     /**
-     * @testdox create a new user when there is no associated Facebook id.
+     * @testdox creates a new user when there is no associated Facebook id.
      * @covers ::__construct
      * @covers ::__invoke
      *
@@ -108,7 +90,9 @@ class LoginWithFacebookTest extends BaseTestCase
         $user->expects('getAuthIdentifier')->withAnyArgs()->andReturns($this->userId);
 
         // Call the mutation
-        $data = $this->execute();
+        $data = $this->invoke(LoginWithFacebook::class, [
+            'accessToken' => $this->accessToken,
+        ]);
 
         $this->assertNotEmpty($data['token']);
     }
@@ -133,7 +117,9 @@ class LoginWithFacebookTest extends BaseTestCase
         $this->mockFacebook($graphUser);
 
         // Call the mutation
-        $data = $this->execute();
+        $data = $this->invoke(LoginWithFacebook::class, [
+            'accessToken' => $this->accessToken,
+        ]);
 
         $this->assertNotEmpty($data['token']);
     }
@@ -154,6 +140,8 @@ class LoginWithFacebookTest extends BaseTestCase
                 ->andThrows(new FacebookAuthenticationException());
         });
 
-        $this->execute();
+        $this->invoke(LoginWithFacebook::class, [
+            'accessToken' => $this->accessToken,
+        ]);
     }
 }

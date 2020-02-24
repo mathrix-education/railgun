@@ -15,18 +15,19 @@ use Railgun\Exceptions\InvalidAuthToken;
 use Railgun\GraphQL\Mutations\LoginWithGoogle;
 use Railgun\Models\User;
 use Tests\BaseTestCase;
+use Tests\Unit\GraphQLUnitTestCase;
 use function base64_encode;
 use function random_bytes;
 
 /**
- * @testdox Mutation loginWithGoogle
+ * @testdox [Unit] Mutation loginWithGoogle
  * @coversDefaultClass \Railgun\GraphQL\Mutations\LoginWithGoogle
  * @uses                \Mathrix\Lumen\JWT\Drivers\Driver
  *
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
  */
-class LoginWithGoogleTest extends BaseTestCase
+class LoginWithGoogleTest extends GraphQLUnitTestCase
 {
     private string $accessToken;
     private int $userId;
@@ -42,23 +43,6 @@ class LoginWithGoogleTest extends BaseTestCase
 
         $this->accessToken = base64_encode(random_bytes(64));
         $this->userId      = $this->faker->numberBetween(1, 100);
-    }
-
-    /**
-     * Execute the LoginWithGoogle mutation.
-     *
-     * @return mixed
-     */
-    private function execute()
-    {
-        $mutation = $this->app->make(LoginWithGoogle::class);
-
-        return $mutation(
-            null,
-            ['accessToken' => $this->accessToken],
-            Mockery::mock(GraphQLContext::class),
-            Mockery::mock(ResolveInfo::class)
-        );
     }
 
     /**
@@ -82,7 +66,7 @@ class LoginWithGoogleTest extends BaseTestCase
     }
 
     /**
-     * @testdox create a new user when there is no associated Google id.
+     * @testdox creates a new user when there is no associated Google id.
      * @covers ::__construct
      * @covers ::__invoke
      *
@@ -100,7 +84,9 @@ class LoginWithGoogleTest extends BaseTestCase
         $user->expects('getAuthIdentifier')->withAnyArgs()->andReturns($this->userId);
 
         // Call the mutation
-        $data = $this->execute();
+        $data = $this->invoke(LoginWithGoogle::class, [
+            'accessToken' => $this->accessToken
+        ]);
 
         $this->assertNotEmpty($data['token']);
     }
@@ -121,7 +107,9 @@ class LoginWithGoogleTest extends BaseTestCase
         $user->expects('getAuthIdentifier')->withAnyArgs()->andReturns($this->userId);
 
         // Call the mutation
-        $data = $this->execute();
+        $data = $this->invoke(LoginWithGoogle::class, [
+            'accessToken' => $this->accessToken
+        ]);
 
         $this->assertNotEmpty($data['token']);
     }
@@ -141,6 +129,9 @@ class LoginWithGoogleTest extends BaseTestCase
                 ->andReturns(false);
         });
 
-        $this->execute();
+        // Call the mutation
+        $this->invoke(LoginWithGoogle::class, [
+            'accessToken' => $this->accessToken
+        ]);
     }
 }

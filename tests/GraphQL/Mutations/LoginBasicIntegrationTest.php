@@ -6,7 +6,7 @@ namespace Tests\GraphQL\Mutations;
 
 use Mathrix\Lumen\JWT\Drivers\Driver;
 use Railgun\Models\User;
-use Tests\GraphQLTestCase;
+use Tests\GraphQL\GraphQLIntegrationTestCase;
 use const JSON_THROW_ON_ERROR;
 use function app;
 use function env;
@@ -15,7 +15,7 @@ use function json_decode;
 /**
  * @testdox Mutation LoginBasic
  */
-class LoginBasicTest extends GraphQLTestCase
+class LoginBasicIntegrationTest extends GraphQLIntegrationTestCase
 {
     private const QUERY = '
     mutation ($email: String!, $password: String!) {

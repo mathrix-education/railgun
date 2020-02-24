@@ -11,7 +11,7 @@ use Facebook\GraphNodes\GraphUser;
 use JsonException;
 use Mathrix\Lumen\JWT\Drivers\Driver;
 use Railgun\Models\User;
-use Tests\GraphQLTestCase;
+use Tests\GraphQL\GraphQLIntegrationTestCase;
 use function app;
 use function env;
 
@@ -19,7 +19,7 @@ use function env;
  * @testdox Mutation loginWithFacebook
  * @coversDefaultClass \Railgun\GraphQL\Mutations\LoginWithFacebook
  */
-class LoginWithFacebookTest extends GraphQLTestCase
+class LoginWithFacebookIntegrationTest extends GraphQLIntegrationTestCase
 {
     private const QUERY = '
     mutation ($accessToken: String!) {

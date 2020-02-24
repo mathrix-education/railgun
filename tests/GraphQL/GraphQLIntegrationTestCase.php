@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace Tests\GraphQL;
 
 use JsonException;
 use stdClass;
+use Tests\BaseTestCase;
 use const JSON_THROW_ON_ERROR;
 use function config;
 use function data_get;
 use function json_decode;
 
-class GraphQLTestCase extends BaseTestCase
+class GraphQLIntegrationTestCase extends BaseTestCase
 {
     /** @var stdClass|array $contentCache */
     private $contentCache;
