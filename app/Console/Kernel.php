@@ -12,7 +12,5 @@ use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 class Kernel extends ConsoleKernel
 {
     /** @var string[] The Artisan commands. */
-    protected $commands = [
-        SubscriptionsSync::class
-    ];
+    protected $commands = [];
 }

@@ -26,9 +26,4 @@ class Subscription extends Model
         'current_period_end'   => 'datetime',
         'current_cancelled_at' => 'datetime',
     ];
-
-    public function isActive(): bool
-    {
-        return $this->status;
-    }
 }

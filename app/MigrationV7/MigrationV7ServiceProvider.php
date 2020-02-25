@@ -23,6 +23,7 @@ use Railgun\MigrationV7\Commands\ProductsCommand;
 use Railgun\MigrationV7\Commands\ReportsCommand;
 use Railgun\MigrationV7\Commands\ResetCommand;
 use Railgun\MigrationV7\Commands\SubjectsCommand;
+use Railgun\MigrationV7\Commands\SubscriptionsCommand;
 use Railgun\MigrationV7\Commands\TriggersCommand;
 use Railgun\MigrationV7\Commands\VotesCommand;
 use Railgun\MigrationV7\Commands\ZerosCommand;
@@ -55,6 +56,7 @@ class MigrationV7ServiceProvider extends ServiceProvider
             ReportsCommand::class,
             CleanCommand::class,
             TriggersCommand::class,
+            SubscriptionsCommand::class,
         ]);
     }
 }
