@@ -6,7 +6,6 @@ type User {
     password: String!
     email: String!
     scopes: [String!]!
-    token: String!
     premium_bypass: Boolean!
     premium_bypass_expires_at: DateTime
     stripe_id: String
