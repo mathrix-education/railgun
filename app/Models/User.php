@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Laravel\Lumen\Auth\Authorizable;
-use Railgun\Models\Traits\FacebookUser;
 use Railgun\Models\Traits\Randomizable;
 use function trim;
 
@@ -53,7 +52,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     use Randomizable;
     use Authorizable;
     use Authenticatable;
-    use FacebookUser;
 
     /** @var array The guarded attributes */
     protected $fillable = [
