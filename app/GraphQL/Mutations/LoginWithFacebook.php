@@ -57,6 +57,7 @@ class LoginWithFacebook
 
         $user = User::query()
             ->where('metadata->facebook->id', '=', $graphUser->getId())
+            ->orWhere('email', '=', $graphUser->getEmail())
             ->first();
 
         if ($user === null) {

@@ -76,7 +76,7 @@ class LoginWithGoogleTest extends GraphQLUnitTestCase
 
         // Mock User
         $user = Mockery::mock('overload:' . User::class, Authenticatable::class);
-        $user->expects('query->where->first')->withNoArgs()->andReturnNull();
+        $user->expects('query->where->orWhere->first')->withNoArgs()->andReturnNull();
         $user->expects('save')->withNoArgs()->andReturnNull();
         $user->expects('getAuthIdentifier')->withAnyArgs()->andReturns($this->userId);
 
@@ -100,7 +100,7 @@ class LoginWithGoogleTest extends GraphQLUnitTestCase
 
         // Mock User
         $user = Mockery::mock('overload:' . User::class, Authenticatable::class);
-        $user->expects('query->where->first')->withNoArgs()->andReturns($user);
+        $user->expects('query->where->orWhere->first')->withNoArgs()->andReturns($user);
         $user->expects('getAuthIdentifier')->withAnyArgs()->andReturns($this->userId);
 
         // Call the mutation
