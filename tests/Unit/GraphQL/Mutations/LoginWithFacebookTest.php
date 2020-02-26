@@ -76,7 +76,7 @@ class LoginWithFacebookTest extends GraphQLUnitTestCase
         // Mock GraphUser
         $graphUser = Mockery::mock(GraphUser::class);
         $graphUser->expects('getId')->withNoArgs()->andReturns($this->facebookId)->twice();
-        $graphUser->expects('getEmail')->withNoArgs()->andReturns($this->faker->email);
+        $graphUser->expects('getEmail')->withNoArgs()->andReturns($this->faker->email)->twice();
         $graphUser->expects('getFirstName')->withNoArgs()->andReturns($this->faker->firstName);
         $graphUser->expects('getLastName')->withNoArgs()->andReturns($this->faker->lastName);
 
@@ -85,7 +85,7 @@ class LoginWithFacebookTest extends GraphQLUnitTestCase
 
         // Mock User
         $user = Mockery::mock('overload:' . User::class, Authenticatable::class);
-        $user->expects('query->where->first')->withNoArgs()->andReturnNull();
+        $user->expects('query->where->orWhere->first')->withNoArgs()->andReturnNull();
         $user->expects('save')->withNoArgs()->andReturnNull();
         $user->expects('getAuthIdentifier')->withAnyArgs()->andReturns($this->userId);
 
@@ -107,14 +107,15 @@ class LoginWithFacebookTest extends GraphQLUnitTestCase
         // Mock GraphUser
         $graphUser = Mockery::mock(GraphUser::class);
         $graphUser->expects('getId')->withNoArgs()->andReturns($this->facebookId);
-
-        // Mock User
-        $user = Mockery::mock('overload:' . User::class, Authenticatable::class);
-        $user->expects('query->where->first')->withNoArgs()->andReturns($user);
-        $user->expects('getAuthIdentifier')->withAnyArgs()->andReturns($this->userId);
+        $graphUser->expects('getEmail')->withNoArgs()->andReturns($this->faker->email);
 
         // Mock Facebook
         $this->mockFacebook($graphUser);
+
+        // Mock User
+        $user = Mockery::mock('overload:' . User::class, Authenticatable::class);
+        $user->expects('query->where->orWhere->first')->withNoArgs()->andReturns($user);
+        $user->expects('getAuthIdentifier')->withAnyArgs()->andReturns($this->userId);
 
         // Call the mutation
         $data = $this->invoke(LoginWithFacebook::class, [

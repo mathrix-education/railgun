@@ -45,6 +45,7 @@ class LoginWithGoogle
 
         $user = User::query()
             ->where('metadata->google->id', '=', $payload['sub'])
+            ->orWhere('email', '=', $payload['email'])
             ->first();
 
         if ($user === null) {

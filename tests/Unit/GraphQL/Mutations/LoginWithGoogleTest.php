@@ -6,15 +6,12 @@ namespace Tests\Unit\GraphQL\Mutations;
 
 use Exception;
 use Google_Client;
-use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Mockery;
 use Mockery\MockInterface;
-use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Railgun\Exceptions\InvalidAuthToken;
 use Railgun\GraphQL\Mutations\LoginWithGoogle;
 use Railgun\Models\User;
-use Tests\BaseTestCase;
 use Tests\Unit\GraphQLUnitTestCase;
 use function base64_encode;
 use function random_bytes;
@@ -79,13 +76,13 @@ class LoginWithGoogleTest extends GraphQLUnitTestCase
 
         // Mock User
         $user = Mockery::mock('overload:' . User::class, Authenticatable::class);
-        $user->expects('query->where->first')->withNoArgs()->andReturnNull();
+        $user->expects('query->where->orWhere->first')->withNoArgs()->andReturnNull();
         $user->expects('save')->withNoArgs()->andReturnNull();
         $user->expects('getAuthIdentifier')->withAnyArgs()->andReturns($this->userId);
 
         // Call the mutation
         $data = $this->invoke(LoginWithGoogle::class, [
-            'accessToken' => $this->accessToken
+            'accessToken' => $this->accessToken,
         ]);
 
         $this->assertNotEmpty($data['token']);
@@ -103,12 +100,12 @@ class LoginWithGoogleTest extends GraphQLUnitTestCase
 
         // Mock User
         $user = Mockery::mock('overload:' . User::class, Authenticatable::class);
-        $user->expects('query->where->first')->withNoArgs()->andReturns($user);
+        $user->expects('query->where->orWhere->first')->withNoArgs()->andReturns($user);
         $user->expects('getAuthIdentifier')->withAnyArgs()->andReturns($this->userId);
 
         // Call the mutation
         $data = $this->invoke(LoginWithGoogle::class, [
-            'accessToken' => $this->accessToken
+            'accessToken' => $this->accessToken,
         ]);
 
         $this->assertNotEmpty($data['token']);
@@ -131,7 +128,7 @@ class LoginWithGoogleTest extends GraphQLUnitTestCase
 
         // Call the mutation
         $this->invoke(LoginWithGoogle::class, [
-            'accessToken' => $this->accessToken
+            'accessToken' => $this->accessToken,
         ]);
     }
 }
