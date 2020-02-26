@@ -1,0 +1,12 @@
+type Subscription_ {
+    id: ID!
+    plan: String!
+    customer_id: String!
+    status: String!
+    payment_intent_secret: String
+    current_period_start: DateTime
+    current_period_end: DateTime
+    created_at: DateTime
+    updated_at: DateTime
+    cancelled_at: DateTime
+}

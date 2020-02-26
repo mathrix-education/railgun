@@ -11,6 +11,12 @@ use Carbon\Carbon;
 use DateTime;
 use Railgun\Models\Subscription;
 use Stripe\Subscription as StripeSubscription;
+use const JSON_THROW_ON_ERROR;
+use function app;
+use function file_exists;
+use function file_get_contents;
+use function json_decode;
+use function storage_path;
 
 class BraintreeSubscriptionBridge
 {
@@ -20,6 +26,7 @@ class BraintreeSubscriptionBridge
      * @param BraintreeSubscription $braintree The Braintree subscription
      *
      * @return Subscription
+     *
      * @throws BraintreeNotFound
      */
     public static function toEloquent(BraintreeSubscription $braintree): Subscription
@@ -33,7 +40,7 @@ class BraintreeSubscriptionBridge
         $subscription->customer_id = self::getCustomerId($braintree);
         $subscription->status      = self::convertStatus($braintree);
 
-        $subscription->pending_setup_intent = null;
+        $subscription->payment_intent_secret = null;
 
         $subscription->current_period_start = self::toCarbon($braintree->billingPeriodStartDate);
         $subscription->current_period_end   = self::toCarbon($braintree->billingPeriodEndDate);
@@ -57,15 +64,18 @@ class BraintreeSubscriptionBridge
 
         $mappings = storage_path('raws/subscription_customers.json');
 
-        if (file_exists($mappings)) {
-            self::$mappings = json_decode(file_get_contents($mappings), true, 512, JSON_THROW_ON_ERROR);
+        if (!file_exists($mappings)) {
+            return;
         }
+
+        self::$mappings = json_decode(file_get_contents($mappings), true, 512, JSON_THROW_ON_ERROR);
     }
 
     /**
      * @param BraintreeSubscription $braintree
      *
      * @return string
+     *
      * @throws BraintreeNotFound
      */
     private static function getCustomerId(BraintreeSubscription $braintree): string
@@ -73,7 +83,7 @@ class BraintreeSubscriptionBridge
         if (isset(self::$mappings[$braintree->id])) {
             return self::$mappings[$braintree->id];
         }
-        
+
         /** @var Gateway $gateway */
         $gateway = app()->make(Gateway::class);
 

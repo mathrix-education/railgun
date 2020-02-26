@@ -10,7 +10,6 @@ use Exception;
 use Illuminate\Support\Collection;
 use Railgun\Billing\BraintreeSubscriptionBridge;
 use Railgun\Billing\StripeSubscriptionBridge;
-use Railgun\Models\Subscription;
 use Railgun\Models\User;
 use Stripe\Subscription as StripeSubscription;
 
@@ -45,9 +44,11 @@ class SubscriptionsCommand extends V7Command
         foreach ($stripeSubscriptions->autoPagingIterator() as $subscription) {
             $subscriptions->push($subscription);
 
-            if ($subscriptions->count() % 100 === 0) {
-                $this->getOutput()->write('.');
+            if ($subscriptions->count() % 100 !== 0) {
+                continue;
             }
+
+            $this->getOutput()->write('.');
         }
 
         $this->output->newLine();

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Braintree\Gateway;
+
 return [
     'mailgun'   => [
         'domain' => env('MAILGUN_DOMAIN'),
@@ -16,7 +18,7 @@ return [
         ],
     ],
     'braintree' => [
-        'environment' => env('BRAINTREE_ENVIRONMENT', \Braintree\Gateway::class),
+        'environment' => env('BRAINTREE_ENVIRONMENT', Gateway::class),
         'merchantId'  => env('BRAINTREE_MERCHANT_ID'),
         'publicKey'   => env('BRAINTREE_PUBLIC_KEY'),
         'privateKey'  => env('BRAINTREE_PRIVATE_KEY'),

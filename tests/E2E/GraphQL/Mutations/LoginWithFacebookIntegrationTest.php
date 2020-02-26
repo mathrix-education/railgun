@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\GraphQL\Mutations;
+namespace Tests\E2E\GraphQL\Mutations;
 
 use Facebook\Exceptions\FacebookResponseException;
 use Facebook\Exceptions\FacebookSDKException;
@@ -11,7 +11,7 @@ use Facebook\GraphNodes\GraphUser;
 use JsonException;
 use Mathrix\Lumen\JWT\Drivers\Driver;
 use Railgun\Models\User;
-use Tests\GraphQL\GraphQLIntegrationTestCase;
+use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function app;
 use function env;
 

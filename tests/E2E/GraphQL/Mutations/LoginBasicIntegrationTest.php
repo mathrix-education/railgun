@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\GraphQL\Mutations;
+namespace Tests\E2E\GraphQL\Mutations;
 
 use Mathrix\Lumen\JWT\Drivers\Driver;
 use Railgun\Models\User;
-use Tests\GraphQL\GraphQLIntegrationTestCase;
+use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use const JSON_THROW_ON_ERROR;
 use function app;
 use function env;

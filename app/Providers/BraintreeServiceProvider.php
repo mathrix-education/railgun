@@ -6,10 +6,8 @@ namespace Railgun\Providers;
 
 use Braintree\Gateway;
 use Illuminate\Support\ServiceProvider;
+use function config;
 
-/**
- *
- */
 class BraintreeServiceProvider extends ServiceProvider
 {
     public function register(): void

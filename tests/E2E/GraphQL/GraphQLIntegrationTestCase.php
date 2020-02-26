@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\GraphQL;
+namespace Tests\E2E\GraphQL;
 
 use JsonException;
 use stdClass;
@@ -44,11 +44,13 @@ class GraphQLIntegrationTestCase extends BaseTestCase
      * Get the GraphQL response data.
      * Shortcut for getContent('data').
      *
+     * @param string|null $path
+     *
      * @return mixed
      */
-    protected function getData()
+    protected function getData(?string $path = null)
     {
-        return $this->getContent('data');
+        return $this->getContent('data' . ($path ? ".$path" : ''));
     }
 
     /**

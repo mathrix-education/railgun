@@ -8,10 +8,8 @@ use Carbon\Carbon;
 use Railgun\Models\Subscription;
 use Stripe\Customer;
 use Stripe\Subscription as StripeSubscription;
+use function is_string;
 
-/**
- *
- */
 class StripeSubscriptionBridge
 {
     /**
@@ -33,8 +31,13 @@ class StripeSubscriptionBridge
             $subscription->customer_id = $stripe->customer->id;
         }
 
-        $subscription->status               = $stripe->status;
-        $subscription->pending_setup_intent = $stripe->pending_setup_intent; // may not be a string
+        $subscription->status = $stripe->status;
+
+        if ($stripe->status === StripeSubscription::STATUS_INCOMPLETE
+            && ($stripe->latest_invoice->payment_intent->client_secret)) {
+            $subscription->payment_intent_secret = $stripe->latest_invoice->payment_intent->client_secret;
+        }
+
         $subscription->current_period_start = Carbon::createFromTimestamp($stripe->current_period_start);
         $subscription->current_period_end   = Carbon::createFromTimestamp($stripe->current_period_end);
         $subscription->created_at           = Carbon::createFromTimestamp($stripe->created);

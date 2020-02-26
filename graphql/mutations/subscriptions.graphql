@@ -1,0 +1,3 @@
+extend type Mutation {
+    createSubscription(planId: String!, paymentMethodId: String!): Subscription_!
+}

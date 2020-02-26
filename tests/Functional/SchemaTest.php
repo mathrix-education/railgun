@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\GraphQL;
+namespace Tests\Functional;
 
 use Illuminate\Support\Facades\Artisan;
 use Tests\BaseTestCase;
