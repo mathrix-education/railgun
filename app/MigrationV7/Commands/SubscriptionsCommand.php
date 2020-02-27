@@ -11,7 +11,9 @@ use Illuminate\Support\Collection;
 use Railgun\Billing\BraintreeSubscriptionBridge;
 use Railgun\Billing\StripeSubscriptionBridge;
 use Railgun\Models\User;
+use Stripe\Stripe;
 use Stripe\Subscription as StripeSubscription;
+use function app;
 
 class SubscriptionsCommand extends V7Command
 {
@@ -22,13 +24,25 @@ class SubscriptionsCommand extends V7Command
 
     public function handle(Gateway $gateway): void
     {
-        $this->gateway = $gateway;
-
         $this->title('Importing subscriptions');
         $this->migrateTo('2020_02_25_182054_create_subscriptions_table');
 
+        $previousBraintreeGateway = $gateway;
+        $previousStripeKey        = Stripe::getApiKey();
+
+        $this->gateway = app()->instance(Gateway::class, new Gateway([
+            'environment' => 'production',
+            'merchantId'  => 'rzyffphs7hk49gnj',
+            'publicKey'   => '58c8zmmsg3w5jw5m',
+            'privateKey'  => '12a4f58b0ae8a2240e676272d47227f3',
+        ]));
+        Stripe::setApiKey('sk_live_FclQbgqwPHYA5uFHQIJni5I6');
+
         $this->stripe();
         $this->braintree();
+
+        Stripe::setApiKey($previousStripeKey);
+        app()->instance(Gateway::class, $previousBraintreeGateway);
     }
 
     /**

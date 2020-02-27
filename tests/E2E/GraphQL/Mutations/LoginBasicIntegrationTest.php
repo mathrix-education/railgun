@@ -10,10 +10,11 @@ use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use const JSON_THROW_ON_ERROR;
 use function app;
 use function env;
+use function factory;
 use function json_decode;
 
 /**
- * @testdox Mutation LoginBasic
+ * @testdox [E2] Mutation loginBasic
  */
 class LoginBasicIntegrationTest extends GraphQLIntegrationTestCase
 {
@@ -30,7 +31,7 @@ class LoginBasicIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testLoginBasicSuccess(): void
     {
-        $user = User::random();
+        $user = factory(User::class)->create();
 
         $this->graphQL(
             self::QUERY,

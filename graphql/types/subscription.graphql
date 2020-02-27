@@ -1,9 +1,3 @@
-enum SubscriptionPlan {
-    v5_monthly @enum(value: "v5_monthly")
-    v5_annually @enum(value: "v5_annually")
-    v5_biannually @enum(value: "v5_biannually")
-}
-
 enum SubscriptionStatus {
     active @enum(value: "active")
     canceled @enum(value: "canceled")
@@ -16,7 +10,7 @@ enum SubscriptionStatus {
 
 type Subscription_ {
     id: ID!
-    plan: SubscriptionPlan!
+    plan: PlanID!
     customer_id: String!
     status: SubscriptionStatus!
     payment_intent_secret: String

@@ -8,8 +8,8 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Support\Facades\Auth;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Railgun\Billing\Card;
+use Railgun\Billing\Plan;
 use Railgun\Billing\StripeSubscriptionBridge;
-use Railgun\Billing\SubscriptionUtils;
 use Railgun\Models\Subscription;
 use Railgun\Models\User;
 use Stripe\Exception\ApiErrorException;
@@ -34,9 +34,9 @@ class CreateSubscription
     {
         /** @var User $user */
         $user = Auth::user();
+        $plan = new Plan($args['planId']);
 
         $paymentMethodId = $args['paymentMethodId'];
-        $planId          = $args['planId'];
 
         if ($user->isStripeCustomer()) {
             $user->attachPaymentMethod($paymentMethodId);
@@ -50,7 +50,7 @@ class CreateSubscription
             'customer'               => $user->stripe_id,
             'default_payment_method' => $paymentMethodId,
             'items'                  => [
-                ['plan' => $planId],
+                ['plan' => $plan->id],
             ],
             'metadata'               => [
                 'user_id' => $user->id,
@@ -58,9 +58,9 @@ class CreateSubscription
             'expand'                 => ['latest_invoice.payment_intent'],
         ];
 
-        if (SubscriptionUtils::isPlanProrated($planId)) {
+        if ($plan->prorated) {
             // Add the billing cycle anchor if necessary
-            $payload['billing_cycle_anchor'] = SubscriptionUtils::getProrationAnchor($planId)->getTimestamp();
+            $payload['billing_cycle_anchor'] = $plan->proration_anchor->getTimestamp();
         }
 
         try {

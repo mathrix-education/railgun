@@ -7,8 +7,11 @@
          colors="true"
 >
     <testsuites>
-        <testsuite name="GraphQL Test Suite">
-            <directory>./tests/GraphQL</directory>
+        <testsuite name="E2E Test Suite">
+            <directory>./tests/E2E</directory>
+        </testsuite>
+        <testsuite name="Functional Test Suite">
+            <directory>./tests/Functional</directory>
         </testsuite>
         <testsuite name="Unit Test Suite">
             <directory>./tests/Unit</directory>

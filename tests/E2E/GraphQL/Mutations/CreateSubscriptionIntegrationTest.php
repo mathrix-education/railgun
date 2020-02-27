@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use Exception;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Mathrix\Lumen\JWT\Testing\JWTUtils;
-use Railgun\Billing\SubscriptionUtils;
+use Railgun\Billing\Plan;
 use Railgun\Models\Subscription;
 use Railgun\Models\User;
 use stdClass;
@@ -56,7 +56,7 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
             'pm_card_threeDSecure2Required' => StripeSubscription::STATUS_INCOMPLETE,
         ];
 
-        $plans = SubscriptionUtils::PLANS;
+        $plans = Plan::PLANS;
 
         $dataset = [];
 
@@ -102,7 +102,7 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
             $this->assertNotNull($subscription->payment_intent_secret);
         }
 
-        if (in_array($planId, [SubscriptionUtils::ANNUALLY_PLAN, SubscriptionUtils::BIANNUALLY_PLAN], true)) {
+        if (in_array($planId, [Plan::ANNUALLY_PLAN, Plan::BIANNUALLY_PLAN], true)) {
             // For annually and biannually plans, check that the anchor is set to the 31st July
             $currentPeriodEnd = new Carbon($subscription->current_period_end);
             $this->assertTrue($currentPeriodEnd->isFuture());
@@ -159,7 +159,7 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
         $subscriptionCount = Subscription::query()->count();
 
         $this->graphQL(self::QUERY, [
-            'planId'          => SubscriptionUtils::MONTHLY_PLAN,
+            'planId'          => Plan::MONTHLY_PLAN,
             'paymentMethodId' => $paymentMethodId,
         ]);
 

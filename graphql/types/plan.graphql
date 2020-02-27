@@ -1,0 +1,29 @@
+enum PlanID {
+    v5_monthly @enum(value: "v5_monthly")
+    v5_annually @enum(value: "v5_annually")
+    v5_biannually @enum(value: "v5_biannually")
+}
+
+enum PlanPeriod {
+    month @enum(value: "month")
+    year @enum(value: "year")
+}
+
+type Plan {
+    id: PlanID!
+    "The period between payments."
+    period: PlanPeriod!
+    "The price, **in cents** per period."
+    price_per_period: Int!
+    "The price, **in cents** per month."
+    price_per_month: Int!
+    "If the plan is prorated."
+    prorated: Boolean!
+    """
+    If the plan is prorated, the price for the period between now and the nex full payement.
+    See proration_anchor for the new full payment.
+    """
+    proration_price: Int
+    "If the plan is prorated, the date of the next full payment."
+    proration_anchor: DateTime
+}
