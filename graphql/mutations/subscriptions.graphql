@@ -1,3 +1,8 @@
 extend type Mutation {
+    """
+    Create a new subscription using a plan and a payment method id.
+    A new payement method can be created using Stripe.js
+    [createPaymentMethod](https://stripe.com/docs/js/payment_methods/create_payment_method).
+    """
     createSubscription(planId: String!, paymentMethodId: String!): Subscription_!
 }
