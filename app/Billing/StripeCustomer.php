@@ -7,6 +7,7 @@ namespace Railgun\Billing;
 use Illuminate\Support\Collection;
 use Stripe\Customer;
 use Stripe\Exception\ApiErrorException;
+use Stripe\Exception\CardException;
 use Stripe\PaymentMethod;
 use Stripe\Subscription as StripeSubscriptions;
 use function collect;
@@ -77,7 +78,12 @@ trait StripeCustomer
                 'invoice_settings' => ['default_payment_method' => $paymentMethodId],
             ];
         }
-        $customer = Customer::create($payload);
+
+        try {
+            $customer = Customer::create($payload);
+        } catch (CardException $cardException) {
+            throw new Card($cardException);
+        }
 
         $this->stripe_id = $customer->id;
         $this->save();

@@ -16,7 +16,12 @@ use Stripe\Subscription as StripeSubscription;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function factory;
 use function in_array;
+use function trans;
 
+/**
+ * @testdox [E2E] Mutation createSubscription
+ * @coversDefaultClass \Railgun\GraphQL\Mutations\CreateSubscription
+ */
 class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
 {
     use DatabaseTransactions;
@@ -34,6 +39,8 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
 
     public function setUp(): void
     {
+        parent::setUp();
+
         /** @var User $user */
         $user = factory(User::class)->create();
         JWTUtils::actingAs($user);
@@ -69,7 +76,7 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
 
     /**
      * @dataProvider createSuccessDataset
-     * @testdox      creates a subscription with plan $planId and token $paymentMethodId
+     * @testdox      successfully creates a subscription using plan $planId and token $paymentMethodId.
      *
      * @param string $planId
      * @param string $paymentMethodId
@@ -77,7 +84,7 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
      *
      * @throws Exception
      */
-    public function testCreateSuccess(string $planId, string $paymentMethodId, string $expectedStatus): void
+    public function testCreateSubscriptionSuccess(string $planId, string $paymentMethodId, string $expectedStatus): void
     {
         $this->graphQL(self::QUERY, [
             'planId'          => $planId,
@@ -111,27 +118,45 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
         ]);
     }
 
-    public function createdErrorDataset()
+    /**
+     * @return array The dataset for the ::testCreateSubscriptionError method.
+     */
+    public function createSubscriptionErrorDataset(): array
     {
+        $dataset = [];
+
         $tokens = [
-            'pm_card_cvcCheckFail', // CVC error message
-            'pm_card_chargeCustomerFail', // Generic error message
-            'pm_card_riskLevelElevated', // Generic error message
-            'pm_card_riskLevelHighest', // Generic error message
-            'pm_card_chargeDeclined', // Generic error message
-            'pm_card_chargeDeclinedInsufficientFunds', // Generic error message
-            'pm_card_chargeDeclinedFraudulent', // Generic error message
-            'pm_card_chargeDeclinedIncorrectCvc', // CVC error message
-            'pm_card_chargeDeclinedExpiredCard', // Expired card error message
-            'pm_card_chargeDeclinedProcessingError', // Generic error message
+            'pm_card_cvcCheckFail'                    => trans('stripe.errors.card.incorrect_cvc'),
+            'pm_card_chargeDeclined'                  => trans('stripe.errors.card.generic'),
+            'pm_card_chargeDeclinedInsufficientFunds' => trans('stripe.errors.card.generic'),
+            'pm_card_chargeDeclinedIncorrectCvc'      => trans('stripe.errors.card.incorrect_cvc'),
+            'pm_card_chargeDeclinedExpiredCard'       => trans('stripe.errors.card.expired'),
+            'pm_card_chargeDeclinedProcessingError'   => trans('stripe.errors.card.generic'),
         ];
+
+        foreach ($tokens as $paymentMethodId => $expectedMessage) {
+            $dataset[$paymentMethodId] = [
+                'paymentMethodId' => $paymentMethodId,
+                'expectedMessage' => $expectedMessage,
+            ];
+        }
+
+        return $dataset;
     }
 
-    public function testCreateFailed(string $paymentMethodId, string $expectedMessage): void
+    /**
+     * @dataProvider createSubscriptionErrorDataset
+     * @testdox      fails to create a subscription using token $paymentMethodId.
+     *
+     * @param string $paymentMethodId The payment method.
+     * @param string $expectedMessage The expected error message.
+     */
+    public function testCreateSubscriptionError(string $paymentMethodId, string $expectedMessage): void
     {
         /** @var User $user */
         $user = factory(User::class)->create();
         JWTUtils::actingAs($user);
+        $subscriptionCount = Subscription::query()->count();
 
         $this->graphQL(self::QUERY, [
             'planId'          => SubscriptionUtils::MONTHLY_PLAN,
@@ -139,5 +164,6 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
         ]);
 
         $this->assertEquals($expectedMessage, $this->getContent('errors.0.message'));
+        $this->assertEquals($subscriptionCount, Subscription::query()->count()); // No new subscription
     }
 }

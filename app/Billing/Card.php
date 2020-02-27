@@ -11,6 +11,9 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Throwable;
 use function trans;
 
+/**
+ * Wrapper for {@see CardException}.
+ */
 class Card extends BadRequestHttpException implements RendersErrorsExtensions
 {
     private ?CardException $cardException;
