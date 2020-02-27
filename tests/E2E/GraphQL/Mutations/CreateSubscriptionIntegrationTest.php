@@ -48,7 +48,8 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
             'pm_card_fr'                    => StripeSubscription::STATUS_ACTIVE,
             'pm_card_threeDSecure2Required' => StripeSubscription::STATUS_INCOMPLETE,
         ];
-        $plans          = SubscriptionUtils::PLANS;
+
+        $plans = SubscriptionUtils::PLANS;
 
         $dataset = [];
 
@@ -113,30 +114,27 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
     public function createdErrorDataset()
     {
         $tokens = [
-            'pm_card_cvcCheckFail',
-            'pm_card_chargeCustomerFail',
-            'pm_card_riskLevelElevated',
-            'pm_card_riskLevelHighest',
-            'pm_card_chargeDeclined',
-            'pm_card_chargeDeclinedInsufficientFunds',
-            'pm_card_chargeDeclinedFraudulent',
-            'pm_card_chargeDeclinedIncorrectCvc',
-            'pm_card_chargeDeclinedExpiredCard',
-            'pm_card_chargeDeclinedProcessingError',
+            'pm_card_cvcCheckFail', // CVC error message
+            'pm_card_chargeCustomerFail', // Generic error message
+            'pm_card_riskLevelElevated', // Generic error message
+            'pm_card_riskLevelHighest', // Generic error message
+            'pm_card_chargeDeclined', // Generic error message
+            'pm_card_chargeDeclinedInsufficientFunds', // Generic error message
+            'pm_card_chargeDeclinedFraudulent', // Generic error message
+            'pm_card_chargeDeclinedIncorrectCvc', // CVC error message
+            'pm_card_chargeDeclinedExpiredCard', // Expired card error message
+            'pm_card_chargeDeclinedProcessingError', // Generic error message
         ];
     }
 
-    public function testCreateFailed(
-        string $planId,
-        string $paymentMethodId,
-        string $expectedMessage
-    ): void {
+    public function testCreateFailed(string $paymentMethodId, string $expectedMessage): void
+    {
         /** @var User $user */
         $user = factory(User::class)->create();
         JWTUtils::actingAs($user);
 
         $this->graphQL(self::QUERY, [
-            'planId'          => $planId,
+            'planId'          => SubscriptionUtils::MONTHLY_PLAN,
             'paymentMethodId' => $paymentMethodId,
         ]);
 
