@@ -40,6 +40,7 @@
                     @deprecated,
                 "/>
                 <element value="
+                    @dataProvider,
                     @testdox,
                     @coversDefaultClass,
                     @covers,

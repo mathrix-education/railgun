@@ -58,6 +58,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(RedisServiceProvider::class);
         $this->app->register(GoogleServiceProvider::class);
         $this->app->register(FacebookServiceProvider::class);
+        $this->app->register(StripeServiceProvider::class);
+        $this->app->register(BraintreeServiceProvider::class);
 
         Gate::define('scope', static function (?User $user, string $scope) {
             return $user !== null && in_array($scope, $user->scopes);

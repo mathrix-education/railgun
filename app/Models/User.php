@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Laravel\Lumen\Auth\Authorizable;
+use Railgun\Billing\StripeCustomer;
+use Railgun\Models\Traits\Cacheable;
 use Railgun\Models\Traits\Randomizable;
 use function trim;
 
@@ -49,9 +51,11 @@ use function trim;
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
-    use Randomizable;
-    use Authorizable;
     use Authenticatable;
+    use Authorizable;
+    use Cacheable;
+    use Randomizable;
+    use StripeCustomer;
 
     /** @var array The guarded attributes */
     protected $fillable = [
@@ -161,6 +165,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
         if (isset($this->metadata['facebook']['id'])) {
             $provider = 'facebook';
+        } elseif (isset($this->metadata['google']['id'])) {
+            $provider = 'google';
         }
 
         return $provider;

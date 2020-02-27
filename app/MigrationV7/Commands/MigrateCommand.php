@@ -33,6 +33,7 @@ class MigrateCommand extends V7Command
         'v7:reports',
         'v7:clean',
         'v7:triggers',
+        'v7:subscriptions',
     ];
 
     protected $signature = 'v7';

@@ -9,9 +9,6 @@ use Mockery;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Tests\BaseTestCase;
 
-/**
- *
- */
 class GraphQLUnitTestCase extends BaseTestCase
 {
     /**

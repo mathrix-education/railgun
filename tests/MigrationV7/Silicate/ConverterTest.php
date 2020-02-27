@@ -46,11 +46,11 @@ class ConverterTest extends BaseTestCase
     }
 
     /**
+     * @dataProvider provideExercises
+     *
      * @param stdClass $original
      *
      * @throws JsonException
-     *
-     * @dataProvider provideExercises
      */
     public function testConvertExercises(stdClass $original): void
     {
@@ -136,11 +136,11 @@ class ConverterTest extends BaseTestCase
     }
 
     /**
+     * @dataProvider provideFlashcards
+     *
      * @param stdClass $original
      *
      * @throws JsonException
-     *
-     * @dataProvider provideFlashcards
      */
     public function testConvertFlashcards(stdClass $original): void
     {
