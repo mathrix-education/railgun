@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use Exception;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Mathrix\Lumen\JWT\Testing\JWTUtils;
-use Railgun\Billing\Plan;
+use Railgun\Billing\Models\Plan;
 use Railgun\Models\Subscription;
 use Railgun\Models\User;
 use stdClass;

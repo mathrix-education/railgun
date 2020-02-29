@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Laravel\Lumen\Auth\Authorizable;
-use Railgun\Billing\StripeCustomer;
+use Railgun\Billing\Models\StripeCustomer;
 use Railgun\Models\Traits\Cacheable;
 use Railgun\Models\Traits\Randomizable;
 use function trim;
