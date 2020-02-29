@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Railgun\Billing;
+namespace Railgun\Billing\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

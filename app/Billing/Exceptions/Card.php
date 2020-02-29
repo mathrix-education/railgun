@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Railgun\Billing;
+namespace Railgun\Billing\Exceptions;
 
 use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
 use Stripe\ErrorObject;

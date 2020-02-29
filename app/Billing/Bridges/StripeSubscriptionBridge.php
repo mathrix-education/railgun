@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Railgun\Billing;
+namespace Railgun\Billing\Bridges;
 
 use Carbon\Carbon;
 use Railgun\Models\Subscription;

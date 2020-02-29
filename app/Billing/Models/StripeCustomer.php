@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Railgun\Billing;
+namespace Railgun\Billing\Models;
 
 use Illuminate\Support\Collection;
+use Railgun\Billing\Exceptions\Card;
 use Stripe\Customer;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Exception\CardException;
