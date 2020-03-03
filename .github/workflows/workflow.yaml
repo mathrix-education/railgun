@@ -158,7 +158,7 @@ jobs:
         run: |
           gcloud container images add-tag \
             "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:$(bin/release)" \
-            "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:latest-$(bin/current_branch)"
+            "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:latest-$(bin/current_branch slug)"
   deploy_cloud_run:
     name: Deploy on Cloud Run
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev'

@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 if [[ -z "${GITHUB_REF}" ]]; then
-    echo $(git rev-parse --abbrev-ref HEAD)
+    BRANCH=$(git rev-parse --abbrev-ref HEAD)
 else
-    echo "${GITHUB_REF#refs/heads/}"
+    BRANCH="${GITHUB_REF#refs/heads/}"
 fi
+
+if [[ $1 = "slug" ]]; then
+    BRANCH=${BRANCH/\//\-}
+fi
+
+echo $BRANCH
