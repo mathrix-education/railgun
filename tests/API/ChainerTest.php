@@ -75,8 +75,6 @@ class ChainerTest extends APIStatelessTestCase
             ],
         ]);
 
-        $this->debug();
-
         $this->assertResponseOk();
     }
 }

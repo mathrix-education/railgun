@@ -16,6 +16,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -183,12 +184,12 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function hasPurchased(Product $product): bool
     {
         return $this->purchases()
-            ->whereIn(
-                'product_id',
-                $product->lineage()
-                    ->pluck('id')
-            )
-            ->exists();
+                    ->whereIn(
+                        'product_id',
+                        $product->lineage()
+                                ->pluck('id')
+                    )
+                    ->exists();
     }
 
     /*
@@ -230,10 +231,10 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'purchases')
-            ->as('purchase')
-            ->using(Purchase::class)
-            ->withPivot(['id', 'transaction_id'])
-            ->withTimestamps();
+                    ->as('purchase')
+                    ->using(Purchase::class)
+                    ->withPivot(['id', 'transaction_id'])
+                    ->withTimestamps();
     }
 
     /**
@@ -362,25 +363,27 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         $body        = [];
         $lastSession = $this->settings['last_session'];
 
-        foreach ($lastSession as $moduleId) {
-            /** @var Module $module */
-            $module = Module::query()
-                ->findOrFail($moduleId);
-            /** @var Activity $activity */
-            $activity = Activity::query()
-                ->findOrFail($module->activity_id);
-            /** @var Notion $notion */
-            $notion = Notion::query()
-                ->findOrFail($activity->notion_id);
-            /** @var Chapter $chapter */
-            $chapter = Chapter::query()
-                ->findOrFail($notion->chapter_id);
-            /** @var Discipline $discipline */
-            $discipline = Discipline::query()
-                ->findOrFail($chapter->discipline_id);
-            /** @var Grade $grade */
-            $grade = Grade::query()
-                ->findOrFail($chapter->grade_id);
+        foreach ($lastSession as $disciplineId => $moduleId) {
+            try {
+                /** @var Module $module */
+                $module = Module::query()->findOrFail($moduleId);
+                /** @var Activity $activity */
+                $activity = Activity::query()->findOrFail($module->activity_id);
+                /** @var Notion $notion */
+                $notion = Notion::query()->findOrFail($activity->notion_id);
+                /** @var Chapter $chapter */
+                $chapter = Chapter::query()->findOrFail($notion->chapter_id);
+                /** @var Discipline $discipline */
+                $discipline = Discipline::query()->findOrFail($chapter->discipline_id);
+                /** @var Grade $grade */
+                $grade = Grade::query()->findOrFail($chapter->grade_id);
+            } catch (ModelNotFoundException $exception) {
+                $settings = $this->settings;
+                unset($settings['last_session'][$disciplineId]);
+                $this->settings = $settings;
+                $this->save();
+                continue;
+            }
 
             $body[] = [
                 'grade_slug' => $grade->slug,
