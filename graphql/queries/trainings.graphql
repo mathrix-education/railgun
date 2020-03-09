@@ -1,6 +1,6 @@
 extend type Query {
     "List all trainings."
-    listTrainings: [Training!]! @permission(scope: "trainings:read") @all
+    listTrainings: [Training!]! @all
 
     "Read an existing training."
     readTraining(id: ID @eq): Training @find
