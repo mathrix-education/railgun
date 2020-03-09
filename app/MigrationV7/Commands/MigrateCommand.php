@@ -36,7 +36,7 @@ class MigrateCommand extends V7Command
         'v7:subscriptions',
     ];
 
-    protected $signature = 'v7';
+    protected $signature = 'v7 {--until=}';
 
     /**
      * @throws Exception
@@ -72,6 +72,10 @@ class MigrateCommand extends V7Command
                 $this->info("> Done in {$duration} ms");
             }
             $this->line('');
+
+            if ($command === $this->option('until')) {
+                break;
+            }
         }
 
         $duration = time() - $start;

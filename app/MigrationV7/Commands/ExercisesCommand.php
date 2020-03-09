@@ -51,9 +51,10 @@ class ExercisesCommand extends V7Command
             ->distinct()
             ->get()
             ->tap(fn(Collection $data) => $this->line("Found {$data->count()} exercises"))
-            ->map(static function (stdClass $exercise) use (&$iterator, &$subjectId) {
+            ->map(static function (stdClass $original) use (&$iterator, &$subjectId) {
                 // Convert fronts and backs to Silicate format
-                $exercise               = ExerciseConverter::new()->convert($exercise);
+                $exercise = ExerciseConverter::new()->convert($original);
+
                 $exercise->questions    = json_encode($exercise->questions, JSON_THROW_ON_ERROR, 512);
                 $exercise->choices      = json_encode($exercise->choices, JSON_THROW_ON_ERROR, 512);
                 $exercise->solutions    = json_encode($exercise->solutions, JSON_THROW_ON_ERROR, 512);

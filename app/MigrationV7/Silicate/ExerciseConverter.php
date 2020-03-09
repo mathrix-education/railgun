@@ -9,6 +9,8 @@ use stdClass;
 use const JSON_THROW_ON_ERROR;
 use function array_filter;
 use function array_map;
+use function count;
+use function is_int;
 use function is_string;
 use function json_decode;
 
@@ -27,18 +29,18 @@ class ExerciseConverter
     }
 
     /**
-     * @param stdClass $exercise
+     * @param stdClass $original
      *
      * @return stdClass
      *
      * @throws JsonException
      */
-    public function convert(stdClass $exercise): stdClass
+    public function convert(stdClass $original): stdClass
     {
+        $exercise = clone $original;
         $exercise = $this->parse($exercise);
         $exercise = $this->strip($exercise);
-
-        $out = clone $exercise;
+        $out      = clone $exercise;
 
         foreach ($exercise->questions as $k => $question) {
             $out->questions[$k] = $this->converter->convert($question);
@@ -97,9 +99,9 @@ class ExerciseConverter
         $exercise->choices = array_filter($exercise->choices, fn($q) => !empty($q));
 
         $exercise->solutions = array_map(static function ($solutions) {
-            return array_filter($solutions, fn($s) => !empty($s));
+            return array_filter($solutions, fn($v) => is_int($v));
         }, $exercise->solutions);
-        $exercise->solutions = array_filter($exercise->solutions, fn($q) => !empty($q));
+        $exercise->solutions = array_filter($exercise->solutions, fn($s) => count($s) > 0);
 
         $exercise->explanations = array_map(static function ($explanations) {
             return array_filter($explanations, fn($e) => !empty($e));
