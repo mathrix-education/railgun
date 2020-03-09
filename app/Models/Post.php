@@ -36,6 +36,8 @@ class Post extends Model
         'category_id',
     ];
 
+    protected $casts = ['content' => 'array'];
+
     protected $orderGroups = ['category_id'];
 
     /*
