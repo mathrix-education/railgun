@@ -18,9 +18,9 @@ class ExercisesTest extends BaseTestCase
     }
 
     /**
-     * @param Exercise $exercise
-     *
      * @dataProvider getExercises
+     *
+     * @param Exercise $exercise
      */
     public function testQuestionsCoherence(Exercise $exercise): void
     {
