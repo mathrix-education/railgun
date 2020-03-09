@@ -12,6 +12,7 @@ use Illuminate\Redis\RedisServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application;
+use Laravel\Tinker\TinkerServiceProvider;
 use Mathrix\Lumen\JWT\JWTServiceProvider;
 use MLL\GraphQLPlayground\GraphQLPlaygroundServiceProvider;
 use Nuwave\Lighthouse\LighthouseServiceProvider;
@@ -60,6 +61,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(FacebookServiceProvider::class);
         $this->app->register(StripeServiceProvider::class);
         $this->app->register(BraintreeServiceProvider::class);
+        $this->app->register(TinkerServiceProvider::class);
 
         Gate::define('scope', static function (?User $user, string $scope) {
             return $user !== null && in_array($scope, $user->scopes);

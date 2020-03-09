@@ -50,6 +50,7 @@
     "doctrine/dbal": "^2.10",
     "fzaninotto/faker": "1.9.1",
     "haydenpierce/class-finder": "^0.4.0",
+    "laravel/tinker": "^2.2",
     "mathrix-education/coding-standard": "1.0.0",
     "mockery/mockery": "^1.3",
     "nyholm/psr7": "^1.2",
