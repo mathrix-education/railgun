@@ -3,5 +3,5 @@ extend type Query {
     listCountries: [Country!]! @all
 
     "Read an existing country."
-    readCountry(id: ID!): Country @find
+    readCountry(id: ID! @eq): Country @find
 }

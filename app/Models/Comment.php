@@ -8,7 +8,9 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Facades\Auth;
 use Railgun\Models\Traits\Randomizable;
 
 /**
@@ -65,6 +67,12 @@ class Comment extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function vote(): HasOne
+    {
+        return $this->hasOne(Vote::class)
+            ->where('user_id', '=', Auth::id());
     }
 
     /**
