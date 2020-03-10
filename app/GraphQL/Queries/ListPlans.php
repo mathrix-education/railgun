@@ -7,7 +7,7 @@ namespace Railgun\GraphQL\Queries;
 use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Support\Collection;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use Railgun\Billing\Plan;
+use Railgun\Billing\Models\Plan;
 
 class ListPlans
 {
