@@ -15,6 +15,7 @@ use Railgun\Models\Traits\Randomizable;
 /**
  * @property-read int     $id
  * @property string       $type
+ * @property array        $content
  * @property array        $questions
  * @property array        $choices
  * @property array        $solutions
@@ -46,6 +47,7 @@ class Exercise extends Model
     ];
 
     protected $casts = [
+        'content'      => 'array',
         'questions'    => 'array',
         'choices'      => 'array',
         'solutions'    => 'array',

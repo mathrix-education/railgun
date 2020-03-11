@@ -18,6 +18,7 @@ class CreateExercisesTable extends Migration
         Schema::create('exercises', static function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->enum('type', ['mcq']);
+            $table->json('content');
             $table->json('questions');
             $table->json('choices');
             $table->json('solutions');

@@ -1,6 +1,7 @@
 type Exercise {
     id: ID!
     type: String
+    content: SilicateWall!
     questions: [SilicateWall!]!
     choices: [[SilicateWall!]!]!
     solutions: [[Int!]!]!
