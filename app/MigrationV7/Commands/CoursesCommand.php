@@ -54,7 +54,7 @@ class CoursesCommand extends V7Command
         $courses    = $query->get()
             ->filter(static function ($module) use (&$errorTable) {
                 if (empty($module->content)) {
-                    $errorTable[] = [$module->id, 'not migrated'];
+                    $errorTable[] = [$module->id, 'empty content: not migrated to Silicate format'];
 
                     return false;
                 }

@@ -8,8 +8,7 @@ type Chapter {
     updated_at: DateTime!
     discipline: Discipline @belongsTo
     grade: Grade! @belongsTo
-    courseNotions: [Notion!]! @hasMany
-    subjectNotions: [Notion!]! @hasMany
+    notions: [Notion!]! @hasMany
     flashcards: [Flashcard!]! @hasMany
     exams: [Exam!]! @hasMany
 }

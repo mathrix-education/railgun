@@ -6,6 +6,7 @@ namespace Railgun\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Railgun\Models\Traits\Orderable;
 use Railgun\Models\Traits\Randomizable;
 
@@ -33,6 +34,14 @@ class Subject extends Model
     protected $casts = ['visible' => 'boolean'];
 
     protected $orderGroups = ['notion_id'];
+
+    /**
+     * @return HasMany<Exercise>
+     */
+    public function exercises(): HasMany
+    {
+        return $this->hasMany(Exercise::class);
+    }
 
     /**
      * @return BelongsTo<Notion>

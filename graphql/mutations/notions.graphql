@@ -2,7 +2,6 @@ extend type Mutation {
     "Create a new notion."
     createNotion(
         name: String!
-        type: NotionType!
         order: Int
         visible: Boolean!
         chapter_id: ID!
@@ -12,7 +11,6 @@ extend type Mutation {
     updateNotion(
         id: ID!
         name: String
-        type: NotionType
         order: Int
         visible: Boolean
         chapter_id: ID

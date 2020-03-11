@@ -17,7 +17,6 @@ use Railgun\MigrationV7\Commands\FlashcardsCommand;
 use Railgun\MigrationV7\Commands\InitializationCommand;
 use Railgun\MigrationV7\Commands\InteractionsCommand;
 use Railgun\MigrationV7\Commands\MigrateCommand;
-use Railgun\MigrationV7\Commands\NotionsCommand;
 use Railgun\MigrationV7\Commands\PostsCommand;
 use Railgun\MigrationV7\Commands\ProductsCommand;
 use Railgun\MigrationV7\Commands\ReportsCommand;
@@ -44,7 +43,6 @@ class MigrationV7ServiceProvider extends ServiceProvider
             SubjectsCommand::class,
             ExercisesCommand::class,
             CoursesCommand::class,
-            NotionsCommand::class,
             CommentsCommand::class,
             ExamsCommand::class,
             PostsCommand::class,

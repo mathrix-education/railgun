@@ -49,6 +49,7 @@ class DropMappingColumns extends Migration
         });
 
         Schema::table('notions', static function (Blueprint $table) {
+            $table->dropColumn(['type']);
             $table->dropColumn(['activity_count']);
         });
 

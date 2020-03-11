@@ -1,12 +1,6 @@
-enum NotionType {
-    COURSE @enum(value: "course")
-    SUBJECT @enum(value: "subject")
-}
-
 type Notion {
     id: ID!
     name: String!
-    type: NotionType!
     order: Int!
     visible: Boolean!
     created_at: DateTime!

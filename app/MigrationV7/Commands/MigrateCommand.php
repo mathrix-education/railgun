@@ -21,7 +21,6 @@ class MigrateCommand extends V7Command
         'v7:subjects',
         'v7:exercises',
         'v7:courses',
-        'v7:notions',
         'v7:comments',
         'v7:posts',
         'v7:exams',

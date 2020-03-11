@@ -19,7 +19,6 @@ $factory->define(Notion::class, static function (Generator $faker) {
 
     return [
         'name'       => $name,
-        'type'       => $faker->randomElement(Notion::TYPES),
         'visible'    => $faker->boolean(95),
         'order'      => 99,
         'chapter_id' => Chapter::random()->id,

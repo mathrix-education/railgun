@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Railgun\MigrationV7\Commands;
 
 use Illuminate\Support\Facades\DB;
+use function array_unique;
 
 class CleanCommand extends V7Command
 {
@@ -29,8 +30,20 @@ class CleanCommand extends V7Command
 
         $this->migrateTo('2020_01_18_032807_drop_mapping_columns');
 
+        /** @var int[] $courseIds */
+        $courseIds = DB::table('courses')
+            ->get(['notion_id'])
+            ->pluck('notion_id')
+            ->toArray();
+        /** @var int[] $subjectIds */
+        $subjectIds = DB::table('subjects')
+            ->get(['notion_id'])
+            ->pluck('notion_id')
+            ->toArray();
+
+        $whitelist   = array_unique([...$courseIds, ...$subjectIds]);
         $notionCount = DB::table('notions')
-            ->where('type', '=', 'to-delete')
+            ->whereNotIn('id', $whitelist)
             ->delete();
         $this->line("Deleted $notionCount invalid notions");
     }

@@ -64,21 +64,9 @@ class Chapter extends Model
     /**
      * @return HasMany<Notion>
      */
-    public function courseNotions(): HasMany
+    public function notions(): HasMany
     {
-        return $this->hasMany(Notion::class)
-            ->where('type', '=', 'course')
-            ->orderBy('order');
-    }
-
-    /**
-     * @return HasMany<Notion>
-     */
-    public function subjectNotions(): HasMany
-    {
-        return $this->hasMany(Notion::class)
-            ->where('type', '=', 'subject')
-            ->orderBy('order');
+        return $this->hasMany(Notion::class)->orderBy('order');
     }
 
     /**

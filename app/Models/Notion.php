@@ -14,7 +14,6 @@ use Railgun\Models\Traits\Randomizable;
 /**
  * @property-read int    $id
  * @property string      $name
- * @property string      $type
  * @property bool        $visible
  * @property int         $order
  * @property int         $chapter_id
@@ -29,12 +28,9 @@ class Notion extends Model
     use Orderable;
     use Randomizable;
 
-    public const TYPES = ['course', 'subject'];
-
     /** @var array The attributes that are mass assignable */
     protected $fillable = [
         'name',
-        'type',
         'visible',
         'order',
         'chapter_id',
