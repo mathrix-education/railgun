@@ -3,5 +3,5 @@ extend type Query {
     listCoupons: [Coupon!]! @permission(scope: "coupons:read") @all
 
     "Read an existing coupon."
-    readCoupon(id: ID!): Coupon @permission(scope: "coupons:read") @find
+    readCoupon(id: ID! @eq): Coupon @permission(scope: "coupons:read") @find
 }

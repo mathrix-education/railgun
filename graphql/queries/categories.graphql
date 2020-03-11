@@ -3,5 +3,5 @@ extend type Query {
     listCategories: [Category!]! @all
 
     "Read a category."
-    readCategory(id: ID!): Category @find
+    readCategory(id: ID! @eq): Category @find
 }

@@ -8,6 +8,8 @@ type Comment {
     updated_at: DateTime!
     parent: Comment @belongsTo
     children: [Comment!]! @hasMany
-    user: User! @belongsTo
     commentable: Commentable!
+    user: User! @belongsTo
+    vote: Vote @hasOne
+    votes: [Vote!]! @hasMany
 }
