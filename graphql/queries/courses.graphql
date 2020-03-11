@@ -1,4 +1,9 @@
 extend type Query {
     "Read an existing course."
     readCourse(id: ID @eq): Course @find
+
+    "Search for courses."
+    searchCourses(query: String!): [Course!]! @paginate(
+        builder: "\\Railgun\\GraphQL\\Queries\\SearchCourses@getBuilder"
+    )
 }
