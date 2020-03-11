@@ -20,4 +20,9 @@ extend type Query {
         disciplineSlug: String!
         gradeSlug: String!
     ): Chapter!
+
+    "Search for chapters."
+    searchChapters(query: String): [Chapter!]! @paginate(
+        builder: "\\Railgun\\GraphQL\\Queries\\SearchChapters@getBuilder"
+    )
 }
