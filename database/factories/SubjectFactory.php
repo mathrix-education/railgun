@@ -19,10 +19,7 @@ $factory->define(Subject::class, static function (Generator $faker) {
         'name'       => $name,
         'order'      => 99,
         'visible'    => $faker->boolean(90),
-        'notion_id'  => Notion::query()
-            ->where('type', '=', 'course')
-            ->firstOrFail()
-            ->id,
+        'notion_id'  => Notion::random()->id,
         'created_at' => $timestamps->createdAt,
         'updated_at' => $timestamps->updatedAt,
     ];

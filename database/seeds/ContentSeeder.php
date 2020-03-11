@@ -55,16 +55,8 @@ class ContentSeeder extends AdvancedSeeder
         // Notions
         $chapterIds
             ->map(function (int $chapterId) {
-                return array_merge(
-                    factory(Notion::class, $this->faker->numberBetween(...self::NOTIONS_PER_CHAPTER))->raw([
-                        'type'       => 'course',
-                        'chapter_id' => $chapterId,
-                    ]),
-                    factory(Notion::class, $this->faker->numberBetween(...self::NOTIONS_PER_CHAPTER))->raw([
-                        'type'       => 'subject',
-                        'chapter_id' => $chapterId,
-                    ])
-                );
+                return factory(Notion::class, $this->faker->numberBetween(...self::NOTIONS_PER_CHAPTER))
+                    ->raw(['chapter_id' => $chapterId]);
             })
             ->flatten(1)
             ->tap(fn() => $this->writeFactoryMessage(Notion::class))
@@ -72,7 +64,6 @@ class ContentSeeder extends AdvancedSeeder
 
         // Courses
         DB::table('notions')
-            ->where('type', '=', 'course')
             ->get(['id'])
             ->pluck('id')
             ->map(function (int $notionId) {
@@ -88,7 +79,6 @@ class ContentSeeder extends AdvancedSeeder
 
         // Subjects
         DB::table('notions')
-            ->where('type', '=', 'subject')
             ->get(['id'])
             ->pluck('id')
             ->map(function (int $notionId) {

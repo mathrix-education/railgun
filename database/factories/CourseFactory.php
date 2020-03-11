@@ -29,11 +29,7 @@ $factory->define(Course::class, static function (Generator $faker) {
         'seo_slug'        => $slug,
         'seo_keywords'    => implode(',', $faker->words(3)),
         'seo_description' => $faker->sentence,
-        'notion_id'       => Notion::query()
-            ->inRandomOrder()
-            ->where('type', '=', 'course')
-            ->firstOrFail()
-            ->id,
+        'notion_id'       => Notion::random()->id,
         'created_at'      => $timestamps->createdAt,
         'updated_at'      => $timestamps->updatedAt,
     ];
