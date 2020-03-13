@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Railgun\Providers;
 
 use Braintree\Gateway;
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 use function config;
 
-class BraintreeServiceProvider extends ServiceProvider
+class BraintreeServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     public function register(): void
     {
@@ -20,5 +21,10 @@ class BraintreeServiceProvider extends ServiceProvider
                 'privateKey'  => config('services.braintree.privateKey'),
             ]);
         });
+    }
+
+    public function provides()
+    {
+        return [Gateway::class];
     }
 }
