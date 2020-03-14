@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Faker\Factory;
-use Faker\Generator;
+use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
@@ -17,7 +17,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 class AdvancedSeeder extends Seeder
 {
-    protected Generator $faker;
+    protected Faker $faker;
 
     public function __construct()
     {
@@ -41,11 +41,17 @@ class AdvancedSeeder extends Seeder
             $count = $options['count'];
         }
 
-        if (!isset($options['name'])) {
-            $data = collect(factory($model, $count)->raw($attributes));
-        } else {
-            $data = collect(factory($model, $count, $options['name'])->raw($attributes));
+        $factory = factory($model, $count);
+
+        if (isset($options['state'])) {
+            if (is_string($options['state'])) {
+                $factory = $factory->state($options['state']);
+            } elseif (is_array($options['state'])) {
+                $factory = $factory->states($options['state']);
+            }
         }
+
+        $data = collect($factory->raw($attributes));
 
         if (!isset($options['seed']) || $options['seed']) {
             $table = $options['table'] ?? $this->getModelTable($model);
@@ -130,6 +136,8 @@ class AdvancedSeeder extends Seeder
      * @param string|array $options The options.
      *
      * @return Collection
+     *
+     * @throws JsonException
      */
     protected function seedFile(string $file, $options = []): Collection
     {

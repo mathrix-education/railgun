@@ -36,7 +36,7 @@ $factory->define(Comment::class, static function (Generator $faker) {
 /**
  * @var Factory $factory
  */
-$factory->defineAs(Comment::class, 'child', static function () use ($factory) {
+$factory->state(Comment::class, 'child', static function () {
     /** @var Comment $parent */
     $parent     = Comment::query()
         ->inRandomOrder()
@@ -44,11 +44,11 @@ $factory->defineAs(Comment::class, 'child', static function () use ($factory) {
         ->firstOrFail();
     $timestamps = Timestamps::factory($parent->created_at);
 
-    return array_merge($factory->raw(Comment::class), [
+    return [
         'parent_id'        => $parent->id,
         'commentable_type' => $parent->commentable_type,
         'commentable_id'   => $parent->commentable_id,
         'created_at'       => $timestamps->createdAt,
         'updated_at'       => $timestamps->updatedAt,
-    ]);
+    ];
 });

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Faker\Generator;
+use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 use Railgun\Models\Exercise;
 use Railgun\Models\Subject;
@@ -12,7 +12,7 @@ use Railgun\Support\Timestamps;
 /**
  * @var Factory $factory
  */
-$factory->define(Exercise::class, static function (Generator $faker) {
+$factory->define(Exercise::class, static function (Faker $faker) {
     $questionCount = $faker->numberBetween(2, 4);
     $questions     = [];
     $choices       = [];

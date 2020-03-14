@@ -12,6 +12,7 @@ use Railgun\Models\User;
 use Sentry\State\Hub;
 use Sentry\State\Scope;
 use Stripe\Exception\CardException;
+use Throwable;
 use function app;
 use function env;
 use function in_array;
@@ -31,13 +32,13 @@ class Handler extends ExceptionHandler
     /**
      * Sentry integration.
      *
-     * @param Exception $exception The exception to report.
+     * @param Throwable $exception The exception to report.
      *
      * @throws Exception
      *
      * @codeCoverageIgnore
      */
-    public function report(Exception $exception): void
+    public function report(Throwable $exception): void
     {
         if ($this->shouldReport($exception)
             && !in_array(env('APP_ENV', 'local'), ['local', 'testing'])
@@ -60,7 +61,7 @@ class Handler extends ExceptionHandler
         parent::report($exception);
     }
 
-    public function render($request, Exception $e)
+    public function render($request, Throwable $e)
     {
         if ($e instanceof CardException) {
             throw new Card($e);

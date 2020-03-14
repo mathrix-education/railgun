@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Faker\Generator;
+use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;
 use Railgun\Models\Pack;
@@ -13,7 +13,7 @@ use Railgun\Support\Timestamps;
  *
  * @var Factory $factory
  */
-$factory->define(Pack::class, static function (Generator $faker) {
+$factory->define(Pack::class, static function (Faker $faker) {
     $name       = $faker->word;
     $timestamps = Timestamps::factory();
 

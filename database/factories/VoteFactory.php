@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Faker\Generator;
+use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 use Railgun\Models\Comment;
 use Railgun\Models\User;
@@ -15,7 +15,7 @@ use Railgun\Support\Timestamps;
  *
  * @var Factory $factory
  */
-$factory->define(Vote::class, static function (Generator $faker) {
+$factory->define(Vote::class, static function (Faker $faker) {
     $timestamps = Timestamps::factory();
 
     return [

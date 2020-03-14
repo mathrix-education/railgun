@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Braintree\Gateway;
 use Faker\Factory as FakerFactory;
 use Illuminate\Support\Facades\Auth;
 use Railgun\Models\User;
@@ -60,12 +59,5 @@ if (!function_exists('scope')) {
         $user = Auth::user();
 
         return hasScope($user, $scope);
-    }
-}
-
-if (!function_exists('gateway')) {
-    function gateway(): Gateway
-    {
-        return app(Gateway::class);
     }
 }
