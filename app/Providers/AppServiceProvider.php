@@ -8,12 +8,14 @@ use Illuminate\Contracts\Console\Kernel as KernelContract;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Filesystem\FilesystemServiceProvider;
+use Illuminate\Mail\MailServiceProvider;
 use Illuminate\Redis\RedisServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application;
 use Laravel\Tinker\TinkerServiceProvider;
 use Mathrix\Lumen\JWT\JWTServiceProvider;
+use Mathrix\Mailjet\MailjetServiceProvider;
 use MLL\GraphQLPlayground\GraphQLPlaygroundServiceProvider;
 use Nuwave\Lighthouse\LighthouseServiceProvider;
 use Nuwave\Lighthouse\Tracing\TracingServiceProvider;
@@ -62,6 +64,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(StripeServiceProvider::class);
         $this->app->register(BraintreeServiceProvider::class);
         $this->app->register(TinkerServiceProvider::class);
+        $this->app->register(MailServiceProvider::class);
+        $this->app->register(MailjetServiceProvider::class);
 
         Gate::define('scope', static function (?User $user, string $scope) {
             return $user !== null && in_array($scope, $user->scopes);

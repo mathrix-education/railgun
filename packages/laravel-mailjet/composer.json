@@ -1,0 +1,44 @@
+{
+  "name": "mathrix-education/laravel-mailjet",
+  "description": "Mailjet Integration for Laravel and Lumen frameworks",
+  "version": "0.1.0",
+  "type": "library",
+  "keywords": [
+    "laravel",
+    "lumen",
+    "email",
+    "mailjet"
+  ],
+  "homepage": "https://github.com/mathrix-education/laravel-mailjet",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Mathieu Bour",
+      "email": "mathieu@mathrix.fr",
+      "homepage": "https://www.linkedin.com/in/mathieu-bour",
+      "role": "Maintainer"
+    }
+  ],
+  "support": {
+    "email": "mathieu@mathrix.fr",
+    "issues": "https://github.com/mathrix-education/laravel-mailjet/issues",
+    "source": "https://github.com/mathrix-education/laravel-mailjet",
+    "docs": "https://github.com/mathrix-education"
+  },
+  "require": {
+    "illuminate/mail": "^6.0 || ^7.0",
+    "mailjet/mailjet-apiv3-php": "^1.2",
+    "mailjet/mailjet-swiftmailer": "^2.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Mathrix\\Mailjet\\": "src/"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true
+  }
+}

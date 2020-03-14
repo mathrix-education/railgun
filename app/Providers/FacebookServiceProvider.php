@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Railgun\Providers;
 
 use Facebook\Facebook;
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 use function env;
 
 /**
  * Register Facebook SDK.
  */
-class FacebookServiceProvider extends ServiceProvider
+class FacebookServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     public function register(): void
     {
@@ -21,5 +22,10 @@ class FacebookServiceProvider extends ServiceProvider
                 'app_secret' => env('FACEBOOK_APP_SECRET'),
             ]);
         });
+    }
+
+    public function provides()
+    {
+        return [Facebook::class];
     }
 }

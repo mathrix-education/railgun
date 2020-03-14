@@ -25,6 +25,12 @@
     "source": "https://github.com/mathrix-education/education-api",
     "docs": "https://api.mathrix.fr"
   },
+  "repositories": [
+    {
+      "type": "path",
+      "url": "packages/laravel-mailjet"
+    }
+  ],
   "require": {
     "php": ">=7.4",
     "ext-fileinfo": "*",
@@ -37,6 +43,7 @@
     "guzzlehttp/guzzle": "6.3.3",
     "illuminate/redis": "^6.12",
     "laravel/lumen-framework": "^6.0",
+    "mathrix-education/laravel-mailjet": "^0.1.0",
     "mathrix-education/lumen-jwt": "3.0.0-alpha.6",
     "mll-lab/laravel-graphql-playground": "^2.0",
     "nuwave/lighthouse": "^4.8",
