@@ -43,6 +43,7 @@
                     @dataProvider,
                     @testdox,
                     @coversDefaultClass,
+                    @coversNothing,
                     @covers,
                     @uses,
                 "/>

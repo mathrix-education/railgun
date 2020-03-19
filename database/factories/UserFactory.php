@@ -20,13 +20,13 @@ $factory->define(User::class, static function (Faker $faker) {
     $timestamps = Timestamps::factory();
 
     $data = [
+        'uuid'       => $faker->uuid,
         'username'   => !$names ? $faker->userName : null,
         'email'      => $faker->email,
         'firstname'  => $names ? $faker->firstName : null,
         'lastname'   => $names ? $faker->lastName : null,
         'password'   => Cache::remember('DB_PASSWORD.hash', 30, fn() => Hash::make(env('DB_PASSWORD'))),
         'scopes'     => [],
-        'token'      => $faker->uuid,
         'settings'   => [
             'sound' => $faker->boolean(70),
         ],

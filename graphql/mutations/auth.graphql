@@ -3,6 +3,10 @@ type JWT {
     token: String!
 }
 
+type Email {
+    email: String!
+}
+
 extend type Mutation {
     """
     Login a user into the application using email/password credentials.
@@ -21,4 +25,17 @@ extend type Mutation {
     A token can be retrieved using the [Google JS SDK](https://developers.google.com/identity/sign-in/web/sign-in).
     """
     loginWithGoogle(accessToken: String!): JWT!
+
+    """
+    Send a password reset email to the given email address, if it exists. **No error** whill be thrown if the email does
+    not exists in the database for security purposes. Furthermore, a additionnal random delay will be added to the
+    request to mitigate the side-channel timing attacks.
+    """
+    forgotPassword(email: String!): Boolean!
+
+    """
+    Using the token which can be found in the query string `token`, change the password of the token account owner.
+    *In debug mode, for testing purposes, passing the user id instead of the token allow to select the targeted user.*
+    """
+    resetPassword(token: String!, newPassword: String!): Boolean!
 }

@@ -14,10 +14,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Lumen\Auth\Authorizable;
 use Railgun\Billing\Models\StripeCustomer;
 use Railgun\Models\Traits\Cacheable;
 use Railgun\Models\Traits\Randomizable;
+use Ramsey\Uuid\Uuid;
 use function trim;
 
 /**
@@ -102,6 +104,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'last_session',
     ];
 
+    public function __construct(array $attributes = [])
+    {
+        $this->attributes['uuid'] = Uuid::uuid4();
+        parent::__construct($attributes);
+    }
+
     /**
      * BelongsTo Grade.
      */
@@ -143,6 +151,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     | Attributes
     |--------------------------------------------------------------------------
     */
+
+    /**
+     * @param string $password The new password.
+     */
+    public function setPasswordAttribute(string $password): void
+    {
+        $this->attributes['password'] = Hash::make($password);
+    }
 
     /**
      * full_name attribute.

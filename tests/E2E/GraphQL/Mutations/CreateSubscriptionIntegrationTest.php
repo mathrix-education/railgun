@@ -7,7 +7,6 @@ namespace Tests\E2E\GraphQL\Mutations;
 use Carbon\Carbon;
 use Exception;
 use Laravel\Lumen\Testing\DatabaseTransactions;
-use Mathrix\Lumen\JWT\Testing\JWTUtils;
 use Railgun\Billing\Models\Plan;
 use Railgun\Models\Subscription;
 use Railgun\Models\User;
@@ -20,13 +19,13 @@ use function trans;
 
 /**
  * @testdox [E2E] Mutation createSubscription
- * @coversDefaultClass \Railgun\GraphQL\Mutations\CreateSubscription
+ * @coversNothing
  */
 class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
 {
     use DatabaseTransactions;
 
-    private const QUERY = '
+    private const QUERY = <<<'GRAPHQL'
     mutation ($planId: String!, $paymentMethodId: String!) {
         createSubscription(planId: $planId, paymentMethodId: $paymentMethodId) {
             id
@@ -35,7 +34,7 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
             current_period_end
         }
     }
-    ';
+    GRAPHQL;
 
     public function setUp(): void
     {
@@ -43,7 +42,7 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
 
         /** @var User $user */
         $user = factory(User::class)->create();
-        JWTUtils::actingAs($user);
+        $this->actingAs($user);
     }
 
     /**
@@ -155,7 +154,7 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
     {
         /** @var User $user */
         $user = factory(User::class)->create();
-        JWTUtils::actingAs($user);
+        $this->actingAs($user);
         $subscriptionCount = Subscription::query()->count();
 
         $this->graphQL(self::QUERY, [

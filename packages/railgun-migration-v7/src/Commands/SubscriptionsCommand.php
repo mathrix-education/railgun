@@ -8,6 +8,7 @@ use Braintree\Gateway;
 use Braintree\Subscription as BraintreeSubscription;
 use Exception;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Railgun\Billing\Bridges\BraintreeSubscriptionBridge;
 use Railgun\Billing\Bridges\StripeSubscriptionBridge;
 use Railgun\Models\User;
@@ -50,22 +51,27 @@ class SubscriptionsCommand extends V7Command
      */
     private function stripe(): void
     {
-        /** @var Collection $subscriptions */
         $this->line('Retrieving subscriptions from Stripe');
-        $subscriptions       = new Collection();
-        $stripeSubscriptions = StripeSubscription::all(['status' => 'all', 'limit' => 100]);
 
-        foreach ($stripeSubscriptions->autoPagingIterator() as $subscription) {
-            $subscriptions->push($subscription);
+        /** @var Collection $subscriptions */
+        $subscriptions = Cache::remember('v7.stripe.subscriptions', 3600, function () {
+            $subscriptions       = new Collection();
+            $stripeSubscriptions = StripeSubscription::all(['status' => 'all', 'limit' => 100]);
 
-            if ($subscriptions->count() % 100 !== 0) {
-                continue;
+            foreach ($stripeSubscriptions->autoPagingIterator() as $subscription) {
+                $subscriptions->push($subscription);
+
+                if ($subscriptions->count() % 100 !== 0) {
+                    continue;
+                }
+
+                $this->getOutput()->write('.');
             }
 
-            $this->getOutput()->write('.');
-        }
+            $this->output->newLine();
 
-        $this->output->newLine();
+            return $subscriptions;
+        });
 
         /** @var Collection|string[] $customerIds */
         $customerIds = User::query()
