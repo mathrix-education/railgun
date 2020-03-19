@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Faker\Generator;
+use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 use Railgun\Models\Coupon;
 use Railgun\Support\Timestamps;
@@ -10,7 +10,7 @@ use Railgun\Support\Timestamps;
 /**
  * @var Factory $factory
  */
-$factory->define(Coupon::class, static function (Generator $faker) {
+$factory->define(Coupon::class, static function (Faker $faker) {
     if ($faker->boolean) {
         $type  = 'percentage';
         $value = $faker->randomDigit * 10;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Faker\Generator;
+use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;
 use Railgun\Models\Chapter;
@@ -13,13 +13,7 @@ use Railgun\Support\Timestamps;
 /**
  * @var Factory $factory
  */
-$factory->define(Exam::class, static function (Generator $faker) use ($factory) {
-    $type = $faker->randomElement(['video', 'questions']);
-
-    return $factory->rawOf(Exam::class, $type);
-});
-
-$factory->defineAs(Exam::class, 'base', static function (Generator $faker): array {
+$factory->define(Exam::class, static function (Faker $faker) {
     $name       = ucfirst($faker->word);
     $timestamps = Timestamps::factory();
 
@@ -34,16 +28,20 @@ $factory->defineAs(Exam::class, 'base', static function (Generator $faker): arra
     ];
 });
 
-$factory->defineAs(Exam::class, 'questions', static function (Generator $faker) use ($factory) {
-    return $factory->rawOf(Exam::class, 'base', [
+$factory->state(Exam::class, 'questions', static function (Faker $faker) {
+    return [
         'duration' => $faker->numberBetween(2, 5) * 10,
         'content'  => Silicate::wall(),
-    ]);
+    ];
 });
 
-$factory->defineAs(Exam::class, 'video', static function () use ($factory) {
-    return $factory->rawOf(Exam::class, 'base', [
-        'duration' => null,
-        'content'  => [Silicate::video()],
-    ]);
+$factory->state(Exam::class, 'video', [
+    'duration' => null,
+    'content'  => [Silicate::video()],
+]);
+
+$factory->state(Exam::class, 'random', static function (Faker $faker) {
+    $type = $faker->randomElement(['video', 'questions']);
+
+    return factory(Exam::class)->states($type)->raw();
 });

@@ -125,7 +125,11 @@ class ContentSeeder extends AdvancedSeeder
             ->map(function (int $chapterId) {
                 return $this->seedFactory(
                     Exam::class,
-                    ['seed' => false, 'count' => $this->faker->numberBetween(...self::EXAMS_PER_CHAPTER)],
+                    [
+                        'seed'  => false,
+                        'count' => $this->faker->numberBetween(...self::EXAMS_PER_CHAPTER),
+                        'state' => 'random',
+                    ],
                     ['chapter_id' => $chapterId]
                 )->map(fn(array $exam, int $order) => ['order' => $order] + $exam);
             })

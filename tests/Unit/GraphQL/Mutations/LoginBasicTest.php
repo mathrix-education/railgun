@@ -15,7 +15,7 @@ use Tests\Unit\GraphQLUnitTestCase;
 /**
  * @testdox [Unit] Mutation loginBasic
  * @coversDefaultClass \Railgun\GraphQL\Mutations\LoginBasic
- * @uses \Mathrix\Lumen\JWT\Drivers\Driver
+ * @uses                \Mathrix\Lumen\JWT\Drivers\Driver
  *
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled

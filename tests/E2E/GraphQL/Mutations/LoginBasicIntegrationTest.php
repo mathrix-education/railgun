@@ -15,33 +15,36 @@ use function json_decode;
 
 /**
  * @testdox [E2] Mutation loginBasic
+ * @coversNothing
  */
 class LoginBasicIntegrationTest extends GraphQLIntegrationTestCase
 {
-    private const QUERY = '
+    private const QUERY = <<<'GRAPHQL'
     mutation ($email: String!, $password: String!) {
         loginBasic(email: $email, password: $password) {
             token
         }
     }
-    ';
+    GRAPHQL;
 
     /**
      * @testdox returns a JWT on success
      */
     public function testLoginBasicSuccess(): void
     {
-        $user = factory(User::class)->create();
+        $user     = factory(User::class)->create();
+        $password = $this->faker->password;
+        $user->update(['password' => $password]);
 
         $this->graphQL(
             self::QUERY,
             [
                 'email'    => $user->email,
-                'password' => env('DB_PASSWORD'),
+                'password' => $password,
             ]
         );
 
-        $token = $this->getContent('data.loginBasic.token');
+        $token = $this->getData('loginBasic.token');
 
         /** @var Driver $driver */
         $driver  = app()->make(Driver::class);

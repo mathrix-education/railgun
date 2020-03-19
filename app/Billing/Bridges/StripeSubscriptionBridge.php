@@ -7,6 +7,7 @@ namespace Railgun\Billing\Bridges;
 use Carbon\Carbon;
 use Railgun\Models\Subscription;
 use Stripe\Customer;
+use Stripe\Invoice;
 use Stripe\Subscription as StripeSubscription;
 use function is_string;
 
@@ -33,8 +34,16 @@ class StripeSubscriptionBridge
 
         $subscription->status = $stripe->status;
 
-        if ($stripe->status === StripeSubscription::STATUS_INCOMPLETE
-            && ($stripe->latest_invoice->payment_intent->client_secret)) {
+        if ($stripe->status === StripeSubscription::STATUS_INCOMPLETE) {
+            if (!$stripe->latest_invoice instanceof Invoice) {
+                /** @var StripeSubscription $stripe */
+                /** @noinspection CallableParameterUseCaseInTypeContextInspection */
+                $stripe = StripeSubscription::retrieve([
+                    'id'     => $stripe->id,
+                    'expand' => ['latest_invoice.payment_intent'],
+                ]);
+            }
+
             $subscription->payment_intent_secret = $stripe->latest_invoice->payment_intent->client_secret;
         }
 

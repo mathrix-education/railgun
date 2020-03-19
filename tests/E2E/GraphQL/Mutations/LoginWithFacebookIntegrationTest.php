@@ -17,17 +17,17 @@ use function env;
 
 /**
  * @testdox Mutation loginWithFacebook
- * @coversDefaultClass \Railgun\GraphQL\Mutations\LoginWithFacebook
+ * @coversNothing
  */
 class LoginWithFacebookIntegrationTest extends GraphQLIntegrationTestCase
 {
-    private const QUERY = '
+    private const QUERY = <<<'GRAPHQL'
     mutation ($accessToken: String!) {
         loginWithFacebook(accessToken: $accessToken) {
             token
         }
     }
-    ';
+    GRAPHQL;
 
     private static bool      $LimitReached = false;
     private static GraphUser $FacebookUser;

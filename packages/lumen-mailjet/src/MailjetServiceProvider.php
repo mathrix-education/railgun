@@ -17,7 +17,7 @@ class MailjetServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->make('swift.transport')->extend('mailjet', function () {
+        $this->app->make('mail.manager')->extend('mailjet', function () {
             /** @var Repository $config */
             $config = $this->app->make('config');
 

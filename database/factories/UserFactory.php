@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Faker\Generator;
+use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
@@ -15,24 +15,18 @@ use Railgun\Support\Timestamps;
  *
  * @var Factory $factory
  */
-$factory->define(User::class, static function (Generator $faker) {
+$factory->define(User::class, static function (Faker $faker) {
     $names      = $faker->boolean(30);
     $timestamps = Timestamps::factory();
 
     $data = [
+        'uuid'       => $faker->uuid,
         'username'   => !$names ? $faker->userName : null,
         'email'      => $faker->email,
         'firstname'  => $names ? $faker->firstName : null,
         'lastname'   => $names ? $faker->lastName : null,
-        'password'   => Cache::remember(
-            'DB_PASSWORD.hash',
-            30,
-            static function () {
-                return Hash::make(env('DB_PASSWORD'));
-            }
-        ),
+        'password'   => Cache::remember('DB_PASSWORD.hash', 30, fn() => Hash::make(env('DB_PASSWORD'))),
         'scopes'     => [],
-        'token'      => $faker->uuid,
         'settings'   => [
             'sound' => $faker->boolean(70),
         ],

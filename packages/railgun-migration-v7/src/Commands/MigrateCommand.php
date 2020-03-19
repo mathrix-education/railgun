@@ -33,6 +33,7 @@ class MigrateCommand extends V7Command
         'v7:clean',
         'v7:triggers',
         'v7:subscriptions',
+        'v7:users',
     ];
 
     protected $signature = 'v7 {--until=}';
@@ -45,7 +46,7 @@ class MigrateCommand extends V7Command
         $start = time();
 
         // Banner
-        $this->output->write(file_get_contents(dirname(__DIR__) . '/banner.txt'));
+        $this->output->write(file_get_contents(dirname(__DIR__, 2) . '/resources/banner.txt'));
         $this->line('Migration script by Mathieu Bour and Valentin Pollart');
         $this->line("\n");
 

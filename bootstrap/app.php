@@ -28,6 +28,7 @@ $app->configure('mail');
 $app->configure('queue');
 $app->configure('sentry');
 $app->configure('services');
+$app->configure('urls');
 
 $app->register(AppServiceProvider::class);
 

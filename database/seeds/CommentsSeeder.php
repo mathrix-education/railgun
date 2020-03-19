@@ -16,7 +16,7 @@ class CommentsSeeder extends AdvancedSeeder
     {
         // Parent comments
         $this->seedFactory(Comment::class, self::COMMENT_PARENTS_COUNT);
-        $this->seedFactory(Comment::class, ['name' => 'child', 'count' => self::COMMENT_CHILDREN_COUNT]);
+        $this->seedFactory(Comment::class, ['state' => 'child', 'count' => self::COMMENT_CHILDREN_COUNT]);
         $this->seedFactory(Vote::class, ['seed' => false, 'count' => self::VOTE_COUNT])
             ->mapWithKeys(static function (array $vote) {
                 $key = "{$vote['user_id']}-{$vote['comment_id']}";

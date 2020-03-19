@@ -24,6 +24,7 @@ use Railgun\MigrationV7\Commands\ResetCommand;
 use Railgun\MigrationV7\Commands\SubjectsCommand;
 use Railgun\MigrationV7\Commands\SubscriptionsCommand;
 use Railgun\MigrationV7\Commands\TriggersCommand;
+use Railgun\MigrationV7\Commands\UsersCommand;
 use Railgun\MigrationV7\Commands\VotesCommand;
 use Railgun\MigrationV7\Commands\ZerosCommand;
 
@@ -32,7 +33,7 @@ use Railgun\MigrationV7\Commands\ZerosCommand;
  */
 class MigrationV7ServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $this->commands([
             MigrateCommand::class,
@@ -55,6 +56,7 @@ class MigrationV7ServiceProvider extends ServiceProvider
             CleanCommand::class,
             TriggersCommand::class,
             SubscriptionsCommand::class,
+            UsersCommand::class,
         ]);
     }
 }
