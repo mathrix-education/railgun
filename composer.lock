@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "922e60fb19ae1c244910771059a0b7ca",
+    "content-hash": "6dcd72eb2a3495944cb820d695b2ff3f",
     "packages": [
         {
             "name": "braintree/braintree_php",
@@ -2577,51 +2577,6 @@
             "time": "2019-06-13T12:40:37+00:00"
         },
         {
-            "name": "mathrix-education/laravel-mailjet",
-            "version": "0.1.0",
-            "dist": {
-                "type": "path",
-                "url": "packages/laravel-mailjet",
-                "reference": "e282707da82b5979578615af586d0a191ac3eddc"
-            },
-            "require": {
-                "illuminate/mail": "^6.0 || ^7.0",
-                "mailjet/mailjet-apiv3-php": "^1.2",
-                "mailjet/mailjet-swiftmailer": "^2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Mathrix\\Mailjet\\": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Mathieu Bour",
-                    "email": "mathieu@mathrix.fr",
-                    "homepage": "https://www.linkedin.com/in/mathieu-bour",
-                    "role": "Maintainer"
-                }
-            ],
-            "description": "Mailjet Integration for Laravel and Lumen frameworks",
-            "homepage": "https://github.com/mathrix-education/laravel-mailjet",
-            "keywords": [
-                "email",
-                "laravel",
-                "lumen",
-                "mailjet"
-            ],
-            "support": {
-                "email": "mathieu@mathrix.fr",
-                "issues": "https://github.com/mathrix-education/laravel-mailjet/issues",
-                "source": "https://github.com/mathrix-education/laravel-mailjet",
-                "docs": "https://github.com/mathrix-education"
-            }
-        },
-        {
             "name": "mathrix-education/lumen-jwt",
             "version": "3.0.0-alpha.7",
             "source": {
@@ -2692,6 +2647,50 @@
                 "php"
             ],
             "time": "2020-03-14T11:21:31+00:00"
+        },
+        {
+            "name": "mathrix-education/lumen-mailjet",
+            "version": "0.1.0",
+            "dist": {
+                "type": "path",
+                "url": "packages/lumen-mailjet",
+                "reference": "6870de56d85c28aa1dcf291495b0ae62416fb4d1"
+            },
+            "require": {
+                "illuminate/mail": "^6.0 || ^7.0",
+                "mailjet/mailjet-apiv3-php": "^1.2",
+                "mailjet/mailjet-swiftmailer": "^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mathrix\\Mailjet\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mathieu Bour",
+                    "email": "mathieu@mathrix.fr",
+                    "homepage": "https://www.linkedin.com/in/mathieu-bour",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Mailjet Integration for lumen and Lumen frameworks",
+            "homepage": "https://github.com/mathrix-education/lumen-mailjet",
+            "keywords": [
+                "email",
+                "lumen",
+                "mailjet"
+            ],
+            "support": {
+                "email": "mathieu@mathrix.fr",
+                "issues": "https://github.com/mathrix-education/lumen-mailjet/issues",
+                "source": "https://github.com/mathrix-education/lumen-mailjet",
+                "docs": "https://github.com/mathrix-education"
+            }
         },
         {
             "name": "mll-lab/laravel-graphql-playground",
@@ -6594,6 +6593,78 @@
                 }
             ],
             "description": "EdDSA Signature Algorithm the JWT Framework.",
+            "homepage": "https://github.com/web-token",
+            "keywords": [
+                "JOSE",
+                "JWE",
+                "JWK",
+                "JWKSet",
+                "JWS",
+                "Jot",
+                "RFC7515",
+                "RFC7516",
+                "RFC7517",
+                "RFC7518",
+                "RFC7519",
+                "RFC7520",
+                "bundle",
+                "jwa",
+                "jwt",
+                "symfony"
+            ],
+            "time": "2019-12-27T22:22:20+00:00"
+        },
+        {
+            "name": "web-token/jwt-signature-algorithm-hmac",
+            "version": "v2.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/web-token/jwt-signature-algorithm-hmac.git",
+                "reference": "bcffed1172ecdc9b3b216a051d9ff1089ca45e0e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-hmac/zipball/bcffed1172ecdc9b3b216a051d9ff1089ca45e0e",
+                "reference": "bcffed1172ecdc9b3b216a051d9ff1089ca45e0e",
+                "shasum": ""
+            },
+            "require": {
+                "web-token/jwt-signature": "^2.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "v1.0": "1.0.x-dev",
+                    "v1.1": "1.1.x-dev",
+                    "v1.2": "1.2.x-dev",
+                    "v1.3": "1.3.x-dev",
+                    "v2.0": "2.0.x-dev",
+                    "v2.1": "2.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Jose\\Component\\Signature\\Algorithm\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Florent Morselli",
+                    "homepage": "https://github.com/Spomky"
+                },
+                {
+                    "name": "All contributors",
+                    "homepage": "https://github.com/web-token/jwt-framework/contributors"
+                }
+            ],
+            "description": "HMAC Based Signature Algorithms the JWT Framework.",
             "homepage": "https://github.com/web-token",
             "keywords": [
                 "JOSE",

@@ -127,6 +127,7 @@ class SubscriptionsCommand extends V7Command
                 }
 
                 $subscription->save();
-            });
+            })
+            ->tap(fn() => $this->getOutput()->progressFinish());
     }
 }

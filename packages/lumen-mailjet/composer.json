@@ -1,15 +1,14 @@
 {
-  "name": "mathrix-education/laravel-mailjet",
-  "description": "Mailjet Integration for Laravel and Lumen frameworks",
+  "name": "mathrix-education/lumen-mailjet",
+  "description": "Mailjet Integration for lumen and Lumen frameworks",
   "version": "0.1.0",
   "type": "library",
   "keywords": [
-    "laravel",
     "lumen",
     "email",
     "mailjet"
   ],
-  "homepage": "https://github.com/mathrix-education/laravel-mailjet",
+  "homepage": "https://github.com/mathrix-education/lumen-mailjet",
   "license": "MIT",
   "authors": [
     {
@@ -21,8 +20,8 @@
   ],
   "support": {
     "email": "mathieu@mathrix.fr",
-    "issues": "https://github.com/mathrix-education/laravel-mailjet/issues",
-    "source": "https://github.com/mathrix-education/laravel-mailjet",
+    "issues": "https://github.com/mathrix-education/lumen-mailjet/issues",
+    "source": "https://github.com/mathrix-education/lumen-mailjet",
     "docs": "https://github.com/mathrix-education"
   },
   "require": {

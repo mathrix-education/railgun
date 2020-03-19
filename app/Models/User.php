@@ -22,13 +22,13 @@ use function trim;
 
 /**
  * @property-read int             $id
+ * @property string               $uuid
  * @property string|null          $username
  * @property string               $email
  * @property string|null          $firstname
  * @property string|null          $lastname
  * @property string               $password
  * @property string[]             $scopes
- * @property string               $token
  * @property bool                 $premium_bypass
  * @property Carbon               $premium_bypass_expires_at
  * @property int|null             $grade_id
@@ -69,8 +69,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     /** @var array The hidden attributes from the model's JSON */
     protected $hidden = [
+        'uuid',
         'password',
-        'token',
         'premium_bypass',
         'premium_bypass_expires_at',
         'braintree_id',
