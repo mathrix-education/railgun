@@ -1,8 +1,26 @@
 #!/usr/bin/env bash
-if [[ -z "${GITHUB_SHA}" ]]; then
-  GITHUB_SHA=$(git rev-parse HEAD)
+# Setup the GitHub environment variables
+if [[ -z $GITHUB_SHA ]]; then
+    GITHUB_SHA=$(git rev-parse HEAD)
 fi
+if [[ -z $GITHUB_RUN_NUMBER ]]; then
+    GITHUB_RUN_NUMBER="0000"
+fi
+GITHUB_SHORT_SHA=${GITHUB_SHA:0:7}
 
-SHORT_SHA="${GITHUB_SHA:0:7}"
+# Determine if we are running on a tag or a branch
+REF=$(git rev-parse --abbrev-ref HEAD)
+git show-ref --verify refs/tags/$REF &>/dev/null && IS_TAG=1
+git show-ref --verify refs/heads/$REF &>/dev/null && IS_BRANCH=1
 
-echo "$(bin/version)-${SHORT_SHA}"
+if [[ $IS_TAG == 1 ]]; then
+    # $REF is a version
+    echo "$REF+$GITHUB_RUN_NUMBER.$GITHUB_SHORT_SHA"
+elif [[ $IS_BRANCH == 1  ]]; then
+    # $REF is a branch
+    REF=$(echo -n "$REF" | tr . -)
+    echo "$(bin/version)-$REF.$GITHUB_RUN_NUMBER+$GITHUB_SHORT_SHA"
+else
+    echo "Unsupported reference"
+    exit 1
+fi
