@@ -20,25 +20,16 @@ class InvalidCredentials extends AccessDeniedHttpException implements RendersErr
         parent::__construct($message, $previous, 0, []);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function isClientSafe()
+    public function isClientSafe(): bool
     {
         return true;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getCategory()
+    public function getCategory(): string
     {
         return 'auth';
     }
 
-    /**
-     * @inheritDoc
-     */
     public function extensionsContent(): array
     {
         return [];

@@ -1,0 +1,7 @@
+type Cart {
+    packs: [Pack!]!
+    trainings: [Training!]!
+    coupon: Coupon
+    subTotal: Int!
+    total: Int!
+}

@@ -1,0 +1,8 @@
+extend type Query {
+    validateCart(
+        packIds: [ID!]
+        trainingIds: [ID!]
+        premium: Boolean
+        coupon: ID
+    ): Cart
+}

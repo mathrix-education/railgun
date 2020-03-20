@@ -1,4 +1,4 @@
-type Pack {
+type Pack implements Product {
     id: ID!
     name: String!
     slug: String!

@@ -19,25 +19,16 @@ class InvalidAuthToken extends AccessDeniedHttpException implements RendersError
         parent::__construct(trans('auth.invalid_token', ['source' => $source]), $previous, 0, []);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function isClientSafe()
+    public function isClientSafe(): bool
     {
         return true;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getCategory()
+    public function getCategory(): string
     {
         return 'auth';
     }
 
-    /**
-     * @inheritDoc
-     */
     public function extensionsContent(): array
     {
         return [];

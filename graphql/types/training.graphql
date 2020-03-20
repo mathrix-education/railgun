@@ -1,4 +1,4 @@
-type Training {
+type Training implements Product {
     id: ID!
     name: String!
     slug: String!
