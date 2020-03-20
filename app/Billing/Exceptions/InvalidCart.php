@@ -5,7 +5,7 @@ namespace Railgun\Billing\Exceptions;
 use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class InvalidCart extends BadRequestHttpException implements RendersErrorsExtensions
+abstract class InvalidCart extends BadRequestHttpException implements RendersErrorsExtensions
 {
     public function isClientSafe(): bool
     {
@@ -19,5 +19,6 @@ class InvalidCart extends BadRequestHttpException implements RendersErrorsExtens
 
     public function extensionsContent(): array
     {
+        return [];
     }
 }

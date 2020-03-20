@@ -7,7 +7,10 @@ namespace Railgun\Billing\Cart;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as BaseCollection;
 use Nuwave\Lighthouse\Exceptions\AuthenticationException;
-use Railgun\Billing\Exceptions\DuplicateItems;
+use Railgun\Billing\Exceptions\DuplicateProducts;
+use Railgun\Billing\Exceptions\InvalidCouponCode;
+use Railgun\Billing\Exceptions\UnavailableProducts;
+use Railgun\Billing\Models\Premium;
 use Railgun\Models\Coupon;
 use Railgun\Models\Pack;
 use Railgun\Models\Training;
@@ -16,6 +19,11 @@ use function round;
 
 class Cart
 {
+    private array      $packIds;
+    private array      $trainingIds;
+    private bool       $withPremium;
+    private string     $couponCode;
+
     private Collection $packs;
     private Collection $trainings;
     private ?Premium   $premium;
@@ -25,23 +33,31 @@ class Cart
     public function __construct(
         array $packIds,
         array $trainingIds,
-        bool $premium,
-        string $coupon,
+        bool $withPremium,
+        string $couponCode,
         ?User $user = null
     ) {
-        // Fetch
-        $this->packs     = Pack::query()->with(['trainings.id'])->whereIn('id', $packIds)->get();
-        $this->trainings = Training::query()->whereIn('id', $trainingIds)->get();
-        $this->premium   = $premium ? new Premium() : null;
-        $this->coupon    = Coupon::query()->find($coupon);
-        $this->user      = $user;
+        // Save constructor args
+        $this->packIds     = $packIds;
+        $this->trainingIds = $trainingIds;
+        $this->withPremium = $withPremium;
+        $this->couponCode  = $couponCode;
+        $this->user        = $user;
 
-        $this->validate();
+        // Fetch
+        $this->packs     = Pack::query()->with(['trainings.id'])->whereIn('id', $this->packIds)->get();
+        $this->trainings = Training::query()->whereIn('id', $this->trainingIds)->get();
+        $this->premium   = $this->couponCode ? new Premium() : null;
+        $this->coupon    = Coupon::query()->find($this->couponCode);
     }
 
-    private function validate(): void
+    public function validate(): self
     {
         $this->checkDuplicates();
+        $this->checkAvailability();
+        $this->checkCouponCode();
+
+        return $this;
     }
 
     private function checkDuplicates(): void
@@ -55,10 +71,37 @@ class Cart
         $duplicates = $seenIds->duplicates();
 
         if ($duplicates->isNotEmpty()) {
-            throw new DuplicateItems($duplicates->toArray());
+            throw new DuplicateProducts($duplicates->toArray());
+        }
+    }
+
+    private function checkAvailability(): void
+    {
+        $unavailable = $this->getProducts()
+            ->reject(fn($p) => $p->avalable)
+            ->pluck('id');
+
+        if ($unavailable->isNotEmpty()) {
+            throw new UnavailableProducts($unavailable->toArray());
+        }
+    }
+
+    private function checkCouponCode(): void
+    {
+        if ($this->couponCode !== null && $this->coupon === null) {
+            // The coupon could not be found
+            throw new InvalidCouponCode($this->couponCode);
         }
 
-        unset($duplicates);
+        if (!$this->coupon->expired) {
+            // The coupon has expired
+            throw new InvalidCouponCode($this->couponCode);
+        }
+
+        if (!$this->coupon->exhausted) {
+            // The coupon is exhausted
+            throw new InvalidCouponCode($this->couponCode);
+        }
     }
 
     public function getProducts(): BaseCollection

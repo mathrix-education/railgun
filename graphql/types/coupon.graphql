@@ -12,4 +12,7 @@ type Coupon {
     expires_at: DateTime
     created_at: DateTime!
     updated_at: DateTime!
+    expired: Boolean!
+    exhausted: Boolean!
+    valid: Boolean!
 }

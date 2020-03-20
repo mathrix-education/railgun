@@ -11,7 +11,7 @@ use function trans;
 /**
  * Thrown when the cart contains duplicated items.
  */
-class DuplicateItems extends InvalidCart
+class DuplicateProducts extends InvalidCart
 {
     public function __construct(
         array $ids,
