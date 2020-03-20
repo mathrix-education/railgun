@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-if [[ -z "${GITHUB_REF}" ]]; then
-    echo $(git rev-parse --abbrev-ref HEAD)
-else
-    echo "${GITHUB_REF#refs/heads/}"
-fi

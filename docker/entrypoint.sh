@@ -3,12 +3,12 @@ cmd=${1:-run}
 
 case $cmd in
 run)
-    php /var/www/bin/artisan lighthouse:clear-cache
+    php /var/www/artisan lighthouse:clear-cache
     php-fpm
     ;;
 migrate)
-    php /var/www/bin/artisan migrate
-    php /var/www/bin/artisan lighthouse:clear-cache
+    php /var/www/artisan migrate
+    php /var/www/artisan lighthouse:clear-cache
     ;;
 *)
     echo "Invalid command: \"$cmd\"."
