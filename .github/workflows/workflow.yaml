@@ -1,7 +1,10 @@
 name: Pipeline
 on:
   push:
-    branches: ['master', 'dev', 'v7']
+    branches:
+      - master
+      - dev
+      - v7**
 jobs:
   lint:
     name: Lint with PHP_CodeSniffer
@@ -51,8 +54,8 @@ jobs:
           DB_PASSWORD: '123456'
         run: |
           cp tests/.env .env
-          bin/artisan jwt:key
-          bin/artisan migrate --seed
+          php artisan jwt:key
+          php artisan migrate --seed
       - name: Test with PHPUnit
         env:
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
@@ -86,13 +89,16 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: '0'
+      - name: Standard versions
+        uses: ./packages/standard-versions
+        id: standard-versions
       - name: Setup sonar.properties
         run: |
-          echo "sonar.projectVersion=$(bin/version)" >> sonar-project.properties
-          echo "sonar.branch.name=$(bin/current_branch)" >> sonar-project.properties
+          echo "sonar.projectVersion=${{ steps.standard-versions.outputs.version }}" >> sonar-project.properties
+          echo "sonar.branch.name=${{ steps.standard-versions.outputs.branch }}" >> sonar-project.properties
 
-          if [[ "$(bin/parent_branch)" != "no-parent" ]]; then
-            echo "sonar.branch.target=$(bin/parent_branch)" >> sonar-project.properties
+          if [[ "${{ steps.standard-versions.outputs.parent_branch }}" != "no-parent" ]]; then
+            echo "sonar.branch.target=${{ steps.standard-versions.outputs.parent_branch }}" >> sonar-project.properties
           fi
       - name: Download artifacts (JUnit Report, Coverage report)
         uses: actions/download-artifact@v1.0.0
@@ -111,6 +117,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Standard versions
+        uses: ./packages/standard-versions
+        id: standard-versions
       - name: Setup PHP
         uses: shivammathur/setup-php@2.1.3
         with:
@@ -120,9 +129,11 @@ jobs:
       - name: Install dependencies
         run: composer install --ignore-platform-reqs --no-progress --no-suggest --prefer-dist --optimize-autoloader
       - name: Patch release
-        run: sed -i "s/RELEASE_ALIAS/$(bin/release)/g" config/sentry.php
+        run: sed -i "s/RELEASE_ALIAS/${{ steps.standard-versions.outputs.semver }}/g" config/sentry.php
       - name: Build Docker image
-        run: docker build -t "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:$(bin/release)" .
+        run: |
+          docker build \
+            -t "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:${{ steps.standard-versions.outputs.docker }}" .
       - name: Setup Google Cloud SDK
         uses: mathrix-education/setup-gcloud@1.1.0
         with:
@@ -130,35 +141,40 @@ jobs:
           service-account-key: ${{ secrets.GCLOUD_AUTH }}
           configure-docker: true
       - name: Push image to Google Cloud Container Registry
-        run: docker push "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:$(bin/release)"
+        run: |
+          docker push \
+            "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:${{ steps.standard-versions.outputs.docker }}"
       - name: Add branch tag if necessary
         if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/v7'
         run: |
           gcloud container images add-tag \
-            "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:$(bin/release)" \
-            "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:latest-$(bin/current_branch)"
+            "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:${{ steps.standard-versions.outputs.docker }}" \
+            "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:latest-${{ steps.standard-versions.outputs.branch }}"
   deploy_gke:
     name: Deploy on Google Kubernetes Engine
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/v7'
     needs: [docker, test]
     runs-on: ubuntu-latest
     steps:
-      # Required to use bin/release
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Standard versions
+        uses: ./packages/standard-versions
+        id: standard-versions
       - name: Setup Google Cloud SDK
         uses: mathrix-education/setup-gcloud@1.1.0
         with:
           project: ${{ secrets.GCLOUD_PROJECT }}
           service-account-key: ${{ secrets.GCLOUD_AUTH }}
       - name: Retrieve Kubernetes Cluster Credentials
-        run: |
-          gcloud container clusters get-credentials php-fpm-testing --zone=europe-west1-b
+        run: gcloud container clusters get-credentials php-fpm-testing --zone=europe-west1-b
       - name: Change image version
         run: |
           kubectl set image -n education-graphql deployment/api \
-            "php=eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:$(bin/release)"
+            "php=eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:${{ steps.standard-versions.outputs.docker }}"
   sentry_release:
     name: Create Sentry Release
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/v7'
     needs: [docker, test]
     runs-on: ubuntu-latest
     steps:
@@ -166,6 +182,9 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: '0'
+      - name: Standard versions
+        uses: ./packages/standard-versions
+        id: standard-versions
       - name: Setup Sentry CLI
         uses: mathrix-education/setup-sentry-cli@0.1.0
         with:
@@ -175,9 +194,9 @@ jobs:
           project: education-api
       - name: Create Sentry Release
         run: |
-          sentry-cli releases new $(bin/release)
-          sentry-cli releases set-commits $(bin/release) --auto
-          sentry-cli releases finalize $(bin/release)
+          sentry-cli releases new ${{ steps.standard-versions.outputs.semver }}
+          sentry-cli releases set-commits ${{ steps.standard-versions.outputs.semver }} --auto
+          sentry-cli releases finalize ${{ steps.standard-versions.outputs.semver }}
   sentry_deploy:
     name: Deploy Sentry Release
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/v7'
@@ -186,6 +205,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Standard versions
+        uses: ./packages/standard-versions
+        id: standard-versions
       - name: Setup Sentry CLI
         uses: mathrix-education/setup-sentry-cli@0.1.0
         with:
@@ -194,4 +216,8 @@ jobs:
           organization: mathrix-tech
           project: education-api
       - name: Create Sentry Release
-        run: sentry-cli releases deploys $(bin/release) new -e $(bin/current_branch)
+        run: |
+          sentry-cli releases deploys \
+            ${{ steps.standard-versions.outputs.semver }} \
+            new -e \
+            ${{ steps.standard-versions.outputs.branch }}

@@ -1,7 +1,9 @@
 name: Migration V7
 on:
   push:
-    branches: ['v7', 'graphql']
+    branches:
+      - v7
+      - v7**
     paths:
       - '.github/workflows/migration-v7.yaml'
       - 'app/MigrationV7/**'
@@ -52,7 +54,7 @@ jobs:
           DB_PASSWORD: '123456'
         run: |
           cp tests/.env .env
-          bin/artisan v7
+          php artisan v7
       - name: Upload malformed exams artifact
         uses: actions/upload-artifact@v1
         with:
