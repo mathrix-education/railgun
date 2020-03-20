@@ -36,7 +36,7 @@ class ProductsCommand extends V7Command
             ->selectRaw(implode(', ', [
                 'name',
                 'slug',
-                'buyable',
+                'buyable AS available',
                 'CAST(price AS UNSIGNED) AS price',
                 'visible',
                 'created_at',
@@ -66,7 +66,7 @@ class ProductsCommand extends V7Command
             ->selectRaw(implode(', ', [
                 'name',
                 'slug',
-                'buyable',
+                'buyable AS available',
                 'CAST(price AS UNSIGNED) AS price',
                 'visible',
                 'created_at',
