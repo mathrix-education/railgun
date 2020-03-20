@@ -1,4 +1,8 @@
-type Premium implements Product {
+type Premium {
     name: String!
-    price: Int
+    description: String!
+    "Will be always true"
+    available: Boolean!
+    price: Int!
+    end_date: DateTime!
 }
