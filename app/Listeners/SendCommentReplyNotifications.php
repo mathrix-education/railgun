@@ -23,7 +23,9 @@ class SendCommentReplyNotifications implements ShouldQueue
             ->each(static function (Comment $userComment) use ($newComment) {
                 $user = $userComment->user;
                 $userComment->unsetRelation('user');
-                $user->notify(new CommentReplyNotification($userComment, $newComment));
+
+                // We are already in a queue, register save the notification right now
+                $user->notifyNow(new CommentReplyNotification($userComment, $newComment));
             });
     }
 }
