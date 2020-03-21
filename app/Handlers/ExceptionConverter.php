@@ -12,8 +12,12 @@ use Throwable;
 
 class ExceptionConverter
 {
-    public function transform(Throwable $exception)
+    public function transform(?Throwable $exception)
     {
+        if ($exception === null) {
+            return null;
+        }
+
         if ($exception instanceof ValidationException) {
             return Validation::from($exception);
         }
