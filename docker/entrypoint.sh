@@ -1,14 +1,17 @@
 #!/bin/sh
-cmd=${1:-run}
+cmd=${1:-start}
 
 case $cmd in
-run)
+start)
     php /var/www/artisan lighthouse:clear-cache
     php-fpm
     ;;
 migrate)
     php /var/www/artisan migrate
     php /var/www/artisan lighthouse:clear-cache
+    ;;
+worker)
+    php /var/www/artisan queue:work
     ;;
 *)
     echo "Invalid command: \"$cmd\"."
