@@ -7,6 +7,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Laravel\Lumen\Application;
 use Laravel\Lumen\Bootstrap\LoadEnvironmentVariables;
 use Railgun\Providers\AppServiceProvider;
+use Railgun\Providers\EventServiceProvider;
 
 (new LoadEnvironmentVariables(dirname(__DIR__)))->bootstrap();
 
@@ -31,5 +32,6 @@ $app->configure('services');
 $app->configure('urls');
 
 $app->register(AppServiceProvider::class);
+$app->register(EventServiceProvider::class);
 
 return $app;

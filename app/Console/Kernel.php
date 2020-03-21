@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Railgun\Console;
 
+use Illuminate\Notifications\Console\NotificationTableCommand;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
 /**
