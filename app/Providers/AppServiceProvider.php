@@ -21,6 +21,7 @@ use Nuwave\Lighthouse\LighthouseServiceProvider;
 use Nuwave\Lighthouse\Tracing\TracingServiceProvider;
 use Railgun\Console\Kernel;
 use Railgun\Exceptions\Handler;
+use Railgun\Handlers\ExceptionConverter;
 use Railgun\Middleware\ImpersonateMiddleware;
 use Railgun\MigrationV7\MigrationV7ServiceProvider;
 use Railgun\Models\Comment;
@@ -43,10 +44,8 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->instance('path.config', $this->app->configPath());
 
-        // Headers
-        $this->app->middleware([ImpersonateMiddleware::class]);
-
         // Singletons
+        $this->app->singleton(ExceptionConverter::class, ExceptionConverter::class);
         $this->app->singleton(ExceptionHandler::class, Handler::class);
         $this->app->singleton(KernelContract::class, Kernel::class);
 
@@ -67,6 +66,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(MailServiceProvider::class);
         $this->app->register(MailjetServiceProvider::class);
         $this->app->register(CryptoServiceProvider::class);
+    }
+
+    public function boot(): void
+    {
+        // Headers
+        $this->app->middleware([ImpersonateMiddleware::class]);
 
         Gate::define('scope', static function (?User $user, string $scope) {
             return $user !== null && in_array($scope, $user->scopes);

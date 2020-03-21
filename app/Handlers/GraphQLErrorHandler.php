@@ -6,11 +6,9 @@ namespace Railgun\Handlers;
 
 use Closure;
 use GraphQL\Error\Error;
-use Illuminate\Validation\ValidationException;
 use Nuwave\Lighthouse\Execution\ErrorHandler;
 use Nuwave\Lighthouse\Execution\ExtensionErrorHandler;
-use Railgun\Exceptions\Validation;
-use Throwable;
+use function app;
 
 /**
  * Intercepts exceptions before passing them to the next error handler.
@@ -21,32 +19,23 @@ class GraphQLErrorHandler implements ErrorHandler
 {
     public static function handle(Error $error, Closure $next): array
     {
-        $underlyingException = $error->getPrevious();
+        /** @var ExceptionConverter $converter */
+        $converter = app()->make(ExceptionConverter::class);
 
-        if ($underlyingException instanceof ValidationException) {
-            $error = self::swapException($error, Validation::from($underlyingException));
+        $underlyingException = $error->getPrevious();
+        $convertedException  = $converter->transform($underlyingException);
+
+        if ($underlyingException !== $convertedException) {
+            $error = new Error(
+                $convertedException->getMessage(),
+                $error->nodes,
+                $error->getSource(),
+                $error->getPositions(),
+                $error->getPath(),
+                $convertedException
+            );
         }
 
         return $next($error);
-    }
-
-    /**
-     * Swap the underlying exception of a {@see Error} by recreating a new instance.
-     *
-     * @param Error     $original     The original GraphQL error.
-     * @param Throwable $newException The new exception.
-     *
-     * @return Error
-     */
-    private static function swapException(Error $original, Throwable $newException): Error
-    {
-        return new Error(
-            $newException->getMessage(),
-            $original->nodes,
-            $original->getSource(),
-            $original->getPositions(),
-            $original->getPath(),
-            $newException
-        );
     }
 }

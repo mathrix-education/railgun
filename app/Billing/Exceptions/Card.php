@@ -16,12 +16,8 @@ use function trans;
  */
 class Card extends BadRequestHttpException implements RendersErrorsExtensions
 {
-    private ?CardException $cardException;
-
-    public function __construct(?CardException $cardException = null, ?Throwable $previous = null)
+    public static function from(?CardException $cardException = null, ?Throwable $previous = null): Card
     {
-        $this->cardException = $cardException;
-
         $previous = $cardException ?? $previous ?? null;
 
         if ($cardException === null) {
@@ -45,32 +41,29 @@ class Card extends BadRequestHttpException implements RendersErrorsExtensions
             }
         }
 
-        parent::__construct($message, $previous, 0, []);
+        return new self($message, $previous);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function isClientSafe()
+    public function isClientSafe(): bool
     {
         return true;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getCategory()
+    public function getCategory(): string
     {
         return 'billing';
     }
 
-    /**
-     * @inheritDoc
-     */
     public function extensionsContent(): array
     {
-        return [
-            'stripeCode' => $this->cardException->getStripeCode(),
-        ];
+        $previous = $this->getPrevious();
+
+        if ($previous instanceof CardException) {
+            return [
+                'stripeCode' => $previous->getStripeCode(),
+            ];
+        }
+
+        return [];
     }
 }

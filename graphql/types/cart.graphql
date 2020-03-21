@@ -5,3 +5,10 @@ type Cart {
     subTotal: Int!
     total: Int!
 }
+
+input CartInput {
+    packIds: [ID!]
+    trainingIds: [ID!]
+    premium: Boolean
+    coupon: ID
+}

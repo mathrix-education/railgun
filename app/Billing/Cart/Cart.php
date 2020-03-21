@@ -6,10 +6,6 @@ namespace Railgun\Billing\Cart;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as BaseCollection;
-use Nuwave\Lighthouse\Exceptions\AuthenticationException;
-use Railgun\Billing\Exceptions\DuplicateProducts;
-use Railgun\Billing\Exceptions\InvalidCouponCode;
-use Railgun\Billing\Exceptions\UnavailableProducts;
 use Railgun\Billing\Models\Premium;
 use Railgun\Models\Coupon;
 use Railgun\Models\Pack;
@@ -19,89 +15,43 @@ use function round;
 
 class Cart
 {
-    private array      $packIds;
-    private array      $trainingIds;
-    private bool       $withPremium;
-    private string     $couponCode;
+    public ?User      $user;
+    public array      $input;
+    public Collection $packs;
+    public Collection $trainings;
+    public ?Premium   $premium;
+    public ?Coupon    $coupon;
 
-    private Collection $packs;
-    private Collection $trainings;
-    private ?Premium   $premium;
-    private ?Coupon    $coupon;
-    private ?User      $user;
-
-    public function __construct(
-        array $packIds,
-        array $trainingIds,
-        bool $withPremium,
-        string $couponCode,
-        ?User $user = null
-    ) {
-        // Save constructor args
-        $this->packIds     = $packIds;
-        $this->trainingIds = $trainingIds;
-        $this->withPremium = $withPremium;
-        $this->couponCode  = $couponCode;
-        $this->user        = $user;
-
-        // Fetch
-        $this->packs     = Pack::query()->with(['trainings.id'])->whereIn('id', $this->packIds)->get();
-        $this->trainings = Training::query()->whereIn('id', $this->trainingIds)->get();
-        $this->premium   = $this->couponCode ? new Premium() : null;
-        $this->coupon    = Coupon::query()->find($this->couponCode);
+    public function __construct(array $input, ?User $user = null)
+    {
+        $this->setInput($input);
+        $this->user = $user;
+        $this->fetch();
     }
 
     public function validate(): self
     {
-        $this->checkDuplicates();
-        $this->checkAvailability();
-        $this->checkCouponCode();
+        (new CartValidator($this))->validate();
 
         return $this;
     }
 
-    private function checkDuplicates(): void
+    private function setInput(array $input): void
     {
-        // Check that there is no pack <=> training collision
-        $seenIds = $this->packs
-            ->map(fn(Pack $pack) => $pack->trainings->pluck('id'))
-            ->flatten();
-        $seenIds->push($this->trainings->pluck('id'));
+        $input['packIds']     ??= [];
+        $input['trainingIds'] ??= [];
+        $input['premium']     ??= false;
+        $input['couponCode']  ??= null;
 
-        $duplicates = $seenIds->duplicates();
-
-        if ($duplicates->isNotEmpty()) {
-            throw new DuplicateProducts($duplicates->toArray());
-        }
+        $this->input = $input;
     }
 
-    private function checkAvailability(): void
+    private function fetch(): void
     {
-        $unavailable = $this->getProducts()
-            ->reject(fn($p) => $p->avalable)
-            ->pluck('id');
-
-        if ($unavailable->isNotEmpty()) {
-            throw new UnavailableProducts($unavailable->toArray());
-        }
-    }
-
-    private function checkCouponCode(): void
-    {
-        if ($this->couponCode !== null && $this->coupon === null) {
-            // The coupon could not be found
-            throw new InvalidCouponCode($this->couponCode);
-        }
-
-        if (!$this->coupon->expired) {
-            // The coupon has expired
-            throw new InvalidCouponCode($this->couponCode);
-        }
-
-        if (!$this->coupon->exhausted) {
-            // The coupon is exhausted
-            throw new InvalidCouponCode($this->couponCode);
-        }
+        $this->packs     = Pack::query()->with(['trainings:id'])->whereIn('id', $this->input['packIds'])->get();
+        $this->trainings = Training::query()->whereIn('id', $this->input['trainingIds'])->get();
+        $this->premium   = $this->input['premium'] ? new Premium() : null;
+        $this->coupon    = Coupon::query()->find($this->input['couponCode']);
     }
 
     public function getProducts(): BaseCollection
@@ -141,14 +91,5 @@ class Cart
             'subTotal'  => $this->getSubTotal(),
             'total'     => $this->getTotal(),
         ];
-    }
-
-    public function toStripe(): array
-    {
-        if ($this->user === null) {
-            throw new AuthenticationException();
-        }
-
-        return [];
     }
 }

@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Railgun\Billing\Models;
 
 use Illuminate\Support\Collection;
-use Railgun\Billing\Exceptions\Card;
 use Stripe\Customer;
 use Stripe\Exception\ApiErrorException;
-use Stripe\Exception\CardException;
 use Stripe\PaymentMethod;
 use Stripe\Subscription as StripeSubscriptions;
 use function collect;
@@ -80,11 +78,7 @@ trait StripeCustomer
             ];
         }
 
-        try {
-            $customer = Customer::create($payload);
-        } catch (CardException $cardException) {
-            throw new Card($cardException);
-        }
+        $customer = Customer::create($payload);
 
         $this->stripe_id = $customer->id;
         $this->save();
@@ -143,6 +137,7 @@ trait StripeCustomer
         // Compare the embedded card fingerprints
         /** @var PaymentMethod $existing */
         $existing = $paymentMethods->first(static function (PaymentMethod $thePaymentMethod) use ($paymentMethod) {
+            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
             return !empty($thePaymentMethod->card)
                 && $paymentMethod->card->fingerprint === $thePaymentMethod->card->fingerprint;
         });

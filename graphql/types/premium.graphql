@@ -1,6 +1,5 @@
 type Premium {
     name: String!
-    description: String!
     "Will be always true"
     available: Boolean!
     price: Int!

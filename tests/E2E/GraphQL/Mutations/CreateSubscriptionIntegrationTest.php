@@ -120,7 +120,7 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
     /**
      * @return array The dataset for the ::testCreateSubscriptionError method.
      */
-    public function createSubscriptionErrorDataset(): array
+    public function createSubscriptionFailsDataset(): array
     {
         $dataset = [];
 
@@ -144,13 +144,13 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @dataProvider createSubscriptionErrorDataset
+     * @dataProvider createSubscriptionFailsDataset
      * @testdox      fails to create a subscription using token $paymentMethodId.
      *
      * @param string $paymentMethodId The payment method.
      * @param string $expectedMessage The expected error message.
      */
-    public function testCreateSubscriptionError(string $paymentMethodId, string $expectedMessage): void
+    public function testCreateSubscriptionFails(string $paymentMethodId, string $expectedMessage): void
     {
         /** @var User $user */
         $user = factory(User::class)->create();

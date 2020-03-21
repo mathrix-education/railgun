@@ -28,6 +28,11 @@ class Training extends Model
     use Orderable;
     use Randomizable;
 
+    protected $casts = [
+        'available' => 'boolean',
+        'visible'   => 'boolean',
+    ];
+
     /**
      * @return BelongsToMany<Pack>
      */

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Railgun\Billing\Exceptions;
 
 use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;

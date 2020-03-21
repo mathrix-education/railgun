@@ -47,6 +47,8 @@ class ResetPasswordIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->graphQL(self::QUERY, ['token' => $token, 'newPassword' => $newPassword]);
 
+        $this->assertResponseOk();
+        $this->assertNoErrors();
         $this->assertTrue($this->getData('resetPassword'));
 
         // Assert that the password now works

@@ -26,13 +26,7 @@ class ValidateCart
         /** @var User $user */
         $user = $context->user();
 
-        $cart = new Cart(
-            $args['packIds'] ?? [],
-            $args['trainingIds'] ?? [],
-            $args['premium'] ?? false,
-            $args['coupon'] ?? '',
-            $user
-        );
+        $cart = new Cart($args['cart'], $user);
 
         return $cart->toGraphQL();
     }

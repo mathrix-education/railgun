@@ -98,6 +98,7 @@ class LoginWithFacebookIntegrationTest extends GraphQLIntegrationTestCase
         ]);
 
         $this->assertResponseOk();
+        $this->assertNoErrors();
         $this->assertEquals(1, User::query()->where([
             ['email', '=', self::$FacebookUser->getEmail()],
             ['metadata->facebook->id', '=', self::$FacebookUser->getId()],

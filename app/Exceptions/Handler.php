@@ -6,17 +6,13 @@ namespace Railgun\Exceptions;
 
 use Exception;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
-use Railgun\Billing\Exceptions\Card;
 use Railgun\Models\User;
 use Sentry\State\Hub;
 use Sentry\State\Scope;
-use Stripe\Exception\CardException;
 use Throwable;
 use function app;
 use function env;
-use function get_class;
 use function in_array;
 
 /**

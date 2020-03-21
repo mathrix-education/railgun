@@ -6,6 +6,9 @@ namespace Railgun\Billing\Webhooks;
 
 use Illuminate\Routing\Controller;
 
-class WebhooksController extends Controller
+class StripeWebhooksController extends Controller
 {
+    public function handle()
+    {
+    }
 }
