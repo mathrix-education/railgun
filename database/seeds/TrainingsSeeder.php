@@ -75,21 +75,5 @@ class TrainingsSeeder extends AdvancedSeeder
 
         // Coupons
         $this->seedFactory(Coupon::class, 15);
-
-        // Link coupons <=> packs
-        $this->link(Coupon::class, Pack::class, [
-            'mode'     => 'left',
-            'join'     => 'coupon_product',
-            'rightFk'  => 'product_id',
-            'callback' => fn($join) => ['product_type' => 'pack'] + $join,
-        ]);
-
-        // Link coupons <=> trainings
-        $this->link(Coupon::class, Training::class, [
-            'mode'     => 'left',
-            'join'     => 'coupon_product',
-            'rightFk'  => 'product_id',
-            'callback' => fn($join) => ['product_type' => 'training'] + $join,
-        ]);
     }
 }
