@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Railgun\Notifications;
 
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Railgun\Models\Comment;
@@ -13,6 +14,8 @@ use Railgun\Models\Comment;
  */
 class CommentReplyNotification extends Notification implements ShouldQueue
 {
+    use Queueable;
+
     private Comment $userComment;
     private Comment $newComment;
 
