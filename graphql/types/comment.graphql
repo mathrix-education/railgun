@@ -1,4 +1,11 @@
-union Commentable = Course | Exercise | Flashcard | Exam
+union Commentable = Course | Exam | Exercise | Flashcard
+
+enum CommentableType {
+    COURSE @enum(value: "course")
+    EXAM @enum(value: "exam")
+    EXERCISE @enum(value: "exercise")
+    FLASHCARD @enum(value: "flashcard")
+}
 
 type Comment {
     id: ID!
