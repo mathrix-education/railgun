@@ -33,8 +33,8 @@ class CommentReplyNotification extends Notification implements ShouldQueue
     public function toDatabase(): array
     {
         return [
-            'userComment' => $this->userComment,
-            'newComment'  => $this->newComment,
+            'user_comment' => $this->userComment,
+            'new_comment'  => $this->newComment,
         ];
     }
 }
