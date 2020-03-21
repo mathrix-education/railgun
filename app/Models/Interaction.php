@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Railgun\Models\Traits\Randomizable;
 
 /**
- * @property-read  int   $user_id
+ * @property int         $user_id
  * @property string      $interactable_type
  * @property int         $interactable_id
  * @property string      $comprehension
@@ -23,6 +23,14 @@ class Interaction extends Model
     use Randomizable;
 
     public const COMPREHENSIONS = ['blur', 'clear'];
+
+    protected $fillable = [
+        'user_id',
+        'interactable_type',
+        'interactable_id',
+        'comprehension',
+        'score',
+    ];
 
     public function interactable(): MorphTo
     {

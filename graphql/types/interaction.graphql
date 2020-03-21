@@ -1,8 +1,21 @@
+enum InteractionType {
+    COURSE @enum(value: "course")
+    EXAM @enum(value: "exam")
+    EXERCISE @enum(value: "exercise")
+    FLASHCARD @enum(value: "flashcard")
+    SUBJECT @enum(value: "subject")
+}
+
+enum InteractionComprehension {
+    BLUR @enum(value: "blur")
+    CLEAR @enum(value: "clear")
+}
+
 type Interaction {
     user_id: Int!
-    interactable_type: String!
+    interactable_type: InteractionType!
     interactable_id: Int!
-    comprehension: String!
+    comprehension: InteractionComprehension
     score: Int
     created_at: DateTime!
     updated_at: DateTime!

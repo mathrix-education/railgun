@@ -1,0 +1,11 @@
+extend type Mutation {
+    """
+    Interact with a content model.
+    """
+    interact(
+        interactable_type: InteractionType!
+        interactable_id: Int!
+        comprehension: InteractionComprehension
+        score: Int
+    ): Boolean! @guard
+}
