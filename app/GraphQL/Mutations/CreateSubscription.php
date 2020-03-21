@@ -5,19 +5,18 @@ declare(strict_types=1);
 namespace Railgun\GraphQL\Mutations;
 
 use GraphQL\Type\Definition\ResolveInfo;
-use Illuminate\Support\Facades\Auth;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Railgun\Billing\Bridges\StripeSubscriptionBridge;
-use Railgun\Billing\Exceptions\Card;
 use Railgun\Billing\Models\Plan;
+use Railgun\GraphQL\Traits\SetupCustomer;
 use Railgun\Models\Subscription;
-use Railgun\Models\User;
 use Stripe\Exception\ApiErrorException;
-use Stripe\Exception\CardException;
 use Stripe\Subscription as StripeSubscription;
 
 class CreateSubscription
 {
+    use SetupCustomer;
+
     /**
      * @param null           $rootValue
      * @param array          $args
@@ -27,24 +26,14 @@ class CreateSubscription
      * @return Subscription
      *
      * @throws ApiErrorException
-     *
-     * @noinspection PhpRedundantCatchClauseInspection
      */
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        /** @var User $user */
-        $user = Auth::user();
-        $plan = new Plan($args['planId']);
-
         $paymentMethodId = $args['paymentMethodId'];
+        /** @noinspection PhpParamsInspection */
+        $user = $this->setupCustomer($context->user(), $paymentMethodId);
 
-        if ($user->isStripeCustomer()) {
-            $user->attachPaymentMethod($paymentMethodId);
-        } else {
-            $customer = $user->createCustomer($paymentMethodId);
-
-            $paymentMethodId = $customer->invoice_settings->default_payment_method;
-        }
+        $plan = new Plan($args['planId']);
 
         $payload = [
             'customer'               => $user->stripe_id,
@@ -63,13 +52,8 @@ class CreateSubscription
             $payload['billing_cycle_anchor'] = $plan->proration_anchor->getTimestamp();
         }
 
-        try {
-            $stripeSubscription = StripeSubscription::create($payload);
-        } catch (CardException $cardException) {
-            throw new Card($cardException);
-        }
-
-        $subscription = StripeSubscriptionBridge::toEloquent($stripeSubscription);
+        $stripeSubscription = StripeSubscription::create($payload);
+        $subscription       = StripeSubscriptionBridge::toEloquent($stripeSubscription);
         $subscription->save();
 
         return $subscription;

@@ -1,0 +1,6 @@
+extend type Mutation {
+    checkoutCart(
+        cart: CartInput
+        paymentMethodId: String!
+    ): Invoice! @guard
+}

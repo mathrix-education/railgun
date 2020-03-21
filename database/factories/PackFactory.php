@@ -20,7 +20,7 @@ $factory->define(Pack::class, static function (Faker $faker) {
     return [
         'name'       => $name,
         'slug'       => Str::slug($name),
-        'buyable'    => $faker->boolean(90),
+        'available'  => $faker->boolean(90),
         'price'      => $faker->numberBetween(5, 7) * 1000,
         'order'      => 99,
         'visible'    => $faker->boolean(90),

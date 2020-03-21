@@ -51,10 +51,6 @@
                     @link,
                     @see,
                 "/>
-                <element value="
-                    @ORM\,
-                    @ODM\,
-                "/>
                 <element value="@param"/>
                 <element value="@return"/>
                 <element value="@throws"/>

@@ -61,6 +61,7 @@ jobs:
           name: malformed-exams
           path: storage/artifacts/malformed-exams
       - name: Restore generated database
+        if: github.ref == 'refs/heads/v7'
         run: |
           DATE=$(date +%F_%H-%M-%S)
           DB_SOURCE="mathrix_education_testing"

@@ -1,0 +1,7 @@
+type Premium {
+    name: String!
+    "Will be always true"
+    available: Boolean!
+    price: Int!
+    end_date: DateTime!
+}

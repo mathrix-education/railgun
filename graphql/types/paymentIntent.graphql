@@ -1,0 +1,4 @@
+type PaymentIntent {
+    status: String!
+    client_secret: String!
+}

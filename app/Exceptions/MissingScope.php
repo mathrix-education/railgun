@@ -18,7 +18,7 @@ class MissingScope extends AccessDeniedHttpException implements ClientAware, Ren
 {
     private array $scopes;
 
-    public function __construct(?array $scopes, ?Throwable $previous = null)
+    public function __construct(array $scopes, ?Throwable $previous = null)
     {
         $this->scopes = $scopes;
 
@@ -28,25 +28,16 @@ class MissingScope extends AccessDeniedHttpException implements ClientAware, Ren
         );
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function isClientSafe()
+    public function isClientSafe(): bool
     {
         return true;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getCategory()
+    public function getCategory(): string
     {
         return 'auth';
     }
 
-    /**
-     * @inheritDoc
-     */
     public function extensionsContent(): array
     {
         return [

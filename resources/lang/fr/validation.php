@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-/** @link https://raw.githubusercontent.com/caouecs/Laravel-lang/laravel58/src/fr/validation.php */
+/** @link https://github.com/caouecs/Laravel-lang/blob/master/src/fr/validation.php */
 return [
+    'fails' => 'Les données soumises sont invalides',
+
     /*
     |--------------------------------------------------------------------------
     | Validation Language Lines
@@ -14,6 +16,7 @@ return [
     | as the size rules. Feel free to tweak each of these messages.
     |
     */
+
     'accepted'             => 'Le champ :attribute doit être accepté.',
     'active_url'           => "Le champ :attribute n'est pas une URL valide.",
     'after'                => 'Le champ :attribute doit être une date postérieure au :date.',
@@ -41,6 +44,7 @@ return [
     'dimensions'           => "La taille de l'image :attribute n'est pas conforme.",
     'distinct'             => 'Le champ :attribute a une valeur en double.',
     'email'                => 'Le champ :attribute doit être une adresse email valide.',
+    'ends_with'            => 'Le champ :attribute doit se terminer par une des valeurs suivantes : :values',
     'exists'               => 'Le champ :attribute sélectionné est invalide.',
     'file'                 => 'Le champ :attribute doit être un fichier.',
     'filled'               => 'Le champ :attribute doit avoir une valeur.',
@@ -93,6 +97,7 @@ return [
     'not_in'               => "Le champ :attribute sélectionné n'est pas valide.",
     'not_regex'            => "Le format du champ :attribute n'est pas valide.",
     'numeric'              => 'Le champ :attribute doit contenir un nombre.',
+    'password'             => 'Le mot de passe est incorrect',
     'present'              => 'Le champ :attribute doit être présent.',
     'regex'                => 'Le format du champ :attribute est invalide.',
     'required'             => 'Le champ :attribute est obligatoire.',
@@ -129,7 +134,7 @@ return [
     */
 
     'custom' => [
-        'email' => ['unique' => 'Cette addresse e-mail est déjà utilisée.'],
+        'attribute-name' => ['rule-name' => 'custom-message'],
     ],
 
     /*

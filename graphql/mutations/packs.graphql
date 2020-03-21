@@ -1,4 +1,4 @@
-extend type Pack {
+extend type Mutation {
     "Create new a pack."
     createPack(
         name: String!

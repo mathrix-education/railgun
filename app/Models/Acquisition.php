@@ -28,4 +28,6 @@ class Acquisition extends Model
     use AsPivot;
 
     protected $table = 'acquisitions'; // required to explicitly define the join table
+
+    protected $fillable = ['user_id', 'product_type', 'product_id', 'transaction_id'];
 }

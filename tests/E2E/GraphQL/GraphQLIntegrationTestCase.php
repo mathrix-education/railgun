@@ -5,17 +5,37 @@ declare(strict_types=1);
 namespace Tests\E2E\GraphQL;
 
 use JsonException;
+use Railgun\Models\User;
 use stdClass;
 use Tests\BaseTestCase;
+use const JSON_PRETTY_PRINT;
 use const JSON_THROW_ON_ERROR;
 use function config;
 use function data_get;
+use function factory;
 use function json_decode;
+use function json_encode;
 
 class GraphQLIntegrationTestCase extends BaseTestCase
 {
     /** @var stdClass|array $contentCache */
     private $contentCache;
+
+    /**
+     * Shortcut to create a new pristine user from the User factory.
+     *
+     * @param array $attributes The overridden attributes.
+     *
+     * @return User The new user.
+     */
+    protected function actingAsNewUser(array $attributes = []): User
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create($attributes);
+        $this->actingAs($user);
+
+        return $user;
+    }
 
     /**
      * Query the GraphQL API.
@@ -32,12 +52,7 @@ class GraphQLIntegrationTestCase extends BaseTestCase
             $data['variables'] = $variables;
         }
 
-        $this->json('post', $this->getGraphQLEndpoint(), $data, $headers);
-    }
-
-    protected function getGraphQLEndpoint(): string
-    {
-        return config('lighthouse.route.uri');
+        $this->json('post', config('lighthouse.route.uri'), $data, $headers);
     }
 
     /**
@@ -83,5 +98,17 @@ class GraphQLIntegrationTestCase extends BaseTestCase
     protected function getErrors()
     {
         return $this->getContent('errors');
+    }
+
+    /**
+     * Assert that there is no GraphQL errors.
+     *
+     * @noinspection JsonEncodingApiUsageInspection
+     */
+    protected function assertNoErrors(): void
+    {
+        $errors = $this->getErrors();
+        $this->assertNull($errors, "Found errors: \n"
+            . json_encode($errors, JSON_PRETTY_PRINT, 512));
     }
 }

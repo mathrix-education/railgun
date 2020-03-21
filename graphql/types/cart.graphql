@@ -1,0 +1,14 @@
+type Cart {
+    packs: [Pack!]!
+    trainings: [Training!]!
+    coupon: Coupon
+    subTotal: Int!
+    total: Int!
+}
+
+input CartInput {
+    packIds: [ID!]
+    trainingIds: [ID!]
+    premium: Boolean
+    coupon: ID
+}

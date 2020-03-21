@@ -34,6 +34,8 @@ class ForgotPasswordIntegration extends GraphQLIntegrationTestCase
 
         $this->graphQL(self::QUERY, ['email' => 'idontexist@gmail.com']);
 
+        $this->assertResponseOk();
+        $this->assertNoErrors();
         $this->assertTrue($this->getData('forgotPassword'));
         Mail::assertNothingSent();
     }
@@ -49,6 +51,8 @@ class ForgotPasswordIntegration extends GraphQLIntegrationTestCase
 
         $this->graphQL(self::QUERY, ['email' => $user->email]);
 
+        $this->assertResponseOk();
+        $this->assertNoErrors();
         $this->assertTrue($this->getData('forgotPassword'));
         Mail::assertSent(PasswordForgottenMail::class, fn(PasswordForgottenMail $mail) => $mail->hasTo($user->email));
     }
@@ -64,6 +68,8 @@ class ForgotPasswordIntegration extends GraphQLIntegrationTestCase
 
         $this->graphQL(self::QUERY, ['email' => $user->email]);
 
+        $this->assertResponseOk();
+        $this->assertNoErrors();
         $this->assertTrue($this->getData('forgotPassword'));
     }
 }

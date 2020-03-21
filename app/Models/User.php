@@ -8,48 +8,49 @@ use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Lumen\Auth\Authorizable;
 use Railgun\Billing\Models\StripeCustomer;
 use Railgun\Models\Traits\Cacheable;
 use Railgun\Models\Traits\Randomizable;
 use Ramsey\Uuid\Uuid;
+use Stripe\Subscription as StripeSubscription;
 use function trim;
 
 /**
- * @property-read int             $id
- * @property string               $uuid
- * @property string|null          $username
- * @property string               $email
- * @property string|null          $firstname
- * @property string|null          $lastname
- * @property string               $password
- * @property string[]             $scopes
- * @property bool                 $premium_bypass
- * @property Carbon               $premium_bypass_expires_at
- * @property int|null             $grade_id
- * @property string|null          $stripe_id
- * @property string|null          $braintree_id
- * @property array                $settings
- * @property array                $metadata
- * @property-read  Carbon         $created_at
- * @property-read  Carbon         $updated_at
+ * @property-read int                       $id
+ * @property string                         $uuid
+ * @property string|null                    $username
+ * @property string                         $email
+ * @property string|null                    $firstname
+ * @property string|null                    $lastname
+ * @property string                         $password
+ * @property string[]                       $scopes
+ * @property bool                           $premium_bypass
+ * @property Carbon                         $premium_bypass_expires_at
+ * @property int|null                       $grade_id
+ * @property string|null                    $stripe_id
+ * @property string|null                    $braintree_id
+ * @property array                          $settings
+ * @property array                          $metadata
+ * @property-read  Carbon                   $created_at
+ * @property-read  Carbon                   $updated_at
  * ---
- * @property-read string          $full_name
- * @property-read bool            $premium
- * @property-read string          $provider
+ * @property-read string                    $full_name
+ * @property-read bool                      $premium
+ * @property-read string                    $provider
  * ---
- * @property Grade                $grade
- * @property Collection|Comment[] $comments
- * @property Collection|Vote[]    $votes
- * ---
- * @method static Builder scope(string $scope)
+ * @property-read Grade                     $grade
+ * @property-read Collection|Comment[]      $comments
+ * @property-read Collection|Vote[]         $votes
+ * @property-read Collection|Subscription[] $subscriptions
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
@@ -93,7 +94,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $casts = [
         'scopes'                    => 'array',
         'premium_bypass'            => 'boolean',
-        'premium_bypass_expires_at' => 'date',
+        'premium_bypass_expires_at' => 'datetime',
         'settings'                  => 'array',
         'metadata'                  => 'array',
     ];
@@ -146,11 +147,48 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             ->as(Acquisition::class);
     }
 
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(Subscription::class, 'customer_id', 'stripe_id');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Attributes
     |--------------------------------------------------------------------------
     */
+
+    /**
+     * @return bool If the user is premium.
+     */
+    public function getPremiumAttribute(): bool
+    {
+        if ($this->premium_bypass) {
+            return true;
+        }
+
+        if ($this->premium_bypass_expires_at instanceof Carbon && $this->premium_bypass_expires_at->isFuture()) {
+            return true;
+        }
+
+        // Raw query to speed things up
+        return Cache::store('array')->remember('user.' . $this->id . '.premium', 5, function (): bool {
+            $customerIds = [];
+
+            if ($this->stripe_id !== null) {
+                $customerIds[] = $this->stripe_id;
+            }
+
+            if ($this->braintree_id !== null) {
+                $customerIds[] = $this->braintree_id;
+            }
+
+            return DB::table('subscriptions')
+                ->whereIn('status', [StripeSubscription::STATUS_ACTIVE, StripeSubscription::STATUS_TRIALING])
+                ->whereIn('customer_id', $customerIds)
+                ->exists();
+        });
+    }
 
     /**
      * @param string $password The new password.

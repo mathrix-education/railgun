@@ -19,7 +19,7 @@ class CreateTrainingsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('slug');
-            $table->boolean('buyable');
+            $table->boolean('available');
             $table->unsignedSmallInteger('price');
             $table->unsignedTinyInteger('order');
             $table->boolean('visible');

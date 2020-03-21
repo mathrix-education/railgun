@@ -1,0 +1,3 @@
+extend type Query {
+    validateCart(cart: CartInput): Cart
+}

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Mutations;
 
+use JsonException;
 use Mathrix\Lumen\JWT\Drivers\Driver;
 use Railgun\Models\User;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
@@ -12,6 +13,7 @@ use function app;
 use function env;
 use function factory;
 use function json_decode;
+use function trans;
 
 /**
  * @testdox [E2] Mutation loginBasic
@@ -29,6 +31,8 @@ class LoginBasicIntegrationTest extends GraphQLIntegrationTestCase
 
     /**
      * @testdox returns a JWT on success
+     *
+     * @throws JsonException
      */
     public function testLoginBasicSuccess(): void
     {
@@ -51,7 +55,7 @@ class LoginBasicIntegrationTest extends GraphQLIntegrationTestCase
         $payload = json_decode($driver->unserialize($token)->getPayload(), false, 512, JSON_THROW_ON_ERROR);
 
         $this->assertResponseOk();
-        $this->assertNull($this->getErrors());
+        $this->assertNoErrors();
         $this->assertNotNull($token);
         $this->assertTrue($driver->verify($token));
         $this->assertEquals($payload->sub, $user->id);
@@ -71,8 +75,7 @@ class LoginBasicIntegrationTest extends GraphQLIntegrationTestCase
         );
 
         $this->assertResponseOk();
-        $this->assertNotNull($this->getErrors());
-        $this->assertNotEmpty($this->getContent('errors.0.message'));
+        $this->assertEquals(trans('auth.invalid_credentials'), $this->getContent('errors.0.message'));
     }
 
     /**
@@ -89,7 +92,6 @@ class LoginBasicIntegrationTest extends GraphQLIntegrationTestCase
         );
 
         $this->assertResponseOk();
-        $this->assertNotNull($this->getErrors());
-        $this->assertNotEmpty($this->getContent('errors.0.message'));
+        $this->assertEquals(trans('auth.invalid_credentials'), $this->getContent('errors.0.message'));
     }
 }
