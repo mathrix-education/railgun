@@ -104,7 +104,7 @@ class Handler extends ExceptionHandler
         /** @var Hub $sentry */
         $sentry = app('sentry');
 
-        $sentry->configureScope(static function (Scope $scope) use ($exception) {
+        $sentry->configureScope(function (Scope $scope) use ($exception) {
             /** @var User|null $user The logged user */
             $user = Auth::user();
 
