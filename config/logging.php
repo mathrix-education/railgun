@@ -22,7 +22,7 @@ return [
         'google-cloud' => [
             'driver'       => 'monolog',
             'handler'      => StreamHandler::class,
-            'handler_with' => ['stream' => 'php://stderr'],
+            'handler_with' => ['stream' => 'php://stdout'],
             'formatter'    => GoogleCloudJsonFormatter::class,
             'level'        => 'debug',
         ],
