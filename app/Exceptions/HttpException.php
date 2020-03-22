@@ -7,14 +7,14 @@ namespace Railgun\Exceptions;
 use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException as SymfonyHttpException;
 use Throwable;
 use function app;
 
 /**
  * Base exception for GraphQL errors.
  */
-abstract class RailgunException extends HttpException implements RendersErrorsExtensions
+abstract class HttpException extends SymfonyHttpException implements RendersErrorsExtensions
 {
     /** @var string $level The PSR3 log level ({@see LogLevel} */
     protected string $level = LogLevel::ERROR;

@@ -6,14 +6,14 @@ namespace Railgun\Billing\Exceptions;
 
 use Illuminate\Support\Facades\Auth;
 use Psr\Log\LogLevel;
-use Railgun\Exceptions\RailgunException;
+use Railgun\Exceptions\HttpException;
 use Throwable;
 use function trans;
 
 /**
  * Thrown when a user tries to subscribe to one the premium plans and is already premium.
  */
-class AlreadyPremium extends RailgunException
+class AlreadyPremium extends HttpException
 {
     protected string $level    = LogLevel::NOTICE;
     protected string $category = 'cart';
