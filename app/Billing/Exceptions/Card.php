@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Railgun\Billing\Exceptions;
 
 use Psr\Log\LogLevel;
-use Railgun\Exceptions\GraphQLException;
+use Railgun\Exceptions\RailgunException;
 use Stripe\ErrorObject;
 use Stripe\Exception\CardException;
 use Throwable;
@@ -14,7 +14,7 @@ use function trans;
 /**
  * Wrapper for {@see CardException}.
  */
-class Card extends GraphQLException
+class Card extends RailgunException
 {
     protected string $level    = LogLevel::NOTICE;
     protected string $category = 'billing';

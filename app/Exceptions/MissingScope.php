@@ -12,7 +12,7 @@ use function trans;
 /**
  * Thrown when a user tries to access on a query, mutation or field and does not have the required scope.
  */
-class MissingScope extends GraphQLException
+class MissingScope extends RailgunException
 {
     protected string $level    = LogLevel::NOTICE;
     protected string $category = 'authentication';

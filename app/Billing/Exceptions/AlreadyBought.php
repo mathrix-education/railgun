@@ -6,7 +6,7 @@ namespace Railgun\Billing\Exceptions;
 
 use Illuminate\Support\Facades\Auth;
 use Psr\Log\LogLevel;
-use Railgun\Exceptions\GraphQLException;
+use Railgun\Exceptions\RailgunException;
 use Throwable;
 use function implode;
 use function trans;
@@ -14,7 +14,7 @@ use function trans;
 /**
  * Thrown when a user tries to buy a product he already owns.
  */
-class AlreadyBought extends GraphQLException
+class AlreadyBought extends RailgunException
 {
     protected string $level    = LogLevel::NOTICE;
     protected string $category = 'cart';

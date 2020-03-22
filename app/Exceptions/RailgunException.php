@@ -14,7 +14,7 @@ use function app;
 /**
  * Base exception for GraphQL errors.
  */
-abstract class GraphQLException extends HttpException implements RendersErrorsExtensions
+abstract class RailgunException extends HttpException implements RendersErrorsExtensions
 {
     /** @var string $level The PSR3 log level ({@see LogLevel} */
     protected string $level = LogLevel::ERROR;
@@ -32,6 +32,14 @@ abstract class GraphQLException extends HttpException implements RendersErrorsEx
     public function __construct(?string $message = null, ?Throwable $previous = null)
     {
         parent::__construct(200, $message, $previous, [], 0);
+    }
+
+    /**
+     * @return string the exception PSR3 LogLevel
+     */
+    public function getLevel(): string
+    {
+        return $this->level;
     }
 
     /**

@@ -12,7 +12,7 @@ use function trans;
  * Thrown an authentication is invalid.
  * This is not considered as a critical error, thus the log level is set to DEBUG.
  */
-class InvalidAuthToken extends GraphQLException
+class InvalidAuthToken extends RailgunException
 {
     protected string $level    = LogLevel::DEBUG;
     protected string $category = 'authentication';

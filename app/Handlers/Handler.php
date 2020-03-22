@@ -9,9 +9,12 @@ use GraphQL\Error\Error as GraphQLError;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
+use Psr\Log\LogLevel;
 use Railgun\Billing\Exceptions\Card;
+use Railgun\Exceptions\RailgunException;
 use Railgun\Exceptions\Validation;
 use Railgun\Models\User;
+use Sentry\Severity;
 use Sentry\State\Hub;
 use Sentry\State\Scope;
 use Stripe\Exception\CardException;
@@ -101,15 +104,49 @@ class Handler extends ExceptionHandler
         /** @var Hub $sentry */
         $sentry = app('sentry');
 
-        /** @var User|null $user The logged user */
-        $user = Auth::user();
+        $sentry->configureScope(static function (Scope $scope) use ($exception) {
+            /** @var User|null $user The logged user */
+            $user = Auth::user();
 
-        if ($user instanceof User) {
-            $sentry->configureScope(static function (Scope $scope) use ($user) {
+            if ($user instanceof User) {
                 $scope->setUser($user->toArray());
-            });
-        }
+            }
+
+            if (!($exception instanceof RailgunException)) {
+                return;
+            }
+
+            $scope->setLevel($this->getSentrySeverity($exception->getLevel()));
+        });
 
         $sentry->captureException($exception);
+    }
+
+    /**
+     * Convert a PSR3 {@see LogLevel} to a Sentry {@see Severity}.
+     *
+     * @param string $psr3LogLevel The PSR3 {@see LogLevel}
+     *
+     * @return Severity|null The Sentry {@see Severity}
+     */
+    private function getSentrySeverity(string $psr3LogLevel): ?Severity
+    {
+        switch ($psr3LogLevel) {
+            case LogLevel::EMERGENCY:
+            case LogLevel::ALERT:
+            case LogLevel::CRITICAL:
+                return Severity::fatal();
+            case LogLevel::ERROR:
+                return Severity::error();
+            case LogLevel::WARNING:
+                return Severity::warning();
+            case LogLevel::NOTICE:
+            case LogLevel::INFO:
+                return Severity::info();
+            case LogLevel::DEBUG:
+                return Severity::debug();
+            default:
+                return null;
+        }
     }
 }

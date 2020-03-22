@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Railgun\Billing\Exceptions;
 
 use Psr\Log\LogLevel;
-use Railgun\Exceptions\GraphQLException;
+use Railgun\Exceptions\RailgunException;
 use Throwable;
 use function implode;
 use function trans;
@@ -13,7 +13,7 @@ use function trans;
 /**
  * Thrown when a user tries to buy unavailable products.
  */
-class UnavailableProducts extends GraphQLException
+class UnavailableProducts extends RailgunException
 {
     protected string $level    = LogLevel::NOTICE;
     protected string $category = 'cart';
