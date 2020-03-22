@@ -12,7 +12,6 @@ declare(strict_types=1);
 $accessFormatJson = <<<JSON
 {
     "severity": "INFO",
-    "timestamp": "%{%Y-%m-%dT%H:%M:%S%z}t",
     "httpRequest": {
         "requestMethod": "%m",
         "requestUrl": "%r%Q%q",
