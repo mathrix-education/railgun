@@ -21,6 +21,7 @@ use Railgun\MigrationV7\Commands\PostsCommand;
 use Railgun\MigrationV7\Commands\ProductsCommand;
 use Railgun\MigrationV7\Commands\ReportsCommand;
 use Railgun\MigrationV7\Commands\ResetCommand;
+use Railgun\MigrationV7\Commands\SessionsCommand;
 use Railgun\MigrationV7\Commands\SubjectsCommand;
 use Railgun\MigrationV7\Commands\SubscriptionsCommand;
 use Railgun\MigrationV7\Commands\TriggersCommand;
@@ -57,6 +58,7 @@ class MigrationV7ServiceProvider extends ServiceProvider
             TriggersCommand::class,
             SubscriptionsCommand::class,
             UsersCommand::class,
+            SessionsCommand::class,
         ]);
     }
 }
