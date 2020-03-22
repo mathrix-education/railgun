@@ -10,17 +10,17 @@ use JsonException;
 use Monolog\DateTimeImmutable;
 use Monolog\Formatter\JsonFormatter;
 use Throwable;
+use const JSON_THROW_ON_ERROR;
 use function app;
 use function array_key_exists;
 use function array_map;
 use function array_merge;
 use function collect;
-use function dd;
 use function get_class;
 use function json_encode;
 use function mb_strlen;
 use function microtime;
-use const JSON_THROW_ON_ERROR;
+use function str_replace;
 
 /**
  * Format a log entry to the Google Cloud LogEntry format
@@ -134,7 +134,7 @@ class GoogleCloudJsonFormatter extends JsonFormatter
 
         return [
             'requestMethod' => $request->getMethod(),
-            'requestUrl'    => $request->getUri(),
+            'requestUrl'    => str_replace($request->getBaseUrl(), '', $request->fullUrl()),
             'requestSize'   => mb_strlen($request->getContent(), '8bit'),
             'userAgent'     => $request->userAgent(),
             'remoteIp'      => $request->getClientIp(),

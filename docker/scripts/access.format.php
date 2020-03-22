@@ -13,20 +13,22 @@ $accessFormatJson = /** @lang JSON */
     <<<JSON
 {
   "severity": "INFO",
-  "timestamp": "%{%Y-%m-%dT%H:%M:%S.%f%z}t",
+  "timestamp": "%{%Y-%m-%dT%H:%M:%S%z}t",
   "httpRequest": {
     "requestMethod": "%m",
     "requestUrl": "%r%Q%q",
     "requestSize": "%l",
     "userAgent": "%{HTTP_USER_AGENT}e",
-    "remoteIp": "%{X-Forwarded-For}e",
+    "remoteIp": "%{X_FORWARDED_FOR}e",
     "serverIp": "%R",
     "referer": "%{HTTP_REFERER}e",
-    "latency": "%{micro}dus",
+    "latency": "%{micro}d",
     "protocol": "%{SERVER_PROTOCOL}e"
   },
   "cpu": "%C",
-  "memory": "%M"
+  "memory": "%M",
+  "time_us": "%{micro}dus",
+  "time_sec": "%ds"
 }
 JSON;
 
