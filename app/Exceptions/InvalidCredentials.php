@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Railgun\Exceptions;
 
 use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
+use Psr\Log\LogLevel;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Throwable;
 use function trans;
@@ -14,6 +15,9 @@ use function trans;
  */
 class InvalidCredentials extends AccessDeniedHttpException implements RendersErrorsExtensions
 {
+    protected string $level    = LogLevel::DEBUG;
+    protected string $category = 'authentication';
+
     public function __construct(?string $message = null, ?Throwable $previous = null)
     {
         $message ??= trans('auth.invalid_credentials');

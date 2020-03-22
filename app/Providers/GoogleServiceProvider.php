@@ -9,6 +9,9 @@ use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 use function env;
 
+/**
+ * Register the {@see Google_Client}, used for Google authentication.
+ */
 class GoogleServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     public function register(): void
@@ -20,7 +23,7 @@ class GoogleServiceProvider extends ServiceProvider implements DeferrableProvide
         });
     }
 
-    public function provides()
+    public function provides(): array
     {
         return [Google_Client::class];
     }

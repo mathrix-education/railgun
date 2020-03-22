@@ -14,6 +14,9 @@ use function json_encode;
  */
 class MailjetTemplateMailable extends Mailable
 {
+    /**
+     * @var int The Mailjet template id.
+     */
     protected int $templateId;
 
     /**
