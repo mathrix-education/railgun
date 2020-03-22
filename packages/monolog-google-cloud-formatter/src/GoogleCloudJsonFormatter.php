@@ -4,20 +4,23 @@ declare(strict_types=1);
 
 namespace Mathrix\Monolog\Formatter;
 
-use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use JsonException;
 use Monolog\DateTimeImmutable;
 use Monolog\Formatter\JsonFormatter;
 use Throwable;
-use const JSON_THROW_ON_ERROR;
 use function app;
 use function array_key_exists;
 use function array_map;
 use function array_merge;
+use function collect;
+use function dd;
+use function get_class;
 use function json_encode;
 use function mb_strlen;
 use function microtime;
+use const JSON_THROW_ON_ERROR;
 
 /**
  * Format a log entry to the Google Cloud LogEntry format
@@ -70,7 +73,7 @@ class GoogleCloudJsonFormatter extends JsonFormatter
         /** @var DateTimeImmutable $date */
         $date = $record['datetime'];
 
-        /** @var DateTime $dt */
+        // Initialize the payload
         $payload = [
             'severity'    => $record['level_name'],
             'timestamp'   => [
@@ -82,22 +85,29 @@ class GoogleCloudJsonFormatter extends JsonFormatter
             ],
         ];
 
-        // phpcs:disable
-        if (($httpRequest = $this->getHttpRequest()) !== null) {
+        // Include the httpRequest field if applicable
+        $httpRequest = $this->getHttpRequest();
+        if ($httpRequest !== null) {
             $payload['httpRequest'] = $httpRequest;
         }
 
-        if (
-            array_key_exists('exception', $record['context'])
-            && ($exception = $record['context']['exception']) instanceof Throwable
+        // Include the embedded exception if applicable
+        if (array_key_exists('exception', $record['context'])
+            && $record['context']['exception'] instanceof Throwable
         ) {
             /** @var Throwable $exception */
-            $payload['jsonPayload']['code']    = $exception->getCode();
-            $payload['jsonPayload']['message'] = $exception->getMessage();
-            $payload['jsonPayload']['trace']   = $exception->getTrace();
+            $exception = $record['context']['exception'];
+
+            $payload['jsonPayload'] = array_merge($payload['jsonPayload'], [
+                'message'   => $exception->getMessage(),
+                'exception' => get_class($exception),
+                'file'      => $exception->getFile(),
+                'line'      => $exception->getLine(),
+                'trace'     => collect($exception->getTrace())->map(fn($trace) => Arr::except($trace, ['args']))->all(),
+            ]);
+
             unset($record['context']['exception']);
         }
-        // phpcs:enable
 
         $payload['jsonPayload'] = array_merge($record['context'], $record['extra'], $payload['jsonPayload']);
 

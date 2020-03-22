@@ -152,7 +152,7 @@ jobs:
             "eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:latest-${{ steps.standard-versions.outputs.branch }}"
   deploy_gke:
     name: Deploy on Google Kubernetes Engine
-    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/v7'
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/v7' || github.ref == 'refs/heads/v7-logging'
     needs: [docker, test]
     runs-on: ubuntu-latest
     steps:
@@ -170,11 +170,13 @@ jobs:
         run: gcloud container clusters get-credentials php-fpm-testing --zone=europe-west1-b
       - name: Change image version
         run: |
-          kubectl set image -n education-graphql deployment/api \
-            "php=eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:${{ steps.standard-versions.outputs.docker }}"
+          kubectl set image -n education-graphql deployment/api-server \
+            "php-server=eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:${{ steps.standard-versions.outputs.docker }}"
+          kubectl set image -n education-graphql deployment/api-worker \
+            "php-worker=eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/education-api:${{ steps.standard-versions.outputs.docker }}"
   sentry_release:
     name: Create Sentry Release
-    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/v7'
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/v7' || github.ref == 'refs/heads/v7-logging'
     needs: [docker, test]
     runs-on: ubuntu-latest
     steps:
@@ -199,7 +201,7 @@ jobs:
           sentry-cli releases finalize ${{ steps.standard-versions.outputs.semver }}
   sentry_deploy:
     name: Deploy Sentry Release
-    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/v7'
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/v7' || github.ref == 'refs/heads/v7-logging'
     needs: [deploy_gke]
     runs-on: ubuntu-latest
     steps:
