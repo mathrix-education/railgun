@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Railgun\Billing\Exceptions;
 
 use Psr\Log\LogLevel;
-use Railgun\Exceptions\RailgunException;
+use Railgun\Exceptions\HttpException;
 use Throwable;
 use function implode;
 use function trans;
@@ -13,7 +13,7 @@ use function trans;
 /**
  * Thrown when the cart contains duplicated items.
  */
-class DuplicateProducts extends RailgunException
+class DuplicateProducts extends HttpException
 {
     protected string $level    = LogLevel::NOTICE;
     protected string $category = 'cart';

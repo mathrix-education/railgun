@@ -16,6 +16,7 @@ $accessFormatJson = <<<JSON
         "requestMethod": "%m",
         "requestUrl": "%r%Q%q",
         "requestSize": "%l",
+        "status": %s,
         "userAgent": "%{HTTP_USER_AGENT}e",
         "remoteIp": "%{X_FORWARDED_FOR}e",
         "serverIp": "%R",

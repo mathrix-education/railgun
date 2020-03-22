@@ -13,7 +13,7 @@ use function trans;
 /**
  * Wrapper of {@see ValidationException}.
  */
-class Validation extends RailgunException
+class Validation extends HttpException
 {
     protected string $level    = LogLevel::NOTICE;
     protected string $category = 'validation';

@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Mathrix\Monolog\Formatter;
 
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use JsonException;
 use Monolog\DateTimeImmutable;
 use Monolog\Formatter\JsonFormatter;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
-use const JSON_THROW_ON_ERROR;
 use function app;
 use function array_key_exists;
 use function array_map;
@@ -21,6 +22,7 @@ use function json_encode;
 use function mb_strlen;
 use function microtime;
 use function str_replace;
+use const JSON_THROW_ON_ERROR;
 
 /**
  * Format a log entry to the Google Cloud LogEntry format
@@ -106,6 +108,13 @@ class GoogleCloudJsonFormatter extends JsonFormatter
                 'trace'     => collect($exception->getTrace())->map(fn($trace) => Arr::except($trace, ['args']))->all(),
             ]);
 
+            // Inject the status code
+            if ($exception instanceof HttpException) {
+                $payload['httpRequest']['status'] = $exception->getStatusCode();
+            } elseif ($exception instanceof HttpResponseException) {
+                $payload['httpRequest']['status'] = $exception->getResponse()->getStatusCode();
+            }
+
             unset($record['context']['exception']);
         }
 
@@ -132,15 +141,20 @@ class GoogleCloudJsonFormatter extends JsonFormatter
             return [];
         }
 
-        return [
+        $payload = [
             'requestMethod' => $request->getMethod(),
             'requestUrl'    => str_replace($request->getBaseUrl(), '', $request->fullUrl()),
             'requestSize'   => mb_strlen($request->getContent(), '8bit'),
+            'status'        => 200,
             'userAgent'     => $request->userAgent(),
             'remoteIp'      => $request->getClientIp(),
             'referer'       => $request->header('Referer'),
             'latency'       => (microtime(true) - (float)$request->server('REQUEST_TIME_FLOAT')) . 's',
             'protocol'      => $request->getProtocolVersion(),
         ];
+
+        if (!app()->bound('response')) {
+            return $payload;
+        }
     }
 }

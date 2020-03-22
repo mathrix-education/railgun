@@ -11,7 +11,7 @@ use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Psr\Log\LogLevel;
 use Railgun\Billing\Exceptions\Card;
-use Railgun\Exceptions\RailgunException;
+use Railgun\Exceptions\HttpException;
 use Railgun\Exceptions\Validation;
 use Railgun\Models\User;
 use Sentry\Severity;
@@ -112,7 +112,7 @@ class Handler extends ExceptionHandler
                 $scope->setUser($user->toArray());
             }
 
-            if (!($exception instanceof RailgunException)) {
+            if (!($exception instanceof HttpException)) {
                 return;
             }
 
