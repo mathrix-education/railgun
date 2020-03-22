@@ -23,6 +23,8 @@ use Railgun\Models\Traits\Randomizable;
  * @property int         $commentable_id
  * @property-read Carbon $created_at
  * @property-read Carbon $updated_at
+ * ---
+ * @property-read User   $user
  */
 class Comment extends Model
 {

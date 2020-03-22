@@ -1,0 +1,25 @@
+enum NotificationType {
+    """
+    - user_comment: Comment!
+    - new_comment: Comment!
+    """
+    COMMENT_REPLY @enum(value: "Railgun\\Notifications\\CommentReplyNotification")
+}
+
+type Notification @modelClass(class: "Illuminate\\Notifications\\DatabaseNotification") {
+    "The notification id, which is an UUID4."
+    id: ID!
+    "The notification type."
+    type: NotificationType!
+    """
+    The notification payload, which shape depends of the notification type. See the enum NotificationType to get the
+    data structures.
+    """
+    data: Any!
+    "When the notification was read by the user"
+    read_at: DateTime
+    "When the notification was created"
+    created_at: DateTime!
+    "When the notification was last updated"
+    updated_at: DateTime!
+}

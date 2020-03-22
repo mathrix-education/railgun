@@ -9,6 +9,7 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Filesystem\FilesystemServiceProvider;
 use Illuminate\Mail\MailServiceProvider;
+use Illuminate\Notifications\NotificationServiceProvider;
 use Illuminate\Redis\RedisServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -66,6 +67,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(MailServiceProvider::class);
         $this->app->register(MailjetServiceProvider::class);
         $this->app->register(CryptoServiceProvider::class);
+        $this->app->register(NotificationServiceProvider::class);
     }
 
     public function boot(): void

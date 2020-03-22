@@ -3,7 +3,7 @@ extend type Mutation {
     createCourse(
         name: String!
         slug: String!
-        content: SilicateWall!
+        content: Silicate!
         order: Int
         visible: Boolean
         seo_index: Boolean
@@ -19,7 +19,7 @@ extend type Mutation {
         id: ID!
         name: String
         slug: String
-        content: SilicateWall
+        content: Silicate
         order: Int
         visible: Boolean
         seo_index: Boolean

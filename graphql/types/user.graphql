@@ -12,7 +12,7 @@ type User {
     braintree_id: String
     created_at: DateTime!
     updated_at: DateTime!
-    # Relations
+    notifications: [Notification!]! @morphMany(type: "paginator")
     packs: [Pack!]! @morphMany
     trainings: [Training!]! @morphMany
 }

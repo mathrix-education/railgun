@@ -5,7 +5,7 @@ extend type Mutation {
         questions: [String!]
         choices: [[String!]!]
         solutions: [[Int!]!]
-        examplations: [SilicateWall!]
+        examplations: [Silicate!]
         order: Int
         visible: Boolean
         subject_id: ID
@@ -18,7 +18,7 @@ extend type Mutation {
         questions: [String!]
         choices: [[String!]!]
         solutions: [[Int!]!]
-        examplations: [SilicateWall!]
+        examplations: [Silicate!]
         order: Int
         visible: Boolean
         subject_id: ID

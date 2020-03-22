@@ -3,7 +3,7 @@ extend type Mutation {
     createPost(
         title: String!
         slug: String!
-        content: SilicateWall!
+        content: Silicate!
         order: Int
         visible: Boolean!
         category_id: ID
@@ -14,7 +14,7 @@ extend type Mutation {
         id: ID!
         title: String
         slug: String
-        content: SilicateWall
+        content: Silicate
         order: Int
         visible: Boolean
         category_id: ID

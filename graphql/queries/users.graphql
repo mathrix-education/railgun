@@ -6,5 +6,5 @@ extend type Query {
     readUser(id: ID @eq): User @permission(scope: "users:read") @find
 
     "Read the current authenticated user."
-    me: User @auth
+    me: User @guard @auth
 }
