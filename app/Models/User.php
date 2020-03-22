@@ -152,6 +152,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany(Subscription::class, 'customer_id', 'stripe_id');
     }
 
+    public function interactions(): HasMany
+    {
+        return $this->hasMany(Interaction::class);
+    }
     /*
     |--------------------------------------------------------------------------
     | Attributes

@@ -25,4 +25,7 @@ extend type Query {
     searchChapters(query: String): [Chapter!]! @paginate(
         builder: "\\Railgun\\GraphQL\\Queries\\SearchChapters@getBuilder"
     )
+
+    "List latest chapters viewed by the user."
+    listLatestViewedChapters: [Chapter!]!
 }
