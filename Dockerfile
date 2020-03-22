@@ -24,6 +24,11 @@ COPY docker/entrypoint.sh /usr/local/bin/entrypoint
 COPY docker/healthcheck.sh /usr/local/bin/healthcheck
 COPY docker/etc/. /usr/local/etc/
 
+# Generate configuration files
+COPY docker/scripts/ /usr/local/scripts/
+RUN php /usr/local/scripts/access.format.php \
+    && rm -rf /usr/local/scripts /usr/local/etc/**/*.stub*
+
 COPY --chown=www-data . /var/www/
 
 # Make sure files/folders needed by the processes are accessible when they run under the www-data user

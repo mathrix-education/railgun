@@ -8,7 +8,7 @@ use GraphQL\Validator\Rules\QueryComplexity;
 use GraphQL\Validator\Rules\QueryDepth;
 use Nuwave\Lighthouse\Execution\ExtensionErrorHandler;
 use Nuwave\Lighthouse\Support\Http\Middleware\AcceptJson;
-use Railgun\Handlers\GraphQLErrorHandler;
+use Railgun\Handlers\GraphQLHandler;
 
 return [
     'route'                   => [
@@ -44,7 +44,7 @@ return [
     'paginate_max_count'      => 100,
     'debug'                   => Debug::INCLUDE_DEBUG_MESSAGE | Debug::INCLUDE_TRACE,
     'error_handlers'          => [
-        GraphQLErrorHandler::class,
+        GraphQLHandler::class,
         ExtensionErrorHandler::class,
     ],
     'global_id_field'         => 'id',

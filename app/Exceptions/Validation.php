@@ -6,16 +6,18 @@ namespace Railgun\Exceptions;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
-use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Psr\Log\LogLevel;
 use Throwable;
 use function trans;
 
 /**
- * Alternative of {@see ValidationException} which implements {@see RendersErrorsExtensions}.
+ * Wrapper of {@see ValidationException}.
  */
-class Validation extends UnprocessableEntityHttpException implements RendersErrorsExtensions
+class Validation extends RailgunException
 {
+    protected string $level    = LogLevel::NOTICE;
+    protected string $category = 'validation';
+
     private Validator $validator;
 
     public function __construct(
@@ -44,16 +46,6 @@ class Validation extends UnprocessableEntityHttpException implements RendersErro
     public static function from(ValidationException $source): self
     {
         return new self($source->validator, $source->getMessage(), $source);
-    }
-
-    public function isClientSafe(): bool
-    {
-        return true;
-    }
-
-    public function getCategory(): string
-    {
-        return 'validation';
     }
 
     public function extensionsContent(): array

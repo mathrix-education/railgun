@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "afb0c0e4a826798b8f5c9cf0e2f5d782",
+    "content-hash": "17844e3e3365461fd77b6526e4960a5d",
     "packages": [
         {
             "name": "braintree/braintree_php",
@@ -2746,6 +2746,35 @@
                 "source": "https://github.com/mathrix-education/lumen-mailjet",
                 "docs": "https://github.com/mathrix-education"
             }
+        },
+        {
+            "name": "mathrix-education/monolog-google-cloud-formatter",
+            "version": "0.1.0",
+            "dist": {
+                "type": "path",
+                "url": "packages/monolog-google-cloud-formatter",
+                "reference": "f931790836ac847fe5ddca87ea10a2ff7ef844ae"
+            },
+            "require": {
+                "monolog/monolog": "^2.0",
+                "php": "^7.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mathrix\\Monolog\\Formatter\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mathieu Bour",
+                    "email": "mathieu@mathrix.fr"
+                }
+            ],
+            "description": "A Monolog Formatter for Google Cloud Logging"
         },
         {
             "name": "mll-lab/laravel-graphql-playground",

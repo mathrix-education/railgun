@@ -10,7 +10,7 @@ class SandboxCommand extends Command
 {
     protected $signature = 'sandbox';
 
-    public function handle()
+    public function handle(): void
     {
     }
 }
