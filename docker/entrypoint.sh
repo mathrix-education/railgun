@@ -1,8 +1,8 @@
 #!/bin/sh
-cmd=${1:-start}
+cmd=${1:-server}
 
 case $cmd in
-start)
+server)
     php /var/www/artisan lighthouse:clear-cache
     php-fpm
     ;;
@@ -15,6 +15,7 @@ worker)
     ;;
 *)
     echo "Invalid command: \"$cmd\"."
+    echo "Available commands are server|migrate|worker"
     exit 1
     ;;
 esac

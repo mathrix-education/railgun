@@ -6,7 +6,7 @@ namespace Railgun\GraphQL\Scalars;
 
 use GraphQL\Type\Definition\ScalarType;
 
-class SilicateWallType extends ScalarType
+class MixedType extends ScalarType
 {
     /**
      * Handled by Eloquent model.

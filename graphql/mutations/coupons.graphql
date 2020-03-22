@@ -1,4 +1,4 @@
-extend type Coupon {
+extend type Mutation {
     "Create a new coupon"
     createCoupon(
         id: ID!

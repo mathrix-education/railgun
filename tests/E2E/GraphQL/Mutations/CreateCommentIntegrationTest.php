@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Mutations;
 
+use Illuminate\Events\CallQueuedListener;
+use Illuminate\Support\Facades\Queue;
+use Laravel\Lumen\Testing\DatabaseTransactions;
+use Railgun\Listeners\SendCommentReplyNotifications;
 use Railgun\Models\Comment;
 use Railgun\Models\Course;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
@@ -14,6 +18,8 @@ use function strtoupper;
  */
 class CreateCommentIntegrationTest extends GraphQLIntegrationTestCase
 {
+    use DatabaseTransactions;
+
     private const QUERY = <<<'GRAPHQL'
     mutation($content: String!, $parent_id: ID, $commentable_type: CommentableType!, $commentable_id: ID!) {
         createComment(
@@ -34,6 +40,8 @@ class CreateCommentIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testCreateRootComment(): void
     {
+        Queue::fake();
+
         $user    = $this->actingAsNewUser();
         $course  = Course::random();
         $content = $this->faker->text;
@@ -54,6 +62,10 @@ class CreateCommentIntegrationTest extends GraphQLIntegrationTestCase
             'commentable_type' => 'COURSE',
             'commentable_id'   => $course->id,
         ]);
+
+        Queue::assertPushed(CallQueuedListener::class, static function (CallQueuedListener $job) {
+            return $job->class === SendCommentReplyNotifications::class;
+        });
     }
 
     /**
@@ -61,6 +73,8 @@ class CreateCommentIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testCreateChildComment(): void
     {
+        Queue::fake();
+
         $user            = $this->actingAsNewUser();
         $parent          = Comment::random();
         $content         = $this->faker->text;
@@ -83,5 +97,9 @@ class CreateCommentIntegrationTest extends GraphQLIntegrationTestCase
             'commentable_type' => $commentableType,
             'commentable_id'   => $parent->commentable_id,
         ]);
+
+        Queue::assertPushed(CallQueuedListener::class, static function (CallQueuedListener $job) {
+            return $job->class === SendCommentReplyNotifications::class;
+        });
     }
 }

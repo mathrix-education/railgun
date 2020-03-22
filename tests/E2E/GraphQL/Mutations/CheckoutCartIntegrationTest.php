@@ -19,7 +19,7 @@ use function trans;
  * @testdox [E2E] Mutation checkoutCart
  * @coversNothing
  */
-class CheckoutCartMutationIntegrationTest extends GraphQLIntegrationTestCase
+class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
 {
     private const QUERY = <<<'GRAPHQL'
     mutation($packIds: [ID!], $trainingIds: [ID!], $premium: Boolean, $coupon: ID, $paymentMethodId: String!) {
