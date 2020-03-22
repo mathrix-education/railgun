@@ -98,7 +98,7 @@ class GoogleCloudJsonFormatter extends JsonFormatter
             /** @var Throwable $exception */
             $exception = $record['context']['exception'];
 
-            $payload['jsonPayload'] = array_merge($payload['jsonPayload'], [
+            $payload = array_merge($payload, [
                 'message'   => $exception->getMessage(),
                 'exception' => get_class($exception),
                 'file'      => $exception->getFile(),
@@ -109,7 +109,7 @@ class GoogleCloudJsonFormatter extends JsonFormatter
             unset($record['context']['exception']);
         }
 
-        $payload['jsonPayload'] = array_merge($record['context'], $record['extra'], $payload['jsonPayload']);
+        $payload = array_merge($record['context'], $record['extra'], $payload);
 
         return $payload;
     }
