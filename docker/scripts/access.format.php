@@ -9,26 +9,23 @@ declare(strict_types=1);
  * @link http://www.inanzzz.com/index.php/post/6cn7/formatting-php-fpm-and-nginx-access-logs-as-standardised-json-string-in-docker-environment
  */
 
-$accessFormatJson = /** @lang JSON */
-    <<<JSON
+$accessFormatJson = <<<JSON
 {
-  "severity": "INFO",
-  "timestamp": "%{%Y-%m-%dT%H:%M:%S%z}t",
-  "httpRequest": {
-    "requestMethod": "%m",
-    "requestUrl": "%r%Q%q",
-    "requestSize": "%l",
-    "userAgent": "%{HTTP_USER_AGENT}e",
-    "remoteIp": "%{X_FORWARDED_FOR}e",
-    "serverIp": "%R",
-    "referer": "%{HTTP_REFERER}e",
-    "latency": "%{micro}d",
-    "protocol": "%{SERVER_PROTOCOL}e"
-  },
-  "cpu": "%C",
-  "memory": "%M",
-  "time_us": "%{micro}dus",
-  "time_sec": "%ds"
+    "severity": "INFO",
+    "timestamp": "%{%Y-%m-%dT%H:%M:%S%z}t",
+    "httpRequest": {
+        "requestMethod": "%m",
+        "requestUrl": "%r%Q%q",
+        "requestSize": "%l",
+        "userAgent": "%{HTTP_USER_AGENT}e",
+        "remoteIp": "%{X_FORWARDED_FOR}e",
+        "serverIp": "%R",
+        "referer": "%{HTTP_REFERER}e",
+        "latency": "%ds",
+        "protocol": "%{SERVER_PROTOCOL}e"
+    },
+    "cpu": %C,
+    "memory": %M
 }
 JSON;
 
