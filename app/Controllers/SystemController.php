@@ -50,6 +50,7 @@ class SystemController extends BaseController
         // Add grade urls
         DB::table('grades')
             ->select(['slug'])
+            ->where('visible', '=', true)
             ->get()
             ->each(static function ($data) use ($sitemap): void {
                 $gradeUrl = new Url(SitemapUtils::loc($data->slug));
