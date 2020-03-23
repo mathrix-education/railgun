@@ -1,15 +1,5 @@
 # IDEA software
-/.idea/dataSources.*
-/.idea/dictionaries
-/.idea/httpRequests/
-/.idea/markdown*
-/.idea/*.iml
-/.idea/**/workspace.xml
-/.idea/dataSources/
-/.idea/modules.xml
-/.idea/php.xml
-/.idea/deployment.xml
-/.idea/vagrant.xml
+/.idea
 
 # Vendors
 /node_modules/
