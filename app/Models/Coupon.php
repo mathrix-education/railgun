@@ -10,7 +10,7 @@ use Railgun\Models\Traits\Randomizable;
 
 /**
  * @property-read int    $id
- * @property string      $type
+ * @property-read string $type
  * @property int         $value
  * @property int         $counter
  * @property Carbon      $expires_at
@@ -26,8 +26,8 @@ class Coupon extends Model
     use Randomizable;
 
     protected $fillable = ['id', 'type', 'value', 'counter', 'expires_at'];
-    protected $appends  = ['expired', 'exhausted', 'valid'];
     protected $casts    = ['expires_at' => 'datetime'];
+    protected $appends  = ['expired', 'exhausted', 'valid'];
 
     public function getExpiredAttribute(): bool
     {

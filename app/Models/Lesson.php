@@ -7,26 +7,28 @@ namespace Railgun\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Railgun\Models\Traits\Orderable;
 use Railgun\Models\Traits\Randomizable;
+use Railgun\Models\Traits\Reorderable;
 
 /**
- * @property-read  int   $id
- * @property string      $name
- * @property int         $slug
- * @property array       $content
- * @property int         $order
- * @property bool        $visible
- * @property int         $section_id
- * @property-read Carbon $created_at
- * @property-read Carbon $updated_at
+ * @property-read int     $id
+ * @property      string  $name
+ * @property      int     $slug
+ * @property      array   $content
+ * @property      int     $order
+ * @property      bool    $visible
+ * @property      int     $section_id
+ * @property-read Carbon  $created_at
+ * @property-read Carbon  $updated_at
+ * ---
+ * @property-read Section $section
  */
 class Lesson extends Model
 {
-    use Orderable;
+    use Reorderable;
     use Randomizable;
 
-    protected $fillable = [
+    protected $fillable          = [
         'name',
         'slug',
         'content',
@@ -34,13 +36,11 @@ class Lesson extends Model
         'visible',
         'section_id',
     ];
-
-    protected $casts = [
+    protected $casts             = [
         'content' => 'array',
         'visible' => 'boolean',
     ];
-
-    protected $orderGroups = ['section_id'];
+    protected array $orderGroups = ['section_id'];
 
     /**
      * @return BelongsTo<Section>

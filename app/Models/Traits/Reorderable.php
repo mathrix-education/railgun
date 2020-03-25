@@ -13,7 +13,7 @@ use function property_exists;
  * @property-read string[] $orderGroups The order groups to filter the order column.
  * @mixin Model
  */
-trait Orderable
+trait Reorderable
 {
     /**
      * Register the saving, saved, updating, updated and deleted events?
@@ -23,7 +23,7 @@ trait Orderable
     public static function bootOrderable(): void
     {
         self::creating(static function (Model $model) {
-            /** @var Orderable $model */
+            /** @var Reorderable $model */
             $max   = $model->getMaxOrder();
             $order = $model->getOrder();
 
@@ -34,12 +34,12 @@ trait Orderable
             $model->setOrder($max + 1);
         });
         self::created(static function (Model $model) {
-            /** @var Orderable $model */
+            /** @var Reorderable $model */
             $model->pushOrder();
         });
 
         self::updating(static function (Model $model) {
-            /** @var Orderable $model */
+            /** @var Reorderable $model */
             $max   = $model->getMaxOrder();
             $order = $model->getOrder();
 
@@ -50,7 +50,7 @@ trait Orderable
             $model->setOrder($max);
         });
         self::updated(static function (Model $model) {
-            /** @var Orderable $model */
+            /** @var Reorderable $model */
             foreach ($model->getOrderGroups() as $orderGroup) {
                 if ($model->wasChanged($orderGroup)) {
                     $model->pullOrder();
@@ -64,7 +64,7 @@ trait Orderable
         });
 
         self::deleted(static function (Model $model) {
-            /** @var Orderable $model */
+            /** @var Reorderable $model */
             $model->pullOrder();
         });
     }
@@ -76,7 +76,7 @@ trait Orderable
      */
     public function getMaxOrder(): int
     {
-        /** @var Orderable $max */
+        /** @var Reorderable $max */
         $max = $this->getQueryOrder()
             ->orderByDesc($this->getOrderColumn())
             ->get([$this->getOrderColumn()])
@@ -159,7 +159,7 @@ trait Orderable
     }
 
     /**
-     * Pul a model at the given order.
+     * Pull a model at the given order.
      */
     public function pullOrder(): void
     {

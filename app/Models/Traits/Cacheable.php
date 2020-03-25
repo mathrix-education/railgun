@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Railgun\Models\Traits;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use function class_basename;
 use function is_callable;
 

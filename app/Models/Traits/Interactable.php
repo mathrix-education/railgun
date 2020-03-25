@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Railgun\Models\Interaction;
 
 /**
+ * @property-read Interaction|null $interaction The current user interaction with the model.
  * @mixin HasRelationships
  */
 trait Interactable

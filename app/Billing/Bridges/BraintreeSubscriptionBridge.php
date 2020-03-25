@@ -9,6 +9,7 @@ use Braintree\Gateway;
 use Braintree\Subscription as BraintreeSubscription;
 use Carbon\Carbon;
 use DateTime;
+use JsonException;
 use Railgun\Models\Subscription;
 use Stripe\Subscription as StripeSubscription;
 use const JSON_THROW_ON_ERROR;
@@ -28,6 +29,7 @@ class BraintreeSubscriptionBridge
      * @return Subscription
      *
      * @throws BraintreeNotFound
+     * @throws JsonException
      */
     public static function toEloquent(BraintreeSubscription $braintree): Subscription
     {

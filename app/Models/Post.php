@@ -7,27 +7,28 @@ namespace Railgun\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Railgun\Models\Traits\Orderable;
 use Railgun\Models\Traits\Randomizable;
+use Railgun\Models\Traits\Reorderable;
 
 /**
- * @property int         $id
- * @property string      $title
- * @property string      $slug
- * @property array       $content
- * @property int         $order
- * @property bool        $visible
- * @property int         $category_id
- * @property-read Carbon $created_at
- * @property-read Carbon $updated_at
+ * @property-read int      $id
+ * @property      string   $title
+ * @property      string   $slug
+ * @property      array    $content
+ * @property      int      $order
+ * @property      bool     $visible
+ * @property      int      $category_id
+ * @property-read Carbon   $created_at
+ * @property-read Carbon   $updated_at
+ * ---
+ * @property-read Category $category
  */
 class Post extends Model
 {
-    use Orderable;
+    use Reorderable;
     use Randomizable;
 
-    /** @var array The attributes that are mass assignable */
-    protected $fillable = [
+    protected $fillable          = [
         'title',
         'slug',
         'content',
@@ -35,10 +36,8 @@ class Post extends Model
         'visible',
         'category_id',
     ];
-
-    protected $casts = ['content' => 'array'];
-
-    protected $orderGroups = ['category_id'];
+    protected $casts             = ['content' => 'array'];
+    protected array $orderGroups = ['category_id'];
 
     /*
     |--------------------------------------------------------------------------
@@ -47,18 +46,10 @@ class Post extends Model
     */
 
     /**
-     * BelongsTo Category.
+     * @return BelongsTo<Category>
      */
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
-    }
-
-    /**
-     * BelongsTo User.
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
     }
 }

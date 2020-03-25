@@ -11,24 +11,21 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Railgun\Models\Traits\Randomizable;
 
 /**
- * @property-read int           $id
- * @property string             $name
- * @property string             $slug
- * @property bool               $visible
- * @property string             $slug_short
- * @property-read Carbon        $created_at
- * @property-read Carbon        $updated_at
- *
+ * @property-read int                $id
+ * @property      string             $name
+ * @property      string             $slug
+ * @property      bool               $visible
+ * @property-read Carbon             $created_at
+ * @property-read Carbon             $updated_at
  * ---
- * @property Collection|Grade[] $grades
+ * @property-read Collection|Grade[] $grades
  */
 class Country extends Model
 {
     use Randomizable;
 
     protected $fillable = ['id', 'name', 'slug', 'visible'];
-
-    protected $casts = ['visible' => 'boolean'];
+    protected $casts    = ['visible' => 'boolean'];
 
     /**
      * @return HasMany<Grade>
