@@ -4,73 +4,145 @@ declare(strict_types=1);
 
 namespace Railgun\MigrationV7\Commands;
 
-use function implode;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Query\JoinClause;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use function collect;
+use function floor;
+use function range;
 
 class SessionsCommand extends V7Command
 {
-    protected $signature = 'v7:sessions';
+    private const PAGE_SIZE = 1000;
+    protected $signature    = 'v7:sessions';
 
     public function handle(): void
     {
         $this->title('Extracting sessions from interactions');
 
-        $courses = <<<MYSQL
-        select discipline_id, chapter_id, i.updated_at
-        from interactions i
-            inner join courses cs on i.interactable_id = cs.id and i.interactable_type = 'course'
-            inner join notions n on cs.notion_id = n.id
-            inner join chapters c on n.chapter_id = c.id
-        MYSQL;
+        $this->migrateTo('2020_03_22_181818_create_sessions_table');
 
-        $subjects = <<<MYSQL
-        select discipline_id, chapter_id, i.updated_at
-        from interactions i
-            inner join subjects s on i.interactable_id = s.id and i.interactable_type = 'subject'
-            inner join notions n on s.notion_id = n.id
-            inner join chapters c on n.chapter_id = c.id
-        MYSQL;
+        $max = DB::table('users')->max('id');
 
-        $exercises = <<<MYSQL
-        select discipline_id, chapter_id, i.updated_at
-        from interactions i
-            inner join exercises e on i.interactable_id = e.id and i.interactable_type = 'exercise'
-            inner join subjects s on e.subject_id = s.id
-            inner join notions n on s.notion_id = n.id
-            inner join chapters c on n.chapter_id = c.id
-        MYSQL;
+        collect(range(0, floor($max / self::PAGE_SIZE)))
+            ->tap(function () use ($max) {
+                $this->line('Building sessions');
+                $this->getOutput()->progressStart($max);
+            })
+            ->map(function (int $page) {
+                return $this->getUnionForPage($page)
+                    ->get()
+                    ->sortBy('updated_at')
+                    ->mapWithKeys(fn($line) => ["{$line->user_id}.{$line->discipline_id}" => $line])
+                    ->values()
+                    ->map(fn($line) => (array)$line)
+                    ->tap(fn(Collection $lines) => $this->getOutput()->progressAdvance($lines->count()));
+            })
+            ->tap(fn() => $this->getOutput()->progressFinish())
+            ->flatten(1)
+            ->tap(function (Collection $lines) {
+                $this->line('Saving sessions');
+                $this->getOutput()->progressStart($lines->count());
+            })
+            ->chunk(self::PAGE_SIZE)
+            ->each(function (Collection $chunk) {
+                DB::table('sessions')->insert($chunk->toArray());
+                $this->getOutput()->progressAdvance($chunk->count());
+            })
+            ->tap(fn(Collection $chunk) => $this->getOutput()->progressAdvance($chunk->count()));
+    }
 
-        $flashcards = <<<MYSQL
-        select discipline_id, chapter_id, i.updated_at
-        from interactions i
-            inner join flashcards f on i.interactable_id = f.id and i.interactable_type = 'flashcard'
-            inner join chapters c on f.chapter_id = c.id
-        MYSQL;
+    private function getCoursesBuilder(): Builder
+    {
+        return DB::table('interactions', 'i')
+            ->select(['user_id', 'discipline_id', 'chapter_id', 'i.updated_at'])
+            ->join(DB::raw('courses cs'), static function (JoinClause $join) {
+                $join->on('i.interactable_id', '=', 'cs.id')
+                    ->where('i.interactable_type', '=', 'course');
+            })
+            ->join(DB::raw('notions n'), 'cs.notion_id', '=', 'n.id')
+            ->join(DB::raw('chapters c'), 'n.chapter_id', '=', 'c.id')
+            ->join(DB::raw('users u'), static function (JoinClause $join) {
+                $join->on('i.user_id', '=', 'u.id')
+                    ->on('u.grade_id', '=', 'c.grade_id');
+            });
+    }
 
-        $exams = <<<MYSQL
-        select discipline_id, chapter_id, i.updated_at
-        from interactions i
-            inner join exams e on i.interactable_id = e.id and i.interactable_type = 'exam'
-            inner join chapters c on e.chapter_id = c.id
-        MYSQL;
+    private function getSubjectsBuilder(): Builder
+    {
+        return DB::table('interactions', 'i')
+            ->select(['user_id', 'discipline_id', 'chapter_id', 'i.updated_at'])
+            ->join(DB::raw('subjects s'), static function (JoinClause $join) {
+                $join->on('i.interactable_id', '=', 's.id')
+                    ->where('i.interactable_type', '=', 'subject');
+            })
+            ->join(DB::raw('notions n'), 's.notion_id', '=', 'n.id')
+            ->join(DB::raw('chapters c'), 'n.chapter_id', '=', 'c.id')
+            ->join(DB::raw('users u'), static function (JoinClause $join) {
+                $join->on('i.user_id', '=', 'u.id')
+                    ->on('u.grade_id', '=', 'c.grade_id');
+            });
+    }
 
-        $union = implode("\nunion\n", [
-            $courses,
-            $subjects,
-            $exercises,
-            $flashcards,
-            $exams,
-        ]);
+    private function getExercisesBuilder(): Builder
+    {
+        return DB::table('interactions', 'i')
+            ->select(['user_id', 'discipline_id', 'chapter_id', 'i.updated_at'])
+            ->join(DB::raw('exercises e'), static function (JoinClause $join) {
+                $join->on('i.interactable_id', '=', 'e.id')
+                    ->where('i.interactable_type', '=', 'exercise');
+            })
+            ->join(DB::raw('subjects s'), 'e.subject_id', '=', 's.id')
+            ->join(DB::raw('notions n'), 's.notion_id', '=', 'n.id')
+            ->join(DB::raw('chapters c'), 'n.chapter_id', '=', 'c.id')
+            ->join(DB::raw('users u'), static function (JoinClause $join) {
+                $join->on('i.user_id', '=', 'u.id')
+                    ->on('u.grade_id', '=', 'c.grade_id');
+            });
+    }
 
-        $final = <<<MYSQL
-        select set1.*
-        from ($union) set1
-            left join ($union) set2
-                on set1.discipline_id = set2.discipline_id
-                and set1.updated_at < set2.updated_at
-        where set2.discipline_id is null
-        order by discipline_id
-        MYSQL;
+    private function getFlashcardBuilder(): Builder
+    {
+        return DB::table('interactions', 'i')
+            ->select(['user_id', 'discipline_id', 'chapter_id', 'i.updated_at'])
+            ->join(DB::raw('flashcards f'), static function (JoinClause $join) {
+                $join->on('i.interactable_id', '=', 'f.id')
+                    ->where('i.interactable_type', '=', 'flashcard');
+            })
+            ->join(DB::raw('chapters c'), 'f.chapter_id', '=', 'c.id')
+            ->join(DB::raw('users u'), static function (JoinClause $join) {
+                $join->on('i.user_id', '=', 'u.id')
+                    ->on('u.grade_id', '=', 'c.grade_id');
+            });
+    }
 
-        $this->line($final);
+    private function getExamsBuilder(): Builder
+    {
+        return DB::table('interactions', 'i')
+            ->select(['user_id', 'discipline_id', 'chapter_id', 'i.updated_at'])
+            ->join(DB::raw('exams e'), static function (JoinClause $join) {
+                $join->on('i.interactable_id', '=', 'e.id')
+                    ->where('i.interactable_type', '=', 'exam');
+            })
+            ->join(DB::raw('chapters c'), 'e.chapter_id', '=', 'c.id')
+            ->join(DB::raw('users u'), static function (JoinClause $join) {
+                $join->on('i.user_id', '=', 'u.id')
+                    ->on('u.grade_id', '=', 'c.grade_id');
+            });
+    }
+
+    private function getUnionForPage(int $page): Builder
+    {
+        $min = $page * self::PAGE_SIZE;
+        $max = ($page + 1) * self::PAGE_SIZE - 1;
+
+        $courses    = $this->getCoursesBuilder()->whereBetween('user_id', [$min, $max]);
+        $subjects   = $this->getSubjectsBuilder()->whereBetween('user_id', [$min, $max]);
+        $exercises  = $this->getExercisesBuilder()->whereBetween('user_id', [$min, $max]);
+        $flashcards = $this->getFlashcardBuilder()->whereBetween('user_id', [$min, $max]);
+        $exams      = $this->getExamsBuilder()->whereBetween('user_id', [$min, $max]);
+
+        return $courses->union($subjects)->union($exercises)->union($flashcards)->union($exams);
     }
 }

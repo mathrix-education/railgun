@@ -1,25 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSessionTable extends Migration
+class CreateSessionsTable extends Migration
 {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('session', static function (Blueprint $table) {
+        Schema::create('sessions', static function (Blueprint $table) {
             $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('discipline_id');
             $table->unsignedBigInteger('chapter_id');
             $table->timestamp('updated_at');
 
-            $table->primary(['user_id', 'discipline_id', 'chapter_id']);
+            $table->primary(['user_id', 'discipline_id']);
 
             // Foreign keys
             $table->foreign('user_id')
@@ -46,8 +48,8 @@ class CreateSessionTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('session');
+        Schema::dropIfExists('sessions');
     }
 }

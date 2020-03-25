@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Railgun\MigrationV7\Commands;
 
-use Illuminate\Database\Query\Builder;
-use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use stdClass;
 use function implode;
 

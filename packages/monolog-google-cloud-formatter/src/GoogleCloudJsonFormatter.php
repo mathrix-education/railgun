@@ -12,6 +12,7 @@ use Monolog\DateTimeImmutable;
 use Monolog\Formatter\JsonFormatter;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
+use const JSON_THROW_ON_ERROR;
 use function app;
 use function array_key_exists;
 use function array_map;
@@ -22,7 +23,6 @@ use function json_encode;
 use function mb_strlen;
 use function microtime;
 use function str_replace;
-use const JSON_THROW_ON_ERROR;
 
 /**
  * Format a log entry to the Google Cloud LogEntry format

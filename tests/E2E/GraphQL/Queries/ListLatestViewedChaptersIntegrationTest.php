@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Queries;
 
-use Illuminate\Database\Query\Builder;
 use Railgun\Models\User;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 
