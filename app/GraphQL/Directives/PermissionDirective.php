@@ -75,9 +75,10 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
     /**
      * Check that the current user has the required scope.
      *
-     * @throws Exception
+     * @throws RuntimeException
+     * @throws MissingScope
      */
-    private function checkScope()
+    private function checkScope(): void
     {
         if ($this->directiveHasArgument('scope')) {
             $scopes = [$this->directiveArgValue('scope')];

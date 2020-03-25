@@ -34,6 +34,7 @@ class MigrateCommand extends V7Command
         'v7:triggers',
         'v7:subscriptions',
         'v7:users',
+        'migrate',
     ];
 
     protected $signature = 'v7 {--until=}';

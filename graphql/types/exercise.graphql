@@ -9,7 +9,8 @@ type Exercise {
     order: Int!
     created_at: DateTime!
     updated_at: DateTime!
-    comments: [Comment!] @morphMany
-    interaction: Interaction @belongsTo
     subject: Subject! @belongsTo
+    comments: [Comment!] @morphMany
+    notes: [Note!] @morphMany
+    interaction: Interaction @belongsTo
 }

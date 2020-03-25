@@ -10,5 +10,6 @@ type Exam {
     updated_at: DateTime!
     chapter: Chapter! @belongsTo
     comments: [Comment!] @morphMany
+    notes: [Note!] @morphMany
     interaction: Interaction @belongsTo
 }

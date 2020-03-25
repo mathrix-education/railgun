@@ -12,7 +12,8 @@ type Course {
     seo_description: String
     created_at: DateTime!
     updated_at: DateTime!
-    comments: [Comment!] @morphMany
     notion: Notion! @belongsTo
+    comments: [Comment!] @morphMany
+    subject: Subject! @belongsTo
     interaction: Interaction @belongsTo
 }

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Traits\Commentable;
 use Railgun\Models\Traits\Interactable;
+use Railgun\Models\Traits\Notable;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
 
@@ -30,6 +31,7 @@ class Exam extends Model
 {
     use Commentable;
     use Interactable;
+    use Notable;
     use Reorderable;
     use Randomizable;
 
