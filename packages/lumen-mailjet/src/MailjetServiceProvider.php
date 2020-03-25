@@ -7,7 +7,6 @@ namespace Mathrix\Mailjet;
 use Carbon\Laravel\ServiceProvider;
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\Container\BindingResolutionException;
-use Illuminate\Mail\MailManager;
 use Mailjet\MailjetSwiftMailer\SwiftMailer\MailjetTransport;
 use Swift_Events_SimpleEventDispatcher;
 
