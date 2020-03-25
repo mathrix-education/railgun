@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Railgun\Models\Traits;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasRelationships;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Railgun\Models\Comment;
@@ -11,6 +12,7 @@ use Railgun\Models\Comment;
 /**
  * Allow a model to have comments.
  *
+ * @property-read Collection|Comment[] $comments The model comments.
  * @mixin HasRelationships
  */
 trait Commentable

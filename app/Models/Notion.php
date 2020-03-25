@@ -5,40 +5,39 @@ declare(strict_types=1);
 namespace Railgun\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Railgun\Models\Traits\Orderable;
 use Railgun\Models\Traits\Randomizable;
+use Railgun\Models\Traits\Reorderable;
 
 /**
- * @property-read int    $id
- * @property string      $name
- * @property bool        $visible
- * @property int         $order
- * @property int         $chapter_id
- * @property int         $activity_count
- * @property-read Carbon $created_at
- * @property-read Carbon $updated_at
+ * @property-read int                  $id
+ * @property      string               $name
+ * @property      bool                 $visible
+ * @property      int                  $order
+ * @property      int                  $chapter_id
+ * @property-read Carbon               $created_at
+ * @property-read Carbon               $updated_at
  * ---
- * @property Chapter     $chapter
+ * @property-read Chapter              $chapter
+ * @property-read Collection|Course[]  $courses
+ * @property-read Collection|Subject[] $subjects
  */
 class Notion extends Model
 {
-    use Orderable;
+    use Reorderable;
     use Randomizable;
 
-    /** @var array The attributes that are mass assignable */
-    protected $fillable = [
+    protected $fillable          = [
         'name',
         'visible',
         'order',
         'chapter_id',
     ];
-
-    protected $casts = ['visible' => 'boolean'];
-
-    protected $orderGroups = ['chapter_id', 'type'];
+    protected $casts             = ['visible' => 'boolean'];
+    protected array $orderGroups = ['chapter_id', 'type'];
 
     /**
      * @return BelongsTo<Chapter>

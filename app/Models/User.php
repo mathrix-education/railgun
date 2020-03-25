@@ -28,25 +28,25 @@ use function trim;
 
 /**
  * @property-read int                       $id
- * @property string                         $uuid
- * @property string|null                    $username
- * @property string                         $email
- * @property string|null                    $firstname
- * @property string|null                    $lastname
- * @property string                         $password
- * @property string[]                       $scopes
- * @property bool                           $premium_bypass
- * @property Carbon                         $premium_bypass_expires_at
- * @property int|null                       $grade_id
- * @property string|null                    $stripe_id
- * @property string|null                    $braintree_id
- * @property array                          $settings
- * @property array                          $metadata
- * @property-read  Carbon                   $created_at
- * @property-read  Carbon                   $updated_at
+ * @property      string                    $uuid
+ * @property      string|null               $username
+ * @property      string                    $email
+ * @property      string|null               $firstname
+ * @property      string|null               $lastname
+ * @property      string                    $password
+ * @property      string[]                  $scopes
+ * @property      bool                      $premium_bypass
+ * @property      Carbon                    $premium_bypass_expires_at
+ * @property      int|null                  $grade_id
+ * @property      string|null               $stripe_id
+ * @property      string|null               $braintree_id
+ * @property      array                     $settings
+ * @property      array                     $metadata
+ * @property-read Carbon                    $created_at
+ * @property-read Carbon                    $updated_at
  * ---
  * @property-read string                    $full_name
- * @property-read bool                      $premium
+ * @property-read bool                      $premium If the user is premium
  * @property-read string                    $provider
  * ---
  * @property-read Grade                     $grade
@@ -66,8 +66,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     use Randomizable;
     use StripeCustomer;
 
-    /** @var array The guarded attributes */
-    protected $fillable = [
+    protected $fillable   = [
         'email',
         'username',
         'firstname',
@@ -75,9 +74,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'password',
         'grade_id',
     ];
-
-    /** @var array The hidden attributes from the model's JSON */
-    protected $hidden = [
+    protected $hidden     = [
         'uuid',
         'password',
         'premium_bypass',
@@ -85,7 +82,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'braintree_id',
         'metadata',
     ];
-
     protected $attributes = [
         'username'                  => null,
         'firstname'                 => null,
@@ -95,21 +91,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'premium_bypass_expires_at' => null,
         'settings'                  => '[]',
     ];
-
-    /** @var array The attributes that should be cast to native types */
-    protected $casts = [
+    protected $casts      = [
         'scopes'                    => 'array',
         'premium_bypass'            => 'boolean',
         'premium_bypass_expires_at' => 'datetime',
         'settings'                  => 'array',
         'metadata'                  => 'array',
     ];
-
-    /** @var array The virtual attributes */
-    protected $appends = [
-        'provider',
-        'last_session',
-    ];
+    protected $appends    = ['provider'];
 
     public function __construct(array $attributes = [])
     {
@@ -118,7 +107,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * BelongsTo Grade.
+     * @return BelongsTo<Grade>
      */
     public function grade(): BelongsTo
     {
@@ -126,7 +115,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * HasMany Comment.
+     * @return HasMany<Comment>
      */
     public function comments(): HasMany
     {
@@ -134,28 +123,37 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * HasMany Vote.
+     * @return HasMany<Vote>
      */
     public function votes(): HasMany
     {
         return $this->hasMany(Vote::class);
     }
 
+    /**
+     * @return HasMany<Subscription>
+     */
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(Subscription::class, 'customer_id', 'stripe_id');
+    }
+
+    /**
+     * @return MorphToMany<Pack>
+     */
     public function packs(): MorphToMany
     {
         return $this->morphedByMany(Pack::class, 'product', 'acquisitions')
             ->as(Acquisition::class);
     }
 
+    /**
+     * @return MorphToMany<Training>
+     */
     public function trainings(): MorphToMany
     {
         return $this->morphedByMany(Training::class, 'product', 'acquisitions')
             ->as(Acquisition::class);
-    }
-
-    public function subscriptions(): HasMany
-    {
-        return $this->hasMany(Subscription::class, 'customer_id', 'stripe_id');
     }
 
     /*
@@ -170,15 +168,17 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function getPremiumAttribute(): bool
     {
         if ($this->premium_bypass) {
+            // Permanent premium bypass
             return true;
         }
 
         if ($this->premium_bypass_expires_at instanceof Carbon && $this->premium_bypass_expires_at->isFuture()) {
+            // Temporary premium_bypass
             return true;
         }
 
-        // Raw query to speed things up
-        return Cache::store('array')->remember('user.' . $this->id . '.premium', 5, function (): bool {
+        // Cache for the current request
+        return Cache::store('array')->rememberForever('user.' . $this->id . '.premium', function (): bool {
             $customerIds = [];
 
             if ($this->stripe_id !== null) {
@@ -197,14 +197,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * @param string $password The new password.
-     */
-    public function setPasswordAttribute(string $password): void
-    {
-        $this->attributes['password'] = Hash::make($password);
-    }
-
-    /**
      * full_name attribute.
      */
     public function getFullNameAttribute(): string
@@ -217,7 +209,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * The login provider.
+     * @return string The login provider.
      */
     public function getProviderAttribute(): string
     {
@@ -230,5 +222,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         }
 
         return $provider;
+    }
+
+    /**
+     * Hash the new password when setting it.
+     *
+     * @param string $password The new password.
+     */
+    public function setPasswordAttribute(string $password): void
+    {
+        $this->attributes['password'] = Hash::make($password);
     }
 }

@@ -9,29 +9,31 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Traits\Commentable;
 use Railgun\Models\Traits\Interactable;
-use Railgun\Models\Traits\Orderable;
 use Railgun\Models\Traits\Randomizable;
+use Railgun\Models\Traits\Reorderable;
 
 /**
- * @property-read  int   $id
- * @property string      $name
- * @property string      $slug
- * @property int         $duration
- * @property array       $content
- * @property int         $order
- * @property bool        $visible
- * @property int         $chapter_id
- * @property-read Carbon $created_at
- * @property-read Carbon $updated_at
+ * @property-read  int    $id
+ * @property       string $name
+ * @property       string $slug
+ * @property       int    $duration
+ * @property       array  $content
+ * @property       int    $order
+ * @property       bool   $visible
+ * @property       int    $chapter_id
+ * @property-read Carbon  $created_at
+ * @property-read Carbon  $updated_at
+ * ---
+ * @property-read Chapter $chapter
  */
 class Exam extends Model
 {
     use Commentable;
     use Interactable;
-    use Orderable;
+    use Reorderable;
     use Randomizable;
 
-    protected $fillable = [
+    protected $fillable          = [
         'name',
         'slug',
         'duration',
@@ -40,13 +42,11 @@ class Exam extends Model
         'visible',
         'chapter_id',
     ];
-
-    protected $casts = [
+    protected $casts             = [
         'content' => 'array',
         'visible' => 'boolean',
     ];
-
-    protected $orderGroups = ['chapter_id'];
+    protected array $orderGroups = ['chapter_id'];
 
     /**
      * @return BelongsTo<Chapter>

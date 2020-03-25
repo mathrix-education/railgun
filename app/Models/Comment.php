@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Railgun\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,17 +15,22 @@ use Illuminate\Support\Facades\Auth;
 use Railgun\Models\Traits\Randomizable;
 
 /**
- * @property-read int    $id
- * @property string|null $content
- * @property-read int    $score
- * @property int|null    $parent_id
- * @property int         $user_id
- * @property string      $commentable_type
- * @property int         $commentable_id
- * @property-read Carbon $created_at
- * @property-read Carbon $updated_at
+ * @property-read int                  $id
+ * @property      string|null          $content
+ * @property-read int                  $score
+ * @property-read int|null             $parent_id
+ * @property-read int                  $user_id
+ * @property-read string               $commentable_type
+ * @property-read int                  $commentable_id
+ * @property-read Carbon               $created_at
+ * @property-read Carbon               $updated_at
  * ---
- * @property-read User   $user
+ * @property-read Comment              $commentable
+ * @property-read User                 $user
+ * @property-read Comment|null         $parent
+ * @property-read Vote|null            $vote
+ * @property-read Collection|Comment[] $children
+ * @property-read Collection|Vote[]    $votes
  */
 class Comment extends Model
 {
@@ -71,10 +77,15 @@ class Comment extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return HasOne<Vote>
+     */
     public function vote(): HasOne
     {
+        $userId = Auth::id() ?? 0;
+
         return $this->hasOne(Vote::class)
-            ->where('user_id', '=', Auth::id());
+            ->where('user_id', '=', $userId);
     }
 
     /**

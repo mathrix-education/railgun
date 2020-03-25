@@ -9,20 +9,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Traits\Commentable;
 use Railgun\Models\Traits\Interactable;
-use Railgun\Models\Traits\Orderable;
 use Railgun\Models\Traits\Randomizable;
+use Railgun\Models\Traits\Reorderable;
 
 /**
  * @property-read int     $id
- * @property string       $type
- * @property array        $content
- * @property array        $questions
- * @property array        $choices
- * @property array        $solutions
- * @property array        $explanations
- * @property int          $order
- * @property bool         $visible
- * @property int          $subject_id
+ * @property      string  $type
+ * @property      array   $content
+ * @property      array   $questions
+ * @property      array   $choices
+ * @property      array   $solutions
+ * @property      array   $explanations
+ * @property      int     $order
+ * @property      bool    $visible
+ * @property      int     $subject_id
  * @property-read Carbon  $created_at
  * @property-read Carbon  $updated_at
  * ---
@@ -32,10 +32,10 @@ class Exercise extends Model
 {
     use Commentable;
     use Interactable;
-    use Orderable;
+    use Reorderable;
     use Randomizable;
 
-    protected $fillable = [
+    protected $fillable          = [
         'type',
         'questions',
         'choices',
@@ -45,16 +45,14 @@ class Exercise extends Model
         'visible',
         'subject_id',
     ];
-
-    protected $casts = [
+    protected $casts             = [
         'content'      => 'array',
         'questions'    => 'array',
         'choices'      => 'array',
         'solutions'    => 'array',
         'explanations' => 'array',
     ];
-
-    protected $orderGroups = ['subject_id'];
+    protected array $orderGroups = ['subject_id'];
 
     /**
      * @return BelongsTo<Subject>

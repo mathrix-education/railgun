@@ -10,11 +10,11 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Railgun\Models\Traits\Randomizable;
 
 /**
- * @property int         $user_id
- * @property string      $interactable_type
- * @property int         $interactable_id
- * @property string      $comprehension
- * @property int         $score
+ * @property      int    $user_id
+ * @property      string $interactable_type
+ * @property      int    $interactable_id
+ * @property      string $comprehension
+ * @property      int    $score
  * @property-read Carbon $created_at
  * @property-read Carbon $updated_at
  */
