@@ -4,7 +4,7 @@ extend type Mutation {
     """
     interact(
         interactable_type: InteractionType!
-        interactable_id: Int!
+        interactable_id: ID!
         comprehension: InteractionComprehension
         score: Int
     ): Boolean! @guard
