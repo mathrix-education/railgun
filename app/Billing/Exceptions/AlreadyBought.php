@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Railgun\Billing\Exceptions;
 
 use Illuminate\Support\Facades\Auth;
+use Psr\Log\LogLevel;
+use Railgun\Exceptions\HttpException;
 use Throwable;
 use function implode;
 use function trans;
@@ -12,15 +14,13 @@ use function trans;
 /**
  * Thrown when a user tries to buy a product he already owns.
  */
-class AlreadyBought extends InvalidCart
+class AlreadyBought extends HttpException
 {
-    public function __construct(
-        array $productNames,
-        int $userId,
-        ?Throwable $previous = null,
-        int $code = 0,
-        array $headers = []
-    ) {
+    protected string $level    = LogLevel::NOTICE;
+    protected string $category = 'cart';
+
+    public function __construct(array $productNames, int $userId, ?Throwable $previous = null)
+    {
         $names = implode(', ', $productNames);
 
         if ($userId === Auth::id()) {
@@ -29,6 +29,6 @@ class AlreadyBought extends InvalidCart
             $message = trans('billing.errors.already_bought', ['name' => $names, 'id' => $userId]);
         }
 
-        parent::__construct($message, $previous, $code, $headers);
+        parent::__construct($message, $previous);
     }
 }

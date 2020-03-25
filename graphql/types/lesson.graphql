@@ -2,7 +2,7 @@ type Lesson {
     id: ID!
     name: String!
     slug: String!
-    content: SilicateWall!
+    content: Silicate!
     order: Int!
     visible: Boolean!
     section: Section! @belongsTo

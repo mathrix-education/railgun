@@ -4,18 +4,21 @@ declare(strict_types=1);
 
 namespace Railgun\Billing\Exceptions;
 
-use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
+use Psr\Log\LogLevel;
+use Railgun\Exceptions\HttpException;
 use Stripe\ErrorObject;
 use Stripe\Exception\CardException;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Throwable;
 use function trans;
 
 /**
  * Wrapper for {@see CardException}.
  */
-class Card extends BadRequestHttpException implements RendersErrorsExtensions
+class Card extends HttpException
 {
+    protected string $level    = LogLevel::NOTICE;
+    protected string $category = 'billing';
+
     public static function from(?CardException $cardException = null, ?Throwable $previous = null): Card
     {
         $previous = $cardException ?? $previous ?? null;
@@ -42,16 +45,6 @@ class Card extends BadRequestHttpException implements RendersErrorsExtensions
         }
 
         return new self($message, $previous);
-    }
-
-    public function isClientSafe(): bool
-    {
-        return true;
-    }
-
-    public function getCategory(): string
-    {
-        return 'billing';
     }
 
     public function extensionsContent(): array

@@ -1,8 +1,8 @@
 extend type Mutation {
     "Create a new flashcard."
     createFlashcard (
-        fronts: [SilicateWall!]!
-        backs: [SilicateWall!]!
+        fronts: [Silicate!]!
+        backs: [Silicate!]!
         order: Int!
         visible: Boolean!
         chapter_id: ID!
@@ -11,8 +11,8 @@ extend type Mutation {
     "Update an existing flashcard."
     updateFlashcard (
         id: ID!
-        fronts: [SilicateWall!]
-        backs: [SilicateWall!]
+        fronts: [Silicate!]
+        backs: [Silicate!]
         order: Int
         visible: Boolean
         chapter_id: ID

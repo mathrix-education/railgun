@@ -13,7 +13,7 @@ class SearchCourses
     /**
      * @return Builder The search builder.
      */
-    public function getBuilder(): Builder
+    public function __invoke(): Builder
     {
         $args  = func_get_arg(1);
         $query = $args['query'];

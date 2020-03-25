@@ -23,7 +23,7 @@ class BraintreeServiceProvider extends ServiceProvider implements DeferrableProv
         });
     }
 
-    public function provides()
+    public function provides(): array
     {
         return [Gateway::class];
     }

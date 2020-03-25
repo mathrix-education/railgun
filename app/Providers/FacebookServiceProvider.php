@@ -10,7 +10,7 @@ use Illuminate\Support\ServiceProvider;
 use function env;
 
 /**
- * Register Facebook SDK.
+ * Register the {@see Facebook SDK}, used for Facebook authentication.
  */
 class FacebookServiceProvider extends ServiceProvider implements DeferrableProvider
 {
@@ -24,7 +24,7 @@ class FacebookServiceProvider extends ServiceProvider implements DeferrableProvi
         });
     }
 
-    public function provides()
+    public function provides(): array
     {
         return [Facebook::class];
     }

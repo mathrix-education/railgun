@@ -4,7 +4,7 @@ extend type Mutation {
         name: String!
         slug: String!
         duration: Int
-        content: SilicateWall
+        content: Silicate
         order: Int
         visible: Boolean
         chapter_id: ID!
@@ -16,7 +16,7 @@ extend type Mutation {
         name: String
         slug: String
         duration: Int
-        content: SilicateWall
+        content: Silicate
         order: Int
         visible: Boolean
         chapter_id: ID

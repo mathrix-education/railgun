@@ -38,6 +38,8 @@ class ForgotPassword
             return ['email' => $email];
         }
 
+        // While we could queue the email, we think that is this precise case it is better to send to email
+        // synchronously in order to be able to confirm the email delivery to the user.
         Mail::to($user->email)->send(new PasswordForgottenMail($user));
 
         return true;

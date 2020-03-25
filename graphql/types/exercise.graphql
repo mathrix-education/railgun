@@ -1,11 +1,11 @@
 type Exercise {
     id: ID!
     type: String
-    content: SilicateWall!
-    questions: [SilicateWall!]!
-    choices: [[SilicateWall!]!]!
+    content: Silicate!
+    questions: [Silicate!]!
+    choices: [[Silicate!]!]!
     solutions: [[Int!]!]!
-    explanations: [SilicateWall!]!
+    explanations: [Silicate!]!
     order: Int!
     created_at: DateTime!
     updated_at: DateTime!

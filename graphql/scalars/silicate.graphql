@@ -1,1 +1,2 @@
-scalar SilicateWall @scalar(class: "Railgun\\GraphQL\\Scalars\\SilicateWallType")
+scalar Silicate @scalar(class: "Railgun\\GraphQL\\Scalars\\MixedType")
+scalar Any @scalar(class: "Railgun\\GraphQL\\Scalars\\MixedType")

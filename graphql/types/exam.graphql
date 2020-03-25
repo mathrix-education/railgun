@@ -3,7 +3,7 @@ type Exam {
     name: String!
     slug: String!
     duration: Int
-    content: SilicateWall
+    content: Silicate
     order: Int!
     visible: Boolean!
     created_at: DateTime!

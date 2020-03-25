@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Notifications\DatabaseNotification as Notification;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -51,12 +53,16 @@ use function trim;
  * @property-read Collection|Comment[]      $comments
  * @property-read Collection|Vote[]         $votes
  * @property-read Collection|Subscription[] $subscriptions
+ * @property-read Collection|Notification[] $notifications
+ * @property-read Collection|Notification[] $unreadNotifications
+ * @property-read Collection|Notification[] $readNotifications
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable;
     use Authorizable;
     use Cacheable;
+    use Notifiable;
     use Randomizable;
     use StripeCustomer;
 
