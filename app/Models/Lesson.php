@@ -28,7 +28,7 @@ class Lesson extends Model
     use Reorderable;
     use Randomizable;
 
-    protected $fillable          = [
+    protected $fillable = [
         'name',
         'slug',
         'content',
@@ -36,10 +36,12 @@ class Lesson extends Model
         'visible',
         'section_id',
     ];
-    protected $casts             = [
+
+    protected $casts = [
         'content' => 'array',
         'visible' => 'boolean',
     ];
+
     protected array $orderGroups = ['section_id'];
 
     /**

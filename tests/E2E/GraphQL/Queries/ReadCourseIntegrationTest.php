@@ -117,4 +117,30 @@ class ReadCourseIntegrationTest extends GraphQLIntegrationTestCase
             $this->getContent('errors.0.message')
         );
     }
+
+    /**
+     * @testdox returns an empty content when querying a locked course
+     */
+    public function testPremiumLocked(): void
+    {
+        /** @var Course $course */
+        $course = Course::query()->inRandomOrder()->where('premium', '=', true)->firstOrFail();
+
+        $this->graphQL(
+            <<<'GRAPHQL'
+            query($id: ID!) {
+                readCourse(id: $id) {
+                    id
+                    content
+                }
+            }
+            GRAPHQL,
+            ['id' => $course->id]
+        );
+
+        $this->assertResponseOk();
+        $this->assertNoErrors();
+        $this->assertEquals($course->id, $this->getData('readCourse.id'));
+        $this->assertEmpty($this->getData('readCourse.content'));
+    }
 }

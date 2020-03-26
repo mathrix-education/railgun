@@ -4,6 +4,10 @@ type Course {
     slug: String!
     content: Silicate!
     order: Int!
+    """
+    If the flashcard is premium-locked.
+    """
+    premium: Boolean!
     visible: Boolean!
     seo_index: Boolean!
     seo_title: String

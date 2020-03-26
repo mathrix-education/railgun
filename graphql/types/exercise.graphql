@@ -7,6 +7,11 @@ type Exercise {
     solutions: [[Int!]!]!
     explanations: [Silicate!]!
     order: Int!
+    """
+    If the flashcard is premium-locked.
+    """
+    premium: Boolean!
+    visible: Boolean!
     created_at: DateTime!
     updated_at: DateTime!
     subject: Subject! @belongsTo

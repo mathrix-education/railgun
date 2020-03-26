@@ -53,17 +53,11 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
         SDL;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function name()
+    public function name(): string
     {
         return 'permission';
     }
 
-    /**
-     * @inheritDoc
-     */
     public function transform($argumentValue)
     {
         $this->checkScope();
@@ -111,9 +105,6 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
         }
     }
 
-    /**
-     * @inheritDoc
-     */
     public function handleField(FieldValue $fieldValue, Closure $next)
     {
         $previousResolver = $fieldValue->getResolver();
