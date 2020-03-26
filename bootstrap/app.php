@@ -78,8 +78,10 @@ if ($app->environment(['master', 'dev', 'v7']) && !$app->runningUnitTests()) {
 }
 
 // Debug
-if ($app->runningInConsole() && !$app->runningUnitTests()) {
+if ($app->runningInConsole()) {
     $app->register(MigrationV7ServiceProvider::class);
+}
+if ($app->runningInConsole() && !$app->runningUnitTests()) {
     $app->register(TinkerServiceProvider::class);
 }
 

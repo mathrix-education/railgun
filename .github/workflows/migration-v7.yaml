@@ -55,11 +55,6 @@ jobs:
         run: |
           cp tests/.env .env
           php artisan v7
-      - name: Upload malformed exams artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: malformed-exams
-          path: storage/artifacts/malformed-exams
       - name: Restore generated database
         if: github.ref == 'refs/heads/v7'
         run: |
