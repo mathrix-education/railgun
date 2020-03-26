@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Railgun\GraphQL\Directives;
 
 use Closure;
-use Exception;
 use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Support\Facades\Auth;
 use Nuwave\Lighthouse\Schema\Directives\BaseDirective;

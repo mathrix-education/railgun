@@ -27,7 +27,7 @@ class DismissNotificationIntegrationTest extends GraphQLIntegrationTestCase
     GRAPHQL;
 
     /**
-     * @testdox successfully dismiss a single notification
+     * @testdox dismisses a single notification
      */
     public function testReadNotification(): void
     {

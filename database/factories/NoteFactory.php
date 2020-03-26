@@ -5,7 +5,6 @@ declare(strict_types=1);
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;
-use Railgun\Models\Comment;
 use Railgun\Models\Course;
 use Railgun\Models\Exam;
 use Railgun\Models\Exercise;

@@ -153,7 +153,7 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
 
     /**
      * @dataProvider createCheckoutSuccessDataset
-     * @testdox      successfully an invoice using the token $paymentMethodId.
+     * @testdox      creates invoice using the token $paymentMethodId.
      *
      * @param string $paymentMethodId
      * @param string $expectedInvoiceStatus
@@ -223,6 +223,7 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
 
     /**
      * @dataProvider createCheckoutFailsDataset
+     * @testdox      fails to create in invoice using $paymentMethodId with error "$expectedError"
      *
      * @param string $paymentMethodId
      * @param string $expectedError

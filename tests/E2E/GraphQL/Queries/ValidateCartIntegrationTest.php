@@ -7,6 +7,7 @@ namespace Tests\E2E\GraphQL\Queries;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 
 /**
+ * @testdox [E2E] Query validateCart
  * @coversNothing
  */
 class ValidateCartIntegrationTest extends GraphQLIntegrationTestCase
@@ -38,6 +39,9 @@ class ValidateCartIntegrationTest extends GraphQLIntegrationTestCase
     }
     GRAPHQL;
 
+    /**
+     * @testdox returns the validated cart
+     */
     public function testValid(): void
     {
         $this->actingAsNewUser();

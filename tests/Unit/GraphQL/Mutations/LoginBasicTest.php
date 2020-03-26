@@ -7,6 +7,7 @@ namespace Tests\Unit\GraphQL\Mutations;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Hash;
 use Mockery;
+use Mockery\MockInterface;
 use Railgun\Exceptions\InvalidCredentials;
 use Railgun\GraphQL\Mutations\LoginBasic;
 use Railgun\Models\User;
@@ -41,6 +42,7 @@ class LoginBasicTest extends GraphQLUnitTestCase
      */
     public function testLoginSuccess(): void
     {
+        /** @var User|MockInterface $user */
         $user = Mockery::mock('overload:' . User::class, Authenticatable::class);
 
         $user->email    = $this->email;
@@ -48,7 +50,7 @@ class LoginBasicTest extends GraphQLUnitTestCase
 
         $user->expects('query->where->get->first')
             ->withNoArgs()
-            ->andReturn($user);
+            ->andReturns($user);
         $user->expects('getAuthIdentifier')->withAnyArgs()->andReturns($this->userId);
 
         $data = $this->invoke(LoginBasic::class, [
@@ -87,6 +89,7 @@ class LoginBasicTest extends GraphQLUnitTestCase
     {
         $this->expectException(InvalidCredentials::class);
 
+        /** @var User|MockInterface $user */
         $user = Mockery::mock('overload:' . User::class, Authenticatable::class);
 
         $user->email    = $this->email;
@@ -94,9 +97,9 @@ class LoginBasicTest extends GraphQLUnitTestCase
 
         $user->expects('query->where->get->first')
             ->withNoArgs()
-            ->andReturn($user);
+            ->andReturns($user);
 
-        $data = $this->invoke(LoginBasic::class, [
+        $this->invoke(LoginBasic::class, [
             'email'    => $this->email,
             'password' => $this->faker->password,
         ]);

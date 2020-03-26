@@ -11,19 +11,30 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @property-read int         $id
- * @property      array       $content
- * @property      string|null $brick_id
- * @property-read int         $user_id
- * @property-read string      $notable_type
- * @property-read string      $notable_id
- * @property-read Carbon      $created_at
- * @property-read Carbon      $updated_at
- * @property-read Carbon      $delete_at
+ * @property-read int                            $id
+ * @property      array                          $content
+ * @property      string|null                    $brick_id
+ * @property-read int                            $user_id
+ * @property-read string                         $notable_type
+ * @property-read string                         $notable_id
+ * @property-read Carbon                         $created_at
+ * @property-read Carbon                         $updated_at
+ * @property-read Carbon                         $deleted_at
+ * ---
+ * @property-read Course|Exercise|Flashcard|Exam $notable
  */
 class Note extends Model
 {
     use SoftDeletes;
+
+    protected $fillable = [
+        'content',
+        'brick_id',
+        'user_id',
+        'notable_type',
+        'notable_id',
+    ];
+    protected $casts    = ['content' => 'array'];
 
     /**
      * @return BelongsTo<User>
