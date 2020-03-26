@@ -10,5 +10,9 @@ type Exam {
     updated_at: DateTime!
     chapter: Chapter! @belongsTo
     comments: [Comment!] @morphMany
+    """
+    The exam administrative notes. Requires the "notes:read" scope.
+    """
+    notes: [Note!] @morphMany @permission(scope: "notes:read")
     interaction: Interaction @belongsTo
 }

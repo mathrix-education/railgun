@@ -23,7 +23,7 @@ class MissingScope extends HttpException
     public function __construct(array $scopes, ?Throwable $previous = null)
     {
         parent::__construct(
-            trans('auth.missing_scope', ['scope' => implode(', ', $this->scopes)]),
+            trans('auth.missing_scope', ['scope' => implode(', ', $scopes)]),
             $previous
         );
 

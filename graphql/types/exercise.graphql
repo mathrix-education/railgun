@@ -9,7 +9,11 @@ type Exercise {
     order: Int!
     created_at: DateTime!
     updated_at: DateTime!
-    comments: [Comment!] @morphMany
-    interaction: Interaction @belongsTo
     subject: Subject! @belongsTo
+    comments: [Comment!] @morphMany
+    """
+    The exercise administrative notes. Requires the "notes:read" scope.
+    """
+    notes: [Note!] @morphMany @permission(scope: "notes:read")
+    interaction: Interaction @belongsTo
 }

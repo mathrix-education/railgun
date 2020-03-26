@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Railgun\GraphQL\Directives;
 
 use Closure;
-use Exception;
 use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Support\Facades\Auth;
 use Nuwave\Lighthouse\Schema\Directives\BaseDirective;
@@ -75,9 +74,10 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
     /**
      * Check that the current user has the required scope.
      *
-     * @throws Exception
+     * @throws RuntimeException
+     * @throws MissingScope
      */
-    private function checkScope()
+    private function checkScope(): void
     {
         if ($this->directiveHasArgument('scope')) {
             $scopes = [$this->directiveArgValue('scope')];

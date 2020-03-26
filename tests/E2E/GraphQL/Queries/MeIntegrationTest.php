@@ -10,8 +10,15 @@ use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function app;
 use function factory;
 
+/**
+ * @testdox [E2] Query me
+ * @coversNothing
+ */
 class MeIntegrationTest extends GraphQLIntegrationTestCase
 {
+    /**
+     * @testdox returns the user id using a true, non-mocked JWT
+     */
     public function testBearerAuth(): void
     {
         $user = factory(User::class)->create();

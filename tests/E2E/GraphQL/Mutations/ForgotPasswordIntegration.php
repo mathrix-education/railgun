@@ -26,7 +26,7 @@ class ForgotPasswordIntegration extends GraphQLIntegrationTestCase
     GRAPHQL;
 
     /**
-     * @testdox with non-existing email
+     * @testdox do nothing using a non-existing email
      */
     public function testNonExistingEmail(): void
     {
@@ -41,7 +41,7 @@ class ForgotPasswordIntegration extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox with existing email
+     * @testdox sends email using an existing email
      */
     public function testExistingEmail(): void
     {
@@ -58,7 +58,7 @@ class ForgotPasswordIntegration extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox mailjet integration
+     * @testdox uses mailjet integration
      */
     public function testWithMailjet(): void
     {
