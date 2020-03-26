@@ -6,13 +6,20 @@ namespace Railgun\MigrationV7\Commands;
 
 use Exception;
 use Illuminate\Support\Facades\DB;
-use function dirname;
-use function file_get_contents;
 use function round;
 use function time;
 
 class MigrateCommand extends V7Command
 {
+    private const BANNER = <<<ASCII
+    ███╗   ███╗ █████╗ ████████╗██╗  ██╗██████╗ ██╗██╗  ██╗    ██╗   ██╗███████╗  ██████╗     ██████╗
+    ████╗ ████║██╔══██╗╚══██╔══╝██║  ██║██╔══██╗██║╚██╗██╔╝    ██║   ██║╚════██║ ██╔═████╗   ██╔═████╗
+    ██╔████╔██║███████║   ██║   ███████║██████╔╝██║ ╚███╔╝     ██║   ██║    ██╔╝ ██║██╔██║   ██║██╔██║
+    ██║╚██╔╝██║██╔══██║   ██║   ██╔══██║██╔══██╗██║ ██╔██╗     ╚██╗ ██╔╝   ██╔╝  ████╔╝██║   ████╔╝██║
+    ██║ ╚═╝ ██║██║  ██║   ██║   ██║  ██║██║  ██║██║██╔╝ ██╗     ╚████╔╝    ██║██╗╚██████╔╝██╗╚██████╔╝
+    ╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝      ╚═══╝     ╚═╝╚═╝ ╚═════╝ ╚═╝ ╚═════╝
+    ASCII;
+
     private const COMMANDS = [
         'v7:reset',
         'v7:zeros',
@@ -47,7 +54,7 @@ class MigrateCommand extends V7Command
         $start = time();
 
         // Banner
-        $this->output->write(file_get_contents(dirname(__DIR__, 2) . '/resources/banner.txt'));
+        $this->output->write(self::BANNER);
         $this->line('Migration script by Mathieu Bour and Valentin Pollart');
         $this->line("\n");
 
