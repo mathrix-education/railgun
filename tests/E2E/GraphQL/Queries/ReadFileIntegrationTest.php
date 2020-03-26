@@ -7,6 +7,7 @@ namespace Tests\E2E\GraphQL\Queries;
 use League\Flysystem\Util;
 use Railgun\Facades\Storage;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
+use Tests\E2E\GraphQL\TestFilesystem;
 use function trans;
 
 /**
@@ -14,6 +15,8 @@ use function trans;
  */
 class ReadFileIntegrationTest extends GraphQLIntegrationTestCase
 {
+    use TestFilesystem;
+
     /**
      * Execute the GraphQL "readFile" query.
      *
@@ -45,7 +48,7 @@ class ReadFileIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testReadExistingFile(): void
     {
-        $path = '/test.txt';
+        $path = $this->getRootDirectory() . '/test.txt';
         Storage::put($path, 'hello');
 
         $this->actingAsNewUser('files:read');
@@ -60,7 +63,7 @@ class ReadFileIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testReadNonExistingFile(): void
     {
-        $path = '/idontexist.txt';
+        $path = $this->getRootDirectory() . '/test.txt';
         Storage::delete($path);
 
         $this->actingAsNewUser('files:read');

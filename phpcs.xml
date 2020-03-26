@@ -43,6 +43,7 @@
                 "/>
                 <element value="
                     @dataProvider,
+                    @testWith,
                     @testdox,
                     @coversDefaultClass,
                     @coversNothing,

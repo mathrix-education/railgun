@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Queries;
 
-use League\Flysystem\Util;
+use Railgun\Facades\Storage;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
+use Tests\E2E\GraphQL\TestFilesystem;
+use function collect;
 use function trans;
 
 /**
@@ -13,6 +15,8 @@ use function trans;
  */
 class ListFilesIntegrationTest extends GraphQLIntegrationTestCase
 {
+    use TestFilesystem;
+
     /**
      * @param string $path The directory path
      */
@@ -46,12 +50,34 @@ class ListFilesIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox returns the content of and existing directory.
+     * @testWith ["/"]
+     *           [""]
+     * @testdox returns the content of the root directory.
+     *
+     * @param string $path
+     */
+    public function testReadRootDirectory(string $path): void
+    {
+        $this->actingAsNewUser('files:read');
+        $this->executeListFiles($path);
+
+        $this->assertNoErrors();
+        $this->assertResponseOk();
+    }
+
+    /**
+     * @testdox returns the content of an existing directory.
      */
     public function testReadExistingDirectory(): void
     {
+        $files = ['foo.txt', 'bar.txt', 'baz/foo.txt'];
+
+        collect($files)->each(function (string $file) {
+            Storage::put($this->getRootDirectory() . '/' . $file, 'hello');
+        });
+
         $this->actingAsNewUser('files:read');
-        $this->executeListFiles('/');
+        $this->executeListFiles($this->getRootDirectory());
 
         $this->assertNoErrors();
         $this->assertResponseOk();
@@ -62,7 +88,7 @@ class ListFilesIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testReadNonExistingDirectory(): void
     {
-        $directory = Util::normalizePath('/idontexist');
+        $directory = $this->getRootDirectory() . '/idontexists';
         $this->actingAsNewUser('files:read');
         $this->executeListFiles($directory);
 

@@ -9,9 +9,11 @@ use GraphQL\Error\Error as GraphQLError;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
+use League\Flysystem\FileExistsException;
 use League\Flysystem\FileNotFoundException;
 use Psr\Log\LogLevel;
 use Railgun\Billing\Exceptions\Card;
+use Railgun\Exceptions\FileConflict;
 use Railgun\Exceptions\FileNotFound;
 use Railgun\Exceptions\HttpException;
 use Railgun\Exceptions\Validation;
@@ -74,7 +76,12 @@ class Handler extends ExceptionHandler
 
         if ($original instanceof FileNotFoundException) {
             // Convert League exception
-            return new FileNotFound($original->getPath());
+            return new FileNotFound($original->getPath(), $original);
+        }
+
+        if ($original instanceof FileExistsException) {
+            // Convert League exception
+            return new FileConflict($original->getPath(), $original);
         }
 
         return $original;

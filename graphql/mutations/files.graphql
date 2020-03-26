@@ -1,4 +1,18 @@
 extend type Mutation {
-    """Create a file"""
-    createFile(file: Upload!, path: String!): FileMetadata! @permission(scope: "files:create")
+    """
+    Create a file.
+    """
+    createFile(
+        file: Upload!
+        path: String!
+    ): FileMetadata! @permission(scope: "files:create")
+
+    """
+    Move a file.
+    """
+    moveFile(
+        source:String!
+        destination: String!
+        override: Boolean = false
+    ): FileMetadata! @permission(scope: "files:move")
 }
