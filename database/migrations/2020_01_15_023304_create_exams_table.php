@@ -22,6 +22,7 @@ class CreateExamsTable extends Migration
             $table->unsignedTinyInteger('duration')->nullable();
             $table->json('content');
             $table->unsignedTinyInteger('order');
+            $table->boolean('premium');
             $table->boolean('visible');
             $table->unsignedBigInteger('chapter_id');
             $table->timestamps();

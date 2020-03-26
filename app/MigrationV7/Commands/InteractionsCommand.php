@@ -16,10 +16,12 @@ use function env;
 use function explode;
 use function fclose;
 use function fgetcsv;
+use function file_exists;
 use function fopen;
 use function in_array;
 use function sprintf;
 use function storage_path;
+use function unlink;
 
 class InteractionsCommand extends V7Command
 {
@@ -48,6 +50,7 @@ class InteractionsCommand extends V7Command
         $this->build();
         $this->unique();
         $this->insert();
+        $this->clean();
     }
 
     private function setup(): void
@@ -199,5 +202,16 @@ class InteractionsCommand extends V7Command
             });
 
         $this->getOutput()->progressFinish();
+    }
+
+    private function clean(): void
+    {
+        $path = storage_path(self::EXPORT_NAME);
+
+        if (!file_exists($path)) {
+            return;
+        }
+
+        unlink($path);
     }
 }

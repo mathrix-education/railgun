@@ -20,6 +20,7 @@ class CreateFlashcardsTable extends Migration
             $table->json('fronts');
             $table->json('backs');
             $table->unsignedTinyInteger('order');
+            $table->boolean('premium');
             $table->boolean('visible');
             $table->unsignedBigInteger('chapter_id');
             $table->timestamps();

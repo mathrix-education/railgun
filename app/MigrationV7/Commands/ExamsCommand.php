@@ -10,20 +10,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Railgun\MigrationV7\Exams\ExamConverter;
 use stdClass;
-use Symfony\Component\Process\Process;
-use const JSON_PRETTY_PRINT;
 use const JSON_THROW_ON_ERROR;
-use function file_put_contents;
 use function implode;
 use function json_decode;
 use function json_encode;
 use function ksort;
-use function storage_path;
 
 class ExamsCommand extends V7Command
 {
-    private const CHUNK_SIZE    = 100;
-    private const MALFORMED_DIR = 'artifacts/malformed-exams';
+    private const CHUNK_SIZE = 100;
 
     protected $signature = 'v7:exams';
 
@@ -77,6 +72,7 @@ class ExamsCommand extends V7Command
             ->selectRaw(implode(',', [
                 'activities.name AS name',
                 'modules.content AS content',
+                'activities.premium AS premium',
                 'modules.visible AS visible',
                 'notions.chapter_id AS chapter_id',
                 'modules.created_at AS created_at',
@@ -105,6 +101,7 @@ class ExamsCommand extends V7Command
             ->selectRaw(implode(',', [
                 'modules.*',
                 'activities.name AS name',
+                'activities.premium AS premium',
                 'notions.chapter_id AS chapter_id',
                 "CONCAT('module-', modules.id) AS mapping",
             ]))
@@ -152,31 +149,6 @@ class ExamsCommand extends V7Command
         ]);
         $this->newLine();
 
-        if ($malformed->isNotEmpty()) {
-            $this->exportMalformed($malformed);
-        }
-
         return $valid;
-    }
-
-    /**
-     * Export malformed exams to separate JSON files.
-     *
-     * @param Collection $exams The malformed exams collection.
-     */
-    private function exportMalformed(Collection $exams): void
-    {
-        $exportDir = storage_path(self::MALFORMED_DIR);
-        Process::fromShellCommandline("rm -rf $exportDir")->run();
-        Process::fromShellCommandline("mkdir -p $exportDir")->run();
-
-        $exams->each(static function ($exam) use ($exportDir) {
-            $examDest   = "{$exportDir}/{$exam->mapping}.json";
-            $examString = json_encode($exam, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT, 512);
-            file_put_contents($examDest, $examString);
-        });
-
-        $this->info("Exported {$exams->count()} malformed exams to $exportDir");
-        $this->newLine();
     }
 }

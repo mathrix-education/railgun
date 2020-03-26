@@ -54,7 +54,7 @@ class MigrateCommand extends V7Command
         $start = time();
 
         // Banner
-        $this->output->write(self::BANNER);
+        $this->output->writeln(self::BANNER);
         $this->line('Migration script by Mathieu Bour and Valentin Pollart');
         $this->line("\n");
 
