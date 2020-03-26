@@ -14,7 +14,12 @@ use function trans;
  */
 class ReadFileIntegrationTest extends GraphQLIntegrationTestCase
 {
-    private function execute(string $path): void
+    /**
+     * Execute the GraphQL "readFile" query.
+     *
+     * @param string $path The file path.
+     */
+    private function executeReadFile(string $path): void
     {
         $this->graphQL(
             <<<'GRAPHQL'
@@ -44,7 +49,7 @@ class ReadFileIntegrationTest extends GraphQLIntegrationTestCase
         Storage::put($path, 'hello');
 
         $this->actingAsNewUser('files:read');
-        $this->execute($path);
+        $this->executeReadFile($path);
 
         $this->assertResponseOk();
         $this->assertNoErrors();
@@ -56,13 +61,10 @@ class ReadFileIntegrationTest extends GraphQLIntegrationTestCase
     public function testReadNonExistingFile(): void
     {
         $path = '/idontexist.txt';
-
-        if (Storage::exists($path)) {
-            Storage::delete($path);
-        }
+        Storage::delete($path);
 
         $this->actingAsNewUser('files:read');
-        $this->execute($path);
+        $this->executeReadFile($path);
 
         $this->assertResponseOk();
         $this->assertError(

@@ -13,7 +13,10 @@ use function trans;
  */
 class ListFilesIntegrationTest extends GraphQLIntegrationTestCase
 {
-    private function executeQuery(string $path): void
+    /**
+     * @param string $path The directory path
+     */
+    private function executeListFiles(string $path): void
     {
         $this->graphQL(
             <<<'GRAPHQL'
@@ -48,7 +51,7 @@ class ListFilesIntegrationTest extends GraphQLIntegrationTestCase
     public function testReadExistingDirectory(): void
     {
         $this->actingAsNewUser('files:read');
-        $this->executeQuery('/');
+        $this->executeListFiles('/');
 
         $this->assertNoErrors();
         $this->assertResponseOk();
@@ -61,7 +64,7 @@ class ListFilesIntegrationTest extends GraphQLIntegrationTestCase
     {
         $directory = Util::normalizePath('/idontexist');
         $this->actingAsNewUser('files:read');
-        $this->executeQuery($directory);
+        $this->executeListFiles($directory);
 
         $this->assertResponseOk();
         $this->assertError(

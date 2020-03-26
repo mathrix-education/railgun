@@ -1,0 +1,4 @@
+extend type Mutation {
+    """Create a file"""
+    createFile(file: Upload!, path: String!): FileMetadata! @permission(scope: "files:create")
+}

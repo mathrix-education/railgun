@@ -19,7 +19,9 @@ class ListFiles
      */
     public function __invoke($rootValue, array $args)
     {
-        $path = '/' . Util::normalizePath($args['path']);
+        $path = Util::normalizePath($args['path']);
+        $path = $path === '' ? '/' : $path;
+
         $disk = Storage::disk();
 
         if ($path !== '/' && !$disk->exists($path)) {
