@@ -42,9 +42,11 @@
     "ext-simplexml": "*",
     "ext-zip": "*",
     "braintree/braintree_php": "^4.6",
+    "doctrine/dbal": "^2.10",
     "facebook/graph-sdk": "^5.7",
     "google/apiclient": "^2.4",
     "guzzlehttp/guzzle": "6.3.3",
+    "haydenpierce/class-finder": "^0.4.0",
     "illuminate/notifications": "^7.0",
     "illuminate/redis": "^7.0",
     "laravel/lumen-framework": "^7.0",
@@ -63,9 +65,7 @@
     "web-token/jwt-signature-algorithm-hmac": "^2.1"
   },
   "require-dev": {
-    "doctrine/dbal": "^2.10",
     "fzaninotto/faker": "^1.9.1",
-    "haydenpierce/class-finder": "^0.4.0",
     "laravel/tinker": "^2.2",
     "mathrix-education/coding-standard": "1.0.0",
     "mockery/mockery": "^1.3",
