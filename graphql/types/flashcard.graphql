@@ -3,6 +3,10 @@ type Flashcard {
     fronts: [Silicate!]!
     backs: [Silicate!]!
     order: Int!
+    """
+    If the flashcard is premium-locked.
+    """
+    premium: Boolean!
     visible: Boolean!
     created_at: DateTime!
     updated_at: DateTime!

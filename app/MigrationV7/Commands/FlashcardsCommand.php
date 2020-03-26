@@ -33,6 +33,7 @@ class FlashcardsCommand extends V7Command
             ->selectRaw(implode(',', [
                 'questions AS fronts',
                 'corrections AS backs',
+                'activities.premium AS premium',
                 'notions.visible && activities.visible && modules.visible AS visible',
                 'notions.chapter_id AS chapter_id',
                 'modules.created_at AS created_at',

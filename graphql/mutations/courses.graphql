@@ -5,7 +5,8 @@ extend type Mutation {
         slug: String!
         content: Silicate!
         order: Int
-        visible: Boolean
+        premium: Boolean!
+        visible: Boolean!
         seo_index: Boolean
         seo_title: String
         seo_slug: String
@@ -21,6 +22,7 @@ extend type Mutation {
         slug: String
         content: Silicate
         order: Int
+        premium: Boolean
         visible: Boolean
         seo_index: Boolean
         seo_title: String

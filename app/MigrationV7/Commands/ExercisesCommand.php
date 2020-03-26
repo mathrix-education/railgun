@@ -27,7 +27,8 @@ class ExercisesCommand extends V7Command
         $subjectId = null;
 
         DB::table('modules')
-            ->where('type', '=', 'mcq')
+            ->where('modules.type', '=', 'mcq')
+            ->join('activities', 'modules.activity_id', '=', 'activities.id')
             ->join('subjects', static function (JoinClause $join) {
                 $join->on(
                     'subjects.mapping',
@@ -42,6 +43,7 @@ class ExercisesCommand extends V7Command
                 'modules.choices AS choices',
                 'modules.solutions AS solutions',
                 'modules.corrections AS explanations',
+                'activities.premium AS premium',
                 'modules.visible AS visible',
                 'subjects.id AS subject_id',
                 'modules.created_at AS created_at',

@@ -7,8 +7,9 @@ extend type Mutation {
         solutions: [[Int!]!]
         examplations: [Silicate!]
         order: Int
-        visible: Boolean
-        subject_id: ID
+        premium: Boolean!
+        visible: Boolean!
+        subject_id: ID!
     ): Exercise @permission(scope: "exercices:create") @create
 
     "Update an existing exercise."
@@ -20,6 +21,7 @@ extend type Mutation {
         solutions: [[Int!]!]
         examplations: [Silicate!]
         order: Int
+        premium: Boolean
         visible: Boolean
         subject_id: ID
     ): Exercise @permission(scope: "exercices:update") @update

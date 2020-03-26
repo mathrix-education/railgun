@@ -36,7 +36,7 @@ class Chapter extends Model
     use Reorderable;
     use Randomizable;
 
-    protected $fillable          = [
+    protected $fillable = [
         'name',
         'slug',
         'order',
@@ -44,7 +44,9 @@ class Chapter extends Model
         'grade_id',
         'discipline_id',
     ];
-    protected $casts             = ['visible' => 'boolean'];
+
+    protected $casts = ['visible' => 'boolean'];
+
     protected array $orderGroups = ['discipline_id', 'grade_id'];
 
     /**

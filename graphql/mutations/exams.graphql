@@ -6,7 +6,8 @@ extend type Mutation {
         duration: Int
         content: Silicate
         order: Int
-        visible: Boolean
+        premium: Boolean!
+        visible: Boolean!
         chapter_id: ID!
     ): Exam @permission(scope: "exams:create") @create
 
@@ -18,6 +19,7 @@ extend type Mutation {
         duration: Int
         content: Silicate
         order: Int
+        premium: Boolean
         visible: Boolean
         chapter_id: ID
     ): Exam @permission(scope: "exams:update") @update

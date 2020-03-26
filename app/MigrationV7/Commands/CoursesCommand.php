@@ -38,6 +38,7 @@ class CoursesCommand extends V7Command
                 'modules.id AS id', // keep module ids, mapping is not necessary
                 'activities.name AS name',
                 "JSON_EXTRACT(modules.content, '$.silicate') AS content",
+                'activities.premium AS premium',
                 'modules.visible AS visible',
                 'modules.seo_index AS seo_index',
                 'modules.seo_title AS seo_title',
