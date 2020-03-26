@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Queries;
 
+use League\Flysystem\Util;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function trans;
 
@@ -58,11 +59,14 @@ class ListFilesIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testReadNonExistingDirectory(): void
     {
-        $directory = '/idontexist';
+        $directory = Util::normalizePath('/idontexist');
         $this->actingAsNewUser('files:read');
         $this->executeQuery($directory);
 
         $this->assertResponseOk();
-        $this->assertError(trans('storage.errors.directory_not_found', ['directory' => $directory]), 'storage');
+        $this->assertError(
+            trans('storage.errors.directory_not_found', ['directory' => $directory]),
+            'storage'
+        );
     }
 }

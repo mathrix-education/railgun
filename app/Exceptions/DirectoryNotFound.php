@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Railgun\Exceptions;
 
+use League\Flysystem\Util;
 use Throwable;
 use function trans;
 
@@ -16,6 +17,9 @@ class DirectoryNotFound extends HttpException
 
     public function __construct(string $directory, ?Throwable $previous = null)
     {
-        parent::__construct(trans('storage.errors.directory_not_found', ['directory' => $directory]), $previous);
+        parent::__construct(
+            trans('storage.errors.directory_not_found', ['directory' => Util::normalizePath($directory)]),
+            $previous
+        );
     }
 }
