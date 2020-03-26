@@ -11,6 +11,9 @@ type Exercise {
     updated_at: DateTime!
     subject: Subject! @belongsTo
     comments: [Comment!] @morphMany
-    notes: [Note!] @morphMany
+    """
+    The exercise administrative notes. Requires the "notes:read" scope.
+    """
+    notes: [Note!] @morphMany @permission(scope: "notes:read")
     interaction: Interaction @belongsTo
 }

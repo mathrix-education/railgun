@@ -8,6 +8,9 @@ type Flashcard {
     updated_at: DateTime!
     chapter: Chapter! @belongsTo
     comments: [Comment!] @morphMany
-    subject: Subject! @belongsTo
+    """
+    The flashcard administrative notes. Requires the "notes:read" scope.
+    """
+    notes: [Note!] @morphMany @permission(scope: "notes:read")
     interaction: Interaction @belongsTo
 }

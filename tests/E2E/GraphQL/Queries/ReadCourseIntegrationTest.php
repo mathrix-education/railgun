@@ -10,6 +10,7 @@ use Railgun\Models\Course;
 use Railgun\Models\Interaction;
 use Railgun\Notifications\CommentReplyNotification;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
+use function trans;
 
 /**
  * @testdox [E2E] Query readCourse
@@ -90,5 +91,30 @@ class ReadCourseIntegrationTest extends GraphQLIntegrationTestCase
         $this->assertResponseOk();
         $this->assertNoErrors();
         $this->assertCount($expectedCount, $this->getData('me.notifications.data'));
+    }
+
+    /**
+     * @testdox fails to read the course notes
+     */
+    public function testReadNotesMissingScope(): void
+    {
+        $this->graphQL(
+            <<<'GRAPHQL'
+            query($id: ID!) {
+                readCourse(id: $id) {
+                    notes {
+                        id
+                    }
+                }
+            }
+            GRAPHQL,
+            ['id' => Course::random()->id]
+        );
+
+        $this->assertResponseOk();
+        $this->assertEquals(
+            trans('auth.missing_scope', ['scope' => 'notes:read']),
+            $this->getContent('errors.0.message')
+        );
     }
 }

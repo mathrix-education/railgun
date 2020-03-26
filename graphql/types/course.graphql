@@ -14,6 +14,9 @@ type Course {
     updated_at: DateTime!
     notion: Notion! @belongsTo
     comments: [Comment!] @morphMany
-    subject: Subject! @belongsTo
+    """
+    The course administrative notes. Requires the "notes:read" scope.
+    """
+    notes: [Note!] @morphMany @permission(scope: "notes:read")
     interaction: Interaction @belongsTo
 }
