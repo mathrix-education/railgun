@@ -21,6 +21,7 @@ $factory->define(Exam::class, static function (Faker $faker) {
         'name'       => $name,
         'slug'       => Str::slug($name),
         'order'      => 99,
+        'premium'    => $faker->boolean(90),
         'visible'    => $faker->boolean(90),
         'chapter_id' => Chapter::random()->id,
         'created_at' => $timestamps->createdAt,
