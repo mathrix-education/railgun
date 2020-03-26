@@ -1,0 +1,4 @@
+extend type Query {
+    """List files in a directory"""
+    listFiles(path: String!): DirectoryContent! @permission(scope: "files:read")
+}

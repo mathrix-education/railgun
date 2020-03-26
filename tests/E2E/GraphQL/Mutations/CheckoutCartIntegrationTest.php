@@ -17,7 +17,6 @@ use function trans;
 
 /**
  * @testdox [E2E] Mutation checkoutCart
- * @coversNothing
  */
 class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
 {

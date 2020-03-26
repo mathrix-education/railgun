@@ -14,7 +14,6 @@ use function trans;
 
 /**
  * @testdox [E2E] Query readCourse
- * @coversNothing
  */
 class ReadCourseIntegrationTest extends GraphQLIntegrationTestCase
 {
@@ -112,10 +111,7 @@ class ReadCourseIntegrationTest extends GraphQLIntegrationTestCase
         );
 
         $this->assertResponseOk();
-        $this->assertEquals(
-            trans('auth.missing_scope', ['scope' => 'notes:read']),
-            $this->getContent('errors.0.message')
-        );
+        $this->assertError(trans('auth.missing_scope', ['scope' => 'notes:read']));
     }
 
     /**

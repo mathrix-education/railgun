@@ -19,7 +19,6 @@ use function trans;
 
 /**
  * @testdox [E2E] Mutation createSubscription
- * @coversNothing
  */
 class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
 {

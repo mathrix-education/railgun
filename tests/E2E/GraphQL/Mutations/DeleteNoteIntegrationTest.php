@@ -11,7 +11,6 @@ use function factory;
 
 /**
  * @testdox [E2E] Mutation deleteNote
- * @coversNothing
  */
 class DeleteNoteIntegrationTest extends GraphQLIntegrationTestCase
 {

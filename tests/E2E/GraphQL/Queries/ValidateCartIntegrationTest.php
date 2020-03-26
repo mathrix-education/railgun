@@ -8,7 +8,6 @@ use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 
 /**
  * @testdox [E2E] Query validateCart
- * @coversNothing
  */
 class ValidateCartIntegrationTest extends GraphQLIntegrationTestCase
 {

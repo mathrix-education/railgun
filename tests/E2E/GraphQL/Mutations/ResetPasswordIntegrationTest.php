@@ -15,7 +15,6 @@ use function factory;
 
 /**
  * @testdox [E2E] Mutation resetPassword
- * @coversNothing
  */
 class ResetPasswordIntegrationTest extends GraphQLIntegrationTestCase
 {

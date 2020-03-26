@@ -5,54 +5,43 @@ declare(strict_types=1);
 namespace Tests\E2E\GraphQL;
 
 use JsonException;
+use Nuwave\Lighthouse\Testing\MakesGraphQLRequestsLumen as MakesGraphQLRequests;
 use Railgun\Models\User;
 use stdClass;
 use Tests\BaseTestCase;
 use const JSON_PRETTY_PRINT;
 use const JSON_THROW_ON_ERROR;
-use function config;
 use function data_get;
 use function factory;
+use function is_string;
 use function json_decode;
 use function json_encode;
 
 class GraphQLIntegrationTestCase extends BaseTestCase
 {
+    use MakesGraphQLRequests;
+
     /** @var stdClass|array $contentCache */
     private $contentCache;
 
     /**
      * Shortcut to create a new pristine user from the User factory.
      *
-     * @param array $attributes The overridden attributes.
+     * @param array|string $attributes The overridden attributes or the permission to use.
      *
      * @return User The new user.
      */
-    protected function actingAsNewUser(array $attributes = []): User
+    protected function actingAsNewUser($attributes = []): User
     {
+        if (is_string($attributes)) {
+            $attributes = ['scopes' => [$attributes]];
+        }
+
         /** @var User $user */
         $user = factory(User::class)->create($attributes);
         $this->actingAs($user);
 
         return $user;
-    }
-
-    /**
-     * Query the GraphQL API.
-     *
-     * @param string $query     The GraphQL query payload.
-     * @param array  $variables The GraphQL query variables.
-     * @param array  $headers   Additional HTTP headers.
-     */
-    protected function graphQL(string $query, array $variables = [], array $headers = []): void
-    {
-        $data = ['query' => $query];
-
-        if ($variables) {
-            $data['variables'] = $variables;
-        }
-
-        $this->json('post', config('lighthouse.route.uri'), $data, $headers);
     }
 
     /**
@@ -110,5 +99,26 @@ class GraphQLIntegrationTestCase extends BaseTestCase
         $errors = $this->getErrors();
         $this->assertNull($errors, "Found errors: \n"
             . json_encode($errors, JSON_PRETTY_PRINT, 512));
+    }
+
+    /**
+     * Assert that a particular GraphQL was thrown.
+     *
+     * @param string|null $expectedMessage  If not null, check the error message.
+     * @param string|null $expectedCategory If not null, check the error category.
+     */
+    protected function assertError(?string $expectedMessage = null, ?string $expectedCategory = null): void
+    {
+        if ($expectedMessage !== null) {
+            $this->assertEquals($expectedMessage, $this->getErrors()[0]->message);
+        } else {
+            $this->assertNotEmpty($this->getErrors());
+        }
+
+        if ($expectedCategory === null) {
+            return;
+        }
+
+        $this->assertEquals($expectedCategory, $this->getErrors()[0]->extensions->category);
     }
 }
