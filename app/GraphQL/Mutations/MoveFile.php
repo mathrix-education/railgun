@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Railgun\GraphQL\Mutations;
 
 use League\Flysystem\FileNotFoundException;
+use Railgun\Exceptions\FileNotFound;
 use Railgun\Facades\Storage;
 
 class MoveFile
@@ -19,14 +20,27 @@ class MoveFile
      */
     public function __invoke($rootValue, array $args)
     {
-        $disk = Storage::disk();
+        $disk        = Storage::disk();
+        $source      = $args['source'];
+        $destination = $args['destination'];
+        $file        = Storage::normalize($disk->getMetadata($source));
 
-        if ($args['override'] && $disk->exists($args['destination'])) {
-            $disk->delete($args['destination']);
+        if ($file['type'] !== 'file') {
+            throw new FileNotFound($destination);
         }
 
-        $disk->move($args['source'], $args['destination']);
+        if ($args['override'] && $disk->exists($destination)) {
+            $destinationFile = Storage::normalize($disk->getMetadata($destination));
 
-        return Storage::normalize($disk->getMetadata($args['destination']));
+            if ($destinationFile['type'] === 'dir') {
+                $destination .= '/' . $file['basename'];
+            } else {
+                $disk->delete($destination);
+            }
+        }
+
+        $disk->move($source, $destination);
+
+        return Storage::normalize($disk->getMetadata($destination));
     }
 }

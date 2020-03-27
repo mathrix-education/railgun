@@ -6,8 +6,8 @@ namespace Tests\E2E\GraphQL\Queries;
 
 use League\Flysystem\Util;
 use Railgun\Facades\Storage;
+use Tests\E2E\GraphQL\FilesystemTestCase;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
-use Tests\E2E\GraphQL\TestFilesystem;
 use function trans;
 
 /**
@@ -15,7 +15,7 @@ use function trans;
  */
 class ReadFileIntegrationTest extends GraphQLIntegrationTestCase
 {
-    use TestFilesystem;
+    use FilesystemTestCase;
 
     /**
      * Execute the GraphQL "readFile" query.
@@ -39,7 +39,7 @@ class ReadFileIntegrationTest extends GraphQLIntegrationTestCase
                 }
             }
             GRAPHQL,
-            ['path' => $path]
+            ['path' => $this->getTestPath($path)]
         );
     }
 
@@ -48,11 +48,11 @@ class ReadFileIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testReadExistingFile(): void
     {
-        $path = $this->getRootDirectory() . '/test.txt';
-        Storage::put($path, 'hello');
+        $file = 'test.txt';
+        $this->seedTestDirectory($file);
 
         $this->actingAsNewUser('files:read');
-        $this->executeReadFile($path);
+        $this->executeReadFile($file);
 
         $this->assertResponseOk();
         $this->assertNoErrors();
@@ -63,15 +63,35 @@ class ReadFileIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testReadNonExistingFile(): void
     {
-        $path = $this->getRootDirectory() . '/test.txt';
+        $file = '/test.txt';
+        $path = $this->getTestPath($file);
         Storage::delete($path);
 
         $this->actingAsNewUser('files:read');
-        $this->executeReadFile($path);
+        $this->executeReadFile($file);
 
         $this->assertResponseOk();
         $this->assertError(
             trans('storage.errors.file_not_found', ['file' => Util::normalizePath($path)]),
+            'storage'
+        );
+    }
+
+    /**
+     * @testdox fails when trying to read a directory.
+     */
+    public function testReadDirectory(): void
+    {
+        $dir  = 'foo';
+        $path = $this->getTestPath($dir);
+        $this->seedTestDirectory(['foo/test.txt']);
+
+        $this->actingAsNewUser('files:read');
+        $this->executeReadFile($dir);
+
+        $this->assertResponseOk();
+        $this->assertError(
+            trans('storage.errors.file_not_found', ['file' => $path]),
             'storage'
         );
     }

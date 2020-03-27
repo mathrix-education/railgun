@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Tests\E2E\GraphQL\Mutations;
 
 use Railgun\Facades\Storage;
+use Tests\E2E\GraphQL\FilesystemTestCase;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
-use Tests\E2E\GraphQL\TestFilesystem;
 
 /**
  * @testdox Mutation moveFile
  */
 class MoveFileIntegrationTest extends GraphQLIntegrationTestCase
 {
-    use TestFilesystem;
+    use FilesystemTestCase;
 
     /**
      * @param string    $source
@@ -23,8 +23,8 @@ class MoveFileIntegrationTest extends GraphQLIntegrationTestCase
     private function executeMoveFile(string $source, string $destination, ?bool $override = null): void
     {
         $variables = [
-            'source'      => $source,
-            'destination' => $destination,
+            'source'      => $this->getTestPath($source),
+            'destination' => $this->getTestPath($destination),
         ];
 
         if ($override !== null) {
@@ -60,8 +60,8 @@ class MoveFileIntegrationTest extends GraphQLIntegrationTestCase
     private function getFiles(): array
     {
         return [
-            $this->getRootDirectory() . '/foo.txt',
-            $this->getRootDirectory() . '/bar.txt',
+            $this->getTestPath('foo.txt'),
+            $this->getTestPath('bar.txt'),
         ];
     }
 
@@ -78,8 +78,8 @@ class MoveFileIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->assertResponseOk();
         $this->assertNoErrors();
-        Storage::assertExists($destination);
         Storage::assertMissing($source);
+        Storage::assertExists($destination);
     }
 
     /**
@@ -96,9 +96,8 @@ class MoveFileIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->assertResponseOk();
         $this->assertNoErrors();
-        Storage::assertExists($destination);
         Storage::assertMissing($source);
-        Storage::delete($destination);
+        Storage::assertExists($destination);
     }
 
     /**
@@ -115,9 +114,7 @@ class MoveFileIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->assertResponseOk();
         $this->assertError();
-        Storage::assertExists($destination);
         Storage::assertExists($source);
-        Storage::delete($source);
-        Storage::delete($destination);
+        Storage::assertExists($destination);
     }
 }

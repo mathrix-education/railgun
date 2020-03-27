@@ -12,6 +12,7 @@ use Tests\BaseTestCase;
 use const JSON_PRETTY_PRINT;
 use const JSON_THROW_ON_ERROR;
 use function data_get;
+use function dump;
 use function factory;
 use function is_string;
 use function json_decode;
@@ -120,5 +121,13 @@ class GraphQLIntegrationTestCase extends BaseTestCase
         }
 
         $this->assertEquals($expectedCategory, $this->getErrors()[0]->extensions->category);
+    }
+
+    protected function dump(): void
+    {
+        $content = $this->getContent();
+        /** @noinspection ForgottenDebugOutputInspection */
+        dump($content);
+        exit(1);
     }
 }

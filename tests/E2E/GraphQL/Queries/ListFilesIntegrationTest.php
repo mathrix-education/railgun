@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\E2E\GraphQL\Queries;
 
 use Railgun\Facades\Storage;
+use Tests\E2E\GraphQL\FilesystemTestCase;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
-use Tests\E2E\GraphQL\TestFilesystem;
 use function collect;
 use function trans;
 
@@ -15,7 +15,7 @@ use function trans;
  */
 class ListFilesIntegrationTest extends GraphQLIntegrationTestCase
 {
-    use TestFilesystem;
+    use FilesystemTestCase;
 
     /**
      * @param string $path The directory path
@@ -73,11 +73,11 @@ class ListFilesIntegrationTest extends GraphQLIntegrationTestCase
         $files = ['foo.txt', 'bar.txt', 'baz/foo.txt'];
 
         collect($files)->each(function (string $file) {
-            Storage::put($this->getRootDirectory() . '/' . $file, 'hello');
+            Storage::put($this->getTestDirectory() . '/' . $file, 'hello');
         });
 
         $this->actingAsNewUser('files:read');
-        $this->executeListFiles($this->getRootDirectory());
+        $this->executeListFiles($this->getTestDirectory());
 
         $this->assertNoErrors();
         $this->assertResponseOk();
@@ -88,7 +88,7 @@ class ListFilesIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testReadNonExistingDirectory(): void
     {
-        $directory = $this->getRootDirectory() . '/idontexists';
+        $directory = $this->getTestPath('idontexists');
         $this->actingAsNewUser('files:read');
         $this->executeListFiles($directory);
 

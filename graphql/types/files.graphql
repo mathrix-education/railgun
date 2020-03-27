@@ -1,18 +1,18 @@
-type FileMetadata {
+type File {
     """
     The file absolute path in the bucket.
     """
     path: String!
     """
-    The file url.
+    The file publicly acessible url.
     """
     url: String!
     """
-    The file basename.
+    The file basename (the file name).
     """
     basename: String!
     """
-    The file dirname (its parent directory).
+    The file dirname (the parent directory).
     """
     dirname: String!
     """
@@ -29,27 +29,15 @@ type FileMetadata {
     updated_at: DateTime!
 }
 
-type DirectoryMetadata {
-    """
-    The directory absolute path in the bucket.
-    """
+type Directory {
     path: String!
-    """
-    The directory url.
-    """
     url: String!
-    """
-    The directory basename.
-    """
     basename: String!
-    """
-    The directory dirname (its parent directory).
-    """
     dirname: String!
 }
 
 type DirectoryContent {
-    metadata: DirectoryMetadata
-    directories: [DirectoryMetadata!]!
-    files: [FileMetadata!]!
+    metadata: Directory
+    directories: [Directory!]!
+    files: [File!]!
 }
