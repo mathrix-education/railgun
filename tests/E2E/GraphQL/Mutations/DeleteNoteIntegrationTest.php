@@ -49,7 +49,7 @@ class DeleteNoteIntegrationTest extends GraphQLIntegrationTestCase
         $note->refresh();
         $this->assertNotNull($note->deleted_at);
 
-        $course->refresh();
+        $course = $course->fresh();
         $this->assertEmpty($course->notes);
     }
 }

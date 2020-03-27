@@ -91,7 +91,7 @@ if ($app->environment(['master', 'dev', 'v7']) && !$app->runningUnitTests()) {
 if ($app->runningInConsole()) {
     $app->register(MigrationV7ServiceProvider::class);
 }
-if ($app->runningInConsole() && !$app->runningUnitTests()) {
+if ($app->runningInConsole() && class_exists(TinkerServiceProvider::class)) {
     $app->register(TinkerServiceProvider::class);
 }
 
