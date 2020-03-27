@@ -20,7 +20,7 @@ trait Reorderable
      *
      * @noinspection PhpUnused
      */
-    public static function bootOrderable(): void
+    public static function bootReorderable(): void
     {
         self::creating(static function (Model $model) {
             /** @var Reorderable $model */

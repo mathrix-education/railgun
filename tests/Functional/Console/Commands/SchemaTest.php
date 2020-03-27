@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Artisan;
 use Tests\BaseTestCase;
 
 /**
- * @testdox GraphQL schema
+ * @testdox [Functional] Schema
  */
 class SchemaTest extends BaseTestCase
 {

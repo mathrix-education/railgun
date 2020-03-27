@@ -13,6 +13,7 @@ extend type Mutation {
         seo_keywords: String
         seo_description: String
         notion_id: ID!
+        labels: ManageLabels
     ): Course  @permission(scope: "courses:create") @create
 
     "Update an existing course."
@@ -30,6 +31,7 @@ extend type Mutation {
         seo_keywords: String
         seo_description: String
         notion_id: ID
+        labels: ManageLabels
     ): Course @permission(scope: "courses:update") @update
 
     "Delete an existing course."

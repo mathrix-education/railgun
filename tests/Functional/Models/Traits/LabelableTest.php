@@ -20,6 +20,9 @@ use function collect;
 use function data_get;
 use function factory;
 
+/**
+ * @testdox [Functional] Labelable
+ */
 class LabelableTest extends BaseTestCase
 {
     use DatabaseTransactions;
