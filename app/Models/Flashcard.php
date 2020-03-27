@@ -73,7 +73,7 @@ class Flashcard extends Model
     /**
      * @return array
      */
-    public function geBacksAttribute(): array
+    public function getBacksAttribute(): array
     {
         return $this->lock('backs', []);
     }
