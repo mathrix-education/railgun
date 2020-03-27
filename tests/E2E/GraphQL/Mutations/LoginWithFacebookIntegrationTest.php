@@ -16,7 +16,6 @@ use function env;
 
 /**
  * @testdox Mutation loginWithFacebook
- * @coversNothing
  */
 class LoginWithFacebookIntegrationTest extends GraphQLIntegrationTestCase
 {

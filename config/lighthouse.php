@@ -39,7 +39,9 @@ return [
     'security'                => [
         'max_query_complexity'  => QueryComplexity::DISABLED,
         'max_query_depth'       => QueryDepth::DISABLED,
-        'disable_introspection' => env('APP_ENV') === 'master' ? true : DisableIntrospection::DISABLED,
+        'disable_introspection' => env('APP_ENV') === 'master'
+            ? DisableIntrospection::ENABLED
+            : DisableIntrospection::DISABLED,
     ],
     'paginate_max_count'      => 100,
     'debug'                   => Debug::INCLUDE_DEBUG_MESSAGE | Debug::INCLUDE_TRACE,

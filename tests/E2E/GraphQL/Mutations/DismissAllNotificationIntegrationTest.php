@@ -14,7 +14,6 @@ use function range;
 
 /**
  * @testdox [E2E] Mutation dismissNotification
- * @coversNothing
  */
 class DismissAllNotificationIntegrationTest extends GraphQLIntegrationTestCase
 {

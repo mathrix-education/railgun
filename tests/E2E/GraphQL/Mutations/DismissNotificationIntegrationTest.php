@@ -11,7 +11,6 @@ use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 
 /**
  * @testdox [E2E] Mutation dismissNotification
- * @coversNothing
  */
 class DismissNotificationIntegrationTest extends GraphQLIntegrationTestCase
 {

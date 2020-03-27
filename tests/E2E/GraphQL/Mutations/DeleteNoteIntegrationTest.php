@@ -7,11 +7,9 @@ namespace Tests\E2E\GraphQL\Mutations;
 use Railgun\Models\Course;
 use Railgun\Models\Note;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
-use function factory;
 
 /**
  * @testdox [E2E] Mutation deleteNote
- * @coversNothing
  */
 class DeleteNoteIntegrationTest extends GraphQLIntegrationTestCase
 {
@@ -21,10 +19,9 @@ class DeleteNoteIntegrationTest extends GraphQLIntegrationTestCase
     public function testNoteIsSoftDeleted(): void
     {
         /** @var Course $course */
-        $course = factory(Course::class)->create();
+        $course = Course::query()->has('notes')->inRandomOrder()->firstOrFail();
         /** @var Note $note */
-        $note = factory(Note::class)->create(['notable_type' => 'course', 'notable_id' => $course->id]);
-        $this->assertNotEmpty($course->notes);
+        $note = $course->notes->first();
 
         $this->actingAsNewUser(['scopes' => ['notes:delete']]);
 

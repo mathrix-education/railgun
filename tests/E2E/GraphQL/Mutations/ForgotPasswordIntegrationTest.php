@@ -13,9 +13,8 @@ use function factory;
 
 /**
  * @testdox [E2E] Mutation forgotPassword
- * @coversNothing
  */
-class ForgotPasswordIntegration extends GraphQLIntegrationTestCase
+class ForgotPasswordIntegrationTest extends GraphQLIntegrationTestCase
 {
     use DatabaseTransactions;
 

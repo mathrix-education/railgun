@@ -1,0 +1,9 @@
+extend type Query {
+    """
+    Get a file metadata.
+    """
+    readFile(path: String!): File! @permission(scope: "files:read")
+
+    """List files in a **directory**."""
+    listFiles(path: String!): DirectoryContent! @permission(scope: "files:read")
+}

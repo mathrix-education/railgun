@@ -12,7 +12,6 @@ use function factory;
 
 /**
  * @testdox [E2] Query me
- * @coversNothing
  */
 class MeIntegrationTest extends GraphQLIntegrationTestCase
 {
@@ -26,15 +25,16 @@ class MeIntegrationTest extends GraphQLIntegrationTestCase
         $driver = app()->make(Driver::class);
         $bearer = $driver->sign($user);
 
-        $this->graphQL(
-            <<<GRAPHQL
-            query {
-                me {
-                    id
+        $this->postGraphQL(
+            [
+                'query' => <<<GRAPHQL
+                query {
+                    me {
+                        id
+                    }
                 }
-            }
-            GRAPHQL,
-            [],
+                GRAPHQL,
+            ],
             ['Authorization' => "Bearer $bearer"]
         );
 

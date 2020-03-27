@@ -10,7 +10,6 @@ use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 
 /**
  * @testdox [E2E] Mutation createNote
- * @coversNothing
  */
 class CreateNoteIntegrationTest extends GraphQLIntegrationTestCase
 {

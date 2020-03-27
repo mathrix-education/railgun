@@ -9,7 +9,6 @@ use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 
 /**
  * @testdox [E2E] Mutation interact
- * @coversNothing
  */
 class InteractIntegrationTest extends GraphQLIntegrationTestCase
 {
