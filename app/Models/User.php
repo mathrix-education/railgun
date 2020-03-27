@@ -56,6 +56,7 @@ use function trim;
  * @property-read Collection|Notification[] $notifications
  * @property-read Collection|Notification[] $unreadNotifications
  * @property-read Collection|Notification[] $readNotifications
+ * @property-read Collection|Session[]      $sessions
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
@@ -161,6 +162,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function interactions(): HasMany
     {
         return $this->hasMany(Interaction::class);
+    }
+
+    public function sessions(): HasMany
+    {
+        return $this->hasMany(Session::class);
     }
 
     /*

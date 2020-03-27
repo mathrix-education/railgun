@@ -15,4 +15,5 @@ type User {
     notifications: [Notification!]! @morphMany(type: "paginator")
     packs: [Pack!]! @morphMany
     trainings: [Training!]! @morphMany
+    sessions: [Session!]! @hasMany
 }

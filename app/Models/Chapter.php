@@ -23,9 +23,10 @@ use Railgun\Models\Traits\Randomizable;
  * @property-read Carbon         $created_at
  * @property-read Carbon         $updated_at
  * ---
- * @property Grade               $grade
- * @property Discipline          $discipline
- * @property Collection|Notion[] $notions
+ * @property Grade                      $grade
+ * @property Discipline                 $discipline
+ * @property Collection|Notion[]        $notions
+ * @property-read Collection|Session[]  $sessions
  */
 class Chapter extends Model
 {
@@ -83,5 +84,10 @@ class Chapter extends Model
     public function exams(): HasMany
     {
         return $this->hasMany(Exam::class)->orderBy('order');
+    }
+
+    public function sessions(): HasMany
+    {
+        return $this->hasMany(Session::class);
     }
 }
