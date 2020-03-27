@@ -3,10 +3,22 @@ type Flashcard {
     fronts: [Silicate!]!
     backs: [Silicate!]!
     order: Int!
+    """
+    If the flashcard is premium-locked.
+    """
+    premium: Boolean!
     visible: Boolean!
     created_at: DateTime!
     updated_at: DateTime!
     chapter: Chapter! @belongsTo
     comments: [Comment!] @morphMany
+    """
+    The flashcard administrative labels. Requires the "labels:read" scope.
+    """
+    labels: [Label!] @morphMany @permission(scope: "labels:read")
+    """
+    The flashcard administrative notes. Requires the "notes:read" scope.
+    """
+    notes: [Note!] @morphMany @permission(scope: "notes:read")
     interaction: Interaction @belongsTo
 }

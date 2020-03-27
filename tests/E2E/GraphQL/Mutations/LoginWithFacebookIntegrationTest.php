@@ -8,7 +8,6 @@ use Facebook\Exceptions\FacebookResponseException;
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
 use Facebook\GraphNodes\GraphUser;
-use JsonException;
 use Mathrix\Lumen\JWT\Drivers\Driver;
 use Railgun\Models\User;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
@@ -17,7 +16,6 @@ use function env;
 
 /**
  * @testdox Mutation loginWithFacebook
- * @coversNothing
  */
 class LoginWithFacebookIntegrationTest extends GraphQLIntegrationTestCase
 {
@@ -39,7 +37,6 @@ class LoginWithFacebookIntegrationTest extends GraphQLIntegrationTestCase
      * Cleanup of test campaign.
      *
      * @throws FacebookSDKException
-     * @throws JsonException
      */
     public static function tearDownAfterClass(): void
     {
@@ -58,6 +55,8 @@ class LoginWithFacebookIntegrationTest extends GraphQLIntegrationTestCase
 
     /**
      * Handle Facebook Application request limit reached to skip the tests.
+     *
+     * @noinspection PhpRedundantCatchClauseInspection
      */
     public function setUp(): void
     {
@@ -89,7 +88,6 @@ class LoginWithFacebookIntegrationTest extends GraphQLIntegrationTestCase
 
     /**
      * @testdox register a new user and returns a JWT
-     * @covers ::__invoke
      */
     public function testFacebookRegister(): void
     {

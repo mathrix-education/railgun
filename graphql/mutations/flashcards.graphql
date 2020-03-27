@@ -4,8 +4,10 @@ extend type Mutation {
         fronts: [Silicate!]!
         backs: [Silicate!]!
         order: Int!
+        premium: Boolean!
         visible: Boolean!
         chapter_id: ID!
+        labels: ManageLabels
     ): Flashcard @permission(scope: "flashcards:create") @create
 
     "Update an existing flashcard."
@@ -14,8 +16,10 @@ extend type Mutation {
         fronts: [Silicate!]
         backs: [Silicate!]
         order: Int
+        premium: Boolean
         visible: Boolean
         chapter_id: ID
+        labels: ManageLabels
     ): Flashcard @permission(scope: "flashcards:update") @update
 
     "Delete an existing flashcard."

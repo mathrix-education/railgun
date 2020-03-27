@@ -4,6 +4,10 @@ type Course {
     slug: String!
     content: Silicate!
     order: Int!
+    """
+    If the flashcard is premium-locked.
+    """
+    premium: Boolean!
     visible: Boolean!
     seo_index: Boolean!
     seo_title: String
@@ -12,7 +16,15 @@ type Course {
     seo_description: String
     created_at: DateTime!
     updated_at: DateTime!
-    comments: [Comment!] @morphMany
     notion: Notion! @belongsTo
+    comments: [Comment!] @morphMany
+    """
+    The course administrative labels. Requires the "labels:read" scope.
+    """
+    labels: [Label!] @morphMany @permission(scope: "labels:read")
+    """
+    The course administrative notes. Requires the "notes:read" scope.
+    """
+    notes: [Note!] @morphMany @permission(scope: "notes:read")
     interaction: Interaction @belongsTo
 }

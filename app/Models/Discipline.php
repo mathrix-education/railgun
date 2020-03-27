@@ -12,24 +12,23 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Railgun\Models\Traits\Randomizable;
 
 /**
- * @property-read               int    $id
- * @property                    string $name
- * @property                    string $slug
- * @property                    bool   $beta
- * @property-read               Carbon $created_at
- * @property-read               Carbon $updated_at
+ * @property-read int                  $id
+ * @property      string               $name
+ * @property      string               $slug
+ * @property      bool                 $beta
+ * @property-read Carbon               $created_at
+ * @property-read Carbon               $updated_at
  * ---
- * @property Collection|Grade[]        $grades
- * @property Collection|Chapter[]      $chapters
- * @property Collection|Session[]      $sessions
+ * @property-read Collection|Grade[]   $grades
+ * @property-read Collection|Chapter[] $chapters
+ * @property-read Collection|Session[] $sessions
  */
 class Discipline extends Model
 {
     use Randomizable;
 
     protected $fillable = ['id', 'name', 'slug', 'beta'];
-
-    protected $casts = [
+    protected $casts    = [
         'visible' => 'boolean',
         'beta'    => 'boolean',
     ];

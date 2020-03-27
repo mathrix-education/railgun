@@ -24,7 +24,6 @@
     <file>database</file>
     <file>packages/lumen-mailjet</file>
     <file>packages/monolog-google-cloud-formatter</file>
-    <file>packages/railgun-migration-v7</file>
     <file>tests</file>
 
     <!-- Rules inherited from Doctrine -->
@@ -44,6 +43,7 @@
                 "/>
                 <element value="
                     @dataProvider,
+                    @testWith,
                     @testdox,
                     @coversDefaultClass,
                     @coversNothing,

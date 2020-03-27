@@ -1,0 +1,6 @@
+"""
+Can be used as an argument to upload files using the [GraphQL Multipart Specification][1]
+
+[1]: https://github.com/jaydenseric/graphql-multipart-request-spec
+"""
+scalar Upload @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload")

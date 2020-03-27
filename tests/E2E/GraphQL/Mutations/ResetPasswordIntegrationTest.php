@@ -15,7 +15,6 @@ use function factory;
 
 /**
  * @testdox [E2E] Mutation resetPassword
- * @coversNothing
  */
 class ResetPasswordIntegrationTest extends GraphQLIntegrationTestCase
 {
@@ -28,7 +27,7 @@ class ResetPasswordIntegrationTest extends GraphQLIntegrationTestCase
     GRAPHQL;
 
     /**
-     * @testdox reset password using a valid token
+     * @testdox resets password using a valid token
      */
     public function testValidToken(): void
     {

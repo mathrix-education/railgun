@@ -14,8 +14,8 @@ use Railgun\Models\Traits\Randomizable;
  * A category is a group of related posts.
  *
  * @property-read int          $id         The category id.
- * @property string            $name       The category name.
- * @property string            $slug       The category slug (generated from Str::slug).
+ * @property      string       $name       The category name.
+ * @property      string       $slug       The category slug (generated from Str::slug).
  * @property-read Carbon       $created_at The date/time when the category was created.
  * @property-read Carbon       $updated_at The date/time when the category was last updated.
  * ---
@@ -25,7 +25,6 @@ class Category extends Model
 {
     use Randomizable;
 
-    /** @var array The attributes that are mass assignable */
     protected $fillable = ['name', 'slug', 'image'];
 
     /**

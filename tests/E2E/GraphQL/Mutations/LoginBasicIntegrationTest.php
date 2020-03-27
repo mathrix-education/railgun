@@ -17,7 +17,6 @@ use function trans;
 
 /**
  * @testdox [E2] Mutation loginBasic
- * @coversNothing
  */
 class LoginBasicIntegrationTest extends GraphQLIntegrationTestCase
 {

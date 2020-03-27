@@ -9,17 +9,17 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Railgun\Models\Traits\Acquerable;
-use Railgun\Models\Traits\Orderable;
 use Railgun\Models\Traits\Randomizable;
+use Railgun\Models\Traits\Reorderable;
 
 /**
  * @property-read int                   $id
- * @property string                     $name
- * @property string                     $slug
- * @property bool                       $buyable
- * @property int                        $price
- * @property int                        $order
- * @property bool                       $visible
+ * @property      string                $name
+ * @property      string                $slug
+ * @property      bool                  $available
+ * @property      int                   $price
+ * @property      int                   $order
+ * @property      bool                  $visible
  * @property-read Carbon                $created_at
  * @property-read Carbon                $updated_at
  * ---
@@ -28,7 +28,7 @@ use Railgun\Models\Traits\Randomizable;
 class Pack extends Model
 {
     use Acquerable;
-    use Orderable;
+    use Reorderable;
     use Randomizable;
 
     protected $fillable = [
@@ -39,8 +39,7 @@ class Pack extends Model
         'order',
         'visible',
     ];
-
-    protected $casts = [
+    protected $casts    = [
         'available' => 'boolean',
         'visible'   => 'boolean',
     ];

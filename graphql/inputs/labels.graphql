@@ -1,0 +1,34 @@
+"""
+Create a new label.
+"""
+input CreateLabel {
+    name: String!
+    color: Color!
+}
+
+"""
+Update an existing label.
+"""
+input UpdateLabel {
+    id: ID!
+    name: String
+    color: Color
+}
+
+"""
+Manage the labels attached to a model.
+"""
+input ManageLabels {
+    """
+    Replace the current labels of the model.
+    """
+    sync: [ID!]
+    """
+    Connect labels to the model.
+    """
+    connect: [ID!]
+    """
+    Disconnect labels from the model.
+    """
+    disconnect: [ID!]
+}

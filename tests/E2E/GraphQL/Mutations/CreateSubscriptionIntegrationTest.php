@@ -19,7 +19,6 @@ use function trans;
 
 /**
  * @testdox [E2E] Mutation createSubscription
- * @coversNothing
  */
 class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
 {
@@ -75,7 +74,7 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
 
     /**
      * @dataProvider createSuccessDataset
-     * @testdox      successfully creates a subscription using plan $planId and token $paymentMethodId.
+     * @testdox      creates a subscription using plan $planId and token $paymentMethodId.
      *
      * @param string $planId
      * @param string $paymentMethodId
@@ -145,7 +144,7 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
 
     /**
      * @dataProvider createSubscriptionFailsDataset
-     * @testdox      fails to create a subscription using token $paymentMethodId.
+     * @testdox      fails to create a subscription using token $paymentMethodId with message "$expectedMessage".
      *
      * @param string $paymentMethodId The payment method.
      * @param string $expectedMessage The expected error message.

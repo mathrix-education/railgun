@@ -10,30 +10,30 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Railgun\Models\Traits\Orderable;
 use Railgun\Models\Traits\Randomizable;
+use Railgun\Models\Traits\Reorderable;
 
 /**
- * @property-read  int               $id
- * @property string                  $name
- * @property string                  $slug
- * @property int                     $order
- * @property bool                    $visible
- * @property int|null                $parent_id
- * @property int                     $country_id
+ * @property-read int                $id
+ * @property      string             $name
+ * @property      string             $slug
+ * @property      int                $order
+ * @property      bool               $visible
+ * @property      int|null           $parent_id
+ * @property      int                $country_id
  * @property-read Carbon             $created_at
  * @property-read Carbon             $updated_at
  * ---
- * @property Grade|null              $parent
  * @property Country                 $country
+ * @property Grade|null              $parent
  * @property Collection|Grade[]      $children
- * @property Collection|Chapter[]    $chapters
  * @property Collection|Discipline[] $disciplines
+ * @property Collection|Chapter[]    $chapters
  * @property Collection|User[]       $users
  */
 class Grade extends Model
 {
-    use Orderable;
+    use Reorderable;
     use Randomizable;
 
     protected $fillable = [
@@ -47,7 +47,7 @@ class Grade extends Model
 
     protected $casts = ['visible' => 'boolean'];
 
-    protected $orderGroups = ['country_id'];
+    protected array $orderGroups = ['country_id'];
 
     /**
      * The parent grade.

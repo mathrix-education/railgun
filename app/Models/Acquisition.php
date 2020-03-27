@@ -18,7 +18,7 @@ use Railgun\Models\Traits\Randomizable;
  * @property-read int         $user_id        The user id.
  * @property-read string      $product_type   The product type (pack, training)
  * @property-read int         $product_id     The product id.
- * @property-read string|null $transaction_id The related Stripe or Braintree transaction id.
+ * @property-read string|null $transaction_id The related Stripe invoice or Braintree transaction id.
  * @property-read Carbon      $created_at     The date/time when the acquisition was created.
  * @property-read Carbon      $updated_at     The date/time when the acquisition was last updated.
  */
@@ -29,5 +29,10 @@ class Acquisition extends Model
 
     protected $table = 'acquisitions'; // required to explicitly define the join table
 
-    protected $fillable = ['user_id', 'product_type', 'product_id', 'transaction_id'];
+    protected $fillable = [
+        'user_id',
+        'product_type',
+        'product_id',
+        'transaction_id',
+    ];
 }

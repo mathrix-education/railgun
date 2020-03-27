@@ -1,0 +1,27 @@
+extend type Mutation {
+    """
+    Create a file. There is no `createBlob` nor `createDirectory` because directories only exists if they contain at
+    least one file. This mutation requires to use **multipart/form-data** request.
+    """
+    createFile(
+        file: Upload!
+        path: String!
+    ): File! @permission(scope: "files:create")
+
+    """
+    Move a file to another name or location.
+    """
+    moveFile(
+        source:String!
+        destination: String!
+        """
+        Override the destination if exists.
+        """
+        override: Boolean = false
+    ): File! @permission(scope: "files:move")
+
+    """
+    Delete a file. **Once a file has been deleetd, it cannot be restored.**
+    """
+    deleteFile(path: String!): File! @permission(scope: "files:delete")
+}

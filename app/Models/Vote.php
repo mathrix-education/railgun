@@ -10,24 +10,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Traits\Randomizable;
 
 /**
- * @property-read int    $comment_id
- * @property-read int    $user_id
- * @property int         $value
- * @property-read Carbon $created_at
- * @property-read Carbon $updated_at
+ * @property-read int     $comment_id
+ * @property-read int     $user_id
+ * @property      int     $value
+ * @property-read Carbon  $created_at
+ * @property-read Carbon  $updated_at
  * ---
- * @property User        $user
- * @property Comment     $comment
+ * @property-read User    $user
+ * @property-read Comment $comment
  */
 class Vote extends Model
 {
     use Randomizable;
 
-    /** @var array The attributes that are mass assignable */
     protected $fillable = ['user_id', 'comment_id', 'value'];
 
     /**
-     * BelongsTo User.
+     * @return BelongsTo<User>
      */
     public function user(): BelongsTo
     {
@@ -35,7 +34,7 @@ class Vote extends Model
     }
 
     /**
-     * BelongsTo Comment.
+     * @return BelongsTo<Comment>
      */
     public function comment(): BelongsTo
     {

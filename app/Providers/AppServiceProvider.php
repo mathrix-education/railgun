@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Railgun\Providers;
 
+use Exception;
 use Illuminate\Contracts\Console\Kernel as KernelContract;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -13,11 +14,18 @@ use Laravel\Lumen\Application;
 use Railgun\Console\Kernel;
 use Railgun\Handlers\Handler;
 use Railgun\Middleware\ImpersonateMiddleware;
-use Railgun\Models\Comment;
-use Railgun\Models\Notion;
+use Railgun\Models\Chapter;
+use Railgun\Models\Course;
+use Railgun\Models\Exam;
+use Railgun\Models\Exercise;
+use Railgun\Models\Flashcard;
+use Railgun\Models\Lesson;
 use Railgun\Models\Pack;
-use Railgun\Models\Post;
 use Railgun\Models\Training;
+use Railgun\Models\Traits\Acquerable;
+use Railgun\Models\Traits\Commentable;
+use Railgun\Models\Traits\Labelable;
+use Railgun\Models\Traits\Notable;
 use Railgun\Models\User;
 use function in_array;
 
@@ -37,6 +45,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(KernelContract::class, Kernel::class);
     }
 
+    /**
+     * @throws Exception
+     */
     public function boot(): void
     {
         // Headers
@@ -47,14 +58,31 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // MorphMap
+        $this->setMorphMap();
+    }
+
+    /**
+     * Build the model morph map based on the classes in the models namespace.
+     */
+    private function setMorphMap(): void
+    {
         Relation::morphMap([
-            // Models
-            'notion'   => Notion::class,
-            'pack'     => Pack::class,
-            'training' => Training::class,
-            'post'     => Post::class,
-            'comment'  => Comment::class,
-            'user'     => User::class,
+            /**
+             * @see Commentable
+             * @see Interactable
+             * @see Labelable
+             * @see Notable
+             * @see Reportable
+             */
+            'subject'   => Chapter::class,
+            'course'    => Course::class,
+            'exercise'  => Exercise::class,
+            'flashcard' => Flashcard::class,
+            'exam'      => Exam::class,
+            'lesson'    => Lesson::class,
+            /** @see Acquerable */
+            'pack'      => Pack::class,
+            'training'  => Training::class,
         ]);
     }
 }

@@ -25,6 +25,7 @@ use Railgun\Providers\FacebookServiceProvider;
 use Railgun\Providers\GoogleServiceProvider;
 use Railgun\Providers\StripeServiceProvider;
 use Sentry\Laravel\ServiceProvider as SentryServiceProvider;
+use Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider;
 
 (new LoadEnvironmentVariables(dirname(__DIR__)))->bootstrap();
 
@@ -69,6 +70,15 @@ $app->register(CryptoServiceProvider::class);
 $app->register(MailServiceProvider::class);
 $app->register(MailjetServiceProvider::class);
 
+// Google Cloud
+$serviceAccount = storage_path('keychain/service_account.json');
+if (file_exists($serviceAccount)) {
+    putenv("GOOGLE_APPLICATION_CREDENTIALS=$serviceAccount");
+}
+$app->register(GoogleServiceProvider::class);
+$app->register(GoogleCloudStorageServiceProvider::class);
+
+// Billing
 $app->register(StripeServiceProvider::class);
 $app->register(BraintreeServiceProvider::class);
 
@@ -78,8 +88,10 @@ if ($app->environment(['master', 'dev', 'v7']) && !$app->runningUnitTests()) {
 }
 
 // Debug
-if ($app->runningInConsole() && !$app->runningUnitTests()) {
+if ($app->runningInConsole()) {
     $app->register(MigrationV7ServiceProvider::class);
+}
+if ($app->runningInConsole() && class_exists(TinkerServiceProvider::class)) {
     $app->register(TinkerServiceProvider::class);
 }
 

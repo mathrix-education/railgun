@@ -21,6 +21,7 @@ class CreateCoursesTable extends Migration
             $table->string('slug');
             $table->json('content');
             $table->unsignedTinyInteger('order');
+            $table->boolean('premium');
             $table->boolean('visible');
             $table->boolean('seo_index')->default(0);
             $table->string('seo_title')->nullable();

@@ -7,6 +7,7 @@ namespace Railgun\Billing\Bridges;
 use Carbon\Carbon;
 use Railgun\Models\Subscription;
 use Stripe\Customer;
+use Stripe\Exception\ApiErrorException;
 use Stripe\Invoice;
 use Stripe\Subscription as StripeSubscription;
 use function is_string;
@@ -19,6 +20,8 @@ class StripeSubscriptionBridge
      * @param StripeSubscription $stripe The Stripe subscription.
      *
      * @return Subscription
+     *
+     * @throws ApiErrorException
      */
     public static function toEloquent(StripeSubscription $stripe): Subscription
     {
@@ -36,7 +39,6 @@ class StripeSubscriptionBridge
 
         if ($stripe->status === StripeSubscription::STATUS_INCOMPLETE) {
             if (!$stripe->latest_invoice instanceof Invoice) {
-                /** @var StripeSubscription $stripe */
                 /** @noinspection CallableParameterUseCaseInTypeContextInspection */
                 $stripe = StripeSubscription::retrieve([
                     'id'     => $stripe->id,

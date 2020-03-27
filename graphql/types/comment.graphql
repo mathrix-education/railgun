@@ -15,7 +15,7 @@ type Comment {
     updated_at: DateTime!
     parent: Comment @belongsTo
     children: [Comment!]! @hasMany
-    commentable: Commentable!
+    commentable: Commentable! @morphTo
     user: User! @belongsTo
     vote: Vote @hasOne
     votes: [Vote!]! @hasMany

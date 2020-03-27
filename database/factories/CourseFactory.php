@@ -24,6 +24,7 @@ $factory->define(Course::class, static function (Faker $faker) {
         'slug'            => $slug,
         'content'         => Silicate::wall(),
         'order'           => 99,
+        'premium'         => $faker->boolean(90),
         'visible'         => $visible,
         'seo_index'       => $visible ? $faker->boolean(90) : false,
         'seo_slug'        => $slug,

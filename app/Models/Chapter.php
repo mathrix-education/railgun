@@ -9,28 +9,32 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Railgun\Models\Traits\Orderable;
 use Railgun\Models\Traits\Randomizable;
+use Railgun\Models\Traits\Reorderable;
 
 /**
- * @property-read  int           $id
- * @property string              $name
- * @property string              $slug
- * @property int                 $order
- * @property bool                $visible
- * @property int                 $discipline_id
- * @property int                 $grade_id
- * @property-read Carbon         $created_at
- * @property-read Carbon         $updated_at
+ * A chapter is the base wrapper of all teh Mathrix Education content.
+ *
+ * @property-read int                    $id
+ * @property      string                 $name
+ * @property      string                 $slug
+ * @property      int                    $order
+ * @property      bool                   $visible
+ * @property      int                    $discipline_id
+ * @property      int                    $grade_id
+ * @property-read Carbon                 $created_at
+ * @property-read Carbon                 $updated_at
  * ---
- * @property Grade                      $grade
- * @property Discipline                 $discipline
- * @property Collection|Notion[]        $notions
- * @property-read Collection|Session[]  $sessions
+ * @property-read Grade                  $grade
+ * @property-read Discipline             $discipline
+ * @property-read Collection|Notion[]    $notions
+ * @property-read Collection|Flashcard[] $flashcards
+ * @property-read Collection|Exam[]      $exams
+ * @property-read Collection|Session[]   $sessions
  */
 class Chapter extends Model
 {
-    use Orderable;
+    use Reorderable;
     use Randomizable;
 
     protected $fillable = [

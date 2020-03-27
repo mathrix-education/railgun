@@ -9,20 +9,24 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Traits\Commentable;
 use Railgun\Models\Traits\Interactable;
-use Railgun\Models\Traits\Orderable;
+use Railgun\Models\Traits\Labelable;
+use Railgun\Models\Traits\Lockable;
+use Railgun\Models\Traits\Notable;
 use Railgun\Models\Traits\Randomizable;
+use Railgun\Models\Traits\Reorderable;
 
 /**
  * @property-read int     $id
- * @property string       $type
- * @property array        $content
- * @property array        $questions
- * @property array        $choices
- * @property array        $solutions
- * @property array        $explanations
- * @property int          $order
- * @property bool         $visible
- * @property int          $subject_id
+ * @property      string  $type
+ * @property      array   $content
+ * @property      array   $questions
+ * @property      array   $choices
+ * @property      array   $solutions
+ * @property      array   $explanations
+ * @property      int     $order
+ * @property      bool    $premium
+ * @property      bool    $visible
+ * @property      int     $subject_id
  * @property-read Carbon  $created_at
  * @property-read Carbon  $updated_at
  * ---
@@ -32,7 +36,10 @@ class Exercise extends Model
 {
     use Commentable;
     use Interactable;
-    use Orderable;
+    use Labelable;
+    use Lockable;
+    use Notable;
+    use Reorderable;
     use Randomizable;
 
     protected $fillable = [
@@ -42,6 +49,7 @@ class Exercise extends Model
         'solutions',
         'explanations',
         'order',
+        'premium',
         'visible',
         'subject_id',
     ];
@@ -52,9 +60,11 @@ class Exercise extends Model
         'choices'      => 'array',
         'solutions'    => 'array',
         'explanations' => 'array',
+        'premium'      => 'boolean',
+        'visible'      => 'boolean',
     ];
 
-    protected $orderGroups = ['subject_id'];
+    protected array $orderGroups = ['subject_id'];
 
     /**
      * @return BelongsTo<Subject>
@@ -62,5 +72,45 @@ class Exercise extends Model
     public function subject(): BelongsTo
     {
         return $this->belongsTo(Subject::class);
+    }
+
+    /**
+     * @return array the content Silicate wall.
+     */
+    public function getContentAttribute(): array
+    {
+        return $this->lock('content', []);
+    }
+
+    /**
+     * @return array
+     */
+    public function getQuestionsAttribute(): array
+    {
+        return $this->lock('questions', []);
+    }
+
+    /**
+     * @return array
+     */
+    public function getChoicesAttribute(): array
+    {
+        return $this->lock('choices', []);
+    }
+
+    /**
+     * @return array
+     */
+    public function getSolutionsAttribute(): array
+    {
+        return $this->lock('solutions', []);
+    }
+
+    /**
+     * @return array
+     */
+    public function getExplanationsAttribute(): array
+    {
+        return $this->lock('explanations', []);
     }
 }

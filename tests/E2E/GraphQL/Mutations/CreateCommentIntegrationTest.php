@@ -36,7 +36,7 @@ class CreateCommentIntegrationTest extends GraphQLIntegrationTestCase
     GRAPHQL;
 
     /**
-     * @testdox successfully creates a root comment
+     * @testdox creates a root comment
      */
     public function testCreateRootComment(): void
     {
@@ -69,7 +69,7 @@ class CreateCommentIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox successfully creates a child comment
+     * @testdox creates a child comment
      */
     public function testCreateChildComment(): void
     {

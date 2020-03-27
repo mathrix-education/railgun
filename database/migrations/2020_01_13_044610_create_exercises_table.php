@@ -24,6 +24,7 @@ class CreateExercisesTable extends Migration
             $table->json('solutions');
             $table->json('explanations');
             $table->unsignedTinyInteger('order');
+            $table->boolean('premium');
             $table->boolean('visible');
             $table->unsignedBigInteger('subject_id');
             $table->timestamps();

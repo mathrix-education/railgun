@@ -7,23 +7,33 @@ namespace Railgun\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Railgun\Models\Traits\Orderable;
+use Railgun\Models\Traits\Commentable;
+use Railgun\Models\Traits\Labelable;
+use Railgun\Models\Traits\Lockable;
+use Railgun\Models\Traits\Notable;
 use Railgun\Models\Traits\Randomizable;
+use Railgun\Models\Traits\Reorderable;
 
 /**
- * @property-read  int   $id
- * @property string      $name
- * @property int         $slug
- * @property array       $content
- * @property int         $order
- * @property bool        $visible
- * @property int         $section_id
- * @property-read Carbon $created_at
- * @property-read Carbon $updated_at
+ * @property-read int     $id
+ * @property      string  $name
+ * @property      int     $slug
+ * @property      array   $content
+ * @property      int     $order
+ * @property      bool    $visible
+ * @property      int     $section_id
+ * @property-read Carbon  $created_at
+ * @property-read Carbon  $updated_at
+ * ---
+ * @property-read Section $section
  */
 class Lesson extends Model
 {
-    use Orderable;
+    use Commentable;
+    use Labelable;
+    use Lockable;
+    use Notable;
+    use Reorderable;
     use Randomizable;
 
     protected $fillable = [
@@ -40,7 +50,7 @@ class Lesson extends Model
         'visible' => 'boolean',
     ];
 
-    protected $orderGroups = ['section_id'];
+    protected array $orderGroups = ['section_id'];
 
     /**
      * @return BelongsTo<Section>

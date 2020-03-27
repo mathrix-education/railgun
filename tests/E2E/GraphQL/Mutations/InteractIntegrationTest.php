@@ -9,14 +9,13 @@ use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 
 /**
  * @testdox [E2E] Mutation interact
- * @coversNothing
  */
 class InteractIntegrationTest extends GraphQLIntegrationTestCase
 {
     private const QUERY = <<<'GRAPHQL'
     mutation(
         $interactable_type: InteractionType!
-        $interactable_id: Int!
+        $interactable_id: ID!
         $comprehension: InteractionComprehension
         $score: Int
     ) {
@@ -30,18 +29,12 @@ class InteractIntegrationTest extends GraphQLIntegrationTestCase
     GRAPHQL;
 
     /**
-     * @testdox succeed
+     * @testdox creates an interaction
      */
     public function testInteractSuccess(): void
     {
         $user   = $this->actingAsNewUser();
         $course = Course::random();
-
-        $variables = [
-            'interactable_type' => 'COURSE',
-            'interactable_id'   => $course->id,
-            'comprehension'     => 'CLEAR',
-        ];
 
         $this->graphQL(self::QUERY, [
             'interactable_type' => 'COURSE',

@@ -38,7 +38,8 @@ if (!function_exists('hasScope')) {
      */
     function hasScope(?User $user, string $scope): bool
     {
-        return $user instanceof User && (
+        return $user instanceof User
+            && (
                 in_array('*', $user->scopes, true)
                 || in_array($scope, $user->scopes, true)
             );
@@ -59,5 +60,18 @@ if (!function_exists('scope')) {
         $user = Auth::user();
 
         return hasScope($user, $scope);
+    }
+}
+
+if (!function_exists('isPremium')) {
+    /**
+     * @return bool Check if the current user is premium.
+     */
+    function isPremium(): bool
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        return $user instanceof User && $user->premium;
     }
 }

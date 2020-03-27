@@ -1,0 +1,16 @@
+extend type Mutation {
+    """
+    Create a new label.
+    """
+    createLabel(input: CreateLabel @spread): Label @create
+
+    """
+    Update an existing label.
+    """
+    updateLabel(input: UpdateLabel @spread): Label @update
+
+    """
+    Delete an existing label.
+    """
+    deleteLabel(id: ID!): Label @delete
+}

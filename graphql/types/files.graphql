@@ -1,0 +1,43 @@
+type File {
+    """
+    The file absolute path in the bucket.
+    """
+    path: String!
+    """
+    The file publicly acessible url.
+    """
+    url: String!
+    """
+    The file basename (the file name).
+    """
+    basename: String!
+    """
+    The file dirname (the parent directory).
+    """
+    dirname: String!
+    """
+    The file mimetype.
+    """
+    mimetype: String!
+    """
+    The file size in bytes.
+    """
+    size: Int!
+    """
+    The date/time when the file was last updated.
+    """
+    updated_at: DateTime!
+}
+
+type Directory {
+    path: String!
+    url: String!
+    basename: String!
+    dirname: String!
+}
+
+type DirectoryContent {
+    metadata: Directory
+    directories: [Directory!]!
+    files: [File!]!
+}

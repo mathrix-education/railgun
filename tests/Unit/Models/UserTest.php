@@ -9,11 +9,13 @@ use Railgun\Models\User;
 use Tests\BaseTestCase;
 
 /**
+ * @testdox [Unit] Model User
  * @coversDefaultClass \Railgun\Models\User
  */
 class UserTest extends BaseTestCase
 {
     /**
+     * @testdox hashes passwords on set
      * @covers ::setPasswordAttribute
      */
     public function testSetPasswordAttribute(): void

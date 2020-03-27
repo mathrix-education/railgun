@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use Railgun\Models\Label;
+use Railgun\Models\Note;
+
 class DatabaseSeeder extends AdvancedSeeder
 {
     public function run(): void
@@ -16,6 +19,9 @@ class DatabaseSeeder extends AdvancedSeeder
         $this->callSilent(UsersSeeder::class);
         $this->callSilent(CommentsSeeder::class);
         $this->callSilent(InteractionsSeeder::class);
+
+        $this->seedFactory(Label::class);
+        $this->seedFactory(Note::class);
 
         $duration = time() - $start;
         $this->writeln("<info>> Done in $duration seconds</info>");

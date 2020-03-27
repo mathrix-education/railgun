@@ -1,0 +1,15 @@
+union Notable = Course | Exam | Exercise | Flashcard
+
+enum NotableType {
+    COURSE @enum(value: "course")
+    EXAM @enum(value: "exam")
+    EXERCISE @enum(value: "exercise")
+    FLASHCARD @enum(value: "flashcard")
+}
+
+type Note {
+    id: ID!
+    content: Silicate!
+    brick_id: String
+    notable: Notable! @morphTo
+}
