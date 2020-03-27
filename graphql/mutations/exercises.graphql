@@ -10,6 +10,7 @@ extend type Mutation {
         premium: Boolean!
         visible: Boolean!
         subject_id: ID!
+        labels: ManageLabels
     ): Exercise @permission(scope: "exercices:create") @create
 
     "Update an existing exercise."
@@ -24,6 +25,7 @@ extend type Mutation {
         premium: Boolean
         visible: Boolean
         subject_id: ID
+        labels: ManageLabels
     ): Exercise @permission(scope: "exercices:update") @update
 
     "Delete an existing exercise."

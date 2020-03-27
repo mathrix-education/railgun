@@ -19,6 +19,10 @@ type Course {
     notion: Notion! @belongsTo
     comments: [Comment!] @morphMany
     """
+    The course administrative labels. Requires the "labels:read" scope.
+    """
+    labels: [Label!] @morphMany @permission(scope: "labels:read")
+    """
     The course administrative notes. Requires the "notes:read" scope.
     """
     notes: [Note!] @morphMany @permission(scope: "notes:read")

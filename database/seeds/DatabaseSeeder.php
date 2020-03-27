@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Railgun\Models\Label;
 use Railgun\Models\Note;
 
 class DatabaseSeeder extends AdvancedSeeder
@@ -19,6 +20,7 @@ class DatabaseSeeder extends AdvancedSeeder
         $this->callSilent(CommentsSeeder::class);
         $this->callSilent(InteractionsSeeder::class);
 
+        $this->seedFactory(Label::class);
         $this->seedFactory(Note::class);
 
         $duration = time() - $start;

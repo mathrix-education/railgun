@@ -13,6 +13,10 @@ type Flashcard {
     chapter: Chapter! @belongsTo
     comments: [Comment!] @morphMany
     """
+    The flashcard administrative labels. Requires the "labels:read" scope.
+    """
+    labels: [Label!] @morphMany @permission(scope: "labels:read")
+    """
     The flashcard administrative notes. Requires the "notes:read" scope.
     """
     notes: [Note!] @morphMany @permission(scope: "notes:read")

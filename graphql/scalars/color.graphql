@@ -1,0 +1,5 @@
+"""
+A standard valid hexadecimal color; colors may use the short format.
+Examples: `#ff00aa`, `#5a2`
+"""
+scalar Color @scalar(class: "Railgun\\GraphQL\\Scalars\\Color")

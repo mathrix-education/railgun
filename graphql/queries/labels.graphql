@@ -1,0 +1,5 @@
+extend type Query {
+    listLabels: [Label!]! @all
+
+    readLabel(id: ID! @eq): Label @find
+}

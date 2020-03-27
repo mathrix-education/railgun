@@ -27,6 +27,8 @@ class Note extends Model
 {
     use SoftDeletes;
 
+    public const NOTABLE = [Course::class, Exercise::class, Flashcard::class, Exam::class, Lesson::class];
+
     protected $fillable = [
         'content',
         'brick_id',

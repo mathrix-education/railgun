@@ -15,6 +15,10 @@ type Exam {
     chapter: Chapter! @belongsTo
     comments: [Comment!] @morphMany
     """
+    The exam administrative labels. Requires the "labels:read" scope.
+    """
+    labels: [Label!] @morphMany @permission(scope: "labels:read")
+    """
     The exam administrative notes. Requires the "notes:read" scope.
     """
     notes: [Note!] @morphMany @permission(scope: "notes:read")
