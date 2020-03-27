@@ -23,6 +23,8 @@ class CreateNotesTable extends Migration
             $table->morphs('notable');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
