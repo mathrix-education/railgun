@@ -19,10 +19,13 @@ use Railgun\Models\Course;
 use Railgun\Models\Exam;
 use Railgun\Models\Exercise;
 use Railgun\Models\Flashcard;
+use Railgun\Models\Lesson;
 use Railgun\Models\Pack;
 use Railgun\Models\Training;
 use Railgun\Models\Traits\Acquerable;
 use Railgun\Models\Traits\Commentable;
+use Railgun\Models\Traits\Labelable;
+use Railgun\Models\Traits\Notable;
 use Railgun\Models\User;
 use function in_array;
 
@@ -67,6 +70,8 @@ class AppServiceProvider extends ServiceProvider
             /**
              * @see Commentable
              * @see Interactable
+             * @see Labelable
+             * @see Notable
              * @see Reportable
              */
             'subject'   => Chapter::class,
@@ -74,6 +79,7 @@ class AppServiceProvider extends ServiceProvider
             'exercise'  => Exercise::class,
             'flashcard' => Flashcard::class,
             'exam'      => Exam::class,
+            'lesson'    => Lesson::class,
             /** @see Acquerable */
             'pack'      => Pack::class,
             'training'  => Training::class,

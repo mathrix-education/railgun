@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Traits\Commentable;
 use Railgun\Models\Traits\Interactable;
+use Railgun\Models\Traits\Labelable;
 use Railgun\Models\Traits\Lockable;
 use Railgun\Models\Traits\Notable;
 use Railgun\Models\Traits\Randomizable;
@@ -35,6 +36,7 @@ class Exercise extends Model
 {
     use Commentable;
     use Interactable;
+    use Labelable;
     use Lockable;
     use Notable;
     use Reorderable;

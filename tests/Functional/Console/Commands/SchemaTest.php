@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional;
+namespace Tests\Functional\Console\Commands;
 
 use Illuminate\Support\Facades\Artisan;
 use Tests\BaseTestCase;

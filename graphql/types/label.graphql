@@ -1,0 +1,7 @@
+type Label {
+    id: ID!
+    name: String!
+    color: Color!
+    created_at: DateTime!
+    updated_at: DateTime!
+}

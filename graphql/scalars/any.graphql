@@ -1,0 +1,4 @@
+"""
+An arbitrary object.
+"""
+scalar Any @scalar(class: "MLL\\GraphQLScalars\\Mixed")
