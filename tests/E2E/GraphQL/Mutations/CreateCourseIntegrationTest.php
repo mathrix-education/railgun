@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\E2E\GraphQL\Mutations;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Course;
 use Railgun\Models\Label;
@@ -24,6 +25,8 @@ class CreateCourseIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testCreateWithLabels(): void
     {
+        $expectedLabelsCount = 2;
+
         $payload = Arr::only(factory(Course::class)->raw(), [
             'name',
             'slug',
@@ -33,7 +36,7 @@ class CreateCourseIntegrationTest extends GraphQLIntegrationTestCase
             'notion_id',
         ]);
 
-        $labelIds = factory(Label::class, 2)->create()->pluck('id')->toArray();
+        $labelIds = factory(Label::class, $expectedLabelsCount)->create()->pluck('id')->toArray();
 
         $payload['labels'] = ['connect' => $labelIds];
 
@@ -58,6 +61,7 @@ class CreateCourseIntegrationTest extends GraphQLIntegrationTestCase
                     notion_id: $notion_id
                     labels: $labels
                 ) {
+                    id
                     labels {
                         id
                         name
@@ -73,5 +77,15 @@ class CreateCourseIntegrationTest extends GraphQLIntegrationTestCase
         $this->assertResponseOk();
         $this->assertNoErrors();
         $this->assertEqualsCanonicalizing($labelIds, $actualLabelIds);
+        $this->assertEquals(
+            $expectedLabelsCount,
+            DB::table('labelables')
+                ->where([
+                    ['labelable_type', '=', 'COURSE'],
+                    ['labelable_id', '=', $this->getData('createCourse.id')],
+                ])
+                ->whereNotNull('labeled_at')
+                ->count()
+        );
     }
 }
