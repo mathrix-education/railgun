@@ -10,13 +10,16 @@ use Railgun\Models\Traits\BelongsToChapter;
 use Railgun\Models\Traits\Interactable;
 
 /**
- * Delete outdated interactions.
+ * Delete outdated {@see Interaction} related to chapter.
  */
 class DeleteChapterInteractions extends Job implements ShouldQueue
 {
     /** @var Model|Interactable $reference */
     private $reference;
 
+    /**
+     * @param Model|Interactable $reference The reference model, which should be {@see Interactable}.
+     */
     public function __construct($reference)
     {
         $this->reference = $reference;

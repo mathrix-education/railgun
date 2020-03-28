@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Railgun\GraphQL\Mutations;
 
 use Google_Client;
-use GraphQL\Type\Definition\ResolveInfo;
-use JsonException;
 use Mathrix\Lumen\JWT\Drivers\Driver;
-use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Railgun\Exceptions\InvalidAuthTokenException;
 use Railgun\Models\User;
 
+/**
+ * Mutation loginWithGoogle.
+ * Allow users to login using their Google account.
+ */
 class LoginWithGoogle
 {
     private Driver          $driver;
@@ -26,16 +27,12 @@ class LoginWithGoogle
     /**
      * @link https://developers.google.com/identity/sign-in/web/backend-auth#calling-the-tokeninfo-endpoint
      *
-     * @param null           $rootValue
-     * @param mixed[]        $args
-     * @param GraphQLContext $context
-     * @param ResolveInfo    $resolveInfo
+     * @param null    $rootValue The parent value, always null in this case.
+     * @param mixed[] $args      The mutation arguments.
      *
-     * @return mixed
-     *
-     * @throws JsonException
+     * @return mixed[] The signed, serialized JWT for the user.
      */
-    public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    public function __invoke($rootValue, array $args): array
     {
         $payload = $this->client->verifyIdToken($args['accessToken']);
 

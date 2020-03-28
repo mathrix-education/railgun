@@ -7,10 +7,10 @@ namespace Railgun\Handlers;
 use Exception;
 use GraphQL\Error\Error as GraphQLError;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\ValidationException as IlluminateValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
-use League\Flysystem\FileExistsException;
-use League\Flysystem\FileNotFoundException;
+use League\Flysystem\FileExistsException as LeagueFileExistsException;
+use League\Flysystem\FileNotFoundException as LeagueFileNotFoundException;
 use Psr\Log\LogLevel;
 use Railgun\Billing\Exceptions\CardException;
 use Railgun\Exceptions\FileConflictException;
@@ -21,7 +21,7 @@ use Railgun\Models\User;
 use Sentry\Severity;
 use Sentry\State\Hub;
 use Sentry\State\Scope;
-use Stripe\Exception\CardException;
+use Stripe\Exception\CardException as StripeCardException;
 use Throwable;
 use function app;
 
@@ -35,14 +35,10 @@ class Handler extends ExceptionHandler
      *
      * @var string[]
      */
-    protected $dontReport = [];
+    protected array $dontReport = [];
 
     /**
      * Transform an exception before reporting.
-     *
-     * @param Throwable $original
-     *
-     * @return Throwable
      */
     public function transform(Throwable $original): Throwable
     {
@@ -59,27 +55,27 @@ class Handler extends ExceptionHandler
                     $original->getSource(),
                     $original->getPositions(),
                     $original->getPath(),
-                    $converted
+                    $converted,
                 );
             }
         }
 
-        if ($original instanceof ValidationException) {
+        if ($original instanceof IlluminateValidationException) {
             // Convert validation exceptions
             return ValidationException::from($original);
         }
 
-        if ($original instanceof CardException) {
+        if ($original instanceof StripeCardException) {
             // Convert Stripe card exceptions
             return CardException::from($original);
         }
 
-        if ($original instanceof FileNotFoundException) {
+        if ($original instanceof LeagueFileNotFoundException) {
             // Convert League exception
             return new FileNotFoundException($original->getPath(), $original);
         }
 
-        if ($original instanceof FileExistsException) {
+        if ($original instanceof LeagueFileExistsException) {
             // Convert League exception
             return new FileConflictException($original->getPath(), $original);
         }
@@ -108,7 +104,8 @@ class Handler extends ExceptionHandler
      */
     public function reportToSentry(Throwable $exception): void
     {
-        if (!$this->shouldReport($exception)
+        if (
+            !$this->shouldReport($exception)
             || !app()->environment(['master', 'dev', 'v7'])
             || !app()->bound('sentry')
         ) {
@@ -118,7 +115,7 @@ class Handler extends ExceptionHandler
         /** @var Hub $sentry */
         $sentry = app('sentry');
 
-        $sentry->configureScope(function (Scope $scope) use ($exception) {
+        $sentry->configureScope(function (Scope $scope) use ($exception): void {
             /** @var User|null $user The logged user */
             $user = Auth::user();
 

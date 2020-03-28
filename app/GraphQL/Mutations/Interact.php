@@ -8,12 +8,16 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Railgun\Models\Interaction;
 use Railgun\Models\User;
 
+/**
+ * Mutation interact.
+ * Create new interaction with the provided model (interactable_type, interactable_id) for the current user.
+ */
 class Interact
 {
     /**
-     * @param null           $rootValue
-     * @param mixed[]        $args
-     * @param GraphQLContext $context
+     * @param null           $rootValue The parent value, always null in this case.
+     * @param mixed[]        $args      The mutation arguments.
+     * @param GraphQLContext $context   The GraphQL context which holds the user.
      *
      * @return mixed
      */
@@ -22,7 +26,7 @@ class Interact
         /** @var User $user */
         $user = $context->user();
 
-        // Filter args
+        // Filter args based on the interactable_type
         switch ($args['interactable_type']) {
             case 'subject':
                 unset($args['comprehension'], $args['score']);

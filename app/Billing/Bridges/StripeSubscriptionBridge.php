@@ -46,7 +46,7 @@ class StripeSubscriptionBridge
                 ]);
             }
 
-            $subscription->payment_intent_secret = $stripe->latest_invoice->payment_intent->client_secret;
+            $subscription->latest_invoice = $stripe->latest_invoice;
         }
 
         $subscription->current_period_start = Carbon::createFromTimestamp($stripe->current_period_start);

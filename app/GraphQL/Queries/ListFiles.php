@@ -9,11 +9,15 @@ use Railgun\Exceptions\DirectoryNotFoundException;
 use Railgun\Facades\Storage;
 use function collect;
 
+/**
+ * Query listFiles.
+ * List the directories and files in a directory of the CDN.
+ */
 class ListFiles
 {
     /**
-     * @param null    $rootValue
-     * @param mixed[] $args
+     * @param null    $rootValue The parent value, always null in this case.
+     * @param mixed[] $args      The query arguments (path).
      *
      * @return mixed
      */
@@ -28,9 +32,9 @@ class ListFiles
             throw new DirectoryNotFoundException($path);
         }
 
-        $content     = collect($disk->listContents($path))->map(fn($o) => Storage::normalize($o));
-        $directories = $content->filter(fn($o) => $o['type'] === 'dir')->values();
-        $files       = $content->filter(fn($o) => $o['type'] === 'file')->values();
+        $content     = collect($disk->listContents($path))->map(static fn($o) => Storage::normalize($o));
+        $directories = $content->filter(static fn($o) => $o['type'] === 'dir')->values();
+        $files       = $content->filter(static fn($o) => $o['type'] === 'file')->values();
 
         return [
             'directories' => $directories,

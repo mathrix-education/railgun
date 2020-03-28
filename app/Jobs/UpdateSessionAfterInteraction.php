@@ -18,7 +18,7 @@ class UpdateSessionAfterInteraction extends Job implements ShouldQueue
      * @link https://blog.maqe.com/solved-eloquent-doesnt-support-composite-primary-keys-62b740120f
      * @link https://stackoverflow.com/questions/56059178/how-do-i-declare-a-composite-primary-key-in-the-lumen-model
      *
-     * @var array[] $wheres Workaround to handle composite keys.
+     * @var mixed[][] $wheres Workaround to handle composite keys.
      */
     private array $wheres;
 
@@ -37,6 +37,7 @@ class UpdateSessionAfterInteraction extends Job implements ShouldQueue
         $interaction = Interaction::query()->where($this->wheres)->first();
 
         if (!($interaction instanceof Interaction) || !($interaction->interactable instanceof BelongsToChapter)) {
+            // This should never happen
             return;
         }
 

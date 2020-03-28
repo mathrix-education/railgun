@@ -5,20 +5,23 @@ declare(strict_types=1);
 namespace Railgun\GraphQL\Mutations;
 
 use League\Flysystem\FileNotFoundException;
-use Railgun\Exceptions\FileNotFoundException;
 use Railgun\Facades\Storage;
 
+/**
+ * Mutation moveFile.
+ * Move a file to another place on the CDN.
+ */
 class MoveFile
 {
     /**
-     * @param null    $rootValue
-     * @param mixed[] $args
+     * @param null    $rootValue The parent value, always null in this case.
+     * @param mixed[] $args      The mutation arguments.
      *
-     * @return mixed
+     * @return mixed[] The moved file metadata.
      *
      * @throws FileNotFoundException
      */
-    public function __invoke($rootValue, array $args)
+    public function __invoke($rootValue, array $args): array
     {
         $disk        = Storage::disk();
         $source      = $args['source'];

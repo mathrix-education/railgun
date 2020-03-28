@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Railgun\Billing\Cart;
+namespace Railgun\Jobs;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -18,7 +18,7 @@ use function collect;
 /**
  * Using a Stripe {@see Invoice}, deliver the corresponding products to a user.
  */
-class DeliverProducts
+class DeliverProducts extends Job
 {
     private Invoice $invoice;
     private User    $user;
@@ -36,7 +36,7 @@ class DeliverProducts
     /**
      * Deliver all the products in the invoice.
      */
-    public function deliver(): void
+    public function handle(): void
     {
         if (!$this->invoice->paid) {
             // This should never happen
@@ -54,6 +54,7 @@ class DeliverProducts
         ]);
 
         if ($validator->fails()) {
+            // TODO: report validation failure?
             return;
         }
 

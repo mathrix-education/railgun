@@ -11,11 +11,13 @@ use function app;
 use function config;
 use function sprintf;
 
+/**
+ * Email containing a special link for password reset.
+ */
 class PasswordForgottenMail extends MailjetTemplateMailable
 {
+    /** @var int The Mailjet Template ID. */
     protected int $templateId = 1185614;
-
-    // Mail variables
     public string $firstName;
     public string $resetLink;
 
@@ -28,7 +30,7 @@ class PasswordForgottenMail extends MailjetTemplateMailable
         $this->resetLink = sprintf(
             '%s/reinitialiser-mot-de-passe?token=%s',
             config('urls.angular'),
-            $crypto->get($user)
+            $crypto->get($user),
         );
     }
 }

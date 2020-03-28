@@ -12,11 +12,18 @@ use MLL\GraphQLScalars\Regex;
  */
 class Color extends Regex
 {
+    /**
+     * @var string The scalar description.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
     public $description = <<<'DESCRIPTION'
     A hexadecimal color is specified with: `#RRGGBB`, where `RR` (red), `GG` (green) and `BB` (blue)
     are hexadecimal integers between `00` and `FF` specifying the intensity of the color.
     DESCRIPTION;
 
+    /**
+     * @return string The color regex.
+     */
     public static function regex(): string
     {
         return '/^#([a-f0-9]{6}|[a-f0-9]{3})$/';

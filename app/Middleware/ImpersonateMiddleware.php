@@ -7,6 +7,7 @@ namespace Railgun\Middleware;
 use Closure;
 use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Railgun\Models\User;
 use function scope;
 
@@ -24,7 +25,7 @@ class ImpersonateMiddleware
         $this->auth = $auth;
     }
 
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         if ($request->hasHeader(self::HEADER) && scope('users:impersonate')) {
             $targetId = $request->header(self::HEADER);
