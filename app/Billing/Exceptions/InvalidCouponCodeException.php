@@ -12,7 +12,7 @@ use function trans;
 /**
  * Thrown when the user tries to submit an invalid coupon code.
  */
-class InvalidCouponCode extends HttpException
+class InvalidCouponCodeException extends HttpException
 {
     protected string $level    = LogLevel::NOTICE;
     protected string $category = 'cart';
@@ -21,7 +21,7 @@ class InvalidCouponCode extends HttpException
     {
         parent::__construct(
             trans('cart.errors.coupon_code', ['coupon_code' => $couponCode]),
-            $previous
+            $previous,
         );
     }
 }

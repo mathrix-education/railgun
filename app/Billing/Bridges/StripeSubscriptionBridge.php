@@ -19,7 +19,7 @@ class StripeSubscriptionBridge
      *
      * @param StripeSubscription $stripe The Stripe subscription.
      *
-     * @return Subscription
+     * @return Subscription The converted Eloquent subscription.
      *
      * @throws ApiErrorException
      */

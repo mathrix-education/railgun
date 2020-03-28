@@ -9,7 +9,7 @@ use Railgun\Exceptions\InvalidAuthToken;
 
 class StripeWebhooksController extends Controller
 {
-    public function handle()
+    public function handle(): void
     {
         throw new InvalidAuthToken();
     }

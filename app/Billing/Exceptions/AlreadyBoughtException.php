@@ -14,11 +14,16 @@ use function trans;
 /**
  * Thrown when a user tries to buy a product he already owns.
  */
-class AlreadyBought extends HttpException
+class AlreadyBoughtException extends HttpException
 {
     protected string $level    = LogLevel::NOTICE;
     protected string $category = 'cart';
 
+    /**
+     * @param string[]       $productNames The products name.
+     * @param int            $userId       The user ID.
+     * @param Throwable|null $previous     The previous exception, if any.
+     */
     public function __construct(array $productNames, int $userId, ?Throwable $previous = null)
     {
         $names = implode(', ', $productNames);

@@ -12,21 +12,25 @@ use DateTime;
 use JsonException;
 use Railgun\Models\Subscription;
 use Stripe\Subscription as StripeSubscription;
-use const JSON_THROW_ON_ERROR;
 use function app;
 use function file_exists;
 use function file_get_contents;
 use function json_decode;
 use function storage_path;
+use const JSON_THROW_ON_ERROR;
 
+/**
+ * Convert a {@see BraintreeSubscription} to an Eloquent {@see Subscription}.
+ */
 class BraintreeSubscriptionBridge
 {
+    /** @var string[] The existing mappings subscriptionId => customerId. */
     private static array $mappings = [];
 
     /**
-     * @param BraintreeSubscription $braintree The Braintree subscription
+     * @param BraintreeSubscription $braintree The Braintree subscription.
      *
-     * @return Subscription
+     * @return Subscription The converted Eloquent subscription.
      *
      * @throws BraintreeNotFound
      * @throws JsonException
@@ -58,9 +62,14 @@ class BraintreeSubscriptionBridge
         return $subscription;
     }
 
+    /**
+     * Build subscriptionId => clientId mappings from a static file.
+     *
+     * @throws JsonException
+     */
     private static function buildMappings(): void
     {
-        if (!empty(self::$mappings)) {
+        if (!self::$mappings) {
             return;
         }
 
@@ -74,9 +83,9 @@ class BraintreeSubscriptionBridge
     }
 
     /**
-     * @param BraintreeSubscription $braintree
+     * @param BraintreeSubscription $braintree The Braintree subscription.
      *
-     * @return string
+     * @return string The subscription customer id.
      *
      * @throws BraintreeNotFound
      */
@@ -95,6 +104,13 @@ class BraintreeSubscriptionBridge
             ->customerId;
     }
 
+    /**
+     * Convert the status of a {@see BraintreeSubscription} to a {@see StripeSubscription}.
+     *
+     * @param BraintreeSubscription $braintree The Braintree subscription.
+     *
+     * @return string The new status from {@see StripeSubscription}.
+     */
     private static function convertStatus(BraintreeSubscription $braintree): string
     {
         switch ($braintree->status) {

@@ -13,7 +13,7 @@ use function trans;
 /**
  * Thrown when a user tries to subscribe to one the premium plans and is already premium.
  */
-class AlreadyPremium extends HttpException
+class AlreadyPremiumException extends HttpException
 {
     protected string $level    = LogLevel::NOTICE;
     protected string $category = 'cart';

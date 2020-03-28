@@ -1,0 +1,63 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Railgun\Billing\Exceptions;
+
+use Psr\Log\LogLevel;
+use Railgun\Exceptions\HttpException;
+use Stripe\ErrorObject;
+use Stripe\Exception\CardException as StripeCardException;
+use function trans;
+
+/**
+ * Wrapper for {@see StripeCardException}.
+ */
+class CardException extends HttpException
+{
+    protected string $level    = LogLevel::NOTICE;
+    protected string $category = 'billing';
+
+    /**
+     * @param StripeCardException $cardException The original exception.
+     *
+     * @return CardException The newly created exception.
+     */
+    public static function from(StripeCardException $cardException): CardException
+    {
+        switch ($cardException->getStripeCode()) {
+            case ErrorObject::CODE_EXPIRED_CARD:
+                $message = trans('stripe.errors.card.expired');
+                break;
+            case ErrorObject::CODE_INCORRECT_CVC:
+            case ErrorObject::CODE_INVALID_CVC:
+                $message = trans('stripe.errors.card.incorrect_cvc');
+                break;
+            case ErrorObject::CODE_INVALID_EXPIRY_MONTH:
+            case ErrorObject::CODE_INVALID_EXPIRY_YEAR:
+                $message = trans('stripe.errors.card.incorrect_exp');
+                break;
+            default:
+                $message = trans('stripe.errors.card.generic');
+                break;
+        }
+
+        return new self($message, $cardException);
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function extensionsContent(): array
+    {
+        $previous = $this->getPrevious();
+
+        if ($previous instanceof StripeCardException) {
+            return [
+                'stripeCode' => $previous->getStripeCode(),
+            ];
+        }
+
+        return [];
+    }
+}

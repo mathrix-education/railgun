@@ -12,7 +12,7 @@ use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\FileNotFoundException;
 use Psr\Log\LogLevel;
-use Railgun\Billing\Exceptions\Card;
+use Railgun\Billing\Exceptions\CardException;
 use Railgun\Exceptions\FileConflict;
 use Railgun\Exceptions\FileNotFound;
 use Railgun\Exceptions\HttpException;
@@ -71,7 +71,7 @@ class Handler extends ExceptionHandler
 
         if ($original instanceof CardException) {
             // Convert Stripe card exceptions
-            return Card::from($original);
+            return CardException::from($original);
         }
 
         if ($original instanceof FileNotFoundException) {

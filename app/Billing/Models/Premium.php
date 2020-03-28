@@ -11,6 +11,8 @@ use function method_exists;
 use function trans;
 
 /**
+ * Represents the premium product which can be added to a {@see Cart}.
+ *
  * @property-read string $id
  * @property-read string $name
  * @property-read bool   $available
@@ -46,21 +48,28 @@ class Premium implements Arrayable
         return Plan::getProrationAnchor(Plan::ANNUALLY_PLAN);
     }
 
+    /**
+     * @return mixed[] Get the array representation, mostly for GraphQL.
+     */
     public function toArray(): array
     {
         return [
-            'id'          => $this->id,
-            'name'        => $this->name,
-            'available'   => $this->available,
-            'price'       => $this->price,
-            'end_data'    => $this->end_date,
+            'id'        => $this->id,
+            'name'      => $this->name,
+            'available' => $this->available,
+            'price'     => $this->price,
+            'end_data'  => $this->end_date,
         ];
     }
 
     /**
+     * @param string $name The property name.
+     *
+     * @return mixed
+     *
      * @noinspection MagicMethodsValidityInspection
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         $method = 'get' . Str::studly($name);
 
