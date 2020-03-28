@@ -18,8 +18,10 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Queue;
 use Laravel\Lumen\Auth\Authorizable;
 use Railgun\Billing\Models\StripeCustomer;
+use Railgun\Jobs\CleanUserSession;
 use Railgun\Models\Traits\Cacheable;
 use Railgun\Models\Traits\Randomizable;
 use Ramsey\Uuid\Uuid;
@@ -108,6 +110,19 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         parent::__construct($attributes);
     }
 
+    public static function boot(): void
+    {
+        parent::boot();
+
+        self::updated(static function (User $user) {
+            if (!$user->wasChanged('grade_id')) {
+                return;
+            }
+
+            Queue::push(new CleanUserSession($user));
+        });
+    }
+
     /**
      * @return BelongsTo<Grade>
      */
@@ -131,7 +146,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasMany(Interaction::class);
     }
-    
+
     /**
      * @return HasMany<Session>
      */
@@ -173,6 +188,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->morphedByMany(Training::class, 'product', 'acquisitions')
             ->as(Acquisition::class);
     }
+
     /*
     |--------------------------------------------------------------------------
     | Attributes

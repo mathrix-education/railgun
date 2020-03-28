@@ -25,8 +25,8 @@ use Railgun\Models\Traits\Reorderable;
  */
 class Post extends Model
 {
-    use Reorderable;
     use Randomizable;
+    use Reorderable;
 
     protected $fillable          = [
         'title',

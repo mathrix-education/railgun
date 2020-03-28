@@ -1,6 +1,6 @@
 type Session {
-    user_id: Int! @belongsTo
-    chapter_id: Int! @belongsTo
-    discipline_id: Int! @belongsTo
+    user: User! @belongsTo
+    chapter: Chapter! @belongsTo
+    discipline: Discipline! @belongsTo
     updated_at: DateTime!
 }

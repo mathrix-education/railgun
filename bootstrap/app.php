@@ -20,7 +20,6 @@ use Railgun\MigrationV7\MigrationV7ServiceProvider;
 use Railgun\Providers\AppServiceProvider;
 use Railgun\Providers\BraintreeServiceProvider;
 use Railgun\Providers\CryptoServiceProvider;
-use Railgun\Providers\EventServiceProvider;
 use Railgun\Providers\FacebookServiceProvider;
 use Railgun\Providers\GoogleServiceProvider;
 use Railgun\Providers\StripeServiceProvider;
@@ -50,7 +49,6 @@ $app->configure('urls');
 
 // System
 $app->register(AppServiceProvider::class);
-$app->register(EventServiceProvider::class);
 $app->register(FilesystemServiceProvider::class);
 $app->register(RedisServiceProvider::class);
 $app->register(NotificationServiceProvider::class);

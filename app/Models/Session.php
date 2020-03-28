@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Railgun\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property int $user_id
- * @property int $discipline_id
- * @property int $chapter_id
- * @property Carbon updated_at
+ * @property-read int    $user_id
+ * @property-read int    $discipline_id
+ * @property-read int    $chapter_id
+ * @property-read Carbon $updated_at
  */
 class Session extends Model
 {

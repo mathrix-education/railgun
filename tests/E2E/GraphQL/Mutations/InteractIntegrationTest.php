@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Mutations;
 
+use Illuminate\Support\Facades\Queue;
+use Railgun\Jobs\UpdateSessionAfterInteraction;
 use Railgun\Models\Course;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 
@@ -33,6 +35,7 @@ class InteractIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testInteractSuccess(): void
     {
+        Queue::fake();
         $user   = $this->actingAsNewUser();
         $course = Course::random();
 
@@ -50,5 +53,6 @@ class InteractIntegrationTest extends GraphQLIntegrationTestCase
             'interactable_id'   => $course->id,
             'comprehension'     => 'clear',
         ]);
+        Queue::assertPushed(UpdateSessionAfterInteraction::class);
     }
 }
