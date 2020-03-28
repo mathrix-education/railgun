@@ -13,7 +13,7 @@ use Nuwave\Lighthouse\Support\Contracts\ArgTransformerDirective;
 use Nuwave\Lighthouse\Support\Contracts\DefinedDirective;
 use Nuwave\Lighthouse\Support\Contracts\FieldMiddleware;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use Railgun\Exceptions\MissingScope;
+use Railgun\Exceptions\MissingScopeException;
 use Railgun\Models\User;
 use RuntimeException;
 use function array_intersect;
@@ -69,7 +69,7 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
      * Check that the current user has the required scope.
      *
      * @throws RuntimeException
-     * @throws MissingScope
+     * @throws MissingScopeException
      */
     private function checkScope(): void
     {
@@ -90,7 +90,7 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
         $user = Auth::user();
 
         if ($user === null) {
-            throw new MissingScope($scopes);
+            throw new MissingScopeException($scopes);
         }
 
         if (in_array('*', $user->scopes)) {
@@ -101,7 +101,7 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
         $result = array_intersect($user->scopes, $scopes);
 
         if (count($result) < $min) {
-            throw new MissingScope($scopes);
+            throw new MissingScopeException($scopes);
         }
     }
 

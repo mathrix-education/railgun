@@ -13,10 +13,10 @@ use League\Flysystem\FileExistsException;
 use League\Flysystem\FileNotFoundException;
 use Psr\Log\LogLevel;
 use Railgun\Billing\Exceptions\CardException;
-use Railgun\Exceptions\FileConflict;
-use Railgun\Exceptions\FileNotFound;
+use Railgun\Exceptions\FileConflictException;
+use Railgun\Exceptions\FileNotFoundException;
 use Railgun\Exceptions\HttpException;
-use Railgun\Exceptions\Validation;
+use Railgun\Exceptions\ValidationException;
 use Railgun\Models\User;
 use Sentry\Severity;
 use Sentry\State\Hub;
@@ -66,7 +66,7 @@ class Handler extends ExceptionHandler
 
         if ($original instanceof ValidationException) {
             // Convert validation exceptions
-            return Validation::from($original);
+            return ValidationException::from($original);
         }
 
         if ($original instanceof CardException) {
@@ -76,12 +76,12 @@ class Handler extends ExceptionHandler
 
         if ($original instanceof FileNotFoundException) {
             // Convert League exception
-            return new FileNotFound($original->getPath(), $original);
+            return new FileNotFoundException($original->getPath(), $original);
         }
 
         if ($original instanceof FileExistsException) {
             // Convert League exception
-            return new FileConflict($original->getPath(), $original);
+            return new FileConflictException($original->getPath(), $original);
         }
 
         return $original;

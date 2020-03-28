@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Railgun\GraphQL\Queries;
 
 use League\Flysystem\Util;
-use Railgun\Exceptions\DirectoryNotFound;
+use Railgun\Exceptions\DirectoryNotFoundException;
 use Railgun\Facades\Storage;
 use function collect;
 
@@ -25,7 +25,7 @@ class ListFiles
         $disk = Storage::disk();
 
         if ($path !== '/' && !$disk->exists($path)) {
-            throw new DirectoryNotFound($path);
+            throw new DirectoryNotFoundException($path);
         }
 
         $content     = collect($disk->listContents($path))->map(fn($o) => Storage::normalize($o));

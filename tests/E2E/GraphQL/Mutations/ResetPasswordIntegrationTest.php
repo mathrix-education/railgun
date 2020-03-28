@@ -8,7 +8,7 @@ use Exception;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Crypto\PasswordResetCrypto;
-use Railgun\Exceptions\InvalidAuthToken;
+use Railgun\Exceptions\InvalidAuthTokenException;
 use Railgun\Models\User;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function factory;
@@ -64,6 +64,6 @@ class ResetPasswordIntegrationTest extends GraphQLIntegrationTestCase
             $exception = $e;
         }
 
-        $this->assertInstanceOf(InvalidAuthToken::class, $exception);
+        $this->assertInstanceOf(InvalidAuthTokenException::class, $exception);
     }
 }

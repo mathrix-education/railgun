@@ -21,7 +21,7 @@ class CardException extends HttpException
     /**
      * @param StripeCardException $cardException The original exception.
      *
-     * @return CardException The newly created exception.
+     * @return static
      */
     public static function from(StripeCardException $cardException): CardException
     {

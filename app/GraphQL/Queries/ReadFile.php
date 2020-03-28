@@ -6,7 +6,7 @@ namespace Railgun\GraphQL\Queries;
 
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Util;
-use Railgun\Exceptions\FileNotFound;
+use Railgun\Exceptions\FileNotFoundException;
 use Railgun\Facades\Storage;
 
 class ReadFile
@@ -26,7 +26,7 @@ class ReadFile
         $file = Storage::normalize($disk->getMetadata($path));
 
         if ($file['type'] !== 'file') {
-            throw new FileNotFound($path);
+            throw new FileNotFoundException($path);
         }
 
         return $file;

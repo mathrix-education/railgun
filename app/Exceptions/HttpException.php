@@ -22,9 +22,10 @@ abstract class HttpException extends SymfonyHttpException implements RendersErro
     protected string $category = 'internal';
 
     /**
-     * Since GraphQL errors are considered as "normal" responses, we should not try to override the HTTP.
-     * The headers can be set using the self::setHeaders method. Moreover, we do not use the exception code at the
-     * moment.
+     * Since GraphQL errors are considered as "normal" responses, we should not try to override the HTTP and return a
+     * 200 OK status code.
+     * The headers can be set using the {@see HttpException::setHeaders()} method if necessary but will be sent by
+     * the Lighthouse framework. Moreover, we do not use exception code at the moment.
      *
      * @param string|null    $message  The user-friendly message to display.
      * @param Throwable|null $previous The underlying exception, if necessary.
@@ -35,7 +36,7 @@ abstract class HttpException extends SymfonyHttpException implements RendersErro
     }
 
     /**
-     * @return string the exception PSR3 LogLevel
+     * @return string the exception PSR3 {@see LogLevel}
      */
     public function getLevel(): string
     {
@@ -57,7 +58,7 @@ abstract class HttpException extends SymfonyHttpException implements RendersErro
     /**
      * Returns true when exception message is safe to be displayed to a client.
      *
-     * @return bool
+     * @return bool If the exception is safe.
      */
     public function isClientSafe(): bool
     {
@@ -69,7 +70,7 @@ abstract class HttpException extends SymfonyHttpException implements RendersErro
      *
      * Value "graphql" is reserved for errors produced by query parsing or validation, do not use it.
      *
-     * @return string
+     * @return string The exception category.
      */
     public function getCategory(): string
     {
@@ -79,7 +80,7 @@ abstract class HttpException extends SymfonyHttpException implements RendersErro
     /**
      * Default GraphQL exception payload ({@see RendersErrorsExtensions} for details).
      *
-     * @return array
+     * @return mixed[] The extension payload.
      */
     public function extensionsContent(): array
     {

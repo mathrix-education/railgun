@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Railgun\GraphQL\Mutations;
 
 use League\Flysystem\FileNotFoundException;
-use Railgun\Exceptions\FileNotFound;
+use Railgun\Exceptions\FileNotFoundException;
 use Railgun\Facades\Storage;
 
 class DeleteFile
@@ -25,7 +25,7 @@ class DeleteFile
         $file = Storage::normalize($disk->getMetadata($path));
 
         if ($file['type'] !== 'file') {
-            throw new FileNotFound($path);
+            throw new FileNotFoundException($path);
         }
 
         $disk->delete($path);

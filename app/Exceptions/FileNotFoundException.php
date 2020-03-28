@@ -11,7 +11,7 @@ use function trans;
 /**
  * Thrown when a user tries to access a non-existing file.
  */
-class FileNotFound extends HttpException
+class FileNotFoundException extends HttpException
 {
     protected string $category = 'storage';
 
@@ -19,7 +19,7 @@ class FileNotFound extends HttpException
     {
         parent::__construct(
             trans('storage.errors.file_not_found', ['file' => Util::normalizePath($file)]),
-            $previous
+            $previous,
         );
     }
 }

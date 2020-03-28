@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use JsonException;
 use Mathrix\Lumen\JWT\Drivers\Driver;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use Railgun\Exceptions\InvalidCredentials;
+use Railgun\Exceptions\InvalidCredentialsException;
 use Railgun\Models\User;
 
 /**
@@ -42,13 +42,13 @@ class LoginBasic
             ->first();
 
         if ($user === null) {
-            throw new InvalidCredentials();
+            throw new InvalidCredentialsException();
         }
 
         $logged = Hash::check($args['password'], $user->password);
 
         if (!$logged) {
-            throw new InvalidCredentials();
+            throw new InvalidCredentialsException();
         }
 
         // Sign the JWS

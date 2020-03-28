@@ -11,7 +11,7 @@ use function trans;
 /**
  * Thrown when a user tries to access a non-existing directory.
  */
-class DirectoryNotFound extends HttpException
+class DirectoryNotFoundException extends HttpException
 {
     protected string $category = 'storage';
 
@@ -19,7 +19,7 @@ class DirectoryNotFound extends HttpException
     {
         parent::__construct(
             trans('storage.errors.directory_not_found', ['directory' => Util::normalizePath($directory)]),
-            $previous
+            $previous,
         );
     }
 }

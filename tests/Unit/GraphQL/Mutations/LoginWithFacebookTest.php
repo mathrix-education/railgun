@@ -11,7 +11,7 @@ use Facebook\GraphNodes\GraphUser;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Mockery;
 use Mockery\MockInterface;
-use Railgun\Exceptions\InvalidAuthToken;
+use Railgun\Exceptions\InvalidAuthTokenException;
 use Railgun\GraphQL\Mutations\LoginWithFacebook;
 use Railgun\Models\User;
 use Tests\Unit\GraphQLUnitTestCase;
@@ -129,11 +129,11 @@ class LoginWithFacebookTest extends GraphQLUnitTestCase
      * @testdox throws an error when providing an invalid Facebook token.
      * @covers ::__construct
      * @covers ::__invoke
-     * @uses    \Railgun\Exceptions\InvalidAuthToken
+     * @uses    \Railgun\Exceptions\InvalidAuthTokenException
      */
     public function testInvalidToken(): void
     {
-        $this->expectException(InvalidAuthToken::class);
+        $this->expectException(InvalidAuthTokenException::class);
 
         $this->mock(Facebook::class, static function (MockInterface $facebook) {
             $facebook->expects('get')

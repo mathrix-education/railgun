@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Railgun\Exceptions;
 
-use Psr\Log\LogLevel;
 use Throwable;
 use function implode;
 use function trans;
@@ -12,24 +11,29 @@ use function trans;
 /**
  * Thrown when a user tries to access on a query, mutation or field and does not have the required scope.
  */
-class MissingScope extends HttpException
+class MissingScopeException extends HttpException
 {
-    protected string $level    = LogLevel::NOTICE;
-    protected string $category = 'authentication';
-
-    /** @var array The requested scopes. */
+    protected string $category = 'authorization';
+    /** @var string[] The requested scopes. */
     private array $scopes;
 
+    /**
+     * @param string[]       $scopes   The scopes which were required but that the user does not have.
+     * @param Throwable|null $previous The previous exception, if any.
+     */
     public function __construct(array $scopes, ?Throwable $previous = null)
     {
         parent::__construct(
             trans('auth.missing_scope', ['scope' => implode(', ', $scopes)]),
-            $previous
+            $previous,
         );
 
         $this->scopes = $scopes;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function extensionsContent(): array
     {
         return [

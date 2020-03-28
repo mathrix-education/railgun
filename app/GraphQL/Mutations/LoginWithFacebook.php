@@ -11,7 +11,7 @@ use GraphQL\Type\Definition\ResolveInfo;
 use JsonException;
 use Mathrix\Lumen\JWT\Drivers\Driver;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use Railgun\Exceptions\InvalidAuthToken;
+use Railgun\Exceptions\InvalidAuthTokenException;
 use Railgun\Models\User;
 use function array_merge_recursive;
 
@@ -50,7 +50,7 @@ class LoginWithFacebook
             $response = $this->facebook->get(self::GET_ME_URL, $accessToken);
         } catch (FacebookAuthenticationException $authenticationException) {
             // Handle invalid token with standard GraphQL UI-friendly error
-            throw new InvalidAuthToken('Facebook');
+            throw new InvalidAuthTokenException('Facebook');
         }
 
         $graphUser = $response->getGraphUser();

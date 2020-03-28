@@ -9,10 +9,11 @@ use Throwable;
 use function trans;
 
 /**
- * Thrown an authentication is invalid.
- * This is not considered as a critical error, thus the log level is set to DEBUG.
+ * Thrown when the provide authentication token is invalid.
+ * This is not considered as a critical error as it can happen under normal conditions, for example when the user got
+ * tries to use an outdated JWT. Thus, the level is set to {@see LogLevel::DEBUG}.
  */
-class InvalidAuthToken extends HttpException
+class InvalidAuthTokenException extends HttpException
 {
     protected string $level    = LogLevel::DEBUG;
     protected string $category = 'authentication';

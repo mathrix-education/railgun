@@ -10,7 +10,7 @@ use Jose\Component\Checker\MissingMandatoryClaimException;
 use JsonException;
 use Mathrix\Lumen\JWT\Drivers\Driver;
 use Mathrix\Lumen\JWT\Utils\JWTConfig;
-use Railgun\Exceptions\InvalidAuthToken;
+use Railgun\Exceptions\InvalidAuthTokenException;
 use Railgun\Models\User;
 use function array_key_exists;
 use function hash;
@@ -27,7 +27,7 @@ class PasswordResetCrypto
      *
      * @param User $user The user who forgot his password.
      *
-     * @return string The serialiazed JWT.
+     * @return string The serialized JWT.
      *
      * @throws BindingResolutionException
      */
@@ -60,11 +60,11 @@ class PasswordResetCrypto
             $payload = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
         } catch (InvalidClaimException | MissingMandatoryClaimException | JsonException $exception) {
             // Catch any
-            throw new InvalidAuthToken();
+            throw new InvalidAuthTokenException();
         }
 
         if (!array_key_exists('hsh', $payload) || !array_key_exists('sub', $payload)) {
-            throw new InvalidAuthToken();
+            throw new InvalidAuthTokenException();
         }
 
         /** @var User $user */
@@ -74,7 +74,7 @@ class PasswordResetCrypto
             $user === null // User was not found
             || hash('sha256', $user->password) !== $payload['hsh'] // User password hash mismatch
         ) {
-            throw new InvalidAuthToken();
+            throw new InvalidAuthTokenException();
         }
 
         return $user;

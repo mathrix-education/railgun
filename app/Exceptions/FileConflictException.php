@@ -11,7 +11,7 @@ use function trans;
 /**
  * Thrown when the users tries to override a file.
  */
-class FileConflict extends HttpException
+class FileConflictException extends HttpException
 {
     protected string $category = 'storage';
 
@@ -19,7 +19,7 @@ class FileConflict extends HttpException
     {
         parent::__construct(
             trans('storage.errors.file_conflict', ['file' => Util::normalizePath($file)]),
-            $previous
+            $previous,
         );
     }
 }

@@ -9,7 +9,7 @@ use GraphQL\Type\Definition\ResolveInfo;
 use JsonException;
 use Mathrix\Lumen\JWT\Drivers\Driver;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use Railgun\Exceptions\InvalidAuthToken;
+use Railgun\Exceptions\InvalidAuthTokenException;
 use Railgun\Models\User;
 
 class LoginWithGoogle
@@ -40,7 +40,7 @@ class LoginWithGoogle
         $payload = $this->client->verifyIdToken($args['accessToken']);
 
         if (!$payload) {
-            throw new InvalidAuthToken('Google');
+            throw new InvalidAuthTokenException('Google');
         }
 
         $user = User::query()
