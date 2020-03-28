@@ -83,6 +83,7 @@
   },
   "autoload-dev": {
     "psr-4": {
+      "Railgun\\MigrationV7\\": "packages/railgun-migration-v7/",
       "Tests\\": "tests/"
     },
     "classmap": [

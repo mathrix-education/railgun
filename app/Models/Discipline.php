@@ -21,6 +21,7 @@ use Railgun\Models\Traits\Randomizable;
  * ---
  * @property-read Collection|Grade[]   $grades
  * @property-read Collection|Chapter[] $chapters
+ * @property-read Collection|Session[] $sessions
  */
 class Discipline extends Model
 {
@@ -47,5 +48,10 @@ class Discipline extends Model
     public function chapters(): HasMany
     {
         return $this->hasMany(Chapter::class);
+    }
+
+    public function sessions(): HasMany
+    {
+        return $this->hasMany(Session::class);
     }
 }

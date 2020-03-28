@@ -11,4 +11,5 @@ type Chapter {
     notions: [Notion!]! @hasMany
     flashcards: [Flashcard!]! @hasMany
     exams: [Exam!]! @hasMany
+    sessions: [Session!]! @hasMany
 }

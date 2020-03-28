@@ -33,8 +33,8 @@ use Railgun\Models\Traits\Reorderable;
  */
 class Grade extends Model
 {
-    use Reorderable;
     use Randomizable;
+    use Reorderable;
 
     protected $fillable = [
         'name',

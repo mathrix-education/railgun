@@ -33,8 +33,8 @@ class Lesson extends Model
     use Labelable;
     use Lockable;
     use Notable;
-    use Reorderable;
     use Randomizable;
+    use Reorderable;
 
     protected $fillable = [
         'name',

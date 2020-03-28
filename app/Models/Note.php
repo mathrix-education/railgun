@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Railgun\Models\Traits\Randomizable;
 
 /**
  * @property-read int                            $id
@@ -26,8 +27,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Note extends Model
 {
     use SoftDeletes;
+    use Randomizable;
 
-    public const NOTABLE = [Course::class, Exercise::class, Flashcard::class, Exam::class, Lesson::class];
+    public const NOTABLES = [Course::class, Exercise::class, Flashcard::class, Exam::class, Lesson::class];
 
     protected $fillable = [
         'content',

@@ -12,7 +12,9 @@ type User {
     braintree_id: String
     created_at: DateTime!
     updated_at: DateTime!
+    grade: Grade @belongsTo
     notifications: [Notification!]! @morphMany(type: "paginator")
     packs: [Pack!]! @morphMany
     trainings: [Training!]! @morphMany
+    sessions: [Session!]! @hasMany
 }

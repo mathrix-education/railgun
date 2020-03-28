@@ -28,8 +28,8 @@ use Railgun\Models\Traits\Reorderable;
 class Pack extends Model
 {
     use Acquerable;
-    use Reorderable;
     use Randomizable;
+    use Reorderable;
 
     protected $fillable = [
         'name',

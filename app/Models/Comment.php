@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Queue;
+use Railgun\Jobs\DeliverCommentReplyNotifications;
 use Railgun\Models\Traits\Randomizable;
 
 /**
@@ -43,6 +45,19 @@ class Comment extends Model
         'commentable_type',
         'commentable_id',
     ];
+
+    public static function boot(): void
+    {
+        parent::boot();
+
+        self::created(static function (Comment $comment) {
+            if ($comment->parent_id === null) {
+                return;
+            }
+
+            Queue::push(new DeliverCommentReplyNotifications($comment));
+        });
+    }
 
     /**
      * @return BelongsTo<Comment>

@@ -1,0 +1,6 @@
+type Session {
+    user: User! @belongsTo
+    chapter: Chapter! @belongsTo
+    discipline: Discipline! @belongsTo
+    updated_at: DateTime!
+}

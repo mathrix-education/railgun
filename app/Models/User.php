@@ -18,8 +18,10 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Queue;
 use Laravel\Lumen\Auth\Authorizable;
 use Railgun\Billing\Models\StripeCustomer;
+use Railgun\Jobs\CleanUserSession;
 use Railgun\Models\Traits\Cacheable;
 use Railgun\Models\Traits\Randomizable;
 use Ramsey\Uuid\Uuid;
@@ -52,10 +54,12 @@ use function trim;
  * @property-read Grade                     $grade
  * @property-read Collection|Comment[]      $comments
  * @property-read Collection|Vote[]         $votes
- * @property-read Collection|Subscription[] $subscriptions
+ * @property-read Collection|Interaction[]  $interactions
+ * @property-read Collection|Session[]      $sessions
  * @property-read Collection|Notification[] $notifications
  * @property-read Collection|Notification[] $unreadNotifications
  * @property-read Collection|Notification[] $readNotifications
+ * @property-read Collection|Subscription[] $subscriptions
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
@@ -106,6 +110,19 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         parent::__construct($attributes);
     }
 
+    public static function boot(): void
+    {
+        parent::boot();
+
+        self::updated(static function (User $user) {
+            if (!$user->wasChanged('grade_id')) {
+                return;
+            }
+
+            Queue::push(new CleanUserSession($user));
+        });
+    }
+
     /**
      * @return BelongsTo<Grade>
      */
@@ -120,6 +137,22 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * @return HasMany<Interaction>
+     */
+    public function interactions(): HasMany
+    {
+        return $this->hasMany(Interaction::class);
+    }
+
+    /**
+     * @return HasMany<Session>
+     */
+    public function sessions(): HasMany
+    {
+        return $this->hasMany(Session::class);
     }
 
     /**

@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Railgun\Models\Traits\BelongsToChapter;
+use Railgun\Models\Traits\InteractsWithInteractions;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
 
@@ -25,10 +27,11 @@ use Railgun\Models\Traits\Reorderable;
  * @property-read Collection|Course[]  $courses
  * @property-read Collection|Subject[] $subjects
  */
-class Notion extends Model
+class Notion extends Model implements BelongsToChapter
 {
-    use Reorderable;
+    use InteractsWithInteractions;
     use Randomizable;
+    use Reorderable;
 
     protected $fillable          = [
         'name',
@@ -61,5 +64,15 @@ class Notion extends Model
     public function subjects(): HasMany
     {
         return $this->hasMany(Subject::class)->orderBy('order');
+    }
+
+    /**
+     * Get the model parent chapter.
+     *
+     * @return Chapter
+     */
+    public function getChapter(): Chapter
+    {
+        return $this->chapter;
     }
 }

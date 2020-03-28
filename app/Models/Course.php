@@ -7,8 +7,10 @@ namespace Railgun\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Railgun\Models\Traits\BelongsToChapter;
 use Railgun\Models\Traits\Commentable;
 use Railgun\Models\Traits\Interactable;
+use Railgun\Models\Traits\InteractsWithInteractions;
 use Railgun\Models\Traits\Labelable;
 use Railgun\Models\Traits\Lockable;
 use Railgun\Models\Traits\Notable;
@@ -33,15 +35,16 @@ use Railgun\Models\Traits\Reorderable;
  * ---
  * @property-read Notion $notion
  */
-class Course extends Model
+class Course extends Model implements BelongsToChapter
 {
     use Commentable;
+    use InteractsWithInteractions;
     use Interactable;
     use Labelable;
-    use Notable;
     use Lockable;
-    use Reorderable;
+    use Notable;
     use Randomizable;
+    use Reorderable;
 
     protected $fillable = [
         'name',
@@ -79,5 +82,15 @@ class Course extends Model
     public function getContentAttribute(): array
     {
         return $this->lock('content', []);
+    }
+
+    /**
+     * Get the model parent chapter.
+     *
+     * @return Chapter
+     */
+    public function getChapter(): Chapter
+    {
+        return $this->notion->chapter;
     }
 }

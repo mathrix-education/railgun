@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Queries;
 
+use Illuminate\Support\Facades\Queue;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Comment;
 use Railgun\Models\Course;
@@ -26,6 +27,8 @@ class ReadCourseIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testInteractableIsNotNull(): void
     {
+        Queue::fake();
+
         // Create an interaction
         $user        = $this->actingAsNewUser();
         $course      = Course::random();
@@ -38,16 +41,19 @@ class ReadCourseIntegrationTest extends GraphQLIntegrationTestCase
         $interaction->save();
 
         // Read the associated interactable
-        $this->graphQL(<<<'QUERY'
-        query($courseId: ID!) {
-            readCourse(id: $courseId) {
-                interaction {
-                    interactable_type
-                    interactable_id
+        $this->graphQL(
+            <<<'QUERY'
+            query($courseId: ID!) {
+                readCourse(id: $courseId) {
+                    interaction {
+                        interactable_type
+                        interactable_id
+                    }
                 }
             }
-        }
-        QUERY, ['courseId' => $course->id]);
+            QUERY,
+            ['courseId' => $course->id]
+        );
 
         $this->assertResponseOk();
         $this->assertNoErrors();

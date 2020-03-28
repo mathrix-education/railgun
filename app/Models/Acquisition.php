@@ -24,8 +24,8 @@ use Railgun\Models\Traits\Randomizable;
  */
 class Acquisition extends Model
 {
-    use Randomizable;
     use AsPivot;
+    use Randomizable;
 
     protected $table = 'acquisitions'; // required to explicitly define the join table
 

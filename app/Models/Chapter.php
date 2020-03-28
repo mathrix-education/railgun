@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Railgun\Models\Traits\BelongsToChapter;
+use Railgun\Models\Traits\InteractsWithInteractions;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
 
@@ -30,11 +32,13 @@ use Railgun\Models\Traits\Reorderable;
  * @property-read Collection|Notion[]    $notions
  * @property-read Collection|Flashcard[] $flashcards
  * @property-read Collection|Exam[]      $exams
+ * @property-read Collection|Session[]   $sessions
  */
-class Chapter extends Model
+class Chapter extends Model implements BelongsToChapter
 {
-    use Reorderable;
+    use InteractsWithInteractions;
     use Randomizable;
+    use Reorderable;
 
     protected $fillable = [
         'name',
@@ -87,5 +91,23 @@ class Chapter extends Model
     public function exams(): HasMany
     {
         return $this->hasMany(Exam::class)->orderBy('order');
+    }
+
+    /**
+     * @return HasMany<Session>
+     */
+    public function sessions(): HasMany
+    {
+        return $this->hasMany(Session::class);
+    }
+
+    /**
+     * Get the model parent chapter.
+     *
+     * @return Chapter
+     */
+    public function getChapter(): Chapter
+    {
+        return $this;
     }
 }

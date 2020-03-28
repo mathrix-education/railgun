@@ -17,4 +17,6 @@ use Illuminate\Database\Eloquent\Model;
 class Label extends Model
 {
     public const LABELABLES = [Course::class, Exercise::class, Flashcard::class, Exam::class, Lesson::class];
+
+    protected $fillable = ['name', 'color'];
 }

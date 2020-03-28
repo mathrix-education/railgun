@@ -27,8 +27,8 @@ use Railgun\Models\Traits\Reorderable;
  */
 class Section extends Model
 {
-    use Reorderable;
     use Randomizable;
+    use Reorderable;
 
     protected $fillable          = [
         'name',

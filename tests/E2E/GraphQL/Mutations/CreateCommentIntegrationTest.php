@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Mutations;
 
-use Illuminate\Events\CallQueuedListener;
 use Illuminate\Support\Facades\Queue;
 use Laravel\Lumen\Testing\DatabaseTransactions;
-use Railgun\Listeners\SendCommentReplyNotifications;
+use Railgun\Jobs\DeliverCommentReplyNotifications;
 use Railgun\Models\Comment;
 use Railgun\Models\Course;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
@@ -63,9 +62,7 @@ class CreateCommentIntegrationTest extends GraphQLIntegrationTestCase
             'commentable_id'   => $course->id,
         ]);
 
-        Queue::assertPushed(CallQueuedListener::class, static function (CallQueuedListener $job) {
-            return $job->class === SendCommentReplyNotifications::class;
-        });
+        Queue::assertNotPushed(DeliverCommentReplyNotifications::class);
     }
 
     /**
@@ -98,8 +95,6 @@ class CreateCommentIntegrationTest extends GraphQLIntegrationTestCase
             'commentable_id'   => $parent->commentable_id,
         ]);
 
-        Queue::assertPushed(CallQueuedListener::class, static function (CallQueuedListener $job) {
-            return $job->class === SendCommentReplyNotifications::class;
-        });
+        Queue::assertPushed(DeliverCommentReplyNotifications::class);
     }
 }

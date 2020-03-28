@@ -7,8 +7,10 @@ namespace Railgun\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Railgun\Models\Traits\BelongsToChapter;
 use Railgun\Models\Traits\Commentable;
 use Railgun\Models\Traits\Interactable;
+use Railgun\Models\Traits\InteractsWithInteractions;
 use Railgun\Models\Traits\Labelable;
 use Railgun\Models\Traits\Lockable;
 use Railgun\Models\Traits\Notable;
@@ -28,15 +30,16 @@ use Railgun\Models\Traits\Reorderable;
  * ---
  * @property-read Chapter $chapter
  */
-class Flashcard extends Model
+class Flashcard extends Model implements BelongsToChapter
 {
     use Commentable;
+    use InteractsWithInteractions;
     use Interactable;
     use Notable;
     use Labelable;
     use Lockable;
-    use Reorderable;
     use Randomizable;
+    use Reorderable;
 
     protected $fillable = [
         'fronts',
@@ -78,5 +81,15 @@ class Flashcard extends Model
     public function getBacksAttribute(): array
     {
         return $this->lock('backs', []);
+    }
+
+    /**
+     * Get the model parent chapter.
+     *
+     * @return Chapter
+     */
+    public function getChapter(): Chapter
+    {
+        return $this->chapter;
     }
 }
