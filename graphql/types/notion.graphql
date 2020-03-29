@@ -5,7 +5,7 @@ enum NotionType {
 
 type Notion {
     id: ID!
-    type: NotableType!
+    type: NotionType!
     name: String!
     order: Int!
     visible: Boolean!
