@@ -1,5 +1,11 @@
+enum NotionType {
+    STANDARD @enum(value: "standard")
+    SUMMARY @enum(value: "summary")
+}
+
 type Notion {
     id: ID!
+    type: NotableType!
     name: String!
     order: Int!
     visible: Boolean!
