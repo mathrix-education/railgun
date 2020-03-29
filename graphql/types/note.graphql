@@ -11,5 +11,8 @@ type Note {
     id: ID!
     content: Silicate!
     brick_id: String
+    user: User! @belongsTo
     notable: Notable! @morphTo
+    created_at: DateTime!
+    updated_at: DateTime!
 }
