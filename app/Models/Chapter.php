@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Railgun\Models\Traits\BelongsToChapter;
 use Railgun\Models\Traits\InteractsWithInteractions;
 use Railgun\Models\Traits\Randomizable;
@@ -74,7 +75,18 @@ class Chapter extends Model implements BelongsToChapter
      */
     public function notions(): HasMany
     {
-        return $this->hasMany(Notion::class)->orderBy('order');
+        return $this->hasMany(Notion::class)
+            ->where('type', '=', 'standard')
+            ->orderBy('order');
+    }
+
+    /**
+     * @return HasOne<Notion>
+     */
+    public function summary(): HasOne
+    {
+        return $this->hasOne(Notion::class)
+            ->where('type', '=', 'summary');
     }
 
     /**

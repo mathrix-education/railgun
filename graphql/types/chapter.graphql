@@ -9,6 +9,7 @@ type Chapter {
     discipline: Discipline @belongsTo
     grade: Grade! @belongsTo
     notions: [Notion!]! @hasMany
+    summary: Notion @belongsTo
     flashcards: [Flashcard!]! @hasMany
     exams: [Exam!]! @hasMany
     sessions: [Session!]! @hasMany
