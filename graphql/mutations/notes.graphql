@@ -5,5 +5,7 @@ extend type Mutation {
         notable_id: ID!
     ): Note @permission(scope: "notes:create") @create @inject(context: "user.id", name: "user_id")
 
+    updateNote(id: ID!, content: Silicate): Note! @update
+
     deleteNote(id: ID!): Note @permission(scope: "notes:delete") @delete
 }
