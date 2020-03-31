@@ -8,14 +8,23 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use function array_merge;
 use function collect;
 use function floor;
 use function range;
+use function uuid_create;
 
+/**
+ * Extract sessions from interactions
+ */
 class SessionsCommand extends V7Command
 {
     private const PAGE_SIZE = 1000;
 
+    /**
+     * @var string $signature The command signature.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
     protected $signature = 'v7:sessions';
 
     public function handle(): void
@@ -27,7 +36,7 @@ class SessionsCommand extends V7Command
         $max = DB::table('users')->max('id');
 
         collect(range(0, floor($max / self::PAGE_SIZE)))
-            ->tap(function () use ($max) {
+            ->tap(function () use ($max): void {
                 $this->line('Building sessions');
                 $this->getOutput()->progressStart($max);
             })
@@ -35,19 +44,20 @@ class SessionsCommand extends V7Command
                 return $this->getUnionForPage($page)
                     ->get()
                     ->sortBy('updated_at')
-                    ->mapWithKeys(fn($line) => ["{$line->user_id}.{$line->discipline_id}" => $line])
+                    ->mapWithKeys(static fn($line) => ["{$line->user_id}.{$line->discipline_id}" => $line])
                     ->values()
-                    ->map(fn($line) => (array)$line)
+                    ->map(static fn($line) => (array)$line)
                     ->tap(fn(Collection $lines) => $this->getOutput()->progressAdvance($lines->count()));
             })
             ->tap(fn() => $this->getOutput()->progressFinish())
             ->flatten(1)
-            ->tap(function (Collection $lines) {
+            ->tap(function (Collection $lines): void {
                 $this->line('Saving sessions');
                 $this->getOutput()->progressStart($lines->count());
             })
+            ->map(static fn($s) => array_merge($s, ['id' => uuid_create()]))
             ->chunk(self::PAGE_SIZE)
-            ->each(function (Collection $chunk) {
+            ->each(function (Collection $chunk): void {
                 DB::table('sessions')->insert($chunk->toArray());
                 $this->getOutput()->progressAdvance($chunk->count());
             })
@@ -58,13 +68,13 @@ class SessionsCommand extends V7Command
     {
         return DB::table('interactions', 'i')
             ->select(['user_id', 'discipline_id', 'chapter_id', 'i.updated_at'])
-            ->join(DB::raw('courses cs'), static function (JoinClause $join) {
+            ->join(DB::raw('courses cs'), static function (JoinClause $join): void {
                 $join->on('i.interactable_id', '=', 'cs.id')
                     ->where('i.interactable_type', '=', 'course');
             })
             ->join(DB::raw('notions n'), 'cs.notion_id', '=', 'n.id')
             ->join(DB::raw('chapters c'), 'n.chapter_id', '=', 'c.id')
-            ->join(DB::raw('users u'), static function (JoinClause $join) {
+            ->join(DB::raw('users u'), static function (JoinClause $join): void {
                 $join->on('i.user_id', '=', 'u.id')
                     ->on('u.grade_id', '=', 'c.grade_id');
             });
@@ -74,13 +84,13 @@ class SessionsCommand extends V7Command
     {
         return DB::table('interactions', 'i')
             ->select(['user_id', 'discipline_id', 'chapter_id', 'i.updated_at'])
-            ->join(DB::raw('subjects s'), static function (JoinClause $join) {
+            ->join(DB::raw('subjects s'), static function (JoinClause $join): void {
                 $join->on('i.interactable_id', '=', 's.id')
                     ->where('i.interactable_type', '=', 'subject');
             })
             ->join(DB::raw('notions n'), 's.notion_id', '=', 'n.id')
             ->join(DB::raw('chapters c'), 'n.chapter_id', '=', 'c.id')
-            ->join(DB::raw('users u'), static function (JoinClause $join) {
+            ->join(DB::raw('users u'), static function (JoinClause $join): void {
                 $join->on('i.user_id', '=', 'u.id')
                     ->on('u.grade_id', '=', 'c.grade_id');
             });
@@ -90,14 +100,14 @@ class SessionsCommand extends V7Command
     {
         return DB::table('interactions', 'i')
             ->select(['user_id', 'discipline_id', 'chapter_id', 'i.updated_at'])
-            ->join(DB::raw('exercises e'), static function (JoinClause $join) {
+            ->join(DB::raw('exercises e'), static function (JoinClause $join): void {
                 $join->on('i.interactable_id', '=', 'e.id')
                     ->where('i.interactable_type', '=', 'exercise');
             })
             ->join(DB::raw('subjects s'), 'e.subject_id', '=', 's.id')
             ->join(DB::raw('notions n'), 's.notion_id', '=', 'n.id')
             ->join(DB::raw('chapters c'), 'n.chapter_id', '=', 'c.id')
-            ->join(DB::raw('users u'), static function (JoinClause $join) {
+            ->join(DB::raw('users u'), static function (JoinClause $join): void {
                 $join->on('i.user_id', '=', 'u.id')
                     ->on('u.grade_id', '=', 'c.grade_id');
             });
@@ -107,12 +117,12 @@ class SessionsCommand extends V7Command
     {
         return DB::table('interactions', 'i')
             ->select(['user_id', 'discipline_id', 'chapter_id', 'i.updated_at'])
-            ->join(DB::raw('flashcards f'), static function (JoinClause $join) {
+            ->join(DB::raw('flashcards f'), static function (JoinClause $join): void {
                 $join->on('i.interactable_id', '=', 'f.id')
                     ->where('i.interactable_type', '=', 'flashcard');
             })
             ->join(DB::raw('chapters c'), 'f.chapter_id', '=', 'c.id')
-            ->join(DB::raw('users u'), static function (JoinClause $join) {
+            ->join(DB::raw('users u'), static function (JoinClause $join): void {
                 $join->on('i.user_id', '=', 'u.id')
                     ->on('u.grade_id', '=', 'c.grade_id');
             });
@@ -122,12 +132,12 @@ class SessionsCommand extends V7Command
     {
         return DB::table('interactions', 'i')
             ->select(['user_id', 'discipline_id', 'chapter_id', 'i.updated_at'])
-            ->join(DB::raw('exams e'), static function (JoinClause $join) {
+            ->join(DB::raw('exams e'), static function (JoinClause $join): void {
                 $join->on('i.interactable_id', '=', 'e.id')
                     ->where('i.interactable_type', '=', 'exam');
             })
             ->join(DB::raw('chapters c'), 'e.chapter_id', '=', 'c.id')
-            ->join(DB::raw('users u'), static function (JoinClause $join) {
+            ->join(DB::raw('users u'), static function (JoinClause $join): void {
                 $join->on('i.user_id', '=', 'u.id')
                     ->on('u.grade_id', '=', 'c.grade_id');
             });

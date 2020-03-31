@@ -6,12 +6,12 @@ namespace Railgun\Models\Traits;
 
 use Railgun\Models\Chapter;
 
-interface BelongsToChapter
+interface Content
 {
     /**
      * Get the model parent chapter.
      *
-     * @return Chapter
+     * @return Chapter The related parent chapter.
      */
     public function getChapter(): Chapter;
 }

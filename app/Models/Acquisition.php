@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Concerns\AsPivot;
 use Railgun\Models\Traits\Randomizable;
+use Railgun\Models\Traits\UUID;
 
 /**
  * An acquisition represents the fact that a user owns a certain product.
@@ -15,8 +16,9 @@ use Railgun\Models\Traits\Randomizable;
  *
  * @link https://laravel.com/docs/6.x/eloquent-relationships#many-to-many-polymorphic-relations
  *
+ * @property-read string      $id             The acquisition id (UUIDv4).
  * @property-read int         $user_id        The user id.
- * @property-read string      $product_type   The product type (pack, training)
+ * @property-read string      $product_type   The product type (pack, training).
  * @property-read int         $product_id     The product id.
  * @property-read string|null $transaction_id The related Stripe invoice or Braintree transaction id.
  * @property-read Carbon      $created_at     The date/time when the acquisition was created.
@@ -26,9 +28,9 @@ class Acquisition extends Model
 {
     use AsPivot;
     use Randomizable;
+    use UUID;
 
-    protected $table = 'acquisitions'; // required to explicitly define the join table
-
+    protected $table    = 'acquisitions'; // required to explicitly define the join table
     protected $fillable = [
         'user_id',
         'product_type',

@@ -1,0 +1,4 @@
+input CreateVote {
+    comment_id: ID!
+    value: VoteValue!
+}

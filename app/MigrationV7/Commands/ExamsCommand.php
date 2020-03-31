@@ -16,10 +16,16 @@ use function json_decode;
 use function json_encode;
 use function ksort;
 
+/**
+ * Migrate modules => exams
+ */
 class ExamsCommand extends V7Command
 {
     private const CHUNK_SIZE = 100;
-
+    /**
+     * @var string $signature The command signature.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
     protected $signature = 'v7:exams';
 
     public function handle(): void
@@ -53,18 +59,23 @@ class ExamsCommand extends V7Command
         });
 
         $this->getOutput()->progressStart($exams->count());
-        $exams->chunk(self::CHUNK_SIZE)->each(function (Collection $exams) {
+        $exams->chunk(self::CHUNK_SIZE)->each(function (Collection $exams): void {
             DB::table('exams')->insert($exams->toArray());
             $this->getOutput()->progressAdvance($exams->count());
         });
         $this->getOutput()->progressFinish();
     }
 
+    /**
+     * Retrieve exams from course modules.
+     *
+     * @return Collection|stdClass[]
+     */
     private function parseCourseModules(): Collection
     {
         return DB::table('modules')
             ->join('activities', 'modules.activity_id', '=', 'activities.id')
-            ->join('notions', static function (JoinClause $join) {
+            ->join('notions', static function (JoinClause $join): void {
                 $join->on('activities.notion_id', '=', 'notions.id')
                     ->where('notions.name', 'LIKE', '%erroga%');
             })
@@ -84,14 +95,18 @@ class ExamsCommand extends V7Command
                 $exam->slug = Str::slug($exam->name);
 
                 $exam->duration = null;
-
-                $content       = json_decode($exam->content, false, 512, JSON_THROW_ON_ERROR);
-                $exam->content = $content->silicate;
+                $content        = json_decode($exam->content, false, 512, JSON_THROW_ON_ERROR);
+                $exam->content  = $content->silicate;
 
                 return $exam;
             });
     }
 
+    /**
+     * Retrieve exams from test modules.
+     *
+     * @return Collection|stdClass[]
+     */
     private function parseTestModules(): Collection
     {
         $exams = DB::table('modules')
@@ -117,7 +132,7 @@ class ExamsCommand extends V7Command
         $malformed = new Collection();
 
         $this->line("Found {$exams->count()} exams");
-        $valid = $exams->map(fn(stdClass $exam) => ExamConverter::decode($exam))
+        $valid = $exams->map(static fn(stdClass $exam) => ExamConverter::decode($exam))
             ->filter(static function (stdClass $exam) use ($malformed) {
                 $normalizable = ExamConverter::isNormalizable($exam);
 
@@ -127,7 +142,7 @@ class ExamsCommand extends V7Command
 
                 return $normalizable;
             })
-            ->map(fn(stdClass $exam) => ExamConverter::normalize($exam))
+            ->map(static fn(stdClass $exam) => ExamConverter::normalize($exam))
             ->filter(static function (stdClass $exam) use ($malformed) {
                 $isMalformed = isset($exam->malformed);
 
@@ -137,8 +152,8 @@ class ExamsCommand extends V7Command
 
                 return !$isMalformed;
             })
-            ->map(fn(stdClass $exam) => ExamConverter::reshape($exam))
-            ->map(fn(stdClass $exam) => ExamConverter::strip($exam));
+            ->map(static fn(stdClass $exam) => ExamConverter::reshape($exam))
+            ->map(static fn(stdClass $exam) => ExamConverter::strip($exam));
 
         $this->newLine();
         $this->line('After parsing, got:');

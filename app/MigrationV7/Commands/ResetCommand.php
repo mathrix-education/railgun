@@ -11,10 +11,17 @@ use function str_repeat;
 use function str_replace;
 use function strlen;
 
+/**
+ * Reset the database.
+ */
 class ResetCommand extends V7Command
 {
     private const BACKUP_NAME = 'artifacts/mathrix_education_v7.sql';
 
+    /**
+     * @var string $signature The command signature.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
     protected $signature = 'v7:reset';
 
     public function handle(): void

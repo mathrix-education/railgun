@@ -13,10 +13,17 @@ use const JSON_THROW_ON_ERROR;
 use function implode;
 use function json_encode;
 
+/**
+ * Migrate MCQ modules => exercises
+ */
 class ExercisesCommand extends V7Command
 {
     private const CHUNK_SIZE = 500;
 
+    /**
+     * @var string $signature The command signature.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
     protected $signature = 'v7:exercises';
 
     public function handle(): void
@@ -29,11 +36,11 @@ class ExercisesCommand extends V7Command
         DB::table('modules')
             ->where('modules.type', '=', 'mcq')
             ->join('activities', 'modules.activity_id', '=', 'activities.id')
-            ->join('subjects', static function (JoinClause $join) {
+            ->join('subjects', static function (JoinClause $join): void {
                 $join->on(
                     'subjects.mapping',
                     '=',
-                    DB::raw("CONCAT('activity-', modules.activity_id)")
+                    DB::raw("CONCAT('activity-', modules.activity_id)"),
                 );
             })
             ->selectRaw(implode(',', [
@@ -76,6 +83,6 @@ class ExercisesCommand extends V7Command
                 return (array)$exercise;
             })
             ->chunk(self::CHUNK_SIZE)
-            ->each(fn(Collection $data) => DB::table('exercises')->insert($data->toArray()));
+            ->each(static fn(Collection $data) => DB::table('exercises')->insert($data->toArray()));
     }
 }

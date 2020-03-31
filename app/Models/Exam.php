@@ -7,10 +7,9 @@ namespace Railgun\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Railgun\Models\Traits\BelongsToChapter;
 use Railgun\Models\Traits\Commentable;
+use Railgun\Models\Traits\Content;
 use Railgun\Models\Traits\Interactable;
-use Railgun\Models\Traits\InteractsWithInteractions;
 use Railgun\Models\Traits\Labelable;
 use Railgun\Models\Traits\Lockable;
 use Railgun\Models\Traits\Notable;
@@ -32,10 +31,9 @@ use Railgun\Models\Traits\Reorderable;
  * ---
  * @property-read Chapter $chapter
  */
-class Exam extends Model implements BelongsToChapter
+class Exam extends Model implements Content
 {
     use Commentable;
-    use InteractsWithInteractions;
     use Interactable;
     use Labelable;
     use Lockable;
@@ -43,7 +41,7 @@ class Exam extends Model implements BelongsToChapter
     use Randomizable;
     use Reorderable;
 
-    protected $fillable = [
+    protected $fillable          = [
         'name',
         'slug',
         'duration',
@@ -53,13 +51,11 @@ class Exam extends Model implements BelongsToChapter
         'visible',
         'chapter_id',
     ];
-
-    protected $casts = [
+    protected $casts             = [
         'content' => 'array',
         'premium' => 'boolean',
         'visible' => 'boolean',
     ];
-
     protected array $orderGroups = ['chapter_id'];
 
     /**
@@ -71,7 +67,7 @@ class Exam extends Model implements BelongsToChapter
     }
 
     /**
-     * @return array the content Silicate wall.
+     * @return mixed[]
      */
     public function getContentAttribute(): array
     {
@@ -80,8 +76,6 @@ class Exam extends Model implements BelongsToChapter
 
     /**
      * Get the model parent chapter.
-     *
-     * @return Chapter|null
      */
     public function getChapter(): Chapter
     {

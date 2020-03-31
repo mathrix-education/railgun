@@ -7,8 +7,15 @@ namespace Railgun\MigrationV7\Commands;
 use Illuminate\Support\Facades\DB;
 use function array_unique;
 
+/**
+ * Clean invalid comments, reports and notions.
+ */
 class CleanCommand extends V7Command
 {
+    /**
+     * @var string $signature The command signature.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
     protected $signature = 'v7:clean';
 
     public function handle(): void

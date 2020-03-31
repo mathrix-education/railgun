@@ -24,7 +24,7 @@ class Country extends Model
 {
     use Randomizable;
 
-    protected $fillable = ['id', 'name', 'slug', 'visible'];
+    protected $fillable = ['name', 'slug', 'visible'];
     protected $casts    = ['visible' => 'boolean'];
 
     /**

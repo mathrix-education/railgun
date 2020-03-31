@@ -6,12 +6,17 @@ namespace Railgun\MigrationV7\Commands;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Ramsey\Uuid\Uuid;
+use function uuid_create;
 
 class UsersCommand extends V7Command
 {
     private const CHUNK_SIZE = 1000;
-    protected $signature     = 'v7:users';
+
+    /**
+     * @var string $signature The command signature.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
+    protected $signature = 'v7:users';
 
     public function handle(): void
     {
@@ -23,19 +28,20 @@ class UsersCommand extends V7Command
             ->pluck('id')
             ->tap(fn(Collection $ids) => $this->getOutput()->progressStart($ids->count()))
             ->chunk(self::CHUNK_SIZE)
-            ->each(function (Collection $chunk) {
+            ->each(function (Collection $chunk): void {
                 $ids   = $chunk->implode(',');
                 $cases = $chunk
-                    ->map(fn($id) => "WHEN $id THEN '" . Uuid::uuid4()->toString() . "'")
+                    ->map(static fn($id) => "WHEN $id THEN '" . uuid_create() . "'")
                     ->implode("\n");
 
-                DB::statement(<<<MYSQL
-                UPDATE users
-                    SET uuid = CASE id
-                    $cases
-                    END
-                    WHERE id IN($ids)
-                MYSQL
+                DB::statement(
+                    <<<MYSQL
+                    UPDATE users
+                        SET uuid = CASE id
+                        $cases
+                        END
+                        WHERE id IN($ids)
+                    MYSQL,
                 );
 
                 $this->getOutput()->progressAdvance($chunk->count());

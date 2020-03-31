@@ -6,7 +6,6 @@ namespace Railgun\MigrationV7\Commands;
 
 use Braintree\Gateway;
 use Braintree\Subscription as BraintreeSubscription;
-use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Railgun\Billing\Bridges\BraintreeSubscriptionBridge;
@@ -14,11 +13,18 @@ use Railgun\Billing\Bridges\StripeSubscriptionBridge;
 use Railgun\Models\User;
 use Stripe\Stripe;
 use Stripe\Subscription as StripeSubscription;
+use Throwable;
 use function app;
 
+/**
+ * Import subscriptions from Stripe and Braintree
+ */
 class SubscriptionsCommand extends V7Command
 {
-    /** @var string $signature */
+    /**
+     * @var string $signature The command signature.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
     protected $signature = 'v7:subscriptions';
 
     private Gateway $gateway;
@@ -31,6 +37,7 @@ class SubscriptionsCommand extends V7Command
         $previousBraintreeGateway = $gateway;
         $previousStripeKey        = Stripe::getApiKey();
 
+        // Replace the keys by the production ones.
         $this->gateway = app()->instance(Gateway::class, new Gateway([
             'environment' => 'production',
             'merchantId'  => 'rzyffphs7hk49gnj',
@@ -81,9 +88,9 @@ class SubscriptionsCommand extends V7Command
         $this->line('Saving Stripe subscriptions');
 
         $subscriptions
-            ->filter(fn(StripeSubscription $s) => $customerIds->search($s->customer))
+            ->filter(static fn(StripeSubscription $s) => $customerIds->search($s->customer))
             ->tap(fn(Collection $self) => $this->getOutput()->progressStart($self->count()))
-            ->each(function (StripeSubscription $stripe) {
+            ->each(function (StripeSubscription $stripe): void {
                 $subscription = StripeSubscriptionBridge::toEloquent($stripe);
                 $subscription->save();
                 $this->getOutput()->progressAdvance();
@@ -96,18 +103,22 @@ class SubscriptionsCommand extends V7Command
      */
     private function braintree(): void
     {
-        $this->line('Retrieving subscriptions from Braintree');
-        $subscriptions          = new Collection();
-        $braintreeSubscriptions = $this->gateway->subscription()->search([]);
+        /** @var Collection $subscriptions */
+        $subscriptions = Cache::remember('v7.braintree.subscriptions', 3600, function (): Collection {
+            $this->line('Retrieving subscriptions from Braintree');
+            $subscriptions          = new Collection();
+            $braintreeSubscriptions = $this->gateway->subscription()->search([]);
 
-        $this->getOutput()->progressStart($braintreeSubscriptions->maximumCount());
+            $this->getOutput()->progressStart($braintreeSubscriptions->maximumCount());
+            foreach ($braintreeSubscriptions as $subscription) {
+                $subscriptions->push($subscription);
+                /** @noinspection DisconnectedForeachInstructionInspection */
+                $this->getOutput()->progressAdvance();
+            }
+            $this->getOutput()->progressFinish();
 
-        foreach ($braintreeSubscriptions as $subscription) {
-            $subscriptions->push($subscription);
-            $this->getOutput()->progressAdvance();
-        }
-
-        $this->getOutput()->progressFinish();
+            return $subscriptions;
+        });
 
         /** @var Collection|string[] $customerIds */
         $customerIds = User::query()
@@ -115,16 +126,16 @@ class SubscriptionsCommand extends V7Command
             ->pluck('braintree_id');
 
         $subscriptions
-            ->tap(function (Collection $self) {
+            ->tap(function (Collection $self): void {
                 $this->line('Saving Braintree subscriptions');
                 $this->getOutput()->progressStart($self->count());
             })
-            ->each(function (BraintreeSubscription $s) use ($customerIds) {
+            ->each(function (BraintreeSubscription $s) use ($customerIds): void {
                 $this->getOutput()->progressAdvance();
 
                 try {
                     $subscription = BraintreeSubscriptionBridge::toEloquent($s);
-                } catch (Exception $exception) {
+                } catch (Throwable $exception) {
                     return;
                 }
 

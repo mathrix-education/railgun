@@ -16,12 +16,13 @@ class CreateSessionsTable extends Migration
     public function up(): void
     {
         Schema::create('sessions', static function (Blueprint $table) {
+            $table->uuid('id')->primary();
             $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('discipline_id');
             $table->unsignedBigInteger('chapter_id');
             $table->timestamp('updated_at');
 
-            $table->primary(['user_id', 'discipline_id']);
+            $table->unique(['user_id', 'discipline_id']);
 
             // Foreign keys
             $table->foreign('user_id')

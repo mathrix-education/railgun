@@ -7,10 +7,9 @@ namespace Railgun\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Railgun\Models\Traits\BelongsToChapter;
 use Railgun\Models\Traits\Commentable;
+use Railgun\Models\Traits\Content;
 use Railgun\Models\Traits\Interactable;
-use Railgun\Models\Traits\InteractsWithInteractions;
 use Railgun\Models\Traits\Labelable;
 use Railgun\Models\Traits\Lockable;
 use Railgun\Models\Traits\Notable;
@@ -35,10 +34,9 @@ use Railgun\Models\Traits\Reorderable;
  * ---
  * @property-read Notion $notion
  */
-class Course extends Model implements BelongsToChapter
+class Course extends Model implements Content
 {
     use Commentable;
-    use InteractsWithInteractions;
     use Interactable;
     use Labelable;
     use Lockable;
@@ -46,7 +44,7 @@ class Course extends Model implements BelongsToChapter
     use Randomizable;
     use Reorderable;
 
-    protected $fillable = [
+    protected $fillable          = [
         'name',
         'slug',
         'content',
@@ -59,13 +57,11 @@ class Course extends Model implements BelongsToChapter
         'seo_description',
         'notion_id',
     ];
-
-    protected $casts = [
+    protected $casts             = [
         'content'   => 'array',
         'visible'   => 'boolean',
         'seo_index' => 'boolean',
     ];
-
     protected array $orderGroups = ['notion_id'];
 
     /**
@@ -77,7 +73,7 @@ class Course extends Model implements BelongsToChapter
     }
 
     /**
-     * @return array the content Silicate wall.
+     * @return mixed[] The content Silicate wall.
      */
     public function getContentAttribute(): array
     {
@@ -86,8 +82,6 @@ class Course extends Model implements BelongsToChapter
 
     /**
      * Get the model parent chapter.
-     *
-     * @return Chapter
      */
     public function getChapter(): Chapter
     {

@@ -10,16 +10,15 @@ class CreatePackTrainingTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
-        Schema::create('pack_training', static function (Blueprint $table) {
+        Schema::create('pack_training', static function (Blueprint $table): void {
+            $table->uuid('id')->primary();
             $table->unsignedBigInteger('pack_id');
             $table->unsignedBigInteger('training_id');
             $table->unsignedTinyInteger('order');
-            $table->primary(['pack_id', 'training_id']);
+            $table->unique(['pack_id', 'training_id']);
 
             // Foreign keys
             $table->foreign('pack_id')
@@ -35,8 +34,6 @@ class CreatePackTrainingTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {

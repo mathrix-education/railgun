@@ -13,9 +13,17 @@ use stdClass;
 use function array_merge;
 use function implode;
 use function sprintf;
+use function uuid_create;
 
+/**
+ * Migrate purchases => acquisitions
+ */
 class AcquisitionsCommand extends V7Command
 {
+    /**
+     * @var string $signature The command signature.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
     protected $signature = 'v7:acquisitions';
 
     public function handle(): void
@@ -24,9 +32,11 @@ class AcquisitionsCommand extends V7Command
         $this->query('pack')
             ->unionAll($this->query('training'))
             ->get()
-            ->unique(fn(stdClass $a) => sprintf('%s-%s-%s', $a->user_id, $a->product_type, $a->product_id))
-            ->map(fn(stdClass $acquisition) => (array)$acquisition)
-            ->tap(function (Collection $acquisitions) {
+            ->unique(static fn(stdClass $a) => sprintf('%s-%s-%s', $a->user_id, $a->product_type, $a->product_id))
+            ->map(static function (stdClass $acquisition) {
+                return array_merge((array)$acquisition, ['id' => uuid_create()]);
+            })
+            ->tap(function (Collection $acquisitions): void {
                 $this->line("Found {$acquisitions->count()} acquisitions");
                 DB::table('acquisitions')->insert($acquisitions->toArray());
             });
@@ -52,6 +62,7 @@ class AcquisitionsCommand extends V7Command
         foreach ($packAcquisitions as $packAcquisition) {
             foreach ($mappings[$packAcquisition->product_id] as $trainingId) {
                 $trainingAcquisitions[] = array_merge((array)$packAcquisition, [
+                    'id'           => uuid_create(),
                     'product_type' => 'training',
                     'product_id'   => $trainingId,
                 ]);
@@ -61,16 +72,16 @@ class AcquisitionsCommand extends V7Command
         DB::table('acquisitions')->insertOrIgnore($trainingAcquisitions);
     }
 
-    private function query($type): Builder
+    private function query(string $type): Builder
     {
         $table = Str::plural($type);
 
         return DB::table('purchases')
-            ->join('products', static function (JoinClause $join) use ($type) {
+            ->join('products', static function (JoinClause $join) use ($type): void {
                 $join->on('purchases.product_id', '=', 'products.id')
                     ->where('products.type', '=', $type);
             })
-            ->join($table, static function (JoinClause $join) use ($table, $type) {
+            ->join($table, static function (JoinClause $join) use ($table, $type): void {
                 $join->on(DB::raw("CONCAT('product-', purchases.product_id)"), '=', "{$table}.mapping")
                     ->where('products.type', '=', $type);
             })

@@ -9,13 +9,20 @@ use Illuminate\Support\Facades\DB;
 use stdClass;
 use function implode;
 
+/**
+ * Migrate modules => posts
+ */
 class PostsCommand extends V7Command
 {
+    /**
+     * @var string $signature The command signature.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
     protected $signature = 'v7:posts';
 
     public function handle(): void
     {
-        $this->title('Merging modules => posts');
+        $this->title('Migrating modules => posts');
 
         $iterator   = -1;
         $categoryId = 0;
@@ -33,10 +40,10 @@ class PostsCommand extends V7Command
             ->orderBy('modules.order')
             ->orderBy('modules.id')
             ->get()
-            ->tap(function (Collection $posts) {
+            ->tap(function (Collection $posts): void {
                 $this->line("Found {$posts->count()} posts");
             })
-            ->each(static function (stdClass $post) use (&$iterator, &$categoryId) {
+            ->each(static function (stdClass $post) use (&$iterator, &$categoryId): void {
                 if ($categoryId !== $post->category_id) {
                     $iterator   = -1;
                     $categoryId = $post->category_id;

@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Railgun\Models\Note;
 
 /**
+ * Allow models to have {@see Note}.
+ *
  * @property-read Collection|Note[] $notes
  * @mixin HasRelationships
  */

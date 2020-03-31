@@ -25,11 +25,17 @@ class CommentReplyNotification extends Notification implements ShouldQueue
         $this->newComment  = $newComment;
     }
 
+    /**
+     * @return string[] The notification routes.
+     */
     public function via(): array
     {
         return ['database'];
     }
 
+    /**
+     * @return mixed[] The database representable of the notification.
+     */
     public function toDatabase(): array
     {
         return [
