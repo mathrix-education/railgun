@@ -56,7 +56,7 @@ class StripeSubscriptionBridge
 
         $cancelledAt = $stripe->canceled_at ?? $stripe->cancel_at;
         if ($cancelledAt !== null) {
-            $subscription->cancelled_at = Carbon::createFromTimestamp($cancelledAt);
+            $subscription->canceled_at = Carbon::createFromTimestamp($cancelledAt);
         }
 
         return $subscription;

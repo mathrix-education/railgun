@@ -29,7 +29,7 @@ class TrainingsSeeder extends AdvancedSeeder
     {
         // Packs
         $this->seedFactory(Pack::class, ['seed' => false, 'count' => self::PACK_COUNT])
-            ->map(fn($pack, int $order) => ['order' => $order] + $pack)
+            ->map(static fn($pack, int $order) => ['order' => $order] + $pack)
             ->tap(fn() => $this->writeFactoryMessage(Pack::class))
             ->tap(fn(Collection $packs) => $this->seedCollection($packs, 'packs'));
 
@@ -48,9 +48,9 @@ class TrainingsSeeder extends AdvancedSeeder
                     ->seedFactory(
                         Section::class,
                         ['seed' => false, 'count' => $this->faker->numberBetween(...self::SECTIONS_PER_TRAINING)],
-                        ['training_id' => $trainingId]
+                        ['training_id' => $trainingId],
                     )
-                    ->map(fn(array $section, int $order) => ['order' => $order] + $section);
+                    ->map(static fn(array $section, int $order) => ['order' => $order] + $section);
             })
             ->flatten(1)
             ->tap(fn() => $this->writeFactoryMessage(Section::class))
@@ -65,9 +65,9 @@ class TrainingsSeeder extends AdvancedSeeder
                     ->seedFactory(
                         Lesson::class,
                         ['seed' => false, 'count' => $this->faker->numberBetween(...self::LESSONS_PER_SECTION)],
-                        ['section_id' => $sectionId]
+                        ['section_id' => $sectionId],
                     )
-                    ->map(fn(array $section, int $order) => ['order' => $order] + $section);
+                    ->map(static fn(array $section, int $order) => ['order' => $order] + $section);
             })
             ->flatten(1)
             ->tap(fn() => $this->writeFactoryMessage(Lesson::class))

@@ -9,13 +9,19 @@
     "php",
     "lumen"
   ],
-  "homepage": "https://api.mathrix.fr",
+  "homepage": "https://graphql.mathrix.fr",
   "license": "proprietary",
   "authors": [
     {
       "name": "Mathieu Bour",
       "email": "mathieu@mathrix.fr",
-      "homepage": "https://www.linkedin.com/in/mathieu-bour",
+      "homepage": "https://github.com/mathieu-bour",
+      "role": "Maintainer"
+    },
+    {
+      "name": "Valentin Pollart",
+      "email": "valentin@mathrix.fr",
+      "homepage": "https://github.com/valentinpollart",
       "role": "Maintainer"
     }
   ],
@@ -32,7 +38,7 @@
     },
     {
       "type": "path",
-      "url": "packages/monolog-google-cloud-formatter"
+      "url": "../coding-standard"
     }
   ],
   "require": {
@@ -50,17 +56,16 @@
     "illuminate/notifications": "^7.0",
     "illuminate/redis": "^7.0",
     "laravel/lumen-framework": "^7.0",
-    "mathrix-education/lumen-jwt": "3.0.0-alpha.7",
+    "mathrix-education/lumen-jwt": "v3.x-dev",
     "mathrix-education/lumen-mailjet": "^0.1.0",
-    "mathrix-education/monolog-google-cloud-formatter": "^0.1.0",
     "mll-lab/graphql-php-scalars": "^3.0",
     "mll-lab/laravel-graphql-playground": "^2.0",
     "nuwave/lighthouse": "^4.8",
     "psr/log": "^1.1",
-    "ramsey/uuid": "^3.9",
     "sentry/sentry-laravel": "^1.6",
     "stripe/stripe-php": "^7.17.0",
     "superbalist/laravel-google-cloud-storage": "^2.2",
+    "symfony/polyfill-uuid": "^1.15",
     "vlucas/phpdotenv": "^4.0",
     "web-token/jwt-signature-algorithm-eddsa": "^2.1",
     "web-token/jwt-signature-algorithm-hmac": "^2.1"
@@ -68,10 +73,11 @@
   "require-dev": {
     "fzaninotto/faker": "^1.9.1",
     "laravel/tinker": "^2.2",
-    "mathrix-education/coding-standard": "1.0.0",
+    "mathrix-education/coding-standard": "v2.x-dev",
     "mockery/mockery": "^1.3",
     "phpunit/phpunit": "^9.0",
-    "squizlabs/php_codesniffer": "^3.5"
+    "squizlabs/php_codesniffer": "^3.5",
+    "roave/security-advisories": "dev-master"
   },
   "autoload": {
     "psr-4": {
@@ -83,7 +89,6 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Railgun\\MigrationV7\\": "packages/railgun-migration-v7/",
       "Tests\\": "tests/"
     },
     "classmap": [

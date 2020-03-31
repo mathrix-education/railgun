@@ -4,31 +4,34 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL;
 
+use Illuminate\Support\Str;
 use JsonException;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequestsLumen as MakesGraphQLRequests;
 use Railgun\Models\User;
 use stdClass;
 use Tests\BaseTestCase;
-use const JSON_PRETTY_PRINT;
-use const JSON_THROW_ON_ERROR;
+use function array_keys;
+use function count;
 use function data_get;
 use function dump;
 use function factory;
 use function is_string;
 use function json_decode;
 use function json_encode;
+use const JSON_PRETTY_PRINT;
+use const JSON_THROW_ON_ERROR;
 
 class GraphQLIntegrationTestCase extends BaseTestCase
 {
     use MakesGraphQLRequests;
 
-    /** @var stdClass|array $contentCache */
+    /** @var stdClass|mixed[] $contentCache The JSON-decoded content. */
     private $contentCache;
 
     /**
      * Shortcut to create a new pristine user from the User factory.
      *
-     * @param array|string $attributes The overridden attributes or the permission to use.
+     * @param mixed[]|string $attributes The overridden attributes (array) or the permission to use (string).
      *
      * @return User The new user.
      */
@@ -49,12 +52,19 @@ class GraphQLIntegrationTestCase extends BaseTestCase
      * Get the GraphQL response data.
      * Shortcut for getContent('data').
      *
-     * @param string|null $path
+     * @param string|null $path The data path.
      *
      * @return mixed
      */
     protected function getData(?string $path = null)
     {
+        $keys = array_keys((array)$this->getContent('data'));
+
+        if (count($keys) === 1 && !Str::startsWith($path, $keys[0])) {
+            // Guess the query key this is a single one
+            $path = "{$keys[0]}.{$path}";
+        }
+
         return $this->getContent('data' . ($path ? ".$path" : ''));
     }
 
@@ -123,6 +133,9 @@ class GraphQLIntegrationTestCase extends BaseTestCase
         $this->assertEquals($expectedCategory, $this->getErrors()[0]->extensions->category);
     }
 
+    /**
+     * Dump the current response JSON content.
+     */
     protected function dump(): void
     {
         $content = $this->getContent();

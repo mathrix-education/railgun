@@ -90,7 +90,7 @@ class DeliverProducts extends Job
 
         Training::query()
             ->orWhereHas('packs', static function (Builder $builder) use ($packId): void {
-                $builder->where('id', '=', $packId);
+                $builder->where('packs.id', '=', $packId);
             })
             ->pluck('id')
             ->each(fn(int $trainingId) => $this->deliverTraining($trainingId));

@@ -23,7 +23,7 @@ return [
             'path_prefix'     => env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', ''),
             'storage_api_uri' => env('CDN_URL') . with(
                 env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', ''),
-                fn(string $prefix) => $prefix !== '' ? '/' . $prefix : $prefix
+                static fn(string $prefix) => $prefix !== '' ? '/' . $prefix : $prefix,
             ),
             'visibility'      => 'public',
             'cache'           => true,

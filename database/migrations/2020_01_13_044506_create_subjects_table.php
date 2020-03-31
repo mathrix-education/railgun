@@ -10,12 +10,10 @@ class CreateSubjectsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
-        Schema::create('subjects', static function (Blueprint $table) {
+        Schema::create('subjects', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name');
             $table->unsignedTinyInteger('order');
@@ -31,8 +29,6 @@ class CreateSubjectsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {

@@ -78,8 +78,8 @@ class ContentSeeder extends AdvancedSeeder
                 return $this->seedFactory(
                     Course::class,
                     ['seed' => false, 'count' => $this->faker->numberBetween(...self::COURSES_PER_NOTION)],
-                    ['notion_id' => $notionId]
-                )->map(fn(array $course, int $order) => ['order' => $order] + $course);
+                    ['notion_id' => $notionId],
+                )->map(static fn(array $course, int $order) => ['order' => $order] + $course);
             })
             ->flatten(1)
             ->tap(fn() => $this->writeFactoryMessage(Course::class))
@@ -93,8 +93,8 @@ class ContentSeeder extends AdvancedSeeder
                 return $this->seedFactory(
                     Subject::class,
                     ['seed' => false, 'count' => $this->faker->numberBetween(...self::SUBJECTS_PER_NOTION)],
-                    ['notion_id' => $notionId]
-                )->map(fn(array $subject, int $order) => ['order' => $order] + $subject);
+                    ['notion_id' => $notionId],
+                )->map(static fn(array $subject, int $order) => ['order' => $order] + $subject);
             })
             ->flatten(1)
             ->tap(fn() => $this->writeFactoryMessage(Subject::class))
@@ -108,8 +108,8 @@ class ContentSeeder extends AdvancedSeeder
                 return $this->seedFactory(
                     Exercise::class,
                     ['seed' => false, 'count' => $this->faker->numberBetween(...self::EXERCISES_PER_SUBJECT)],
-                    ['subject_id' => $subjectId]
-                )->map(fn(array $exercise, int $order) => ['order' => $order] + $exercise);
+                    ['subject_id' => $subjectId],
+                )->map(static fn(array $exercise, int $order) => ['order' => $order] + $exercise);
             })
             ->flatten(1)
             ->tap(fn() => $this->writeFactoryMessage(Exercise::class))
@@ -121,8 +121,8 @@ class ContentSeeder extends AdvancedSeeder
                 return $this->seedFactory(
                     Flashcard::class,
                     ['seed' => false, 'count' => $this->faker->numberBetween(...self::FLASHCARDS_PER_CHAPTER)],
-                    ['chapter_id' => $chapterId]
-                )->map(fn(array $flashcard, int $order) => ['order' => $order] + $flashcard);
+                    ['chapter_id' => $chapterId],
+                )->map(static fn(array $flashcard, int $order) => ['order' => $order] + $flashcard);
             })
             ->flatten(1)
             ->tap(fn() => $this->writeFactoryMessage(Flashcard::class))
@@ -138,8 +138,8 @@ class ContentSeeder extends AdvancedSeeder
                         'count' => $this->faker->numberBetween(...self::EXAMS_PER_CHAPTER),
                         'state' => 'random',
                     ],
-                    ['chapter_id' => $chapterId]
-                )->map(fn(array $exam, int $order) => ['order' => $order] + $exam);
+                    ['chapter_id' => $chapterId],
+                )->map(static fn(array $exam, int $order) => ['order' => $order] + $exam);
             })
             ->flatten(1)
             ->tap(fn() => $this->writeFactoryMessage(Exam::class))

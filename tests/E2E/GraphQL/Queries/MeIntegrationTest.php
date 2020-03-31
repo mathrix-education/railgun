@@ -22,6 +22,7 @@ class MeIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testBearerAuth(): void
     {
+        /** @var User $user */
         $user = factory(User::class)->create();
         /** @var Driver $driver */
         $driver = app()->make(Driver::class);
@@ -29,7 +30,7 @@ class MeIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->postGraphQL(
             [
-                'query' => <<<GRAPHQL
+                'query' => <<<'GRAPHQL'
                 query {
                     me {
                         id
@@ -37,14 +38,17 @@ class MeIntegrationTest extends GraphQLIntegrationTestCase
                 }
                 GRAPHQL,
             ],
-            ['Authorization' => "Bearer $bearer"]
+            ['Authorization' => "Bearer $bearer"],
         );
 
         $this->assertResponseOk();
         $this->assertNoErrors();
-        $this->assertEquals((string)$user->id, $this->getData('me.id'));
+        $this->assertEquals($user->id, $this->getData('me.id'));
     }
 
+    /**
+     * @testdox returns the current user session.
+     */
     public function testMeSession(): void
     {
         $user = $this->actingAsNewUser();

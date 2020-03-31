@@ -49,11 +49,11 @@ class LoginWithFacebookTest extends GraphQLUnitTestCase
     /**
      * Mock the Facebook SDK container instance.
      *
-     * @param MockInterface|null $graphUser
+     * @param MockInterface|null $graphUser The Facebook GraphUser.
      */
     private function mockFacebook(?MockInterface $graphUser = null): void
     {
-        $this->mock(Facebook::class, function (MockInterface $facebook) use ($graphUser) {
+        $this->mock(Facebook::class, function (MockInterface $facebook) use ($graphUser): void {
             // Make the FacebookResponse
             $response = Mockery::mock();
             $response->expects('getGraphUser')->andReturns($graphUser);
@@ -135,7 +135,7 @@ class LoginWithFacebookTest extends GraphQLUnitTestCase
     {
         $this->expectException(InvalidAuthTokenException::class);
 
-        $this->mock(Facebook::class, static function (MockInterface $facebook) {
+        $this->mock(Facebook::class, static function (MockInterface $facebook): void {
             $facebook->expects('get')
                 ->withAnyArgs()
                 ->andThrows(new FacebookAuthenticationException());

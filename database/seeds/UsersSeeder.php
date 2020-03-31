@@ -13,11 +13,11 @@ class UsersSeeder extends AdvancedSeeder
     {
         $this->seedFactory(User::class, self::USER_COUNT);
 
-        DB::update(/** @lang MySQL */ <<<MySQL
+        DB::update(/** @lang MySQL */ <<<'MySQL'
         update `users`
         set `email` = concat('admin-', `id`, '@mathrix.fr'), `scopes` = '["*"]'
         where id between 1 and 10
-        MySQL
+        MySQL,
         );
     }
 }

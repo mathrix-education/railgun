@@ -10,12 +10,10 @@ class CreateNotesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
-        Schema::create('notes', static function (Blueprint $table) {
+        Schema::create('notes', static function (Blueprint $table): void {
             $table->id();
             $table->json('content');
             $table->uuid('brick_id')->nullable();
@@ -30,8 +28,6 @@ class CreateNotesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {

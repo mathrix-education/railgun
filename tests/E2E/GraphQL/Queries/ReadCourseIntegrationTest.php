@@ -52,7 +52,7 @@ class ReadCourseIntegrationTest extends GraphQLIntegrationTestCase
                 }
             }
             QUERY,
-            ['courseId' => $course->id]
+            ['courseId' => $course->id],
         );
 
         $this->assertResponseOk();
@@ -113,7 +113,7 @@ class ReadCourseIntegrationTest extends GraphQLIntegrationTestCase
                 }
             }
             GRAPHQL,
-            ['id' => Course::random()->id]
+            ['id' => Course::random()->id],
         );
 
         $this->assertResponseOk();
@@ -137,7 +137,7 @@ class ReadCourseIntegrationTest extends GraphQLIntegrationTestCase
                 }
             }
             GRAPHQL,
-            ['id' => $course->id]
+            ['id' => $course->id],
         );
 
         $this->assertResponseOk();

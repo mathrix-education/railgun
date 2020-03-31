@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Railgun\Providers;
 
 use Exception;
+use Illuminate\Cache\Repository as CacheImplementation;
+use Illuminate\Contracts\Cache\Repository as CacheContract;
 use Illuminate\Contracts\Console\Kernel as KernelContract;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -41,6 +43,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->instance('path.config', $this->app->configPath());
 
         // Singletons
+        $this->app->singleton(CacheImplementation::class, CacheContract::class);
         $this->app->singleton(ExceptionHandler::class, Handler::class);
         $this->app->singleton(KernelContract::class, Kernel::class);
     }

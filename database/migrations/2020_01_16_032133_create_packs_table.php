@@ -10,12 +10,10 @@ class CreatePacksTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
-        Schema::create('packs', static function (Blueprint $table) {
+        Schema::create('packs', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('slug');
@@ -30,8 +28,6 @@ class CreatePacksTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {

@@ -28,10 +28,13 @@ class LabelableTest extends BaseTestCase
     use DatabaseTransactions;
     use MakesGraphQLRequestsLumen;
 
+    /**
+     * @return string[][] The labelables dataset.
+     */
     public function createLabelablesDataset(): array
     {
         return collect(Label::LABELABLES)
-            ->mapWithKeys(fn($c) => [class_basename($c) => [$c]])
+            ->mapWithKeys(static fn($c) => [class_basename($c) => [$c]])
             ->toArray();
     }
 

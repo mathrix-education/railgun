@@ -3,6 +3,7 @@ extend type Mutation {
     createTraining(
         name: String!
         slug: String!
+        image: URL
         buyable: Boolean!
         price: Int!
         order: Int
@@ -14,6 +15,7 @@ extend type Mutation {
         id: ID!
         name: String
         slug: String
+        image: URL
         buyable: Boolean
         price: Int
         order: Int

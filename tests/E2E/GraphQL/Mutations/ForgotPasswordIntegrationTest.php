@@ -53,7 +53,10 @@ class ForgotPasswordIntegrationTest extends GraphQLIntegrationTestCase
         $this->assertResponseOk();
         $this->assertNoErrors();
         $this->assertTrue($this->getData('forgotPassword'));
-        Mail::assertSent(PasswordForgottenMail::class, fn(PasswordForgottenMail $mail) => $mail->hasTo($user->email));
+        Mail::assertSent(
+            PasswordForgottenMail::class,
+            static fn(PasswordForgottenMail $mail) => $mail->hasTo($user->email),
+        );
     }
 
     /**

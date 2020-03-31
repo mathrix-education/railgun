@@ -25,13 +25,13 @@ class AdvancedSeeder extends Seeder
     }
 
     /**
-     * @param string    $model      The model class.
-     * @param int|array $options    The options.
-     * @param array     $attributes The overridden attributes.
+     * @param string      $model      The model class.
+     * @param int|mixed[] $options    The number of models to generate (int) or the options (array).
+     * @param mixed[]     $attributes The overridden attributes.
      *
-     * @return Collection
+     * @return Collection|mixed[] The generated data.
      */
-    protected function seedFactory(string $model, $options = [], $attributes = []): Collection
+    protected function seedFactory(string $model, $options = [], array $attributes = []): Collection
     {
         $count = 100;
 
@@ -65,9 +65,9 @@ class AdvancedSeeder extends Seeder
     /**
      * Get the table of a model class.
      *
-     * @param string $model
+     * @param string $model The model class.
      *
-     * @return string
+     * @return string The model table.
      */
     protected function getModelTable(string $model): string
     {
@@ -80,8 +80,8 @@ class AdvancedSeeder extends Seeder
     /**
      * Write the factory debug message.
      *
-     * @param string $table
-     * @param string $model
+     * @param string      $model The model class.
+     * @param string|null $table Override the displayed model table.
      */
     protected function writeFactoryMessage(string $model, ?string $table = null): void
     {
@@ -90,18 +90,22 @@ class AdvancedSeeder extends Seeder
     }
 
     /**
-     * @param string $message
-     * @param int    $type
+     * Shortcut to command output writeln() method.
+     *
+     * @see SymfonyStyle::writeln
+     *
+     * @param string $message The message to print.
+     * @param int    $type    The message type ({@see SymfonyStyle}).
      */
-    protected function writeln(string $message, $type = SymfonyStyle::OUTPUT_NORMAL)
+    protected function writeln(string $message, int $type = SymfonyStyle::OUTPUT_NORMAL): void
     {
         $this->command->getOutput()->writeln($message, $type);
     }
 
     /**
-     * @param Collection $data  The data to insert.
-     * @param string     $table The target database table.
-     * @param int        $chunk The chunk size for database insert (1000 by default).
+     * @param Collection|mixed[] $data  The data to insert.
+     * @param string             $table The target database table.
+     * @param int                $chunk The chunk size for database insert (1000 by default).
      */
     protected function seedCollection(Collection $data, string $table, int $chunk = 1000): void
     {
@@ -122,7 +126,7 @@ class AdvancedSeeder extends Seeder
                 return $model;
             })
             ->chunk($chunk)
-            ->each(static function (Collection $data) use ($table, $progress) {
+            ->each(static function (Collection $data) use ($table, $progress): void {
                 DB::table($table)->insert($data->toArray());
                 $progress->advance($data->count());
             });
@@ -132,10 +136,10 @@ class AdvancedSeeder extends Seeder
     }
 
     /**
-     * @param string       $file    The file containing the data.
-     * @param string|array $options The options.
+     * @param string         $file    The file containing the data.
+     * @param string|mixed[] $options The table (string) or the options (array).
      *
-     * @return Collection
+     * @return Collection|mixed[] The inserted data.
      *
      * @throws JsonException
      */
@@ -168,13 +172,11 @@ class AdvancedSeeder extends Seeder
 
         $content = file_get_contents($file);
 
-        switch ($extension) {
-            case 'json':
-                $data = collect(json_decode($content, true, 512, JSON_THROW_ON_ERROR));
-                break;
-            default:
-                throw new RuntimeException("Unrecognized extension: $extension");
+        if ($extension !== 'json') {
+            throw new RuntimeException("Unrecognized extension: $extension");
         }
+
+        $data = collect(json_decode($content, true, 512, JSON_THROW_ON_ERROR));
 
         if (!isset($options['seed']) || $options['seed']) {
             $file = str_replace(app()->basePath(), '', $file);
@@ -188,11 +190,11 @@ class AdvancedSeeder extends Seeder
     /**
      * Link two tables.
      *
-     * @param string       $left
-     * @param string       $right
-     * @param string|array $options
+     * @param string       $left    The left table
+     * @param string       $right   The right table.
+     * @param string|mixed $options The link options.
      *
-     * @return mixed
+     * phpcs:disable Generic.Metrics.CyclomaticComplexity
      */
     protected function link(string $left, string $right, $options = []): void
     {
@@ -271,7 +273,7 @@ class AdvancedSeeder extends Seeder
 
                 return collect($this->faker->randomElements(
                     $rightIds->toArray(),
-                    $this->faker->numberBetween(1, $max)
+                    $this->faker->numberBetween(1, $max),
                 ))->map(static function ($rightId, int $index) use ($leftId, $leftFk, $rightFk, $callback) {
                     $join = [
                         $leftFk  => $leftId,

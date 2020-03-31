@@ -47,17 +47,15 @@ class BraintreeSubscriptionBridge
         $subscription->customer_id = self::getCustomerId($braintree);
         $subscription->status      = self::convertStatus($braintree);
 
-        $subscription->payment_intent_secret = null;
-
         $subscription->current_period_start = self::toCarbon($braintree->billingPeriodStartDate);
         $subscription->current_period_end   = self::toCarbon($braintree->billingPeriodEndDate);
         $subscription->created_at           = self::toCarbon($braintree->createdAt);
         $subscription->updated_at           = self::toCarbon($braintree->updatedAt);
 
         if ($subscription->status === StripeSubscription::STATUS_CANCELED) {
-            $subscription->cancelled_at = self::toCarbon($braintree->updatedAt);
+            $subscription->canceled_at = self::toCarbon($braintree->updatedAt);
         } else {
-            $subscription->cancelled_at = null;
+            $subscription->canceled_at = null;
         }
 
         return $subscription;

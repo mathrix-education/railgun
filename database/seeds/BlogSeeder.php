@@ -30,9 +30,9 @@ class BlogSeeder extends AdvancedSeeder
                     ->seedFactory(
                         Post::class,
                         ['seed' => false, 'count' => $this->faker->numberBetween(3, 5)],
-                        ['category_id' => $categoryId]
+                        ['category_id' => $categoryId],
                     )
-                    ->map(fn(array $post, int $order) => ['order' => $order] + $post);
+                    ->map(static fn(array $post, int $order) => ['order' => $order] + $post);
             })
             ->flatten(1)
             ->tap(fn() => $this->writeFactoryMessage(Post::class))

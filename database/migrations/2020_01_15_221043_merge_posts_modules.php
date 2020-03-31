@@ -10,26 +10,23 @@ class MergePostsModules extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
-        Schema::table('posts', static function (Blueprint $table) {
+        Schema::table('posts', static function (Blueprint $table): void {
             $table->boolean('visible')->after('slug')->nullable();
             $table->unsignedTinyInteger('order')->after('slug')->nullable();
             $table->json('content')->after('slug')->nullable();
+            $table->string('video_id')->after('slug')->nullable();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {
-        Schema::table('posts', static function (Blueprint $table) {
+        Schema::table('posts', static function (Blueprint $table): void {
             $table->dropColumn(['visible', 'order', 'content']);
         });
     }

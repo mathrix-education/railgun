@@ -10,19 +10,17 @@ class CreateLabelsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
-        Schema::create('labels', static function (Blueprint $table) {
+        Schema::create('labels', static function (Blueprint $table): void {
             $table->id();
             $table->string('name');
             $table->string('color');
             $table->timestamps();
         });
 
-        Schema::create('labelables', static function (Blueprint $table) {
+        Schema::create('labelables', static function (Blueprint $table): void {
             $table->unsignedBigInteger('label_id');
             $table->morphs('labelable');
             $table->primary(['label_id', 'labelable_type', 'labelable_id']);
@@ -34,8 +32,6 @@ class CreateLabelsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {

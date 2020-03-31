@@ -39,7 +39,7 @@ class ReadFileIntegrationTest extends GraphQLIntegrationTestCase
                 }
             }
             GRAPHQL,
-            ['path' => $this->getTestPath($path)]
+            ['path' => $this->getTestPath($path)],
         );
     }
 
@@ -73,7 +73,7 @@ class ReadFileIntegrationTest extends GraphQLIntegrationTestCase
         $this->assertResponseOk();
         $this->assertError(
             trans('storage.errors.file_not_found', ['file' => Util::normalizePath($path)]),
-            'storage'
+            'storage',
         );
     }
 
@@ -92,7 +92,7 @@ class ReadFileIntegrationTest extends GraphQLIntegrationTestCase
         $this->assertResponseOk();
         $this->assertError(
             trans('storage.errors.file_not_found', ['file' => $path]),
-            'storage'
+            'storage',
         );
     }
 }

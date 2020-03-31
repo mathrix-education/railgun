@@ -1,3 +1,12 @@
+enum InvoiceStatus {
+    STATUS_DELETED @enum(value: "deleted")
+    STATUS_DRAFT @enum(value: "draft")
+    STATUS_OPEN @enum(value: "open")
+    STATUS_PAID @enum(value: "paid")
+    STATUS_UNCOLLECTIBLE @enum(value: "uncollectible")
+    STATUS_VOID @enum(value: "void")
+}
+
 type Invoice {
     id: ID!
     amount_paid: Int!
@@ -5,5 +14,5 @@ type Invoice {
     invoice_pdf: String!
     payment_intent: PaymentIntent
     number: String!
-    status: String!
+    status: InvoiceStatus!
 }

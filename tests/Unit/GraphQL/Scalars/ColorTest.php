@@ -1,0 +1,58 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Unit\GraphQL\Scalars;
+
+use GraphQL\Error\InvariantViolation;
+use Railgun\GraphQL\Scalars\Color;
+use Tests\BaseTestCase;
+use Throwable;
+use function collect;
+
+/**
+ * @testdox [Unit] Color scalar
+ * @coversDefaultClass \Railgun\GraphQL\Scalars\Color
+ */
+class ColorTest extends BaseTestCase
+{
+    /**
+     * @return mixed[][] The Color validation dataset
+     */
+    public function createIsValidDataset(): array
+    {
+        $dataset = [
+            '#ffffff'   => true,
+            '#fff'      => true,
+            '#12345'    => false,
+            'blablabla' => false,
+            'abcdef'    => false,
+        ];
+
+        return collect($dataset)
+            ->mapWithKeys(static fn($valid, $color) => [$color => [$color, $valid]])
+            ->toArray();
+    }
+
+    /**
+     * @dataProvider createIsValidDataset
+     * @covers ::isValid
+     *
+     * @param string $color        The color to validate.
+     * @param bool   $expectsValid If color is expected to be valid.
+     */
+    public function testIsValid(string $color, bool $expectsValid): void
+    {
+        $instance = new Color();
+
+        if ($expectsValid) {
+            $this->assertEquals($color, $instance->serialize($color));
+        } else {
+            try {
+                $instance->serialize($color);
+            } catch (Throwable $exception) {
+                $this->assertInstanceOf(InvariantViolation::class, $exception);
+            }
+        }
+    }
+}

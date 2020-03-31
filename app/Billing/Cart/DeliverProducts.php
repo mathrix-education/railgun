@@ -35,7 +35,7 @@ class DeliverProducts
 
         $items = collect($this->invoice->lines->data)
             ->pluck('metadata')
-            ->map(fn(StripeObject $item) => $item->toArray());
+            ->map(static fn(StripeObject $item) => $item->toArray());
 
         $validator = Validator::make($items->toArray(), [
             '*.user_id'      => 'required|exists:users,id',
@@ -47,7 +47,7 @@ class DeliverProducts
             return;
         }
 
-        $items->each(function ($item) {
+        $items->each(function ($item): void {
             switch ($item['product_type']) {
                 case 'pack':
                     $this->deliverPack((int)$item['product_id']);
@@ -73,7 +73,7 @@ class DeliverProducts
         $acquisition->save();
 
         Training::query()
-            ->orWhereHas('packs', static function (Builder $builder) use ($packId) {
+            ->orWhereHas('packs', static function (Builder $builder) use ($packId): void {
                 $builder->where('packs.id', '=', $packId);
             })
             //->get(['id'])

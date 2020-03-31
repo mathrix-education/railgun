@@ -12,15 +12,16 @@ use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
 
 /**
- * @property-read int    $id
- * @property      string $name
- * @property      string $slug
- * @property      bool   $available
- * @property      int    $price
- * @property      int    $order
- * @property      bool   $visible
- * @property-read string $created_at
- * @property-read string $updated_at
+ * @property-read int         $id
+ * @property      string      $name
+ * @property      string      $slug
+ * @property      string|null $image
+ * @property      bool        $available
+ * @property      int         $price
+ * @property      int         $order
+ * @property      bool        $visible
+ * @property-read string      $created_at
+ * @property-read string      $updated_at
  */
 class Training extends Model
 {
@@ -31,6 +32,7 @@ class Training extends Model
     protected $fillable = [
         'name',
         'slug',
+        'image',
         'available',
         'price',
         'order',

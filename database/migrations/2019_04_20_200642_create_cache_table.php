@@ -19,7 +19,7 @@ class CreateCacheTable extends Migration
                 $table->string('key')->unique();
                 $table->mediumText('value');
                 $table->unsignedInteger('expiration');
-            }
+            },
         );
     }
 

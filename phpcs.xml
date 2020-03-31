@@ -24,14 +24,15 @@
     <file>database</file>
     <file>packages/lumen-mailjet</file>
     <file>packages/monolog-google-cloud-formatter</file>
+    <file>packages/silicate</file>
     <file>tests</file>
 
     <!-- Rules inherited from Doctrine -->
     <rule ref="Mathrix"/>
 
-    <!-- Do not check typehints in models -->
-    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
-        <exclude-pattern>app/Models</exclude-pattern>
+    <!-- Do not require a class to match filename for migrations -->
+    <rule ref="Squiz.Classes.ClassFileName.NoMatch">
+        <exclude-pattern>database/migrations</exclude-pattern>
     </rule>
 
     <!-- Do not require a vendor namespace for migrations and DatabaseSeeder -->
@@ -40,8 +41,13 @@
         <exclude-pattern>database/seeds</exclude-pattern>
     </rule>
 
-    <!-- Do not require a class to match filename for migrations -->
-    <rule ref="Squiz.Classes.ClassFileName.NoMatch">
-        <exclude-pattern>database/migrations</exclude-pattern>
+    <!-- Factories can use the @var Factory $factory -->
+    <rule ref="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration">
+        <exclude-pattern>database/factories</exclude-pattern>
+    </rule>
+
+    <!-- Do not check typehints in models, other wise we would have to suppress them -->
+    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
+        <exclude-pattern>app/Models</exclude-pattern>
     </rule>
 </ruleset>

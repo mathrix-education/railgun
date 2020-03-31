@@ -125,19 +125,14 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
      */
     public function handleField(FieldValue $fieldValue, Closure $next)
     {
-        $resolver = function ($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo) use ($fieldValue) {
+        $previous = $fieldValue->getResolver();
+
+        $resolver = function ($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo) use ($previous) {
             $this->checkScope();
-            $resolver = $fieldValue->getResolver();
 
-            if (!$resolver) {
-                return null;
-            }
-
-            return $resolver($root, $args, $context, $resolveInfo);
+            return $previous($root, $args, $context, $resolveInfo);
         };
 
-        $fieldValue->setResolver($resolver);
-
-        return $next($fieldValue);
+        return $next($fieldValue->setResolver($resolver));
     }
 }

@@ -47,7 +47,7 @@ class LoginWithGoogleTest extends GraphQLUnitTestCase
      */
     private function mockPayloadResponseSuccess(): void
     {
-        $this->mock(Google_Client::class, function (MockInterface $googleClient) {
+        $this->mock(Google_Client::class, function (MockInterface $googleClient): void {
             $payload = [
                 'sub' => base64_encode(random_bytes(64)),
                 'email' => $this->faker->email,
@@ -120,7 +120,7 @@ class LoginWithGoogleTest extends GraphQLUnitTestCase
     {
         $this->expectException(InvalidAuthTokenException::class);
 
-        $this->mock(Google_Client::class, static function (MockInterface $googleClient) {
+        $this->mock(Google_Client::class, static function (MockInterface $googleClient): void {
             $googleClient->expects('verifyIdToken')
                 ->withAnyArgs()
                 ->andReturns(false);

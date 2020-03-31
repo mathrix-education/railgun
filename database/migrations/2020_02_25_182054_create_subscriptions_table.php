@@ -10,29 +10,24 @@ class CreateSubscriptionsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
-        Schema::create('subscriptions', static function (Blueprint $table) {
+        Schema::create('subscriptions', static function (Blueprint $table): void {
             $table->string('id');
             $table->string('plan');
             $table->string('customer_id');
             $table->string('status');
-            $table->string('payment_intent_secret')->nullable();
             $table->timestamp('current_period_start')->nullable();
             $table->timestamp('current_period_end')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
-            $table->timestamp('cancelled_at')->nullable();
+            $table->timestamp('canceled_at')->nullable();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {

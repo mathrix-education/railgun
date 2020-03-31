@@ -10,12 +10,10 @@ class CreateSessionsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
-        Schema::create('sessions', static function (Blueprint $table) {
+        Schema::create('sessions', static function (Blueprint $table): void {
             $table->uuid('id')->primary();
             $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('discipline_id');
@@ -46,8 +44,6 @@ class CreateSessionsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {

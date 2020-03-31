@@ -22,7 +22,7 @@ class SchemaTest extends BaseTestCase
         $this->assertEquals(
             0,
             $exit,
-            "Schema validation failed: lighthouse:validate-schema exited with code $exit\n$output"
+            "Schema validation failed: lighthouse:validate-schema exited with code $exit\n$output",
         );
     }
 }

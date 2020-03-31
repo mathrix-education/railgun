@@ -16,6 +16,8 @@ use Railgun\Models\Traits\UUID;
  * @property-read int    $discipline_id
  * @property-read int    $chapter_id
  * @property-read Carbon $updated_at
+ * ---
+ * @property-read User   $user
  */
 class Session extends Model
 {

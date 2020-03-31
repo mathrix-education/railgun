@@ -16,9 +16,9 @@ class MoveFileIntegrationTest extends GraphQLIntegrationTestCase
     use FilesystemTestCase;
 
     /**
-     * @param string    $source
-     * @param string    $destination
-     * @param bool|null $override
+     * @param string    $source      The source path.
+     * @param string    $destination The destination path.
+     * @param bool|null $override    If the destination path should be overridden.
      */
     private function executeMoveFile(string $source, string $destination, ?bool $override = null): void
     {
@@ -50,7 +50,7 @@ class MoveFileIntegrationTest extends GraphQLIntegrationTestCase
                 }
             }
             GRAPHQL,
-            $variables
+            $variables,
         );
     }
 

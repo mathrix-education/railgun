@@ -39,7 +39,7 @@ class UpdateMeIntegrationTest extends GraphQLIntegrationTestCase
                 }
             }
             GRAPHQL,
-            ['grade_id' => $grade->id]
+            ['grade_id' => $grade->id],
         );
 
         $this->assertResponseOk();
@@ -70,7 +70,7 @@ class UpdateMeIntegrationTest extends GraphQLIntegrationTestCase
                 }
             }
             GRAPHQL,
-            ['username' => $newUsername]
+            ['username' => $newUsername],
         );
         $user->refresh();
 

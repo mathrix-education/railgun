@@ -1,4 +1,14 @@
+enum PaymentIntentStatus {
+    CANCELED @enum(value: "canceled")
+    PROCESSING @enum(value: "processing")
+    REQUIRES_ACTION @enum(value: "requires_action")
+    REQUIRES_CAPTURE @enum(value: "requires_capture")
+    REQUIRES_CONFIRMATION @enum(value: "requires_confirmation")
+    REQUIRES_PAYMENT_METHOD @enum(value: "requires_payment_method")
+    SUCCEEDED @enum(value: "succeeded")
+}
+
 type PaymentIntent {
     status: String!
-    client_secret: String!
+    client_secret: PaymentIntentStatus!
 }

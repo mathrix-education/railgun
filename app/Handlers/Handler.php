@@ -31,14 +31,11 @@ use function app;
 class Handler extends ExceptionHandler
 {
     /**
-     * A list of the exception types that should not be reported.
-     *
-     * @var string[]
-     */
-    protected array $dontReport = [];
-
-    /**
      * Transform an exception before reporting.
+     *
+     * @param Throwable $original The original exception.
+     *
+     * @return Throwable The transformed exception.
      */
     public function transform(Throwable $original): Throwable
     {

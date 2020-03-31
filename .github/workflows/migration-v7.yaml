@@ -6,7 +6,7 @@ on:
       - v7**
     paths:
       - '.github/workflows/migration-v7.yaml'
-      - 'app/MigrationV7/**'
+      - 'app/Buster/**'
       - 'database/migrations/**'
 jobs:
   migrate_database:
@@ -40,12 +40,7 @@ jobs:
         with:
           service-account-key: ${{ secrets.GCLOUD_AUTH }}
       - name: Download latest backup
-        run: |
-          DESTINATION_FILE=storage/artifacts/mathrix_education_v7.sql
-          BACKUP_FILE=$(gsutil ls gs://mathrix-backups/databases/mathrix_education_master/ | tail -1)
-          gsutil cp "${BACKUP_FILE}" "${DESTINATION_FILE}.gz"
-          gzip -d "${DESTINATION_FILE}.gz"
-          sed -i 's/mathrix_education_master/mathrix_education_testing/g' "${DESTINATION_FILE}"
+        run: ./.github/scripts/download_backup.sh mathrix_education_testing
       - name: Install PHP dependencies
         run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
       - name: Migrate database
@@ -54,7 +49,7 @@ jobs:
           DB_PASSWORD: '123456'
         run: |
           cp tests/.env .env
-          php artisan v7
+          php artisan buster
       - name: Restore generated database
         if: github.ref == 'refs/heads/v7'
         run: |

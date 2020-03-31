@@ -69,10 +69,10 @@ class CreateCourseIntegrationTest extends GraphQLIntegrationTestCase
                 }
             }
             GRAPHQL,
-            $payload
+            $payload,
         );
 
-        $actualLabelIds = collect($this->getData('createCourse.labels'))->map(fn($l) => $l->id)->toArray();
+        $actualLabelIds = collect($this->getData('createCourse.labels'))->map(static fn($l) => $l->id)->toArray();
 
         $this->assertResponseOk();
         $this->assertNoErrors();
@@ -85,7 +85,7 @@ class CreateCourseIntegrationTest extends GraphQLIntegrationTestCase
                     ['labelable_id', '=', $this->getData('createCourse.id')],
                 ])
                 ->whereNotNull('labeled_at')
-                ->count()
+                ->count(),
         );
     }
 }

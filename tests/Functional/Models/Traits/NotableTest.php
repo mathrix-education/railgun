@@ -31,10 +31,13 @@ class NotableTest extends BaseTestCase
     use DatabaseTransactions;
     use MakesGraphQLRequestsLumen;
 
+    /**
+     * @return string[][] The notable dataset.
+     */
     public function createNotablesDataset(): array
     {
         return collect(Label::LABELABLES)
-            ->mapWithKeys(fn($c) => [class_basename($c) => [$c]])
+            ->mapWithKeys(static fn($c) => [class_basename($c) => [$c]])
             ->toArray();
     }
 

@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Mathrix\Monolog\Formatter\GoogleCloudJsonFormatter;
 use Monolog\Handler\StreamHandler;
+use Railgun\Logging\GoogleCloudJsonFormatter;
 
 return [
     'default'  => env('LOG_CHANNEL', 'daily'),

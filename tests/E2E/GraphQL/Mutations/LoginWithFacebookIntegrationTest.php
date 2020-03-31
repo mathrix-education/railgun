@@ -8,7 +8,6 @@ use Facebook\Exceptions\FacebookResponseException;
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
 use Facebook\GraphNodes\GraphUser;
-use Mathrix\Lumen\JWT\Drivers\Driver;
 use Railgun\Models\User;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function app;
@@ -29,9 +28,6 @@ class LoginWithFacebookIntegrationTest extends GraphQLIntegrationTestCase
 
     private static bool      $LimitReached = false;
     private static GraphUser $FacebookUser;
-
-    private Facebook $facebook;
-    private Driver   $driver;
 
     /**
      * Cleanup of test campaign.
@@ -66,17 +62,16 @@ class LoginWithFacebookIntegrationTest extends GraphQLIntegrationTestCase
             $this->markTestSkipped('Facebook Application request limit reached, skipping');
         }
 
-        $this->driver   = app()->make(Driver::class);
-        $this->facebook = app()->make(Facebook::class);
+        $facebook = app()->make(Facebook::class);
 
         try {
-            $response = $this->facebook->post(
+            $response = $facebook->post(
                 env('FACEBOOK_APP_ID') . '/accounts/test-users',
                 [
                     'installed'   => true,
                     'permissions' => 'email',
                 ],
-                env('FACEBOOK_APP_TOKEN')
+                env('FACEBOOK_APP_TOKEN'),
             );
 
             self::$FacebookUser = $response->getGraphUser();

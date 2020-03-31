@@ -2,6 +2,7 @@ type Training {
     id: ID!
     name: String!
     slug: String!
+    image: URL
     available: Boolean!
     price: Int!
     order: Int!

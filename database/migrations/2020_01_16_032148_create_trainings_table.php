@@ -10,15 +10,14 @@ class CreateTrainingsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
-        Schema::create('trainings', static function (Blueprint $table) {
+        Schema::create('trainings', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('slug');
+            $table->string('image')->nullable();
             $table->boolean('available');
             $table->unsignedSmallInteger('price');
             $table->unsignedTinyInteger('order');
@@ -30,8 +29,6 @@ class CreateTrainingsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {
