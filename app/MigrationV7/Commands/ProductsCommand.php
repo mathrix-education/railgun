@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\DB;
 use stdClass;
 use function implode;
 use function str_replace;
-use function uuid_create;
 
 /**
  * Migrate products => packs, trainings, sections, lessons
@@ -125,7 +124,6 @@ class ProductsCommand extends V7Command
                     $iterator = -1;
                 }
 
-                $assoc->id    = uuid_create();
                 $assoc->order = ++$iterator;
 
                 return (array)$assoc;

@@ -5,24 +5,18 @@ declare(strict_types=1);
 namespace Railgun\GraphQL\Mutations;
 
 use Illuminate\Support\Arr;
-use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Railgun\Models\Interaction;
-use Railgun\Models\User;
 
 class Interact
 {
     /**
-     * @param null           $rootValue
-     * @param mixed[]        $args
-     * @param GraphQLContext $context
+     * @param null    $rootValue
+     * @param mixed[] $args
      *
      * @return mixed
      */
-    public function __invoke($rootValue, array $args, GraphQLContext $context): bool
+    public function __invoke($rootValue, array $args): bool
     {
-        /** @var User $user */
-        $user = $context->user();
-
         // Filter args
         switch ($args['interactable_type']) {
             case 'subject':

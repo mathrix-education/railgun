@@ -19,6 +19,7 @@ $factory->define(Vote::class, static function (Faker $faker) {
     $timestamps = Timestamps::factory();
 
     return [
+        'id'         => $faker->uuid,
         'user_id'    => User::random()->id,
         'comment_id' => Comment::random()->id,
         'value'      => $faker->boolean(70) ? 1 : -1,
