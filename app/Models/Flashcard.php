@@ -7,10 +7,9 @@ namespace Railgun\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Railgun\Models\Traits\BelongsToChapter;
 use Railgun\Models\Traits\Commentable;
+use Railgun\Models\Traits\Content;
 use Railgun\Models\Traits\Interactable;
-use Railgun\Models\Traits\InteractsWithInteractions;
 use Railgun\Models\Traits\Labelable;
 use Railgun\Models\Traits\Lockable;
 use Railgun\Models\Traits\Notable;
@@ -30,10 +29,9 @@ use Railgun\Models\Traits\Reorderable;
  * ---
  * @property-read Chapter $chapter
  */
-class Flashcard extends Model implements BelongsToChapter
+class Flashcard extends Model implements Content
 {
     use Commentable;
-    use InteractsWithInteractions;
     use Interactable;
     use Notable;
     use Labelable;
@@ -41,7 +39,7 @@ class Flashcard extends Model implements BelongsToChapter
     use Randomizable;
     use Reorderable;
 
-    protected $fillable = [
+    protected $fillable          = [
         'fronts',
         'backs',
         'order',
@@ -49,14 +47,12 @@ class Flashcard extends Model implements BelongsToChapter
         'visible',
         'chapter_id',
     ];
-
-    protected $casts = [
+    protected $casts             = [
         'fronts'  => 'array',
         'backs'   => 'array',
         'premium' => 'boolean',
         'visible' => 'boolean',
     ];
-
     protected array $orderGroups = ['chapter_id'];
 
     /**
@@ -68,7 +64,7 @@ class Flashcard extends Model implements BelongsToChapter
     }
 
     /**
-     * @return array
+     * @return mixed[]
      */
     public function getFrontsAttribute(): array
     {
@@ -76,7 +72,7 @@ class Flashcard extends Model implements BelongsToChapter
     }
 
     /**
-     * @return array
+     * @return mixed[]
      */
     public function getBacksAttribute(): array
     {
@@ -85,8 +81,6 @@ class Flashcard extends Model implements BelongsToChapter
 
     /**
      * Get the model parent chapter.
-     *
-     * @return Chapter
      */
     public function getChapter(): Chapter
     {

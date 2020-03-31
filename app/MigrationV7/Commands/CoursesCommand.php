@@ -12,10 +12,17 @@ use function collect;
 use function count;
 use function implode;
 
+/**
+ * Migrate modules => courses
+ */
 class CoursesCommand extends V7Command
 {
     private const CHUNK_SIZE = 100;
 
+    /**
+     * @var string $signature The command signature.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
     protected $signature = 'v7:courses';
 
     public function handle(): void
@@ -25,17 +32,17 @@ class CoursesCommand extends V7Command
         $query = DB::table('modules')
             ->where('modules.type', '=', 'course')
             ->where('modules.content', '!=', '')
-            ->join('activities', static function (JoinClause $join) {
+            ->join('activities', static function (JoinClause $join): void {
                 $join->on('modules.activity_id', '=', 'activities.id')
                     ->where('activities.notion_id', '>', 0);
             })
-            ->join('notions', static function (JoinClause $join) {
+            ->join('notions', static function (JoinClause $join): void {
                 // Exclude video tests
                 $join->on('activities.notion_id', '=', 'notions.id')
                     ->where('notions.name', 'NOT LIKE', '%erroga%');
             })
             ->selectRaw(implode(',', [
-                'modules.id AS id', // keep module ids, mapping is not necessary
+                'modules.id AS id', // keep module ids, for SEO compatibility (mapping is not necessary)
                 'activities.name AS name',
                 "JSON_EXTRACT(modules.content, '$.silicate') AS content",
                 'activities.premium AS premium',
@@ -87,7 +94,7 @@ class CoursesCommand extends V7Command
             $iterator++;
         }
 
-        collect($courses)->chunk(self::CHUNK_SIZE)->each(static function (Collection $exercises) {
+        collect($courses)->chunk(self::CHUNK_SIZE)->each(static function (Collection $exercises): void {
             DB::table('courses')->insert($exercises->toArray());
         });
     }

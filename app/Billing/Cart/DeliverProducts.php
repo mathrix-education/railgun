@@ -74,7 +74,7 @@ class DeliverProducts
 
         Training::query()
             ->orWhereHas('packs', static function (Builder $builder) use ($packId) {
-                $builder->where('id', '=', $packId);
+                $builder->where('packs.id', '=', $packId);
             })
             //->get(['id'])
             ->pluck('id')

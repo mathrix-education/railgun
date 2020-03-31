@@ -1,5 +1,11 @@
+enum VoteValue {
+    UP @enum(value: 1)
+    DOWN @enum(value: -1)
+}
+
 type Vote {
-    value: Int
+    id: ID!
+    value: VoteValue!
     created_at: DateTime!
     updated_at: DateTime!
     comment: Comment! @belongsTo

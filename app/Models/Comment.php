@@ -50,7 +50,8 @@ class Comment extends Model
     {
         parent::boot();
 
-        self::created(static function (Comment $comment) {
+        self::created(static function (Comment $comment): void {
+            // Deliver comment reply notifications if the new comment is a reply.
             if ($comment->parent_id === null) {
                 return;
             }
@@ -76,9 +77,6 @@ class Comment extends Model
             ->orderBy('created_at');
     }
 
-    /**
-     * @return MorphTo
-     */
     public function commentable(): MorphTo
     {
         return $this->morphTo();

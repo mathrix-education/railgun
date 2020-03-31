@@ -13,9 +13,11 @@ use function assert;
 class Storage extends StorageFacade
 {
     /**
-     * @param string|null $name
+     * Get the disk.
      *
-     * @return FilesystemAdapter
+     * @param string|null $name The disk name (by default the default the default application disk).
+     *
+     * @return FilesystemAdapter The filesystem disk.
      */
     public static function disk(?string $name = null): FilesystemAdapter
     {
@@ -25,35 +27,25 @@ class Storage extends StorageFacade
         return $disk;
     }
 
-    public static function normalize(array $data): array
+    /**
+     * Normalize a file or a directory metadata.
+     *
+     * @param mixed[] $metadata The raw file or directory metadata from the filesystem driver.
+     *
+     * @return mixed[] The normalized file or directory metadata.
+     */
+    public static function normalize(array $metadata): array
     {
-        $data['url'] = self::disk()->url($data['path']);
+        $metadata['url'] = self::disk()->url($metadata['path']);
 
-        if (array_key_exists('timestamp', $data)) {
-            $data['updated_at'] = Carbon::createFromTimestamp($data['timestamp']);
+        if (array_key_exists('timestamp', $metadata)) {
+            $metadata['updated_at'] = Carbon::createFromTimestamp($metadata['timestamp']);
         }
 
-        switch ($data['type']) {
-            case 'file':
-                return self::normalizeFile($data);
-            case 'dir':
-                return self::normalizeDir($data);
-            default:
-                return $data;
-        }
-    }
-
-    private static function normalizeFile(array $file): array
-    {
-        if (array_key_exists('size', $file)) {
-            $file['size'] = (int)$file['size'];
+        if ($metadata['type'] === 'file' && array_key_exists('size', $metadata)) {
+            $metadata['size'] = (int)$metadata['size'];
         }
 
-        return $file;
-    }
-
-    private static function normalizeDir(array $dir): array
-    {
-        return $dir;
+        return $metadata;
     }
 }

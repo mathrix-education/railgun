@@ -66,7 +66,7 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
             ->inRandomOrder()
             ->where('available', '=', true)
             ->whereDoesntHave('packs', static function (Builder $builder) use ($pack) {
-                $builder->where('id', '=', $pack->id);
+                $builder->where('packs.id', '=', $pack->id);
             })
             ->limit(2)
             ->get(['id'])
@@ -93,7 +93,7 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
     {
         // Check packs ownership
         $expectedPackIds = $packIds;
-        $userPackIds     = $user->packs()->pluck('id')->toArray();
+        $userPackIds     = $user->packs()->pluck('packs.id')->toArray();
 
         if (!$negate) {
             $this->assertEqualsCanonicalizing($expectedPackIds, $userPackIds);
@@ -103,12 +103,12 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
 
         // Check trainings ownership
         $expectedTrainingsIds = Training::query()
-            ->whereHas('packs', fn(Builder $builder) => $builder->whereIn('id', $packIds))
-            ->pluck('id')
+            ->whereHas('packs', fn(Builder $builder) => $builder->whereIn('packs.id', $packIds))
+            ->pluck('trainings.id')
             ->unique()
             ->toArray();
         $expectedTrainingsIds = [...$expectedTrainingsIds, ...$trainingIds];
-        $userTrainingIds      = $user->trainings()->pluck('id')->toArray();
+        $userTrainingIds      = $user->trainings()->pluck('trainings.id')->toArray();
 
         if (!$negate) {
             $this->assertEqualsCanonicalizing($expectedTrainingsIds, $userTrainingIds);

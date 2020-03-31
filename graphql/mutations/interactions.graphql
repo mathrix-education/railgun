@@ -7,5 +7,5 @@ extend type Mutation {
         interactable_id: ID!
         comprehension: InteractionComprehension
         score: Int
-    ): Boolean! @guard
+    ): Boolean! @guard @inject(context: "user.id", name: "user_id")
 }

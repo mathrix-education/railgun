@@ -1,4 +1,5 @@
 type Acquisition {
+    id: ID!
     product_type: String!
     product_id: ID! @morphTo
     transaction_id: ID

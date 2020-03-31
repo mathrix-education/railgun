@@ -16,11 +16,12 @@ class RecreateVotesTable extends Migration
     public function up(): void
     {
         Schema::create('votes', static function (Blueprint $table) {
+            $table->uuid('id')->primary();
             $table->unsignedBigInteger('comment_id');
             $table->unsignedBigInteger('user_id');
             $table->tinyInteger('value');
             $table->timestamps();
-            $table->primary(['comment_id', 'user_id']);
+            $table->unique(['comment_id', 'user_id']);
 
             // Foreign keys
             $table->foreign('comment_id')->references('id')->on('comments');

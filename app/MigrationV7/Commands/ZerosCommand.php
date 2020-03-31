@@ -9,8 +9,15 @@ use function array_merge;
 use function array_reverse;
 use function count;
 
+/**
+ * Purge models with foreign keys = 0
+ */
 class ZerosCommand extends V7Command
 {
+    /**
+     * @var string $signature The command signature.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
     protected $signature = 'v7:zeros';
 
     public function handle(): void

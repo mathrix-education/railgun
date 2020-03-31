@@ -10,12 +10,10 @@ class CreatePackTrainingTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
-        Schema::create('pack_training', static function (Blueprint $table) {
+        Schema::create('pack_training', static function (Blueprint $table): void {
             $table->unsignedBigInteger('pack_id');
             $table->unsignedBigInteger('training_id');
             $table->unsignedTinyInteger('order');
@@ -35,8 +33,6 @@ class CreatePackTrainingTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {

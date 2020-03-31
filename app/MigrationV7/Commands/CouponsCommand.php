@@ -9,8 +9,15 @@ use Illuminate\Support\Facades\DB;
 use stdClass;
 use function implode;
 
+/**
+ * Migrate discounts => coupons
+ */
 class CouponsCommand extends V7Command
 {
+    /**
+     * @var string $signature The command signature.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
     protected $signature = 'v7:coupons';
 
     public function handle(): void
@@ -28,8 +35,8 @@ class CouponsCommand extends V7Command
                 'updated_at',
             ]))
             ->get()
-            ->map(fn(stdClass $coupon) => (array)$coupon)
-            ->tap(function (Collection $coupons) {
+            ->map(static fn(stdClass $coupon) => (array)$coupon)
+            ->tap(function (Collection $coupons): void {
                 $this->line("Found {$coupons->count()} coupons");
                 DB::table('coupons')->insert($coupons->toArray());
             });

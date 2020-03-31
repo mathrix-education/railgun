@@ -1,0 +1,11 @@
+extend type Mutation {
+    """
+    Create a vote.
+    """
+    upsertVote(input: CreateVote! @spread): Vote! @guard @inject(context: "user.id", name: "user_id")
+
+    """
+    Delete a vote.
+    """
+    deleteVote(comment_id: ID!): Vote! @guard @inject(context: "user.id", name: "user_id")
+}

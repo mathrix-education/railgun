@@ -25,7 +25,7 @@ class Category extends Model
 {
     use Randomizable;
 
-    protected $fillable = ['name', 'slug', 'image'];
+    protected $fillable = ['name', 'slug'];
 
     /**
      * @return HasMany<Post>

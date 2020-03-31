@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Cache;
 use const JSON_THROW_ON_ERROR;
 use function app;
 use function array_filter;
+use function count;
 use function file_get_contents;
 use function in_array;
 use function json_decode;
@@ -23,7 +24,7 @@ class Silicate
     /**
      * Generate a random TextBrick.
      *
-     * @return array
+     * @return mixed[]
      */
     public static function text(): array
     {
@@ -36,8 +37,6 @@ class Silicate
 
     /**
      * Get a faker instance.
-     *
-     * @return Generator
      */
     private static function faker(): Generator
     {
@@ -47,7 +46,7 @@ class Silicate
     /**
      * Generate a random VideoBrick with a valid YouTubeId.
      *
-     * @return array
+     * @return mixed[]
      */
     public static function video(): array
     {
@@ -56,7 +55,7 @@ class Silicate
                 file_get_contents(storage_path('raws/youtube.json')),
                 true,
                 512,
-                JSON_THROW_ON_ERROR
+                JSON_THROW_ON_ERROR,
             );
         });
 
@@ -71,10 +70,10 @@ class Silicate
     /**
      * Generate a random Silicate Wall.
      *
-     * @param int   $length    The number of desired bricks.
-     * @param array $blacklist An optional blacklist of generators.
+     * @param int      $length    The number of desired bricks.
+     * @param string[] $blacklist An optional blacklist of generators.
      *
-     * @return array
+     * @return mixed[][]
      */
     public static function wall(int $length = 5, array $blacklist = []): array
     {
@@ -90,8 +89,8 @@ class Silicate
         };
 
         // This is not a standard generation, generate using generator.
-        if ($length !== 5 || !empty($blacklist)) {
-            $factories = array_filter(self::FACTORIES, fn($f) => !in_array($f, $blacklist, true));
+        if ($length !== 5 || count($blacklist) > 0) {
+            $factories = array_filter(self::FACTORIES, static fn($f) => !in_array($f, $blacklist, true));
 
             return $generator($length, $factories);
         }

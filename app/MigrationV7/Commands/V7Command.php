@@ -23,7 +23,7 @@ use function strlen;
 
 abstract class V7Command extends Command
 {
-    protected function newLine($count = 1): void
+    protected function newLine(int $count = 1): void
     {
         $this->getOutput()->newLine($count);
     }
@@ -39,9 +39,7 @@ abstract class V7Command extends Command
     }
 
     /**
-     * Get the current time in milliseconds.
-     *
-     * @return int
+     * @return int The current timestamp in milliseconds.
      */
     protected function timeMs(): int
     {
@@ -90,16 +88,16 @@ abstract class V7Command extends Command
 
                 return [$source, $destination];
             })
-            ->each(static function (array $paths) {
+            ->each(static function (array $paths): void {
                 [$source, $destination] = $paths;
                 rename($source, $destination);
             })
             ->tap(fn() => $this->call('migrate'))
-            ->each(static function (array $paths) {
+            ->each(static function (array $paths): void {
                 [$source, $destination] = $paths;
                 rename($destination, $source);
             })
-            ->tap(static function () use ($migrationsTmpPath) {
+            ->tap(static function () use ($migrationsTmpPath): void {
                 if (!is_dir($migrationsTmpPath)) {
                     return;
                 }

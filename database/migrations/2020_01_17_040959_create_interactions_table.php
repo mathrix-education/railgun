@@ -10,19 +10,18 @@ class CreateInteractionsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
-        Schema::create('interactions', static function (Blueprint $table) {
+        Schema::create('interactions', static function (Blueprint $table): void {
+            $table->uuid('id')->primary();
             $table->unsignedBigInteger('user_id');
             $table->morphs('interactable');
             $table->enum('comprehension', ['blur', 'clear'])->nullable();
             $table->unsignedTinyInteger('score')->nullable();
             $table->timestamps();
 
-            $table->primary(['user_id', 'interactable_type', 'interactable_id']);
+            $table->unique(['user_id', 'interactable_type', 'interactable_id']);
 
             // Foreign keys
             $table->foreign('user_id')
@@ -34,8 +33,6 @@ class CreateInteractionsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {

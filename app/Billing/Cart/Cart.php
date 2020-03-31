@@ -48,7 +48,10 @@ class Cart
 
     private function fetch(): void
     {
-        $this->packs     = Pack::query()->with(['trainings:id'])->whereIn('id', $this->input['packIds'])->get();
+        $this->packs     = Pack::query()
+            ->with(['trainings:trainings.id'])
+            ->whereIn('packs.id', $this->input['packIds'])
+            ->get();
         $this->trainings = Training::query()->whereIn('id', $this->input['trainingIds'])->get();
         $this->premium   = $this->input['premium'] ? new Premium() : null;
         $this->coupon    = Coupon::query()->find($this->input['couponCode']);

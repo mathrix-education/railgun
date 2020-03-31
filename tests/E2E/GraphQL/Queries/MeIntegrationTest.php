@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\E2E\GraphQL\Queries;
 
 use Mathrix\Lumen\JWT\Drivers\Driver;
+use Railgun\Models\Chapter;
+use Railgun\Models\Session;
 use Railgun\Models\User;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function app;
@@ -41,5 +43,38 @@ class MeIntegrationTest extends GraphQLIntegrationTestCase
         $this->assertResponseOk();
         $this->assertNoErrors();
         $this->assertEquals((string)$user->id, $this->getData('me.id'));
+    }
+
+    public function testMeSession(): void
+    {
+        $user = $this->actingAsNewUser();
+        /** @var Chapter $chapter */
+        $chapter = Chapter::query()->where(['grade_id' => $user->grade_id])->firstOrFail();
+        $session = new Session([
+            'user_id'       => $user->id,
+            'discipline_id' => $chapter->discipline_id,
+            'chapter_id'    => $chapter->id,
+        ]);
+        $session->save();
+
+        $this->actingAs($session->user);
+
+        $this->graphQL(
+            <<<'GRAPHQL'
+            query {
+                me {
+                    sessions {
+                        chapter {
+                            id
+                        }
+                    }
+                }
+            }
+            GRAPHQL,
+        );
+
+        $this->assertNoErrors();
+        $this->assertResponseOk();
+        $this->assertEquals($chapter->id, $this->getData('me.sessions.0.chapter.id'));
     }
 }
