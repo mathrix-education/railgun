@@ -19,6 +19,10 @@ class CommentsCommand extends V7Command
 {
     private const COMMENTABLE_TABLES = ['courses', 'exercises', 'flashcards', 'exams'];
 
+    /**
+     * @var string $signature The command signature.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
     protected $signature = 'v7:comments';
 
     public function handle(): void
@@ -42,7 +46,7 @@ class CommentsCommand extends V7Command
                 return [$moduleId => $mapping];
             })
             ->tap(fn(Collection $mappings) => $this->getOutput()->progressStart($mappings->count()))
-            ->each(function (stdClass $mapping, int $moduleId) {
+            ->each(function (stdClass $mapping, int $moduleId): void {
                 DB::table('comments')
                     ->where('module_id', '=', $moduleId)
                     ->update((array)$mapping);

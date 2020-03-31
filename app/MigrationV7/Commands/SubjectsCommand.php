@@ -9,8 +9,15 @@ use Illuminate\Support\Facades\DB;
 use function count;
 use function implode;
 
+/**
+ * Migrate activities => subjects
+ */
 class SubjectsCommand extends V7Command
 {
+    /**
+     * @var string $signature The command signature.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
     protected $signature = 'v7:subjects';
 
     public function handle(): void
@@ -18,7 +25,7 @@ class SubjectsCommand extends V7Command
         $this->title('Migrating activities => subjects');
 
         $query = DB::table('activities')
-            ->join('modules', static function (JoinClause $join) {
+            ->join('modules', static function (JoinClause $join): void {
                 $join->on('activities.id', '=', 'modules.activity_id')
                     ->where('modules.type', '=', 'mcq');
             })

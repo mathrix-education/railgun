@@ -23,7 +23,7 @@ class CreateNoteIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->graphQL(
             <<<'GRAPHQL'
-            mutation($content: Silicate, $notable_type: NotableType!, $notable_id: ID!) {
+            mutation($content: Silicate!, $notable_type: NotableType!, $notable_id: ID!) {
                 createNote(
                     content: $content
                     notable_type: $notable_type

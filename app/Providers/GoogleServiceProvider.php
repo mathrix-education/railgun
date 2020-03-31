@@ -23,6 +23,9 @@ class GoogleServiceProvider extends ServiceProvider implements DeferrableProvide
         });
     }
 
+    /**
+     * @return string[] The services provided by the provider.
+     */
     public function provides(): array
     {
         return [Google_Client::class];

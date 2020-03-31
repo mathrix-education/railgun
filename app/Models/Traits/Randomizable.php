@@ -7,6 +7,8 @@ namespace Railgun\Models\Traits;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * Allow models to be randomly selected.
+ *
  * @mixin Model
  */
 trait Randomizable

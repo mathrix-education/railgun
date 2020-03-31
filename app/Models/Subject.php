@@ -9,8 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Railgun\Models\Traits\BelongsToChapter;
-use Railgun\Models\Traits\InteractsWithInteractions;
+use Railgun\Models\Traits\Content;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
 
@@ -26,9 +25,8 @@ use Railgun\Models\Traits\Reorderable;
  * @property-read Notion                $notion
  * @property-read Collection|Exercise[] $exercises
  */
-class Subject extends Model implements BelongsToChapter
+class Subject extends Model implements Content
 {
-    use InteractsWithInteractions;
     use Randomizable;
     use Reorderable;
 
@@ -59,8 +57,6 @@ class Subject extends Model implements BelongsToChapter
 
     /**
      * Get the model parent chapter.
-     *
-     * @return Chapter
      */
     public function getChapter(): Chapter
     {

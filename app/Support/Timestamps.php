@@ -22,8 +22,15 @@ class Timestamps
 
     private function __construct()
     {
+        // Direct new() is forbidden
     }
 
+    /**
+     * @param mixed $start The minimal start date.
+     * @param int   $bias  The probability that the updated_at is the same as the created_at.
+     *
+     * @return static
+     */
     public static function factory($start = '-1 month', int $bias = 90): self
     {
         $generator = static function ($start, int $bias) {

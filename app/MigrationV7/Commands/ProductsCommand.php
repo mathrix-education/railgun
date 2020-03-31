@@ -11,8 +11,15 @@ use stdClass;
 use function implode;
 use function str_replace;
 
+/**
+ * Migrate products => packs, trainings, sections, lessons
+ */
 class ProductsCommand extends V7Command
 {
+    /**
+     * @var string $signature The command signature.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
     protected $signature = 'v7:products';
 
     public function handle(): void
@@ -49,7 +56,7 @@ class ProductsCommand extends V7Command
 
                 return (array)$pack;
             })
-            ->tap(function (Collection $packs) {
+            ->tap(function (Collection $packs): void {
                 $this->line("Found {$packs->count()} packs");
                 DB::table('packs')->insert($packs->toArray());
             });
@@ -79,7 +86,7 @@ class ProductsCommand extends V7Command
 
                 return (array)$training;
             })
-            ->tap(function (Collection $trainings) {
+            ->tap(function (Collection $trainings): void {
                 $this->line("Found {$trainings->count()} trainings");
                 DB::table('trainings')->insert($trainings->toArray());
             });
@@ -93,12 +100,12 @@ class ProductsCommand extends V7Command
         $iterator = -1;
 
         DB::table('product_product')
-            ->join(DB::raw('products AS product_packs'), static function (JoinClause $join) {
+            ->join(DB::raw('products AS product_packs'), static function (JoinClause $join): void {
                 $join->on('product_product.parent_id', '=', 'product_packs.id')
                     ->where('product_packs.type', '=', 'pack');
             })
             ->join('packs', DB::raw("CONCAT('product-', product_packs.id)"), '=', 'packs.mapping')
-            ->join(DB::raw('products AS product_training'), static function (JoinClause $join) {
+            ->join(DB::raw('products AS product_training'), static function (JoinClause $join): void {
                 $join->on('product_product.child_id', '=', 'product_training.id')
                     ->where('product_training.type', '=', 'training');
             })
@@ -121,7 +128,7 @@ class ProductsCommand extends V7Command
 
                 return (array)$assoc;
             })
-            ->tap(function (Collection $data) {
+            ->tap(function (Collection $data): void {
                 $this->line("Found {$data->count()} associations");
                 DB::table('pack_training')->insert($data->toArray());
             });
@@ -148,14 +155,14 @@ class ProductsCommand extends V7Command
             ->select(['id'])
             ->get()
             ->pluck('id')
-            ->tap(static function (Collection $trainingIds) {
+            ->tap(static function (Collection $trainingIds): void {
                 DB::table('products')
                     ->whereIn('parent_id', $trainingIds->toArray())
                     ->update(['type' => 'section']);
             });
 
         DB::table('products')
-            ->join(DB::raw('products AS products2'), static function (JoinClause $join) {
+            ->join(DB::raw('products AS products2'), static function (JoinClause $join): void {
                 $join->on('products.parent_id', '=', 'products2.id')
                     ->where('products2.type', '=', 'training');
             })
@@ -186,7 +193,7 @@ class ProductsCommand extends V7Command
 
                 return (array)$section;
             })
-            ->tap(function (Collection $sections) {
+            ->tap(function (Collection $sections): void {
                 $this->line("Found {$sections->count()} sections");
                 DB::table('sections')->insert($sections->toArray());
             });
@@ -213,14 +220,14 @@ class ProductsCommand extends V7Command
             ->select(['id'])
             ->get()
             ->pluck('id')
-            ->tap(static function (Collection $trainingIds) {
+            ->tap(static function (Collection $trainingIds): void {
                 DB::table('products')
                     ->whereIn('parent_id', $trainingIds->toArray())
                     ->update(['type' => 'lesson']);
             });
 
         DB::table('products')
-            ->join(DB::raw('products AS products2'), static function (JoinClause $join) {
+            ->join(DB::raw('products AS products2'), static function (JoinClause $join): void {
                 $join->on('products.parent_id', '=', 'products2.id')
                     ->where('products2.type', '=', 'section');
             })
@@ -253,7 +260,7 @@ class ProductsCommand extends V7Command
 
                 return (array)$lesson;
             })
-            ->tap(function (Collection $lessons) {
+            ->tap(function (Collection $lessons): void {
                 $this->line("Found {$lessons->count()} lessons");
                 DB::table('lessons')->insert($lessons->toArray());
             });

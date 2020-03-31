@@ -29,7 +29,7 @@ use Railgun\Models\Subject;
 class ContentSeeder extends AdvancedSeeder
 {
     private const CHAPTER_COUNT          = 30;
-    private const NOTIONS_PER_CHAPTER    = [1, 2];
+    private const NOTIONS_PER_CHAPTER    = [2, 3];
     private const COURSES_PER_NOTION     = [1, 2];
     private const SUBJECTS_PER_NOTION    = [1, 2];
     private const EXERCISES_PER_SUBJECT  = [1, 2];
@@ -55,8 +55,16 @@ class ContentSeeder extends AdvancedSeeder
         // Notions
         $chapterIds
             ->map(function (int $chapterId) {
-                return factory(Notion::class, $this->faker->numberBetween(...self::NOTIONS_PER_CHAPTER))
-                    ->raw(['chapter_id' => $chapterId]);
+                $notionCount = $this->faker->numberBetween(...self::NOTIONS_PER_CHAPTER);
+                /** @var array $notions */
+                $notions = factory(Notion::class, $notionCount)->raw([
+                    'type'       => 'standard',
+                    'chapter_id' => $chapterId,
+                ]);
+                // Set the first notion as the chapter summary
+                $notions[0]['type'] = 'summary';
+
+                return $notions;
             })
             ->flatten(1)
             ->tap(fn() => $this->writeFactoryMessage(Notion::class))

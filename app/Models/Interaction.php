@@ -9,8 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Queue;
 use Railgun\Jobs\UpdateSessionAfterInteraction;
-use Railgun\Models\Traits\BelongsToChapter;
+use Railgun\Models\Traits\Content;
 use Railgun\Models\Traits\Randomizable;
+use Railgun\Models\Traits\UUID;
 
 /**
  * @property      int                                    $user_id
@@ -26,6 +27,7 @@ use Railgun\Models\Traits\Randomizable;
 class Interaction extends Model
 {
     use Randomizable;
+    use UUID;
 
     public const COMPREHENSIONS = ['blur', 'clear'];
 
@@ -41,7 +43,9 @@ class Interaction extends Model
     {
         parent::boot();
 
-        self::saved(fn(Interaction $interaction) => Queue::push(new UpdateSessionAfterInteraction($interaction)));
+        self::saved(static function (Interaction $interaction): void {
+            Queue::push(new UpdateSessionAfterInteraction($interaction));
+        });
     }
 
     public function interactable(): MorphTo
@@ -51,7 +55,7 @@ class Interaction extends Model
 
     public function getChapter(): ?Chapter
     {
-        if ($this->interactable instanceof BelongsToChapter) {
+        if ($this->interactable instanceof Content) {
             return $this->interactable->getChapter();
         }
 

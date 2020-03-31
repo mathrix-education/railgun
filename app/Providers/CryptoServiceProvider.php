@@ -12,9 +12,12 @@ class CryptoServiceProvider extends ServiceProvider implements DeferrableProvide
 {
     public function register(): void
     {
-        $this->app->singleton(PasswordResetCrypto::class, fn($app) => new PasswordResetCrypto($app));
+        $this->app->singleton(PasswordResetCrypto::class);
     }
 
+    /**
+     * @return string[] The services provided by the provider.
+     */
     public function provides(): array
     {
         return [PasswordResetCrypto::class];

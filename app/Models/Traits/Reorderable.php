@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 use function property_exists;
 
 /**
+ * Allow models to be automatically ordered.
+ *
  * @property-read string   $orderColumn The order column. If not defined, it will "order".
  * @property-read string[] $orderGroups The order groups to filter the order column.
  * @mixin Model
@@ -22,7 +24,7 @@ trait Reorderable
      */
     public static function bootReorderable(): void
     {
-        self::creating(static function (Model $model) {
+        self::creating(static function (Model $model): void {
             /** @var Reorderable $model */
             $max   = $model->getMaxOrder();
             $order = $model->getOrder();
@@ -33,12 +35,12 @@ trait Reorderable
 
             $model->setOrder($max + 1);
         });
-        self::created(static function (Model $model) {
+        self::created(static function (Model $model): void {
             /** @var Reorderable $model */
             $model->pushOrder();
         });
 
-        self::updating(static function (Model $model) {
+        self::updating(static function (Model $model): void {
             /** @var Reorderable $model */
             $max   = $model->getMaxOrder();
             $order = $model->getOrder();
@@ -49,7 +51,7 @@ trait Reorderable
 
             $model->setOrder($max);
         });
-        self::updated(static function (Model $model) {
+        self::updated(static function (Model $model): void {
             /** @var Reorderable $model */
             foreach ($model->getOrderGroups() as $orderGroup) {
                 if ($model->wasChanged($orderGroup)) {
@@ -63,7 +65,7 @@ trait Reorderable
             $model->moveOrder();
         });
 
-        self::deleted(static function (Model $model) {
+        self::deleted(static function (Model $model): void {
             /** @var Reorderable $model */
             $model->pullOrder();
         });
@@ -72,7 +74,7 @@ trait Reorderable
     /**
      * Get the maximum order matching the order groups.
      *
-     * @return int
+     * @return int The maximum order number.
      */
     public function getMaxOrder(): int
     {
@@ -86,11 +88,11 @@ trait Reorderable
     }
 
     /**
-     * Get the query matching the order groups.
+     * Get the builder matching the order groups ({@see static::$orderGroups}).
      *
      * @param bool $original Use original values instead.
      *
-     * @return Builder
+     * @return Builder The builder matching the order groups.
      */
     public function getQueryOrder(bool $original = false): Builder
     {
@@ -107,7 +109,7 @@ trait Reorderable
     /**
      * Get the order groups.
      *
-     * @return array
+     * @return string[] The order groups.
      */
     public function getOrderGroups(): array
     {
@@ -115,9 +117,9 @@ trait Reorderable
     }
 
     /**
-     * Get the order column.
+     * Get the order column (defaults set to "order").
      *
-     * @return string
+     * @return string The order column.
      */
     public function getOrderColumn(): string
     {
@@ -127,7 +129,7 @@ trait Reorderable
     /**
      * Get the order.
      *
-     * @return int
+     * @return int The order.
      */
     public function getOrder(): ?int
     {
@@ -137,9 +139,9 @@ trait Reorderable
     /**
      * Set the order.
      *
-     * @param int $order
+     * @param int $order The new order.
      *
-     * @return int
+     * @return int The new order.
      */
     public function setOrder(int $order): int
     {

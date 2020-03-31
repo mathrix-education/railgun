@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Railgun\GraphQL\Mutations;
 
-use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use Illuminate\Support\Arr;
 use Railgun\Models\Interaction;
-use Railgun\Models\User;
 
 /**
  * Mutation interact.
@@ -17,16 +16,12 @@ class Interact
     /**
      * @param null           $rootValue The parent value, always null in this case.
      * @param mixed[]        $args      The mutation arguments.
-     * @param GraphQLContext $context   The GraphQL context which holds the user.
      *
      * @return mixed
      */
-    public function __invoke($rootValue, array $args, GraphQLContext $context): bool
+    public function __invoke($rootValue, array $args): bool
     {
-        /** @var User $user */
-        $user = $context->user();
-
-        // Filter args based on the interactable_type
+        // Filter args
         switch ($args['interactable_type']) {
             case 'subject':
                 unset($args['comprehension'], $args['score']);
@@ -41,8 +36,10 @@ class Interact
                 break;
         }
 
-        $interaction          = new Interaction($args);
-        $interaction->user_id = $user->id;
+        $keys        = Arr::only($args, ['interactable_type', 'interactable_id', 'user_id']);
+        $interaction = Interaction::query()->firstOrNew($keys);
+        $interaction->fill($args);
+        $interaction->touch();
         $interaction->save();
 
         return true;

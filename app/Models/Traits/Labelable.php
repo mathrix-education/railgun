@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Railgun\Models\Label;
 
 /**
+ * Allow models to have {@see Label}.
+ *
  * @property-read Collection|Label[] $labels
  * @mixin HasRelationships
  */

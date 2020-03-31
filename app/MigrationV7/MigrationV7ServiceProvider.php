@@ -9,6 +9,7 @@ use Laravel\Lumen\Application;
 use Railgun\MigrationV7\Commands\AcquisitionsCommand;
 use Railgun\MigrationV7\Commands\CleanCommand;
 use Railgun\MigrationV7\Commands\CommentsCommand;
+use Railgun\MigrationV7\Commands\CountersCommand;
 use Railgun\MigrationV7\Commands\CouponsCommand;
 use Railgun\MigrationV7\Commands\CoursesCommand;
 use Railgun\MigrationV7\Commands\ExamsCommand;
@@ -24,7 +25,6 @@ use Railgun\MigrationV7\Commands\ResetCommand;
 use Railgun\MigrationV7\Commands\SessionsCommand;
 use Railgun\MigrationV7\Commands\SubjectsCommand;
 use Railgun\MigrationV7\Commands\SubscriptionsCommand;
-use Railgun\MigrationV7\Commands\TriggersCommand;
 use Railgun\MigrationV7\Commands\UsersCommand;
 use Railgun\MigrationV7\Commands\VotesCommand;
 use Railgun\MigrationV7\Commands\ZerosCommand;
@@ -55,10 +55,10 @@ class MigrationV7ServiceProvider extends ServiceProvider
             VotesCommand::class,
             ReportsCommand::class,
             CleanCommand::class,
-            TriggersCommand::class,
             SubscriptionsCommand::class,
             UsersCommand::class,
             SessionsCommand::class,
+            CountersCommand::class,
         ]);
     }
 }

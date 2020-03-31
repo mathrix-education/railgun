@@ -18,12 +18,15 @@ class FacebookServiceProvider extends ServiceProvider implements DeferrableProvi
     {
         $this->app->singleton(Facebook::class, static function () {
             return new Facebook([
-                'app_id'     => env('FACEBOOK_APP_ID'),
+                'app_id'     => env('FACEBOOK_APP_ID'), // todo: use config instead
                 'app_secret' => env('FACEBOOK_APP_SECRET'),
             ]);
         });
     }
 
+    /**
+     * @return string[] The services provided by the provider.
+     */
     public function provides(): array
     {
         return [Facebook::class];

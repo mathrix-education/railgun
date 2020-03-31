@@ -10,13 +10,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Railgun\Models\Traits\BelongsToChapter;
-use Railgun\Models\Traits\InteractsWithInteractions;
+use Railgun\Models\Traits\Content;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
 
 /**
- * A chapter is the base wrapper of all teh Mathrix Education content.
+ * A chapter is the base wrapper of all the Mathrix Education content.
  *
  * @property-read int                    $id
  * @property      string                 $name
@@ -35,13 +34,12 @@ use Railgun\Models\Traits\Reorderable;
  * @property-read Collection|Exam[]      $exams
  * @property-read Collection|Session[]   $sessions
  */
-class Chapter extends Model implements BelongsToChapter
+class Chapter extends Model implements Content
 {
-    use InteractsWithInteractions;
     use Randomizable;
     use Reorderable;
 
-    protected $fillable = [
+    protected $fillable          = [
         'name',
         'slug',
         'order',
@@ -49,9 +47,7 @@ class Chapter extends Model implements BelongsToChapter
         'grade_id',
         'discipline_id',
     ];
-
-    protected $casts = ['visible' => 'boolean'];
-
+    protected $casts             = ['visible' => 'boolean'];
     protected array $orderGroups = ['discipline_id', 'grade_id'];
 
     /**
@@ -115,8 +111,6 @@ class Chapter extends Model implements BelongsToChapter
 
     /**
      * Get the model parent chapter.
-     *
-     * @return Chapter
      */
     public function getChapter(): Chapter
     {

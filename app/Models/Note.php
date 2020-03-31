@@ -48,9 +48,6 @@ class Note extends Model
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * @return MorphTo
-     */
     public function notable(): MorphTo
     {
         return $this->morphTo();

@@ -12,8 +12,15 @@ use const JSON_THROW_ON_ERROR;
 use function implode;
 use function json_encode;
 
+/**
+ * Migrate flashcard modules => flashcards
+ */
 class FlashcardsCommand extends V7Command
 {
+    /**
+     * @var string $signature The command signature.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
     protected $signature = 'v7:flashcards';
 
     public function handle(): void
@@ -43,7 +50,7 @@ class FlashcardsCommand extends V7Command
             ->orderByRaw('notions.chapter_id, notions.order, activities.order, modules.order')
             ->get()
             ->tap(fn(Collection $data) => $this->line("Found {$data->count()} flashcard modules"))
-            ->reject(fn(stdClass $flashcard) => $flashcard->fronts === '""' || $flashcard->backs === '""')
+            ->reject(static fn(stdClass $flashcard) => $flashcard->fronts === '""' || $flashcard->backs === '""')
             ->map(static function (stdClass $flashcard) use (&$iterator, &$chapterId) {
                 // Convert fronts and backs to Silicate format
                 $flashcard         = FlashcardConverter::new()->convert($flashcard);
@@ -62,6 +69,6 @@ class FlashcardsCommand extends V7Command
 
                 return (array)$flashcard; // Cast stdClass to array
             })
-            ->tap(fn(Collection $data) => DB::table('flashcards')->insert($data->toArray()));
+            ->tap(static fn(Collection $data) => DB::table('flashcards')->insert($data->toArray()));
     }
 }

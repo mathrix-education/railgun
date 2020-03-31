@@ -22,20 +22,28 @@ use function in_array;
 use function sprintf;
 use function storage_path;
 use function unlink;
+use function uuid_create;
 
+/**
+ * Migrate marks => interactions
+ */
 class InteractionsCommand extends V7Command
 {
     private const EXPORT_NAME = 'artifacts/interactions.csv';
     private const CHUNK_SIZE  = 1000;
 
+    /**
+     * @var string $signature The command signature.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
     protected $signature = 'v7:interactions';
-
-    private string $exportPath;
-
+    private string     $exportPath;
+    /** @var string[][] $mappings The activities/module mappings */
     private array      $mappings = [
         'activities' => [],
         'modules'    => [],
     ];
+    /** @var Collection|stdClass[] $interactions The generated interactions. */
     private Collection $interactions;
 
     public function handle(): void
@@ -59,28 +67,37 @@ class InteractionsCommand extends V7Command
         $this->interactions = new Collection();
     }
 
-    private function generateMappings(string $table, string $class): void
+    /**
+     * Generate the mappings.
+     *
+     * @param string $destinationTable The destination table.
+     * @param string $originalTable    The original table.
+     */
+    private function generateMappings(string $destinationTable, string $originalTable): void
     {
-        DB::table($table)
-            ->tap(fn() => $this->line("Generating $table mappings"))
+        DB::table($destinationTable)
+            ->tap(fn() => $this->line("Generating $destinationTable mappings"))
             ->get(['id', 'mapping'])
-            ->mapWithKeys(static function (stdClass $raw) use ($table) {
+            ->mapWithKeys(static function (stdClass $raw) use ($destinationTable) {
                 $parts   = explode('-', $raw->mapping);
                 $modelId = (int)$parts[1];
 
                 return [
                     $modelId => [
-                        'interactable_type' => Str::singular($table),
+                        'interactable_type' => Str::singular($destinationTable),
                         'interactable_id'   => $raw->id,
                     ],
                 ];
             })
-            ->tap(function (Collection $data) use ($table, $class) {
-                $this->mappings[$class] = array_merge($this->mappings[$class], $data->toArray());
-                $this->info(sprintf('> Got %s %s', $data->count(), $table));
+            ->tap(function (Collection $data) use ($destinationTable, $originalTable): void {
+                $this->mappings[$originalTable] = array_merge($this->mappings[$originalTable], $data->toArray());
+                $this->info(sprintf('> Got %s %s', $data->count(), $destinationTable));
             });
     }
 
+    /**
+     * Export the existing marks table to a csv file.
+     */
     private function export(): void
     {
         $this->line('Exporting marks table');
@@ -107,6 +124,9 @@ class InteractionsCommand extends V7Command
         $restoreProcess->run();
     }
 
+    /**
+     * Build the interactions from the exported csv.
+     */
     private function build(): void
     {
         $this->line('Building interactions');
@@ -170,33 +190,36 @@ class InteractionsCommand extends V7Command
         fclose($handle);
     }
 
+    /**
+     * Generate unique combinations based on the composite primary key.
+     */
     private function unique(): void
     {
         $this->line('Generating unique combinations');
-        $new = new Collection();
 
         $this->getOutput()->progressStart($this->interactions->count());
+        $this->interactions = $this->interactions
+            ->mapWithKeys(function (array $i) {
+                $key = "{$i['user_id']}-{$i['interactable_type']}-{$i['interactable_id']}";
+                $this->getOutput()->progressAdvance();
 
-        $this->interactions->each(function (array $interaction) use (&$new) {
-            $key = "{$interaction['user_id']}-{$interaction['interactable_type']}-{$interaction['interactable_id']}";
-
-            $new[$key] = $interaction;
-
-            $this->getOutput()->progressAdvance();
-        });
-
+                return [$key => $i];
+            })
+            ->values()
+            ->map(static fn($i) => array_merge($i, ['id' => uuid_create()])); // add the uuid
         $this->getOutput()->progressFinish();
-
-        $this->interactions = $new->values();
     }
 
+    /**
+     * Insert the generated interactions by chunk.
+     */
     private function insert(): void
     {
         $this->line('Saving interactions');
         $this->getOutput()->progressStart($this->interactions->count());
 
         $this->interactions->chunk(self::CHUNK_SIZE)
-            ->each(function (Collection $interactions) {
+            ->each(function (Collection $interactions): void {
                 DB::table('interactions')->insert($interactions->toArray());
                 $this->getOutput()->progressAdvance($interactions->count());
             });
@@ -204,6 +227,9 @@ class InteractionsCommand extends V7Command
         $this->getOutput()->progressFinish();
     }
 
+    /**
+     * Clean the generated temporary csv.
+     */
     private function clean(): void
     {
         $path = storage_path(self::EXPORT_NAME);

@@ -13,6 +13,7 @@ use JsonException;
 use Railgun\Models\Subscription;
 use Stripe\Subscription as StripeSubscription;
 use function app;
+use function array_key_exists;
 use function file_exists;
 use function file_get_contents;
 use function json_decode;
@@ -69,7 +70,7 @@ class BraintreeSubscriptionBridge
      */
     private static function buildMappings(): void
     {
-        if (!self::$mappings) {
+        if (self::$mappings) {
             return;
         }
 
@@ -91,13 +92,15 @@ class BraintreeSubscriptionBridge
      */
     private static function getCustomerId(BraintreeSubscription $braintree): string
     {
-        if (isset(self::$mappings[$braintree->id])) {
+        if (array_key_exists($braintree->id, self::$mappings)) {
+            // If the subscription id already exists in the mappings, simply return the customer id.
             return self::$mappings[$braintree->id];
         }
 
         /** @var Gateway $gateway */
         $gateway = app()->make(Gateway::class);
 
+        // We need to fetch the customer id using th payment method technique
         return $gateway
             ->paymentMethod()
             ->find($braintree->paymentMethodToken)

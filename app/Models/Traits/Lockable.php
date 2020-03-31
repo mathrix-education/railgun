@@ -12,6 +12,8 @@ use function property_exists;
 use function scope;
 
 /**
+ * Allow models to be locked.
+ *
  * @property string $strip
  * @property bool   $premium
  * @mixin HasAttributes
@@ -23,7 +25,7 @@ trait Lockable
      */
     protected function getLockMode(): string
     {
-        return property_exists($this, 'stripMode') ? $this->stripMode : 'premium';
+        return property_exists($this, 'strip') ? $this->strip : 'premium';
     }
 
     /**

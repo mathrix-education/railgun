@@ -16,6 +16,7 @@ class PolymorphicComments extends Migration
     public function up(): void
     {
         Schema::table('comments', static function (Blueprint $table) {
+            $table->integer('score')->after('content')->default(0);
             $table->unsignedBigInteger('commentable_id')->nullable()->after('module_id');
             $table->enum('commentable_type', ['course', 'exercise', 'flashcard', 'exam'])->after('module_id');
             $table->index(['commentable_type', 'commentable_id']);

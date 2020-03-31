@@ -22,11 +22,10 @@ use Illuminate\Support\Facades\Queue;
 use Laravel\Lumen\Auth\Authorizable;
 use Railgun\Billing\Models\StripeCustomer;
 use Railgun\Jobs\CleanUserSession;
-use Railgun\Models\Traits\Cacheable;
 use Railgun\Models\Traits\Randomizable;
-use Ramsey\Uuid\Uuid;
 use Stripe\Subscription as StripeSubscription;
-use function trim;
+use function uuid_create;
+use function uuid_is_valid;
 
 /**
  * @property-read int                       $id
@@ -65,7 +64,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 {
     use Authenticatable;
     use Authorizable;
-    use Cacheable;
     use Notifiable;
     use Randomizable;
     use StripeCustomer;
@@ -104,17 +102,18 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     ];
     protected $appends    = ['provider'];
 
-    public function __construct(array $attributes = [])
-    {
-        $this->attributes['uuid'] = Uuid::uuid4();
-        parent::__construct($attributes);
-    }
-
     public static function boot(): void
     {
         parent::boot();
 
-        self::updated(static function (User $user) {
+        self::creating(static function (User $user): void {
+            if ($user->uuid !== null && uuid_is_valid($user->uuid)) {
+                return;
+            }
+
+            $user->uuid = uuid_create();
+        });
+        self::updated(static function (User $user): void {
             if (!$user->wasChanged('grade_id')) {
                 return;
             }
@@ -234,11 +233,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function getFullNameAttribute(): string
     {
-        if (empty($this->firstname) && empty($this->lastname)) {
+        if (!$this->firstname && !$this->lastname) {
             return $this->username;
         }
 
-        return trim("{$this->firstname} {$this->lastname}");
+        return "{$this->firstname} {$this->lastname}";
     }
 
     /**
