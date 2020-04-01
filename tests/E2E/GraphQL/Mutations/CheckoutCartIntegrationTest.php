@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace Tests\E2E\GraphQL\Mutations;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Railgun\Models\Pack;
 use Railgun\Models\Training;
 use Railgun\Models\User;
-use Stripe\Invoice;
-use Stripe\PaymentIntent;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function array_intersect;
 use function trans;
@@ -48,9 +45,9 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
     /**
      * Get the variables to build a valid cart.
      *
-     * @param string $paymentMethodId
+     * @param string $paymentMethodId The payment method id.
      *
-     * @return array
+     * @return mixed[]
      */
     private function getVariables(string $paymentMethodId): array
     {
@@ -61,11 +58,10 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
             ->firstOrFail();
         $packIds = [$pack->id];
 
-        /** @var Collection|Training[] $trainings */
         $trainingIds = Training::query()
             ->inRandomOrder()
             ->where('available', '=', true)
-            ->whereDoesntHave('packs', static function (Builder $builder) use ($pack) {
+            ->whereDoesntHave('packs', static function (Builder $builder) use ($pack): void {
                 $builder->where('packs.id', '=', $pack->id);
             })
             ->limit(2)
@@ -89,7 +85,12 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
      * @param int[] $trainingIds The training ids to check.
      * @param bool  $negate      Negate the assertion
      */
-    private function assertProductsDelivered(User $user, array $packIds, array $trainingIds, bool $negate = false): void
+    private function assertProductsDelivered(
+        User $user,
+        array $packIds,
+        array $trainingIds,
+        bool $negate = false
+    ): void
     {
         // Check packs ownership
         $expectedPackIds = $packIds;
@@ -103,7 +104,7 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
 
         // Check trainings ownership
         $expectedTrainingsIds = Training::query()
-            ->whereHas('packs', fn(Builder $builder) => $builder->whereIn('packs.id', $packIds))
+            ->whereHas('packs', static fn(Builder $builder) => $builder->whereIn('packs.id', $packIds))
             ->pluck('trainings.id')
             ->unique()
             ->toArray();
@@ -124,27 +125,31 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
      * @param int[] $packIds     The pack ids to check.
      * @param int[] $trainingIds The training ids to check.
      */
-    private function assertProductsNotDelivered(User $user, array $packIds, array $trainingIds): void
+    private function assertProductsNotDelivered(
+        User $user,
+        array $packIds,
+        array $trainingIds
+    ): void
     {
         $this->assertProductsDelivered($user, $packIds, $trainingIds, true);
     }
 
     /**
-     * @return array The dataset for the ::testCheckoutSuccess method.
+     * @return mixed[][] The dataset for the ::testCheckoutSuccess method.
      */
     public function createCheckoutSuccessDataset(): array
     {
         return [
             'pm_card_fr'                    => [
                 'pm_card_fr',
-                Invoice::STATUS_PAID,
-                PaymentIntent::STATUS_SUCCEEDED,
+                'STATUS_PAID',
+                'SUCCEEDED',
                 true,
             ],
             'pm_card_threeDSecure2Required' => [
                 'pm_card_threeDSecure2Required',
-                Invoice::STATUS_OPEN,
-                PaymentIntent::STATUS_REQUIRES_ACTION,
+                'STATUS_OPEN',
+                'REQUIRES_ACTION',
                 false,
             ],
         ];
@@ -154,17 +159,18 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
      * @dataProvider createCheckoutSuccessDataset
      * @testdox      creates invoice using the token $paymentMethodId.
      *
-     * @param string $paymentMethodId
-     * @param string $expectedInvoiceStatus
-     * @param string $expectedPaymentIntentStatus
-     * @param bool   $expectProductDelivered
+     * @param string $paymentMethodId             The payment method id to use.
+     * @param string $expectedInvoiceStatus       The expected {@see Invoice} status.
+     * @param string $expectedPaymentIntentStatus The expected {@see PaymentIntent} status.
+     * @param bool   $expectProductDelivered      If the products should be delivered.
      */
     public function testCheckoutSuccess(
         string $paymentMethodId,
         string $expectedInvoiceStatus,
         string $expectedPaymentIntentStatus,
         bool $expectProductDelivered
-    ): void {
+    ): void
+    {
         $user      = $this->actingAsNewUser();
         $variables = $this->getVariables($paymentMethodId);
 
@@ -188,7 +194,7 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @return array The dataset for the ::testCheckoutFails method.
+     * @return mixed[][] The dataset for the ::testCheckoutFails method.
      */
     public function createCheckoutFailsDataset(): array
     {
@@ -224,8 +230,8 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
      * @dataProvider createCheckoutFailsDataset
      * @testdox      fails to create in invoice using $paymentMethodId with error "$expectedError"
      *
-     * @param string $paymentMethodId
-     * @param string $expectedError
+     * @param string $paymentMethodId The payment method id to use.
+     * @param string $expectedError   The expected error message.
      */
     public function testCheckoutFails(string $paymentMethodId, string $expectedError): void
     {

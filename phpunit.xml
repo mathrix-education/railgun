@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-    bootstrap="bootstrap/app.php"
-    cacheResult="false"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+  bootstrap="bootstrap/app.php"
+  cacheResultFile="storage/framework/cache/phpunit.cache.php"
 >
-    <testsuites>
-        <testsuite name="Unit Test Suite">
-            <directory>./tests/Unit</directory>
-        </testsuite>
-        <testsuite name="Functional Test Suite">
-            <directory>./tests/Functional</directory>
-        </testsuite>
-        <testsuite name="E2E Test Suite">
-            <directory>./tests/E2E</directory>
-        </testsuite>
-    </testsuites>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./app</directory>
-            <exclude>
-                <directory>./app/MigrationV7</directory>
-            </exclude>
-        </whitelist>
-    </filter>
+  <testsuites>
+    <testsuite name="Unit Test Suite">
+      <directory>./tests/Unit</directory>
+    </testsuite>
+    <testsuite name="Functional Test Suite">
+      <directory>./tests/Functional</directory>
+    </testsuite>
+    <testsuite name="E2E Test Suite">
+      <directory>./tests/E2E</directory>
+    </testsuite>
+  </testsuites>
+  <filter>
+    <whitelist processUncoveredFilesFromWhitelist="true">
+      <directory suffix=".php">./app</directory>
+      <exclude>
+        <directory>./app/Buster</directory>
+      </exclude>
+    </whitelist>
+  </filter>
 </phpunit>

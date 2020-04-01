@@ -9,7 +9,7 @@ use Google_Client;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Mockery;
 use Mockery\MockInterface;
-use Railgun\Exceptions\InvalidAuthToken;
+use Railgun\Exceptions\InvalidAuthTokenException;
 use Railgun\GraphQL\Mutations\LoginWithGoogle;
 use Railgun\Models\User;
 use Tests\Unit\GraphQLUnitTestCase;
@@ -47,7 +47,7 @@ class LoginWithGoogleTest extends GraphQLUnitTestCase
      */
     private function mockPayloadResponseSuccess(): void
     {
-        $this->mock(Google_Client::class, function (MockInterface $googleClient) {
+        $this->mock(Google_Client::class, function (MockInterface $googleClient): void {
             $payload = [
                 'sub' => base64_encode(random_bytes(64)),
                 'email' => $this->faker->email,
@@ -118,9 +118,9 @@ class LoginWithGoogleTest extends GraphQLUnitTestCase
      */
     public function testInvalidToken(): void
     {
-        $this->expectException(InvalidAuthToken::class);
+        $this->expectException(InvalidAuthTokenException::class);
 
-        $this->mock(Google_Client::class, static function (MockInterface $googleClient) {
+        $this->mock(Google_Client::class, static function (MockInterface $googleClient): void {
             $googleClient->expects('verifyIdToken')
                 ->withAnyArgs()
                 ->andReturns(false);

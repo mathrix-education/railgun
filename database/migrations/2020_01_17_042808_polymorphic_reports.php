@@ -10,12 +10,10 @@ class PolymorphicReports extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
-        Schema::table('reports', static function (Blueprint $table) {
+        Schema::table('reports', static function (Blueprint $table): void {
             $table->unsignedBigInteger('reportable_id')->nullable()->after('module_id');
             $table->enum('reportable_type', ['course', 'exercise', 'flashcard', 'exam'])->after('module_id');
             $table->index(['reportable_type', 'reportable_id']);
@@ -24,12 +22,10 @@ class PolymorphicReports extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {
-        Schema::table('reports', static function (Blueprint $table) {
+        Schema::table('reports', static function (Blueprint $table): void {
             $table->dropIndex(['reportable_type', 'reportable_id']);
             $table->dropColumn(['reportable_type', 'reportable_id']);
         });

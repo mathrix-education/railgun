@@ -6,16 +6,21 @@ namespace Railgun\GraphQL\Queries;
 
 use Illuminate\Database\Eloquent\Builder;
 use Railgun\Models\Course;
-use function func_get_arg;
 
+/**
+ * Query searchCourses.
+ * Search courses using a query string.
+ */
 class SearchCourses
 {
     /**
-     * @return Builder The search builder.
+     * @param null    $rootValue The parent value, always null in this case.
+     * @param mixed[] $args      The query arguments (query).
+     *
+     * @return Builder<Course>
      */
-    public function __invoke(): Builder
+    public function __invoke($rootValue, array $args): Builder
     {
-        $args  = func_get_arg(1);
         $query = $args['query'];
         $like  = "%{$query}%";
 

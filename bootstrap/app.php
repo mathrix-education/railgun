@@ -11,12 +11,12 @@ use Illuminate\Redis\RedisServiceProvider;
 use Laravel\Lumen\Application;
 use Laravel\Lumen\Bootstrap\LoadEnvironmentVariables;
 use Laravel\Tinker\TinkerServiceProvider;
-use Mathrix\Lumen\JWT\JWTServiceProvider;
+use Mathrix\Lumen\JWT\Providers\JWTServiceProvider;
 use Mathrix\Mailjet\MailjetServiceProvider;
 use MLL\GraphQLPlayground\GraphQLPlaygroundServiceProvider;
 use Nuwave\Lighthouse\LighthouseServiceProvider;
 use Nuwave\Lighthouse\Tracing\TracingServiceProvider;
-use Railgun\MigrationV7\MigrationV7ServiceProvider;
+use Railgun\Buster\BusterServiceProvider;
 use Railgun\Providers\AppServiceProvider;
 use Railgun\Providers\BraintreeServiceProvider;
 use Railgun\Providers\CryptoServiceProvider;
@@ -87,7 +87,7 @@ if ($app->environment(['master', 'dev', 'v7']) && !$app->runningUnitTests()) {
 
 // Debug
 if ($app->runningInConsole()) {
-    $app->register(MigrationV7ServiceProvider::class);
+    $app->register(BusterServiceProvider::class);
 }
 if ($app->runningInConsole() && class_exists(TinkerServiceProvider::class)) {
     $app->register(TinkerServiceProvider::class);

@@ -11,6 +11,9 @@ use Laravel\Lumen\Console\Kernel as ConsoleKernel;
  */
 class Kernel extends ConsoleKernel
 {
-    /** @var string[] The Artisan commands. */
+    /**
+     * @var string[] The Artisan commands.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
     protected $commands = [SandboxCommand::class];
 }

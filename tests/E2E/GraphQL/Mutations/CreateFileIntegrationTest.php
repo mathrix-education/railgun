@@ -8,8 +8,8 @@ use Illuminate\Http\UploadedFile;
 use JsonException;
 use Railgun\Facades\Storage;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
-use const JSON_THROW_ON_ERROR;
 use function json_encode;
+use const JSON_THROW_ON_ERROR;
 
 /**
  * @testdox [E2E] Mutation createFile

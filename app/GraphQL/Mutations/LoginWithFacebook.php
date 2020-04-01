@@ -7,16 +7,14 @@ namespace Railgun\GraphQL\Mutations;
 use Facebook\Exceptions\FacebookAuthenticationException;
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
-use GraphQL\Type\Definition\ResolveInfo;
-use JsonException;
 use Mathrix\Lumen\JWT\Drivers\Driver;
-use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use Railgun\Exceptions\InvalidAuthToken;
+use Railgun\Exceptions\InvalidAuthTokenException;
 use Railgun\Models\User;
 use function array_merge_recursive;
 
 /**
- * Login with a Facebook access token
+ * Mutation loginWithFacebook.
+ * Allow users to login with their Facebook account.
  */
 class LoginWithFacebook
 {
@@ -32,25 +30,23 @@ class LoginWithFacebook
     }
 
     /**
-     * @param null           $rootValue
-     * @param mixed[]        $args
-     * @param GraphQLContext $context
-     * @param ResolveInfo    $resolveInfo
+     * @param null    $rootValue The parent value, always null in this case.
+     * @param mixed[] $args      The mutation arguments.
      *
-     * @return mixed
+     * @return mixed[] The signed, serialized JWT for the user.
      *
      * @throws FacebookSDKException
-     * @throws JsonException
+     *
+     * @noinspection PhpRedundantCatchClauseInspection
      */
-    public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo): array
+    public function __invoke($rootValue, array $args): array
     {
         $accessToken = $args['accessToken'];
 
         try {
             $response = $this->facebook->get(self::GET_ME_URL, $accessToken);
         } catch (FacebookAuthenticationException $authenticationException) {
-            // Handle invalid token with standard GraphQL UI-friendly error
-            throw new InvalidAuthToken('Facebook');
+            throw new InvalidAuthTokenException('Facebook');
         }
 
         $graphUser = $response->getGraphUser();

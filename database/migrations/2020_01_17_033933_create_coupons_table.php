@@ -10,12 +10,10 @@ class CreateCouponsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
-        Schema::create('coupons', static function (Blueprint $table) {
+        Schema::create('coupons', static function (Blueprint $table): void {
             $table->string('id')->primary();
             $table->enum('type', ['percentage', 'absolute']);
             $table->unsignedInteger('value');
@@ -27,8 +25,6 @@ class CreateCouponsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {

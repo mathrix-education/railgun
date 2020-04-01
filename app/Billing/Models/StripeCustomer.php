@@ -14,11 +14,9 @@ use function collect;
 trait StripeCustomer
 {
     /**
-     * Check if the user is a Stripe Customer.
+     * @param bool $strict If true against the Stripe API, only use the value in the database otherwise.
      *
-     * @param bool $strict Check against the Stripe API.
-     *
-     * @return bool
+     * @return bool if the user is a a Stripe customer.
      */
     public function isStripeCustomer(bool $strict = false): bool
     {
@@ -35,6 +33,9 @@ trait StripeCustomer
 
     /**
      * Get the user's associated Stripe customer.
+     *
+     * @return Customer|null if the user is a Stripe customer, its Stripe {@see Customer} representation, null
+     *         otherwise.
      */
     public function asStripeCustomer(): ?Customer
     {
@@ -55,9 +56,9 @@ trait StripeCustomer
     /**
      * Create a new Stripe Customer using the user's information.
      *
-     * @param string|null $paymentMethodId The default customer source.
+     * @param string|null $paymentMethodId The default customer payment id, fetched using Stripe.js.
      *
-     * @return Customer
+     * @return Customer The newly created Stripe {@see Customer}.
      *
      * @throws ApiErrorException
      */
@@ -93,7 +94,7 @@ trait StripeCustomer
      *
      * @throws ApiErrorException
      */
-    public function getStripeSubscriptions()
+    public function getStripeSubscriptions(): Collection
     {
         if (!$this->isStripeCustomer()) {
             return new Collection();
@@ -114,7 +115,7 @@ trait StripeCustomer
      *
      * @throws ApiErrorException
      */
-    public function getPaymentMethods()
+    public function getPaymentMethods(): Collection
     {
         return collect(PaymentMethod::all([
             'customer' => $this->stripe_id,
@@ -123,9 +124,11 @@ trait StripeCustomer
     }
 
     /**
-     * @param string $paymentMethodId
+     * Attach a payment method id to an existing Stripe {@see Customer}.
      *
-     * @return PaymentMethod
+     * @param string $paymentMethodId The payment id, fetched using Stripe.js.
+     *
+     * @return PaymentMethod The Stripe {@see PaymentMethod}.
      *
      * @throws ApiErrorException
      */
@@ -134,11 +137,10 @@ trait StripeCustomer
         $paymentMethod  = PaymentMethod::retrieve($paymentMethodId);
         $paymentMethods = $this->getPaymentMethods();
 
-        // Compare the embedded card fingerprints
-        /** @var PaymentMethod $existing */
+        // Compare the embedded card fingerprints to avoid attach the same card twice.
         $existing = $paymentMethods->first(static function (PaymentMethod $thePaymentMethod) use ($paymentMethod) {
             /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-            return !empty($thePaymentMethod->card)
+            return isset($thePaymentMethod->card->fingerprint)
                 && $paymentMethod->card->fingerprint === $thePaymentMethod->card->fingerprint;
         });
 

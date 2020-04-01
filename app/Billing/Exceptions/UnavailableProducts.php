@@ -18,11 +18,15 @@ class UnavailableProducts extends HttpException
     protected string $level    = LogLevel::NOTICE;
     protected string $category = 'cart';
 
-    public function __construct(array $ids, ?Throwable $previous = null)
+    /**
+     * @param string[]       $names    The unavailable product names.
+     * @param Throwable|null $previous The previous exception, if any.
+     */
+    public function __construct(array $names, ?Throwable $previous = null)
     {
         parent::__construct(
-            trans('cart.errors.unavailable', ['ids' => implode(', ', $ids)]),
-            $previous
+            trans('cart.errors.unavailable', ['ids' => implode(', ', $names)]),
+            $previous,
         );
     }
 }

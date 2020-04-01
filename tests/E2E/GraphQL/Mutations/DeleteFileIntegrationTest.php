@@ -33,7 +33,7 @@ class DeleteFileIntegrationTest extends GraphQLIntegrationTestCase
                 }
             }
             GRAPHQL,
-            ['path' => $this->getTestPath($path)]
+            ['path' => $this->getTestPath($path)],
         );
     }
 

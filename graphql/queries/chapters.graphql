@@ -19,7 +19,7 @@ extend type Query {
         chapterSlug: String!
         disciplineSlug: String!
         gradeSlug: String!
-    ): Chapter!
+    ): Chapter! @first
 
     "Search for chapters."
     searchChapters(query: String): [Chapter!]! @paginate(

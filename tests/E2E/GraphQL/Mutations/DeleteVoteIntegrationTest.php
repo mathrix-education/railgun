@@ -36,7 +36,7 @@ class DeleteVoteIntegrationTest extends GraphQLIntegrationTestCase
                 }
             }
             GRAPQL,
-            ['comment_id' => $vote->comment_id]
+            ['comment_id' => $vote->comment_id],
         );
 
         $this->assertResponseOk();

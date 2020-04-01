@@ -9,6 +9,10 @@ use Railgun\Crypto\PasswordResetCrypto;
 use Railgun\Models\User;
 use function config;
 
+/**
+ * Mutation resetPassword.
+ * Reset the user password using a email-provided token.
+ */
 class ResetPassword
 {
     private PasswordResetCrypto $crypto;
@@ -19,8 +23,8 @@ class ResetPassword
     }
 
     /**
-     * @param null    $rootValue
-     * @param mixed[] $args
+     * @param null    $rootValue The parent value, always null in this case.
+     * @param mixed[] $args      The mutation arguments.
      *
      * @return mixed
      *

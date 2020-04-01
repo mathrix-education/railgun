@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Railgun\Billing\Webhooks;
 
 use Illuminate\Routing\Controller;
-use Railgun\Exceptions\InvalidAuthToken;
+use Railgun\Exceptions\InvalidAuthTokenException;
 
 class StripeWebhooksController extends Controller
 {
-    public function handle()
+    public function handle(): void
     {
-        throw new InvalidAuthToken();
+        throw new InvalidAuthTokenException();
     }
 }

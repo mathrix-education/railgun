@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Railgun\GraphQL\Mutations;
 
-use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Support\Facades\Hash;
-use JsonException;
 use Mathrix\Lumen\JWT\Drivers\Driver;
-use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use Railgun\Exceptions\InvalidCredentials;
+use Railgun\Exceptions\InvalidCredentialsException;
 use Railgun\Models\User;
 
 /**
+ * Mutation loginBasic.
  * Login with email/password credentials.
  */
 class LoginBasic
@@ -25,16 +23,12 @@ class LoginBasic
     }
 
     /**
-     * @param null           $rootValue
-     * @param mixed[]        $args
-     * @param GraphQLContext $context
-     * @param ResolveInfo    $resolveInfo
+     * @param null    $rootValue The parent value, always null in this case.
+     * @param mixed[] $args      The mutation arguments.
      *
-     * @return mixed
-     *
-     * @throws JsonException
+     * @return string[] The signed, serialized JWT for the user.
      */
-    public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    public function __invoke($rootValue, array $args): array
     {
         $user = User::query()
             ->where('email', '=', $args['email'])
@@ -42,13 +36,13 @@ class LoginBasic
             ->first();
 
         if ($user === null) {
-            throw new InvalidCredentials();
+            throw new InvalidCredentialsException();
         }
 
         $logged = Hash::check($args['password'], $user->password);
 
         if (!$logged) {
-            throw new InvalidCredentials();
+            throw new InvalidCredentialsException();
         }
 
         // Sign the JWS

@@ -10,12 +10,10 @@ class CreateExamsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
-        Schema::create('exams', static function (Blueprint $table) {
+        Schema::create('exams', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('slug');
@@ -35,8 +33,6 @@ class CreateExamsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {

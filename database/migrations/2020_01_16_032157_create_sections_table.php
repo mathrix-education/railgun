@@ -10,12 +10,10 @@ class CreateSectionsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
-        Schema::create('sections', static function (Blueprint $table) {
+        Schema::create('sections', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('slug');
@@ -32,8 +30,6 @@ class CreateSectionsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {

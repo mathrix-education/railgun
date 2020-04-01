@@ -41,7 +41,7 @@ class DismissAllNotificationIntegrationTest extends GraphQLIntegrationTestCase
         // Setup the existing environment
         $user = $this->actingAsNewUser();
 
-        collect(range(1, $notificationCount))->each(static function () use ($user) {
+        collect(range(1, $notificationCount))->each(static function () use ($user): void {
             $user->notifyNow(new CommentReplyNotification(Comment::random(), Comment::random()));
         });
         $user->notifications()->limit($readNotificationsCount)->update(['read_at' => Carbon::now()]);

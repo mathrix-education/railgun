@@ -23,49 +23,47 @@ class DropMappingColumns extends Migration
 
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
-        collect(self::MAPPINGS_TABLE)->each(static function (string $table) {
-            Schema::table($table, static function (Blueprint $table) {
+        collect(self::MAPPINGS_TABLE)->each(static function (string $table): void {
+            Schema::table($table, static function (Blueprint $table): void {
                 $table->dropColumn('mapping');
             });
         });
 
-        Schema::table('users', static function (Blueprint $table) {
+        Schema::table('users', static function (Blueprint $table): void {
             $table->dropColumn(['points', 'daily', 'daily_achievements']);
         });
 
         (new CreateMarksTable())->down();
 
-        Schema::table('categories', static function (Blueprint $table) {
+        Schema::table('categories', static function (Blueprint $table): void {
             $table->dropColumn(['image']);
         });
 
-        Schema::table('chapters', static function (Blueprint $table) {
+        Schema::table('chapters', static function (Blueprint $table): void {
             $table->dropColumn(['notion_count', 'activity_count']);
         });
 
-        Schema::table('notions', static function (Blueprint $table) {
+        Schema::table('notions', static function (Blueprint $table): void {
             $table->dropColumn(['type']);
             $table->dropColumn(['activity_count']);
         });
 
-        Schema::table('comments', static function (Blueprint $table) {
+        Schema::table('comments', static function (Blueprint $table): void {
             $table->dropForeign(['module_id']);
             $table->dropColumn(['module_id', 'deleted_at']);
         });
 
-        Schema::table('posts', static function (Blueprint $table) {
+        Schema::table('posts', static function (Blueprint $table): void {
             $table->dropForeign(['user_id']);
             $table->dropColumn('user_id');
             $table->dropForeign(['module_id']);
             $table->dropColumn('module_id');
         });
 
-        Schema::table('reports', static function (Blueprint $table) {
+        Schema::table('reports', static function (Blueprint $table): void {
             $table->dropColumn('context');
             $table->dropForeign(['module_id']);
             $table->dropColumn('module_id');
@@ -89,8 +87,6 @@ class DropMappingColumns extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {

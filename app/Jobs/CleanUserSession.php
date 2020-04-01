@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Railgun\Models\Session;
 use Railgun\Models\User;
 
+/**
+ * Clean the user session by removing the {@see Session} which related chapter belongs to another grade.
+ */
 class CleanUserSession extends Job implements ShouldQueue
 {
     private User $user;
@@ -22,7 +25,7 @@ class CleanUserSession extends Job implements ShouldQueue
     {
         Session::query()
             ->where('user_id', '=', $this->user->id)
-            ->whereHas('chapter', function (Builder $builder) {
+            ->whereHas('chapter', function (Builder $builder): void {
                 $builder->where('grade_id', '!=', $this->user->grade_id);
             })
             ->delete();

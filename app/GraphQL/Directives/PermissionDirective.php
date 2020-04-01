@@ -13,23 +13,25 @@ use Nuwave\Lighthouse\Support\Contracts\ArgTransformerDirective;
 use Nuwave\Lighthouse\Support\Contracts\DefinedDirective;
 use Nuwave\Lighthouse\Support\Contracts\FieldMiddleware;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use Railgun\Exceptions\MissingScope;
+use Railgun\Exceptions\MissingScopeException;
 use Railgun\Models\User;
 use RuntimeException;
 use function array_intersect;
 use function count;
 use function in_array;
 
+/**
+ * Check that the user has the required scope.
+ * Applies to fields and arguments.
+ */
 class PermissionDirective extends BaseDirective implements ArgTransformerDirective, FieldMiddleware, DefinedDirective
 {
     /**
      * SDL definition of the directive.
-     *
-     * @return string
      */
     public static function definition(): string
     {
-        return /** @lang GraphQL */ <<<SDL
+        return /** @lang GraphQL */ <<<'SDL'
         """
         Check that the current user has the required scope.
         There are three strategies: scope, anyOf and allOf.
@@ -58,18 +60,12 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
         return 'permission';
     }
 
-    public function transform($argumentValue)
-    {
-        $this->checkScope();
-
-        return $argumentValue;
-    }
-
     /**
      * Check that the current user has the required scope.
+     * TODO: check allOf and anyOf
      *
      * @throws RuntimeException
-     * @throws MissingScope
+     * @throws MissingScopeException
      */
     private function checkScope(): void
     {
@@ -90,7 +86,7 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
         $user = Auth::user();
 
         if ($user === null) {
-            throw new MissingScope($scopes);
+            throw new MissingScopeException($scopes);
         }
 
         if (in_array('*', $user->scopes)) {
@@ -101,27 +97,42 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
         $result = array_intersect($user->scopes, $scopes);
 
         if (count($result) < $min) {
-            throw new MissingScope($scopes);
+            throw new MissingScopeException($scopes);
         }
     }
 
+    /**
+     * Handle scope check when the user provides an argument.
+     *
+     * @param mixed $argumentValue The provided argument value.
+     *
+     * @return mixed
+     */
+    public function transform($argumentValue)
+    {
+        $this->checkScope();
+
+        return $argumentValue;
+    }
+
+    /**
+     * Handle scope check during field resolution.
+     *
+     * @param FieldValue $fieldValue The current field value.
+     * @param Closure    $next       The next field middleware.
+     *
+     * @return mixed
+     */
     public function handleField(FieldValue $fieldValue, Closure $next)
     {
-        $previousResolver = $fieldValue->getResolver();
+        $previous = $fieldValue->getResolver();
 
-        return $next(
-            $fieldValue->setResolver(
-                function (
-                    $root,
-                    array $args,
-                    GraphQLContext $context,
-                    ResolveInfo $resolveInfo
-                ) use ($previousResolver) {
-                    $this->checkScope();
+        $resolver = function ($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo) use ($previous) {
+            $this->checkScope();
 
-                    return $previousResolver($root, $args, $context, $resolveInfo);
-                }
-            )
-        );
+            return $previous($root, $args, $context, $resolveInfo);
+        };
+
+        return $next($fieldValue->setResolver($resolver));
     }
 }

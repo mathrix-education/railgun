@@ -10,12 +10,10 @@ class ForeignKeysCascade extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('comments', static function (Blueprint $table) {
+        Schema::table('comments', static function (Blueprint $table): void {
             $table->dropForeign('comments_parent_id_foreign');
             $table->foreign('parent_id')
                 ->references('id')
@@ -29,7 +27,7 @@ class ForeignKeysCascade extends Migration
                 ->onDelete('cascade');
         });
 
-        Schema::table('votes', static function (Blueprint $table) {
+        Schema::table('votes', static function (Blueprint $table): void {
             $table->dropForeign('votes_comment_id_foreign');
             $table->foreign('comment_id')
                 ->references('id')
@@ -46,10 +44,9 @@ class ForeignKeysCascade extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
+        // It is not possible to revert this one
     }
 }

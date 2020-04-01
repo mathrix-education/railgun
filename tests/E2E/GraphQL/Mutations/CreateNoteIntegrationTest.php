@@ -42,7 +42,7 @@ class CreateNoteIntegrationTest extends GraphQLIntegrationTestCase
                 'content'      => Silicate::wall(),
                 'notable_type' => 'COURSE',
                 'notable_id'   => $course->id,
-            ]
+            ],
         );
 
         $this->assertResponseOk();

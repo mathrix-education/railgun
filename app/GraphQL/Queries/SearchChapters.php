@@ -6,16 +6,21 @@ namespace Railgun\GraphQL\Queries;
 
 use Illuminate\Database\Eloquent\Builder;
 use Railgun\Models\Chapter;
-use function func_get_arg;
 
+/**
+ * Query searchChapter.
+ * Search chapters using a query string.
+ */
 class SearchChapters
 {
     /**
-     * @return Builder The search builder.
+     * @param null    $rootValue The parent value, always null in this case.
+     * @param mixed[] $args      The query arguments (query).
+     *
+     * @return Builder<Chapter>
      */
-    public function __invoke(): Builder
+    public function __invoke($rootValue, array $args): Builder
     {
-        $args  = func_get_arg(1);
         $query = $args['query'];
         $like  = "%{$query}%";
 

@@ -47,7 +47,7 @@ class ValidateCartIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->graphQL(
             self::QUERY,
-            ['trainingIds' => [1, 2, 3]]
+            ['trainingIds' => [1, 2, 3]],
         );
 
         $this->assertResponseOk();

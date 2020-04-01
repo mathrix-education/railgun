@@ -12,22 +12,26 @@ use DateTime;
 use JsonException;
 use Railgun\Models\Subscription;
 use Stripe\Subscription as StripeSubscription;
-use const JSON_THROW_ON_ERROR;
 use function app;
 use function array_key_exists;
 use function file_exists;
 use function file_get_contents;
 use function json_decode;
 use function storage_path;
+use const JSON_THROW_ON_ERROR;
 
+/**
+ * Convert a {@see BraintreeSubscription} to an Eloquent {@see Subscription}.
+ */
 class BraintreeSubscriptionBridge
 {
+    /** @var string[] The existing mappings subscriptionId => customerId. */
     private static array $mappings = [];
 
     /**
-     * @param BraintreeSubscription $braintree The Braintree subscription
+     * @param BraintreeSubscription $braintree The Braintree subscription.
      *
-     * @return Subscription
+     * @return Subscription The converted Eloquent subscription.
      *
      * @throws BraintreeNotFound
      * @throws JsonException
@@ -43,22 +47,25 @@ class BraintreeSubscriptionBridge
         $subscription->customer_id = self::getCustomerId($braintree);
         $subscription->status      = self::convertStatus($braintree);
 
-        $subscription->payment_intent_secret = null;
-
         $subscription->current_period_start = self::toCarbon($braintree->billingPeriodStartDate);
         $subscription->current_period_end   = self::toCarbon($braintree->billingPeriodEndDate);
         $subscription->created_at           = self::toCarbon($braintree->createdAt);
         $subscription->updated_at           = self::toCarbon($braintree->updatedAt);
 
         if ($subscription->status === StripeSubscription::STATUS_CANCELED) {
-            $subscription->cancelled_at = self::toCarbon($braintree->updatedAt);
+            $subscription->canceled_at = self::toCarbon($braintree->updatedAt);
         } else {
-            $subscription->cancelled_at = null;
+            $subscription->canceled_at = null;
         }
 
         return $subscription;
     }
 
+    /**
+     * Build subscriptionId => clientId mappings from a static file.
+     *
+     * @throws JsonException
+     */
     private static function buildMappings(): void
     {
         if (self::$mappings) {
@@ -75,9 +82,9 @@ class BraintreeSubscriptionBridge
     }
 
     /**
-     * @param BraintreeSubscription $braintree
+     * @param BraintreeSubscription $braintree The Braintree subscription.
      *
-     * @return string
+     * @return string The subscription customer id.
      *
      * @throws BraintreeNotFound
      */
@@ -98,6 +105,13 @@ class BraintreeSubscriptionBridge
             ->customerId;
     }
 
+    /**
+     * Convert the status of a {@see BraintreeSubscription} to a {@see StripeSubscription}.
+     *
+     * @param BraintreeSubscription $braintree The Braintree subscription.
+     *
+     * @return string The new status from {@see StripeSubscription}.
+     */
     private static function convertStatus(BraintreeSubscription $braintree): string
     {
         switch ($braintree->status) {

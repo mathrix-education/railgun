@@ -10,12 +10,10 @@ class CreateFlashcardsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
-        Schema::create('flashcards', static function (Blueprint $table) {
+        Schema::create('flashcards', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->json('fronts');
             $table->json('backs');
@@ -33,8 +31,6 @@ class CreateFlashcardsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {

@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Mutations;
 
-use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Crypto\PasswordResetCrypto;
-use Railgun\Exceptions\InvalidAuthToken;
+use Railgun\Exceptions\InvalidAuthTokenException;
 use Railgun\Models\User;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
+use Throwable;
 use function factory;
 
 /**
@@ -28,6 +29,8 @@ class ResetPasswordIntegrationTest extends GraphQLIntegrationTestCase
 
     /**
      * @testdox resets password using a valid token
+     *
+     * @throws BindingResolutionException
      */
     public function testValidToken(): void
     {
@@ -60,10 +63,10 @@ class ResetPasswordIntegrationTest extends GraphQLIntegrationTestCase
 
         try {
             $crypto->check($token);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $exception = $e;
         }
 
-        $this->assertInstanceOf(InvalidAuthToken::class, $exception);
+        $this->assertInstanceOf(InvalidAuthTokenException::class, $exception);
     }
 }

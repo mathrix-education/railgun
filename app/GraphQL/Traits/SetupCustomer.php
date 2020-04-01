@@ -7,16 +7,19 @@ namespace Railgun\GraphQL\Traits;
 use Railgun\Models\User;
 use Stripe\Exception\ApiErrorException;
 
+/**
+ * Allow queries to setup a Stripe customer based on the current logged user.
+ */
 trait SetupCustomer
 {
     /**
      * Setup the customer (create the Stripe customer if it does not exists), and attach the $paymentMethodId if
      * necessary.
      *
-     * @param User   $user            The user.
+     * @param User   $user            The current user.
      * @param string $paymentMethodId The payment method ID, retrieve through Stripe.js.
      *
-     * @return User
+     * @return User The current user, as a Stripe customer.
      *
      * @throws ApiErrorException
      */

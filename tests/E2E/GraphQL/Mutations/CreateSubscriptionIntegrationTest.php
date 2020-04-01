@@ -7,13 +7,9 @@ namespace Tests\E2E\GraphQL\Mutations;
 use Carbon\Carbon;
 use Exception;
 use Laravel\Lumen\Testing\DatabaseTransactions;
-use Railgun\Billing\Models\Plan;
 use Railgun\Models\Subscription;
-use Railgun\Models\User;
 use stdClass;
-use Stripe\Subscription as StripeSubscription;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
-use function factory;
 use function in_array;
 use function trans;
 
@@ -24,37 +20,41 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
 {
     use DatabaseTransactions;
 
-    private const QUERY = <<<'GRAPHQL'
-    mutation ($planId: String!, $paymentMethodId: String!) {
-        createSubscription(planId: $planId, paymentMethodId: $paymentMethodId) {
-            id
-            status
-            payment_intent_secret
-            current_period_end
-        }
-    }
-    GRAPHQL;
-
-    public function setUp(): void
+    private function executeCreateSubscription(string $planId, string $paymentMethodId): void
     {
-        parent::setUp();
-
-        /** @var User $user */
-        $user = factory(User::class)->create();
-        $this->actingAs($user);
+        $this->graphQL(
+            <<<'GRAPHQL'
+            mutation ($planId: PlanID!, $paymentMethodId: String!) {
+                createSubscription(planId: $planId, paymentMethodId: $paymentMethodId) {
+                    id
+                    status
+                    latest_invoice {
+                        payment_intent {
+                            client_secret
+                        }
+                    }
+                    current_period_end
+                }
+            }
+            GRAPHQL,
+            [
+                'planId'          => $planId,
+                'paymentMethodId' => $paymentMethodId,
+            ],
+        );
     }
 
     /**
-     * @return array The dataset for the ::testCreateSuccess method.
+     * @return mixed[][] The dataset for the ::testCreateSuccess method.
      */
     public function createSuccessDataset(): array
     {
         $paymentMethods = [
-            'pm_card_fr'                    => StripeSubscription::STATUS_ACTIVE,
-            'pm_card_threeDSecure2Required' => StripeSubscription::STATUS_INCOMPLETE,
+            'pm_card_fr'                    => 'ACTIVE',
+            'pm_card_threeDSecure2Required' => 'INCOMPLETE',
         ];
 
-        $plans = Plan::PLANS;
+        $plans = ['MONTHLY', 'ANNUALLY', 'BIANNUALLY'];
 
         $dataset = [];
 
@@ -76,31 +76,28 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
      * @dataProvider createSuccessDataset
      * @testdox      creates a subscription using plan $planId and token $paymentMethodId.
      *
-     * @param string $planId
-     * @param string $paymentMethodId
-     * @param string $expectedStatus
+     * @param string $planId          The plan id to use ({@see Plan}).
+     * @param string $paymentMethodId The payment method.
+     * @param string $expectedStatus  The expected subscription status.
      *
      * @throws Exception
      */
-    public function testCreateSubscriptionSuccess(string $planId, string $paymentMethodId, string $expectedStatus): void
+    public function testCreateSubscriptionSuccess(
+        string $planId,
+        string $paymentMethodId,
+        string $expectedStatus
+    ): void
     {
-        $this->graphQL(self::QUERY, [
-            'planId'          => $planId,
-            'paymentMethodId' => $paymentMethodId,
-        ]);
+        $this->actingAsNewUser();
+        $this->executeCreateSubscription($planId, $paymentMethodId);
 
         /** @var stdClass|Subscription $subscription The response data has the Subscription type */
         $subscription = $this->getData('createSubscription');
 
         // Check that the status
         $this->assertEquals($expectedStatus, $subscription->status);
-        if ($expectedStatus !== StripeSubscription::STATUS_INCOMPLETE) {
-            $this->assertNull($subscription->payment_intent_secret);
-        } else {
-            $this->assertNotNull($subscription->payment_intent_secret);
-        }
 
-        if (in_array($planId, [Plan::ANNUALLY_PLAN, Plan::BIANNUALLY_PLAN], true)) {
+        if (in_array($planId, ['ANNUALLY', 'BIANNUALLY'], true)) {
             // For annually and biannually plans, check that the anchor is set to the 31st July
             $currentPeriodEnd = new Carbon($subscription->current_period_end);
             $this->assertTrue($currentPeriodEnd->isFuture());
@@ -110,14 +107,13 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
 
         // Check that the subscription has been saved to the database
         $this->seeInDatabase('subscriptions', [
-            'id'                    => $subscription->id,
-            'status'                => $expectedStatus,
-            'payment_intent_secret' => $subscription->payment_intent_secret,
+            'id'     => $subscription->id,
+            'status' => $expectedStatus,
         ]);
     }
 
     /**
-     * @return array The dataset for the ::testCreateSubscriptionError method.
+     * @return mixed[][] The dataset for the ::testCreateSubscriptionError method.
      */
     public function createSubscriptionFailsDataset(): array
     {
@@ -149,19 +145,15 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
      * @param string $paymentMethodId The payment method.
      * @param string $expectedMessage The expected error message.
      */
-    public function testCreateSubscriptionFails(string $paymentMethodId, string $expectedMessage): void
+    public function testCreateSubscriptionFails(
+        string $paymentMethodId,
+        string $expectedMessage
+    ): void
     {
-        /** @var User $user */
-        $user = factory(User::class)->create();
-        $this->actingAs($user);
-        $subscriptionCount = Subscription::query()->count();
-
-        $this->graphQL(self::QUERY, [
-            'planId'          => Plan::MONTHLY_PLAN,
-            'paymentMethodId' => $paymentMethodId,
-        ]);
+        $user = $this->actingAsNewUser();
+        $this->executeCreateSubscription('MONTHLY', $paymentMethodId);
 
         $this->assertEquals($expectedMessage, $this->getContent('errors.0.message'));
-        $this->assertEquals($subscriptionCount, Subscription::query()->count()); // No new subscription
+        $this->assertEquals(0, $user->subscriptions->count()); // No new subscription
     }
 }

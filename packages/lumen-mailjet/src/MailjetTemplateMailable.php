@@ -6,23 +6,23 @@ namespace Mathrix\Mailjet;
 
 use Illuminate\Mail\Mailable;
 use Swift_Message;
-use const JSON_THROW_ON_ERROR;
 use function json_encode;
+use const JSON_THROW_ON_ERROR;
 
 /**
  * Base mailable for Mailjet template-based emails.
  */
 class MailjetTemplateMailable extends Mailable
 {
-    /**
-     * @var int The Mailjet template id.
-     */
+    /** @var int The Mailjet template id. */
     protected int $templateId;
 
     /**
      * Hijack the Laravel renderer since we do not need to render anything (that is Mailjet's job).
      *
-     * @return array
+     * @see Mailable::buildView()
+     *
+     * @return mixed[]
      */
     protected function buildView(): array
     {
@@ -34,7 +34,7 @@ class MailjetTemplateMailable extends Mailable
      */
     public function build(): void
     {
-        $this->withSwiftMessage(function (Swift_Message $message) {
+        $this->withSwiftMessage(function (Swift_Message $message): void {
             // Enable template language
             $message->getHeaders()->addTextHeader('X-MJ-TemplateID', $this->templateId);
             $message->getHeaders()->addTextHeader('X-MJ-TemplateLanguage', true);

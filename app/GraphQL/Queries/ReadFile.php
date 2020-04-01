@@ -4,29 +4,33 @@ declare(strict_types=1);
 
 namespace Railgun\GraphQL\Queries;
 
-use League\Flysystem\FileNotFoundException;
+use League\Flysystem\FileNotFoundException as LeagueFileNotFoundException;
 use League\Flysystem\Util;
-use Railgun\Exceptions\FileNotFound;
+use Railgun\Exceptions\FileNotFoundException;
 use Railgun\Facades\Storage;
 
+/**
+ * Query readFile.
+ * Read a file metadata at a specified path.
+ */
 class ReadFile
 {
     /**
-     * @param null    $rootValue
-     * @param mixed[] $args
+     * @param null    $rootValue The parent value, always null in this case.
+     * @param mixed[] $args      The query arguments (path).
      *
-     * @return mixed
+     * @return mixed[] The file metadata.
      *
-     * @throws FileNotFoundException
+     * @throws LeagueFileNotFoundException
      */
-    public function __invoke($rootValue, array $args)
+    public function __invoke($rootValue, array $args): array
     {
         $path = '/' . Util::normalizePath($args['path']);
         $disk = Storage::disk();
         $file = Storage::normalize($disk->getMetadata($path));
 
         if ($file['type'] !== 'file') {
-            throw new FileNotFound($path);
+            throw new FileNotFoundException($path);
         }
 
         return $file;

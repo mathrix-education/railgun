@@ -25,7 +25,7 @@ $factory->define(User::class, static function (Faker $faker) {
         'email'      => $faker->email,
         'firstname'  => $names ? $faker->firstName : null,
         'lastname'   => $names ? $faker->lastName : null,
-        'password'   => Cache::remember('DB_PASSWORD.hash', 30, fn() => Hash::make(env('DB_PASSWORD'))),
+        'password'   => Cache::remember('DB_PASSWORD.hash', 30, static fn() => Hash::make(env('DB_PASSWORD'))),
         'scopes'     => [],
         'settings'   => [
             'sound' => $faker->boolean(70),

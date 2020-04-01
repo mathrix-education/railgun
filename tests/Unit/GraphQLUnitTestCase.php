@@ -14,10 +14,10 @@ class GraphQLUnitTestCase extends BaseTestCase
     /**
      * Execute a GraphQL Query or Mutation
      *
-     * @param string              $class
-     * @param array               $args
-     * @param GraphQLContext|null $context
-     * @param ResolveInfo|null    $resolveInfo
+     * @param string              $class       The operation class.
+     * @param mixed[]             $args        The operation arguments.
+     * @param GraphQLContext|null $context     The operation context.
+     * @param ResolveInfo|null    $resolveInfo The operation resolver information.
      *
      * @return mixed
      */
@@ -26,7 +26,8 @@ class GraphQLUnitTestCase extends BaseTestCase
         array $args = [],
         ?GraphQLContext $context = null,
         ?ResolveInfo $resolveInfo = null
-    ) {
+    )
+    {
         $context     ??= Mockery::mock(GraphQLContext::class);
         $resolveInfo ??= Mockery::mock(ResolveInfo::class);
 

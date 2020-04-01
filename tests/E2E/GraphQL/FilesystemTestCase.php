@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL;
 
-use Exception;
 use Illuminate\Support\Str;
 use Railgun\Facades\Storage;
+use Throwable;
 use function class_basename;
 use function collect;
 use function is_string;
@@ -32,7 +32,7 @@ trait FilesystemTestCase
      *
      * @param string $relative The relative path.
      *
-     * @return string
+     * @return string The current test root directory.
      */
     protected function getTestPath(string $relative): string
     {
@@ -54,10 +54,10 @@ trait FilesystemTestCase
             $this->refreshApplication();
         }
 
-        $delete = function () {
+        $delete = function (): void {
             try {
                 Storage::deleteDirectory($this->getTestDirectory());
-            } catch (Exception $e) {
+            } catch (Throwable $e) {
             }
         };
 
@@ -66,7 +66,7 @@ trait FilesystemTestCase
     }
 
     /**
-     * @param array $files The files to upload.
+     * @param string|string[] $files The files to upload.
      */
     public function seedTestDirectory($files = []): void
     {

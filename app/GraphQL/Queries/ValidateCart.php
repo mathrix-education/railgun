@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace Railgun\GraphQL\Queries;
 
-use GraphQL\Type\Definition\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Railgun\Billing\Cart\Cart;
 use Railgun\Models\User;
 
+/**
+ * Query validateCart.
+ * Validate a cart content.
+ */
 class ValidateCart
 {
     /**
-     * Return a value for the field.
+     * @param null           $rootValue The parent value, always null in this case.
+     * @param mixed[]        $args      The query arguments (cart).
+     * @param GraphQLContext $context   The GraphQL context which holds the user.
      *
-     * @param null           $rootValue
-     * @param mixed[]        $args
-     * @param GraphQLContext $context
-     * @param ResolveInfo    $resolveInfo
-     *
-     * @return mixed
+     * @return mixed[]
      */
-    public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo): array
+    public function __invoke($rootValue, array $args, GraphQLContext $context): array
     {
         /** @var User $user */
         $user = $context->user();

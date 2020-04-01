@@ -7,11 +7,15 @@ namespace Railgun\GraphQL\Mutations;
 use Illuminate\Support\Arr;
 use Railgun\Models\Interaction;
 
+/**
+ * Mutation interact.
+ * Create new interaction with the provided model (interactable_type, interactable_id) for the current user.
+ */
 class Interact
 {
     /**
-     * @param null    $rootValue
-     * @param mixed[] $args
+     * @param null           $rootValue The parent value, always null in this case.
+     * @param mixed[]        $args      The mutation arguments.
      *
      * @return mixed
      */

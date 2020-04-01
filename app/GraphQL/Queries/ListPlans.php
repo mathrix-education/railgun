@@ -4,22 +4,19 @@ declare(strict_types=1);
 
 namespace Railgun\GraphQL\Queries;
 
-use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Support\Collection;
-use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Railgun\Billing\Models\Plan;
 
+/**
+ * Query listPlans.
+ * List the available subscription plans.
+ */
 class ListPlans
 {
     /**
-     * @param null           $rootValue
-     * @param mixed[]        $args
-     * @param GraphQLContext $context
-     * @param ResolveInfo    $resolveInfo
-     *
-     * @return Collection|Plan[]
+     * @return Collection|Plan[] The available subscription plans.
      */
-    public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    public function __invoke(): Collection
     {
         return Plan::all();
     }

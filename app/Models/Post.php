@@ -11,24 +11,25 @@ use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
 
 /**
- * @property-read int      $id
- * @property      string   $title
- * @property      string   $slug
- * @property      array    $content
- * @property      int      $order
- * @property      bool     $visible
- * @property      int      $category_id
- * @property-read Carbon   $created_at
- * @property-read Carbon   $updated_at
+ * @property-read int         $id
+ * @property      string      $title
+ * @property      string      $slug
+ * @property      string|null $video_id
+ * @property      array       $content
+ * @property      int         $order
+ * @property      bool        $visible
+ * @property      int         $category_id
+ * @property-read Carbon      $created_at
+ * @property-read Carbon      $updated_at
  * ---
- * @property-read Category $category
+ * @property-read Category    $category
  */
 class Post extends Model
 {
     use Randomizable;
     use Reorderable;
 
-    protected $fillable          = [
+    protected       $fillable    = [
         'title',
         'slug',
         'content',
@@ -36,7 +37,7 @@ class Post extends Model
         'visible',
         'category_id',
     ];
-    protected $casts             = ['content' => 'array'];
+    protected       $casts       = ['content' => 'array'];
     protected array $orderGroups = ['category_id'];
 
     /*

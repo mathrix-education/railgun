@@ -13,12 +13,12 @@ use Mathrix\Lumen\JWT\Utils\JWTConfig;
 use Railgun\Mails\PasswordForgottenMail;
 use Railgun\Models\User;
 use Tests\BaseTestCase;
-use const JSON_THROW_ON_ERROR;
 use function explode;
 use function factory;
 use function hash;
 use function json_decode;
 use function strlen;
+use const JSON_THROW_ON_ERROR;
 
 /**
  * @coversDefaultClass \Railgun\Mails\PasswordForgottenMail

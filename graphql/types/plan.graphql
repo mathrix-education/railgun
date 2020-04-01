@@ -1,12 +1,12 @@
 enum PlanID {
-    v5_monthly @enum(value: "v5_monthly")
-    v5_annually @enum(value: "v5_annually")
-    v5_biannually @enum(value: "v5_biannually")
+    MONTHLY @enum(value: "v5_monthly")
+    ANNUALLY @enum(value: "v5_annually")
+    BIANNUALLY @enum(value: "v5_biannually")
 }
 
 enum PlanPeriod {
-    month @enum(value: "month")
-    year @enum(value: "year")
+    MONTH @enum(value: "month")
+    YEAR @enum(value: "year")
 }
 
 type Plan {

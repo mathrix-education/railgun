@@ -45,7 +45,7 @@ class ListFilesIntegrationTest extends GraphQLIntegrationTestCase
                 }
             }
             GRAPHQL,
-            ['path' => $path]
+            ['path' => $path],
         );
     }
 
@@ -54,7 +54,7 @@ class ListFilesIntegrationTest extends GraphQLIntegrationTestCase
      *           [""]
      * @testdox returns the content of the root directory.
      *
-     * @param string $path
+     * @param string $path,
      */
     public function testReadRootDirectory(string $path): void
     {
@@ -72,7 +72,7 @@ class ListFilesIntegrationTest extends GraphQLIntegrationTestCase
     {
         $files = ['foo.txt', 'bar.txt', 'baz/foo.txt'];
 
-        collect($files)->each(function (string $file) {
+        collect($files)->each(function (string $file): void {
             Storage::put($this->getTestDirectory() . '/' . $file, 'hello');
         });
 
@@ -95,7 +95,7 @@ class ListFilesIntegrationTest extends GraphQLIntegrationTestCase
         $this->assertResponseOk();
         $this->assertError(
             trans('storage.errors.directory_not_found', ['directory' => $directory]),
-            'storage'
+            'storage',
         );
     }
 }

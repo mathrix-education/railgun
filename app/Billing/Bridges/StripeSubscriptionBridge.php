@@ -19,7 +19,7 @@ class StripeSubscriptionBridge
      *
      * @param StripeSubscription $stripe The Stripe subscription.
      *
-     * @return Subscription
+     * @return Subscription The converted Eloquent subscription.
      *
      * @throws ApiErrorException
      */
@@ -46,7 +46,7 @@ class StripeSubscriptionBridge
                 ]);
             }
 
-            $subscription->payment_intent_secret = $stripe->latest_invoice->payment_intent->client_secret;
+            $subscription->latest_invoice = $stripe->latest_invoice;
         }
 
         $subscription->current_period_start = Carbon::createFromTimestamp($stripe->current_period_start);
@@ -56,7 +56,7 @@ class StripeSubscriptionBridge
 
         $cancelledAt = $stripe->canceled_at ?? $stripe->cancel_at;
         if ($cancelledAt !== null) {
-            $subscription->cancelled_at = Carbon::createFromTimestamp($cancelledAt);
+            $subscription->canceled_at = Carbon::createFromTimestamp($cancelledAt);
         }
 
         return $subscription;

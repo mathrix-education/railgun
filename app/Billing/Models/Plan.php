@@ -16,10 +16,8 @@ class Plan
     public const MONTHLY_PLAN    = 'v5_monthly';
     public const ANNUALLY_PLAN   = 'v5_annually';
     public const BIANNUALLY_PLAN = 'v5_biannually';
-
-    public const PLANS = [self::MONTHLY_PLAN, self::ANNUALLY_PLAN, self::BIANNUALLY_PLAN];
-
-    public const PLANS_DETAILS = [
+    public const PLANS           = [self::MONTHLY_PLAN, self::ANNUALLY_PLAN, self::BIANNUALLY_PLAN];
+    public const PLANS_DETAILS   = [
         self::MONTHLY_PLAN    => [
             'id'               => self::MONTHLY_PLAN,
             'period'           => 'month',
@@ -42,7 +40,6 @@ class Plan
             'prorated'         => true,
         ],
     ];
-
     public string  $id;
     public string  $period;
     public int     $price_per_period;
@@ -75,9 +72,9 @@ class Plan
     /**
      * @return Collection|Plan[]
      */
-    public static function all()
+    public static function all(): Collection
     {
-        return collect(self::PLANS)->map(fn(string $planId) => new self($planId));
+        return collect(self::PLANS)->map(static fn(string $planId) => new self($planId));
     }
 
     /**
@@ -106,7 +103,7 @@ class Plan
 
         $periodPrice = self::PLANS_DETAILS[$planId]['price_per_period'];
 
-        return (int)round($periodPrice * ($secondsUntilAnchor / $periodLengthInSeconds));
+        return (int)round($periodPrice * $secondsUntilAnchor / $periodLengthInSeconds);
     }
 
     /**

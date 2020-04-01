@@ -4,22 +4,24 @@ declare(strict_types=1);
 
 namespace Railgun\GraphQL\Mutations;
 
-use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Notifications\DatabaseNotification as Notification;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Railgun\Models\User;
 
+/**
+ * Mutation dismissNotification.
+ * Dismiss a single notification.
+ */
 class DismissNotification
 {
     /**
-     * @param null           $rootValue
-     * @param mixed[]        $args
-     * @param GraphQLContext $context
-     * @param ResolveInfo    $resolveInfo
+     * @param null           $rootValue The parent value, always null in this case.
+     * @param mixed[]        $args      The mutation arguments.
+     * @param GraphQLContext $context   The GraphQL context which holds the user.
      *
-     * @return mixed
+     * @return Notification|null The dismissed notification.
      */
-    public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
+    public function __invoke($rootValue, array $args, GraphQLContext $context): ?Notification
     {
         /** @var User $user */
         $user = $context->user();

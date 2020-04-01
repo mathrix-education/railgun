@@ -188,12 +188,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             ->as(Acquisition::class);
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Attributes
-    |--------------------------------------------------------------------------
-    */
-
     /**
      * @return bool If the user is premium.
      */

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Railgun\Jobs;
 
-use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Queue\InteractsWithQueue;
@@ -12,6 +11,9 @@ use Illuminate\Queue\SerializesModels;
 use Throwable;
 use function app;
 
+/**
+ * Base class for jobs.
+ */
 abstract class Job
 {
     use InteractsWithQueue;
@@ -19,16 +21,16 @@ abstract class Job
     use SerializesModels;
 
     /**
-     * @param Throwable|null $exception The exception thrown during the job execution.
+     * Handle job failure.
      *
-     * @throws Exception
+     * @link https://laravel.com/docs/7.x/queues#dealing-with-failed-jobs
+     *
+     * @param Throwable $exception The exception thrown during the job execution.
+     *
+     * @throws Throwable
      */
-    public function fail($exception = null): void
+    public function failed(Throwable $exception): void
     {
-        if (!($exception instanceof Throwable)) {
-            return;
-        }
-
         /** @var ExceptionHandler $handler */
         $handler = app()->make(ExceptionHandler::class);
         $handler->report($exception);

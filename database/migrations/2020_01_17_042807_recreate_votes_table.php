@@ -10,12 +10,10 @@ class RecreateVotesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
-        Schema::create('votes', static function (Blueprint $table) {
+        Schema::create('votes', static function (Blueprint $table): void {
             $table->uuid('id')->primary();
             $table->unsignedBigInteger('comment_id');
             $table->unsignedBigInteger('user_id');
@@ -31,8 +29,6 @@ class RecreateVotesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {
