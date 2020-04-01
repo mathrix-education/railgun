@@ -9,6 +9,6 @@ enum PaymentIntentStatus {
 }
 
 type PaymentIntent {
-    status: String!
-    client_secret: PaymentIntentStatus!
+    status: PaymentIntentStatus!
+    client_secret: String!
 }
