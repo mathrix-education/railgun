@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Railgun\Models\Pack;
 use Railgun\Models\Training;
 use Railgun\Models\User;
-use Stripe\PaymentIntent;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function array_intersect;
 use function trans;
@@ -144,13 +143,13 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
             'pm_card_fr'                    => [
                 'pm_card_fr',
                 'STATUS_PAID',
-                PaymentIntent::STATUS_SUCCEEDED,
+                'SUCCEEDED',
                 true,
             ],
             'pm_card_threeDSecure2Required' => [
                 'pm_card_threeDSecure2Required',
                 'STATUS_OPEN',
-                PaymentIntent::STATUS_REQUIRES_ACTION,
+                'REQUIRES_ACTION',
                 false,
             ],
         ];
