@@ -1,52 +1,52 @@
 <?xml version="1.0"?>
 <!-- PHP_CodeSniffer global configuration file -->
 <ruleset
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    name="Mathrix Eucation API"
-    xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  name="Mathrix Eucation API"
+  xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd"
 >
-    <description>The coding standard of Mathrix Education API.</description>
+  <description>The coding standard of Railgun.</description>
 
-    <!-- Arguments -->
-    <arg value="p"/>
-    <arg name="basepath" value="."/>
-    <arg name="cache" value="storage/framework/cache/data/phpcs.json"/>
-    <arg name="colors"/>
-    <arg name="parallel" value="75"/>
-    <arg name="severity" value="1"/>
-    <arg name="error-severity" value="1"/>
-    <arg name="warning-severity" value="1"/>
+  <!-- Arguments -->
+  <arg value="p"/>
+  <arg name="basepath" value="."/>
+  <arg name="cache" value="storage/framework/cache/data/phpcs.json"/>
+  <arg name="colors"/>
+  <arg name="parallel" value="75"/>
+  <arg name="severity" value="1"/>
+  <arg name="error-severity" value="1"/>
+  <arg name="warning-severity" value="1"/>
 
-    <!-- Inclusions -->
-    <file>app</file>
-    <file>bootstrap/app.php</file>
-    <file>config</file>
-    <file>database</file>
-    <file>packages/lumen-mailjet</file>
-    <file>packages/silicate</file>
-    <file>tests</file>
+  <!-- Inclusions -->
+  <file>app</file>
+  <file>bootstrap/app.php</file>
+  <file>config</file>
+  <file>database</file>
+  <file>packages/lumen-mailjet</file>
+  <file>packages/silicate</file>
+  <file>tests</file>
 
-    <!-- Rules inherited from Doctrine -->
-    <rule ref="Mathrix"/>
+  <!-- Rules inherited from Doctrine -->
+  <rule ref="Mathrix"/>
 
-    <!-- Do not require a class to match filename for migrations -->
-    <rule ref="Squiz.Classes.ClassFileName.NoMatch">
-        <exclude-pattern>database/migrations</exclude-pattern>
-    </rule>
+  <!-- Do not require a class to match filename for migrations -->
+  <rule ref="Squiz.Classes.ClassFileName.NoMatch">
+    <exclude-pattern>database/migrations</exclude-pattern>
+  </rule>
 
-    <!-- Do not require a vendor namespace for migrations and DatabaseSeeder -->
-    <rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
-        <exclude-pattern>database/migrations</exclude-pattern>
-        <exclude-pattern>database/seeds</exclude-pattern>
-    </rule>
+  <!-- Do not require a vendor namespace for migrations and DatabaseSeeder -->
+  <rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
+    <exclude-pattern>database/migrations</exclude-pattern>
+    <exclude-pattern>database/seeds</exclude-pattern>
+  </rule>
 
-    <!-- Factories can use the @var Factory $factory -->
-    <rule ref="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration">
-        <exclude-pattern>database/factories</exclude-pattern>
-    </rule>
+  <!-- Factories can use the @var Factory $factory -->
+  <rule ref="SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration">
+    <exclude-pattern>database/factories</exclude-pattern>
+  </rule>
 
-    <!-- Do not check typehints in models, other wise we would have to suppress them -->
-    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
-        <exclude-pattern>app/Models</exclude-pattern>
-    </rule>
+  <!-- Do not check typehints in models, other wise we would have to suppress them -->
+  <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
+    <exclude-pattern>app/Models</exclude-pattern>
+  </rule>
 </ruleset>
