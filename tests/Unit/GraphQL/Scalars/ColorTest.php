@@ -36,7 +36,7 @@ class ColorTest extends BaseTestCase
 
     /**
      * @dataProvider createIsValidDataset
-     * @covers ::isValid
+     * @covers ::regex
      *
      * @param string $color        The color to validate.
      * @param bool   $expectsValid If color is expected to be valid.
