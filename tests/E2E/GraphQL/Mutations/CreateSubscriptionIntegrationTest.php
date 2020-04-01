@@ -82,7 +82,11 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
      *
      * @throws Exception
      */
-    public function testCreateSubscriptionSuccess(string $planId, string $paymentMethodId, string $expectedStatus): void
+    public function testCreateSubscriptionSuccess(
+        string $planId,
+        string $paymentMethodId,
+        string $expectedStatus
+    ): void
     {
         $this->actingAsNewUser();
         $this->executeCreateSubscription($planId, $paymentMethodId);
@@ -141,7 +145,10 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
      * @param string $paymentMethodId The payment method.
      * @param string $expectedMessage The expected error message.
      */
-    public function testCreateSubscriptionFails(string $paymentMethodId, string $expectedMessage): void
+    public function testCreateSubscriptionFails(
+        string $paymentMethodId,
+        string $expectedMessage
+    ): void
     {
         $user = $this->actingAsNewUser();
         $this->executeCreateSubscription('MONTHLY', $paymentMethodId);

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9354fe147cefd12a42949b00642004e9",
+    "content-hash": "690311a2853c99a45c9c686936cc58a5",
     "packages": [
         {
             "name": "braintree/braintree_php",
@@ -836,16 +836,16 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.127",
+            "version": "v0.128",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
-                "reference": "19eacad739807e522891bf3f911ffab4a4c29869"
+                "reference": "d6425891e72439bbec9d9dcb0c8b9fca49ca017e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/19eacad739807e522891bf3f911ffab4a4c29869",
-                "reference": "19eacad739807e522891bf3f911ffab4a4c29869",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/d6425891e72439bbec9d9dcb0c8b9fca49ca017e",
+                "reference": "d6425891e72439bbec9d9dcb0c8b9fca49ca017e",
                 "shasum": ""
             },
             "require": {
@@ -869,7 +869,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2020-02-17T00:24:19+00:00"
+            "time": "2020-04-01T00:24:15+00:00"
         },
         {
             "name": "google/auth",
@@ -5215,16 +5215,16 @@
         },
         {
             "name": "sentry/sentry-laravel",
-            "version": "1.7.0",
+            "version": "1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-laravel.git",
-                "reference": "72684758f15aae4562149460b70fea81e9a06a25"
+                "reference": "8ec4695c5c6fa28d952c0f361e02997e84920354"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/72684758f15aae4562149460b70fea81e9a06a25",
-                "reference": "72684758f15aae4562149460b70fea81e9a06a25",
+                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/8ec4695c5c6fa28d952c0f361e02997e84920354",
+                "reference": "8ec4695c5c6fa28d952c0f361e02997e84920354",
                 "shasum": ""
             },
             "require": {
@@ -5280,7 +5280,17 @@
                 "logging",
                 "sentry"
             ],
-            "time": "2020-02-26T09:01:08+00:00"
+            "funding": [
+                {
+                    "url": "https://sentry.io/",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://sentry.io/pricing/",
+                    "type": "custom"
+                }
+            ],
+            "time": "2020-04-01T10:30:44+00:00"
         },
         {
             "name": "spatie/regex",
@@ -8555,12 +8565,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/mathrix-education/coding-standard.git",
-                "reference": "3962a2356c4de08437026d06b555887125904973"
+                "reference": "31e9314703f80446bf7a1e3446be8f7dbf1da4a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mathrix-education/coding-standard/zipball/3962a2356c4de08437026d06b555887125904973",
-                "reference": "3962a2356c4de08437026d06b555887125904973",
+                "url": "https://api.github.com/repos/mathrix-education/coding-standard/zipball/31e9314703f80446bf7a1e3446be8f7dbf1da4a3",
+                "reference": "31e9314703f80446bf7a1e3446be8f7dbf1da4a3",
                 "shasum": ""
             },
             "require": {
@@ -8576,7 +8586,7 @@
             "type": "phpcodesniffer-standard",
             "autoload": {
                 "psr-4": {
-                    "Mathrix\\CodingStandard\\": "Mathrix/"
+                    "Mathrix\\Standard\\": "Mathrix/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -8604,7 +8614,7 @@
                 "standard",
                 "style"
             ],
-            "time": "2020-04-01T15:25:26+00:00"
+            "time": "2020-04-01T19:29:48+00:00"
         },
         {
             "name": "mockery/mockery",

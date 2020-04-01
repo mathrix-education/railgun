@@ -31,7 +31,11 @@ class AdvancedSeeder extends Seeder
      *
      * @return Collection|mixed[] The generated data.
      */
-    protected function seedFactory(string $model, $options = [], array $attributes = []): Collection
+    protected function seedFactory(
+        string $model,
+        $options = [],
+        array $attributes = []
+    ): Collection
     {
         $count = 100;
 

@@ -30,6 +30,7 @@ class LoginBasicTest extends GraphQLUnitTestCase
     public function setUp(): void
     {
         parent::setUp();
+
         $this->userId   = $this->faker->numberBetween(1, 300);
         $this->email    = $this->faker->email;
         $this->password = $this->faker->password;

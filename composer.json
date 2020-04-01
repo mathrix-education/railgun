@@ -35,10 +35,6 @@
     {
       "type": "path",
       "url": "packages/lumen-mailjet"
-    },
-    {
-      "type": "path",
-      "url": "../coding-standard"
     }
   ],
   "require": {

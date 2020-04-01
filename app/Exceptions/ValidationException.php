@@ -36,6 +36,7 @@ class ValidationException extends HttpException
         }
 
         parent::__construct($message, $previous);
+
         $this->validator = $validator;
     }
 

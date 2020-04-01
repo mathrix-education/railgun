@@ -86,7 +86,12 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
      * @param int[] $trainingIds The training ids to check.
      * @param bool  $negate      Negate the assertion
      */
-    private function assertProductsDelivered(User $user, array $packIds, array $trainingIds, bool $negate = false): void
+    private function assertProductsDelivered(
+        User $user,
+        array $packIds,
+        array $trainingIds,
+        bool $negate = false
+    ): void
     {
         // Check packs ownership
         $expectedPackIds = $packIds;
@@ -121,7 +126,11 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
      * @param int[] $packIds     The pack ids to check.
      * @param int[] $trainingIds The training ids to check.
      */
-    private function assertProductsNotDelivered(User $user, array $packIds, array $trainingIds): void
+    private function assertProductsNotDelivered(
+        User $user,
+        array $packIds,
+        array $trainingIds
+    ): void
     {
         $this->assertProductsDelivered($user, $packIds, $trainingIds, true);
     }

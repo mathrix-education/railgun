@@ -15,8 +15,8 @@ use Railgun\Models\User;
  */
 class LoginWithGoogle
 {
-    private Driver          $driver;
-    private Google_Client   $client;
+    private Driver        $driver;
+    private Google_Client $client;
 
     public function __construct(Driver $driver, Google_Client $client)
     {

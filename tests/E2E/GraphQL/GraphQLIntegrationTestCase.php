@@ -118,7 +118,10 @@ class GraphQLIntegrationTestCase extends BaseTestCase
      * @param string|null $expectedMessage  If not null, check the error message.
      * @param string|null $expectedCategory If not null, check the error category.
      */
-    protected function assertError(?string $expectedMessage = null, ?string $expectedCategory = null): void
+    protected function assertError(
+        ?string $expectedMessage = null,
+        ?string $expectedCategory = null
+    ): void
     {
         if ($expectedMessage !== null) {
             $this->assertEquals($expectedMessage, $this->getErrors()[0]->message);

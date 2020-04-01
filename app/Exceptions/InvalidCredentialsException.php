@@ -21,6 +21,7 @@ class InvalidCredentialsException extends HttpException
     public function __construct(?string $message = null, ?Throwable $previous = null)
     {
         $message ??= trans('auth.invalid_credentials');
+
         parent::__construct($message, $previous);
     }
 }

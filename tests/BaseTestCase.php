@@ -29,6 +29,7 @@ abstract class BaseTestCase extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+
         $this->faker = FakerFactory::create();
     }
 

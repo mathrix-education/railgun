@@ -20,7 +20,11 @@ class MoveFileIntegrationTest extends GraphQLIntegrationTestCase
      * @param string    $destination The destination path.
      * @param bool|null $override    If the destination path should be overridden.
      */
-    private function executeMoveFile(string $source, string $destination, ?bool $override = null): void
+    private function executeMoveFile(
+        string $source,
+        string $destination,
+        ?bool $override = null
+    ): void
     {
         $variables = [
             'source'      => $this->getTestPath($source),

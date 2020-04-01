@@ -23,7 +23,6 @@
     <file>config</file>
     <file>database</file>
     <file>packages/lumen-mailjet</file>
-    <file>packages/monolog-google-cloud-formatter</file>
     <file>packages/silicate</file>
     <file>tests</file>
 
