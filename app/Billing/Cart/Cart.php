@@ -18,6 +18,8 @@ use function round;
  */
 class Cart
 {
+    public const IDENTIFIER = 'cart_v7';
+
     /** @var User|null The user associated with the cart. */
     public ?User $user;
     /** @var mixed[] $input The input from the GraphQL query. */

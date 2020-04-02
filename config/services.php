@@ -13,8 +13,9 @@ return [
         'key'     => env('STRIPE_KEY'),
         'secret'  => env('STRIPE_SECRET'),
         'webhook' => [
-            'secret'    => env('STRIPE_WEBHOOK_SECRET'),
-            'tolerance' => env('STRIPE_WEBHOOK_TOLERANCE', 300),
+            'route'     => env('STRIPE_WEBOOKS_ROUTE', '/webhooks/stripe'),
+            'secret'    => env('STRIPE_WEBHOOKS_SECRET'),
+            'tolerance' => env('STRIPE_WEBHOOKS_TOLERANCE', 300),
         ],
     ],
     'braintree' => [

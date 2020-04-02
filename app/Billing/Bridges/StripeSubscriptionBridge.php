@@ -8,7 +8,6 @@ use Carbon\Carbon;
 use Railgun\Models\Subscription;
 use Stripe\Customer;
 use Stripe\Exception\ApiErrorException;
-use Stripe\Invoice;
 use Stripe\Subscription as StripeSubscription;
 use function is_string;
 
@@ -35,20 +34,7 @@ class StripeSubscriptionBridge
             $subscription->customer_id = $stripe->customer->id;
         }
 
-        $subscription->status = $stripe->status;
-
-        if ($stripe->status === StripeSubscription::STATUS_INCOMPLETE) {
-            if (!$stripe->latest_invoice instanceof Invoice) {
-                /** @noinspection CallableParameterUseCaseInTypeContextInspection */
-                $stripe = StripeSubscription::retrieve([
-                    'id'     => $stripe->id,
-                    'expand' => ['latest_invoice.payment_intent'],
-                ]);
-            }
-
-            $subscription->latest_invoice = $stripe->latest_invoice;
-        }
-
+        $subscription->status               = $stripe->status;
         $subscription->current_period_start = Carbon::createFromTimestamp($stripe->current_period_start);
         $subscription->current_period_end   = Carbon::createFromTimestamp($stripe->current_period_end);
         $subscription->created_at           = Carbon::createFromTimestamp($stripe->created);

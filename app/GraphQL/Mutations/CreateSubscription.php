@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace Railgun\GraphQL\Mutations;
 
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use Railgun\Billing\Bridges\StripeSubscriptionBridge;
 use Railgun\Billing\Exceptions\AlreadyPremiumException;
 use Railgun\Billing\Models\Plan;
 use Railgun\GraphQL\Traits\SetupCustomer;
+use Railgun\Jobs\UpsertSubscription;
 use Railgun\Models\Subscription;
 use Railgun\Models\User;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Subscription as StripeSubscription;
+use function dispatch_now;
 
 /**
  * Mutation createSubscription.
@@ -64,9 +65,7 @@ class CreateSubscription
         }
 
         $stripeSubscription = StripeSubscription::create($payload);
-        $subscription       = StripeSubscriptionBridge::toEloquent($stripeSubscription);
-        $subscription->save();
 
-        return $subscription;
+        return dispatch_now(new UpsertSubscription($stripeSubscription));
     }
 }

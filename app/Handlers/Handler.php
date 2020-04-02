@@ -6,6 +6,9 @@ namespace Railgun\Handlers;
 
 use Exception;
 use GraphQL\Error\Error as GraphQLError;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException as IlluminateValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
@@ -13,6 +16,7 @@ use League\Flysystem\FileExistsException as LeagueFileExistsException;
 use League\Flysystem\FileNotFoundException as LeagueFileNotFoundException;
 use Psr\Log\LogLevel;
 use Railgun\Billing\Exceptions\CardException;
+use Railgun\Billing\Exceptions\InvalidEventSignatureException;
 use Railgun\Exceptions\FileConflictException;
 use Railgun\Exceptions\FileNotFoundException;
 use Railgun\Exceptions\HttpException;
@@ -23,6 +27,8 @@ use Sentry\Severity;
 use Sentry\State\Hub;
 use Sentry\State\Scope;
 use Stripe\Exception\CardException as StripeCardException;
+use Stripe\Exception\SignatureVerificationException;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Throwable;
 use function app;
 
@@ -78,7 +84,27 @@ class Handler extends ExceptionHandler
             return new FileConflictException($original->getPath(), $original);
         }
 
+        if ($original instanceof SignatureVerificationException) {
+            // Convert Stripe signature exception
+            return new InvalidEventSignatureException($original);
+        }
+
         return $original;
+    }
+
+    /**
+     * @param Request   $request   The Illuminate HTTP request.
+     * @param Throwable $exception The exception to render.
+     *
+     * @return JsonResponse|Response|SymfonyResponse The response object to send.
+     *
+     * @throws Throwable
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     */
+    public function render($request, Throwable $exception)
+    {
+        return parent::render($request, $this->transform($exception));
     }
 
     /**

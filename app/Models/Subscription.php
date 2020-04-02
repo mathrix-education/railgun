@@ -7,10 +7,9 @@ namespace Railgun\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Stripe\Exception\ApiErrorException;
+use Railgun\Models\Traits\Cacheable;
 use Stripe\Invoice;
 use Stripe\Subscription as StripeSubscription;
-use function preg_match;
 
 /**
  * @property      string       $id
@@ -23,18 +22,31 @@ use function preg_match;
  * @property      Carbon       $updated_at
  * @property      Carbon|null  $canceled_at
  * ---
- * @property      Invoice|null $latest_invoice
+ * @property-read Invoice|null $latest_invoice
  * ---
  * @property-read User         $user
  */
 class Subscription extends Model
 {
+    use Cacheable;
+
     public            $incrementing = false;
     protected         $keyType      = 'string';
+    protected         $fillable     = [
+        'id',
+        'plan',
+        'customer_id',
+        'status',
+        'current_period_start',
+        'current_period_end',
+        'created_at',
+        'updated_at',
+        'canceled_at',
+    ];
     protected         $casts        = [
         'current_period_start' => 'datetime',
         'current_period_end'   => 'datetime',
-        'canceled_at' => 'datetime',
+        'canceled_at'          => 'datetime',
     ];
     protected Invoice $latestInvoice;
 
@@ -49,32 +61,19 @@ class Subscription extends Model
     }
 
     /**
-     * Get the Stripe latest_invoice field.
+     * Get the Stripe latest_invoice field with the nested payment_intent.
      *
      * @return Invoice|null The Stripe {@see StripeSubscription} latest {@see Invoice}.
-     *
-     * @throws ApiErrorException
      */
     public function getLatestInvoiceAttribute(): ?Invoice
     {
-        if ($this->latestInvoice) {
-            return $this->latestInvoice;
-        }
+        return $this->cache('latest_invoice', function () {
+            $subscription = StripeSubscription::retrieve([
+                'id'     => $this->id,
+                'expand' => ['latest_invoice.payment_intent'],
+            ]);
 
-        if (!preg_match('/^sub_[a-zA-Z0-9]{14}$/', $this->id)) {
-            return null;
-        }
-
-        $subscription = StripeSubscription::retrieve([
-            'id'     => $this->id,
-            'expand' => ['latest_invoice.payment_intent'],
-        ]);
-
-        return $subscription->latest_invoice;
-    }
-
-    public function setLatestInvoiceAttribute(Invoice $invoice): void
-    {
-        $this->latestInvoice = $invoice;
+            return $subscription->latest_invoice;
+        });
     }
 }
