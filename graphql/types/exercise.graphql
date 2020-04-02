@@ -1,6 +1,10 @@
+enum ExerciseType {
+    MCQ @enum(value: "mcq")
+}
+
 type Exercise {
     id: ID!
-    type: String
+    type: ExerciseType!
     content: Silicate!
     questions: [Silicate!]!
     choices: [[Silicate!]!]!
