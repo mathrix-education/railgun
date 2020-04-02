@@ -20,6 +20,7 @@ $factory->define(Exam::class, static function (Faker $faker) {
     return [
         'name'       => $name,
         'slug'       => Str::slug($name),
+        'content'    => Silicate::wall($faker->numberBetween(1, 3)),
         'order'      => 99,
         'premium'    => $faker->boolean(90),
         'visible'    => $faker->boolean(90),
