@@ -5,7 +5,7 @@ extend type Mutation {
         questions: [Silicate!]!
         choices: [[Silicate!]!]!
         solutions: [[Int!]!]!
-        examplations: [Silicate!]!
+        explanations: [[Silicate!]!]!
         order: Int
         premium: Boolean!
         visible: Boolean!
@@ -20,7 +20,7 @@ extend type Mutation {
         questions: [Silicate!]
         choices: [[Silicate!]!]
         solutions: [[Int!]!]
-        examplations: [Silicate!]
+        explanations: [[Silicate!]]
         order: Int
         premium: Boolean
         visible: Boolean
