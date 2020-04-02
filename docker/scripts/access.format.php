@@ -9,7 +9,7 @@ declare(strict_types=1);
  * @link http://www.inanzzz.com/index.php/post/6cn7/formatting-php-fpm-and-nginx-access-logs-as-standardised-json-string-in-docker-environment
  */
 
-$accessFormatJson = <<<JSON
+$accessFormatJson = <<<'JSON'
 {
     "severity": "INFO",
     "httpRequest": {
@@ -24,6 +24,7 @@ $accessFormatJson = <<<JSON
         "latency": "%ds",
         "protocol": "%{SERVER_PROTOCOL}e"
     },
+    "correlation": "%{X-Correlation-ID}o",
     "cpu": %C,
     "memory": %M
 }
