@@ -82,7 +82,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-            --build-arg "release=${{ steps.standard-versions.outputs.semver }}" \
+            --build-arg "RELEASE=${{ steps.standard-versions.outputs.semver }}" \
             --tag "eu.gcr.io/mathrix-education/education-api:${{ steps.standard-versions.outputs.docker }}" .
       - name: Setup Google Cloud SDK
         uses: mathrix-education/setup-gcloud@1.1.0
