@@ -89,19 +89,19 @@ jobs:
       - name: Standard versions
         id: standard-versions
         uses: mathrix-education/standard-versions@master
-      - name: Build Docker image
-        run: |
-          docker pull \
-            "eu.gcr.io/mathrix-education/education-api:latest-${{ steps.standard-versions.outputs.branch }}" || true
-          docker build \
-            --build-arg "RELEASE=${{ steps.standard-versions.outputs.semver }}" \
-            --cache-from "eu.gcr.io/mathrix-education/education-api:latest-${{ steps.standard-versions.outputs.branch }}" \
-            --tag "eu.gcr.io/mathrix-education/education-api:${{ steps.standard-versions.outputs.docker }}" .
       - name: Setup Google Cloud SDK
         uses: mathrix-education/setup-gcloud@1.1.0
         with:
           service-account-key: ${{ secrets.GCLOUD_AUTH }}
           configure-docker: true
+      - name: Pull latest image
+        run: docker pull "eu.gcr.io/mathrix-education/education-api:latest-v7" || true
+      - name: Build Docker image
+        run: |
+          docker build \
+            --build-arg "RELEASE=${{ steps.standard-versions.outputs.semver }}" \
+            --cache-from "eu.gcr.io/mathrix-education/education-api:latest-v7" \
+            --tag "eu.gcr.io/mathrix-education/education-api:${{ steps.standard-versions.outputs.docker }}" .
       - name: Push image to Google Cloud Container Registry
         run: |
           docker push "eu.gcr.io/mathrix-education/education-api:${{ steps.standard-versions.outputs.docker }}"
