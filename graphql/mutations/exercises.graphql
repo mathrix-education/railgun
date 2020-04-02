@@ -1,11 +1,11 @@
 extend type Mutation {
     "Create a new exercise."
     createExercise(
-        type: String
-        questions: [String!]
-        choices: [[String!]!]
-        solutions: [[Int!]!]
-        examplations: [Silicate!]
+        type: ExerciseType!
+        questions: [Silicate!]!
+        choices: [[Silicate!]!]!
+        solutions: [[Int!]!]!
+        examplations: [Silicate!]!
         order: Int
         premium: Boolean!
         visible: Boolean!
@@ -16,9 +16,9 @@ extend type Mutation {
     "Update an existing exercise."
     updateExercise(
         id: ID!
-        type: String
-        questions: [String!]
-        choices: [[String!]!]
+        type: ExerciseType
+        questions: [Silicate!]
+        choices: [[Silicate!]!]
         solutions: [[Int!]!]
         examplations: [Silicate!]
         order: Int
