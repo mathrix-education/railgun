@@ -13,6 +13,7 @@ use League\Flysystem\FileExistsException as LeagueFileExistsException;
 use League\Flysystem\FileNotFoundException as LeagueFileNotFoundException;
 use Psr\Log\LogLevel;
 use Railgun\Billing\Exceptions\CardException;
+use Railgun\Billing\Exceptions\InvalidEventSignatureException;
 use Railgun\Exceptions\FileConflictException;
 use Railgun\Exceptions\FileNotFoundException;
 use Railgun\Exceptions\HttpException;
@@ -23,6 +24,7 @@ use Sentry\Severity;
 use Sentry\State\Hub;
 use Sentry\State\Scope;
 use Stripe\Exception\CardException as StripeCardException;
+use Stripe\Exception\SignatureVerificationException;
 use Throwable;
 use function app;
 
@@ -78,7 +80,17 @@ class Handler extends ExceptionHandler
             return new FileConflictException($original->getPath(), $original);
         }
 
+        if ($original instanceof SignatureVerificationException) {
+            // Convert Stripe signature exception
+            return new InvalidEventSignatureException($original);
+        }
+
         return $original;
+    }
+
+    public function render($request, Throwable $exception)
+    {
+        return parent::render($request, $this->transform($exception));
     }
 
     /**

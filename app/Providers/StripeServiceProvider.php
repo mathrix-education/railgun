@@ -23,6 +23,9 @@ class StripeServiceProvider extends ServiceProvider
         // Register the webhooks route
         /** @var Router $router */
         $router = $this->app->make('router');
-        $router->get('/webhooks/stripe', StripeWebhooksController::class . '@handle');
+        $router->post(
+            config('services.stripe.webhook.route'),
+            StripeWebhooksController::class . '@handle',
+        );
     }
 }

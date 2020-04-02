@@ -94,6 +94,7 @@ class CheckoutCart
             'customer'    => $user->stripe_id,
             'description' => $product->name,
             'metadata'    => [
+                'type'         => 'cart_v7',
                 'user_id'      => $user->id,
                 'product_id'   => $product->id,
                 'product_type' => strtolower(class_basename($product)),
@@ -131,7 +132,10 @@ class CheckoutCart
         return Invoice::create([
             'customer'               => $cart->user->stripe_id,
             'description'            => 'Achat formation BOBO', // TODO: change this
-            'metadata'               => ['user_id' => $cart->user->id],
+            'metadata'               => [
+                'type'    => Cart::IDENTIFIER,
+                'user_id' => $cart->user->id,
+            ],
             'default_payment_method' => $paymentMethodId,
         ]);
     }
