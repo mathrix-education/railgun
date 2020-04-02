@@ -6,6 +6,7 @@ namespace Railgun\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use function app;
 use function is_string;
 use function uuid_create;
@@ -36,6 +37,13 @@ class CorrelationMiddleware
 
         app()->instance(self::ABSTRACT, $correlationId);
 
-        return $next($request);
+        /** @var Response|mixed $response */
+        $response = $next($request);
+
+        if ($response instanceof Response) {
+            $response->header(self::HEADER, $correlationId);
+        }
+
+        return $response;
     }
 }
