@@ -9,7 +9,7 @@ type Exercise {
     questions: [Silicate!]!
     choices: [[Silicate!]!]!
     solutions: [[Int!]!]!
-    explanations: [Silicate!]!
+    explanations: [[Silicate!]!]!
     order: Int!
     """
     If the flashcard is premium-locked.
