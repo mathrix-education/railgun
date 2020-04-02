@@ -154,7 +154,7 @@ class Handler extends ExceptionHandler
 
             // Set the correlation id
             if (app()->bound(CorrelationMiddleware::ABSTRACT)) {
-                $scope->setTag('correlation_id', app()->make(CorrelationMiddleware::class));
+                $scope->setTag('correlation_id', app()->make(CorrelationMiddleware::ABSTRACT));
             }
         });
 
