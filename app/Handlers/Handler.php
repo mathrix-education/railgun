@@ -6,6 +6,9 @@ namespace Railgun\Handlers;
 
 use Exception;
 use GraphQL\Error\Error as GraphQLError;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException as IlluminateValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
@@ -25,6 +28,7 @@ use Sentry\State\Hub;
 use Sentry\State\Scope;
 use Stripe\Exception\CardException as StripeCardException;
 use Stripe\Exception\SignatureVerificationException;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Throwable;
 use function app;
 
@@ -88,6 +92,16 @@ class Handler extends ExceptionHandler
         return $original;
     }
 
+    /**
+     * @param Request   $request   The Illuminate HTTP request.
+     * @param Throwable $exception The exception to render.
+     *
+     * @return JsonResponse|Response|SymfonyResponse The response object to send.
+     *
+     * @throws Throwable
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     */
     public function render($request, Throwable $exception)
     {
         return parent::render($request, $this->transform($exception));

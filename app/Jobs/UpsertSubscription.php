@@ -37,7 +37,11 @@ class UpsertSubscription extends Job
 
         $converted = StripeSubscriptionBridge::toEloquent($this->stripeSubscription);
         /** @var Subscription $subscription */
-        $subscription = Subscription::query()->updateOrCreate($converted->toArray());
+        $subscription = Subscription::query()
+            ->updateOrCreate(
+                ['id' => $converted->id],
+                $converted->toArray(),
+            );
 
         return $subscription;
     }

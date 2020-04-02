@@ -39,7 +39,7 @@ class DeliverProducts extends Job
      */
     public function handle(): void
     {
-        if ($this->invoice->metadata['type'] === Cart::IDENTIFIER) {
+        if ($this->invoice->metadata['type'] !== Cart::IDENTIFIER) {
             return;
         }
 
@@ -85,13 +85,16 @@ class DeliverProducts extends Job
      */
     public function deliverPack(int $packId): void
     {
-        $acquisition = new Acquisition([
-            'user_id'        => $this->user->id,
-            'product_type'   => 'pack',
-            'product_id'     => $packId,
-            'transaction_id' => $this->invoice->id,
-        ]);
-        $acquisition->save();
+        Acquisition::query()->updateOrCreate(
+            [
+                'user_id'      => $this->user->id,
+                'product_type' => 'pack',
+                'product_id'   => $packId,
+            ],
+            [
+                'transaction_id' => $this->invoice->id,
+            ],
+        );
 
         Training::query()
             ->orWhereHas('packs', static function (Builder $builder) use ($packId): void {
@@ -108,13 +111,16 @@ class DeliverProducts extends Job
      */
     public function deliverTraining(int $trainingId): void
     {
-        $acquisition = new Acquisition([
-            'user_id'        => $this->user->id,
-            'product_type'   => 'training',
-            'product_id'     => $trainingId,
-            'transaction_id' => $this->invoice->id,
-        ]);
-        $acquisition->save();
+        Acquisition::query()->updateOrCreate(
+            [
+                'user_id'      => $this->user->id,
+                'product_type' => 'training',
+                'product_id'   => $trainingId,
+            ],
+            [
+                'transaction_id' => $this->invoice->id,
+            ],
+        );
     }
 
     /**

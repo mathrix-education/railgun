@@ -109,7 +109,7 @@ abstract class HttpException extends SymfonyHttpException implements RendersErro
      *
      * phpcs:disable SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
-    public function toResponse($request)
+    public function toResponse($request): Response
     {
         if (is_string($this->data)) {
             $response = new Response($this->getData(), $this->getStatusCode(), $this->getHeaders());

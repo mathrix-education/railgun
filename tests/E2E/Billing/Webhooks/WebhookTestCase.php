@@ -9,7 +9,6 @@ use JsonException;
 use Stripe\Event;
 use Stripe\StripeObject;
 use Stripe\WebhookSignature;
-use Tests\BaseTestCase;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function assert;
 use function config;
