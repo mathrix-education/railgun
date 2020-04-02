@@ -10,6 +10,7 @@ use Illuminate\Support\Arr;
 use JsonException;
 use Monolog\DateTimeImmutable;
 use Monolog\Formatter\JsonFormatter;
+use Railgun\Middleware\CorrelationMiddleware;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 use function app;
@@ -93,6 +94,11 @@ class GoogleCloudJsonFormatter extends JsonFormatter
             $payload['httpRequest'] = $httpRequest;
         }
 
+        // Include the correlation id if applicable
+        if (app()->bound(CorrelationMiddleware::ABSTRACT)) {
+            $payload['correlation'] = app()->make(CorrelationMiddleware::ABSTRACT);
+        }
+
         // Include the embedded exception if applicable
         if (
             array_key_exists('exception', $record['context'])
@@ -146,7 +152,7 @@ class GoogleCloudJsonFormatter extends JsonFormatter
             return [];
         }
 
-        $payload = [
+        return [
             'requestMethod' => $request->getMethod(),
             'requestUrl'    => str_replace($request->getBaseUrl(), '', $request->fullUrl()),
             'requestSize'   => mb_strlen($request->getContent(), '8bit'),
@@ -157,9 +163,5 @@ class GoogleCloudJsonFormatter extends JsonFormatter
             'latency'       => (microtime(true) - (float)$request->server('REQUEST_TIME_FLOAT')) . 's',
             'protocol'      => $request->getProtocolVersion(),
         ];
-
-        if (!app()->bound('response')) {
-            return $payload;
-        }
     }
 }

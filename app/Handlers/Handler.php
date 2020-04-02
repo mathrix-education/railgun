@@ -17,6 +17,7 @@ use Railgun\Exceptions\FileConflictException;
 use Railgun\Exceptions\FileNotFoundException;
 use Railgun\Exceptions\HttpException;
 use Railgun\Exceptions\ValidationException;
+use Railgun\Middleware\CorrelationMiddleware;
 use Railgun\Models\User;
 use Sentry\Severity;
 use Sentry\State\Hub;
@@ -120,11 +121,15 @@ class Handler extends ExceptionHandler
                 $scope->setUser($user->toArray());
             }
 
-            if (!($exception instanceof HttpException)) {
-                return;
+            // Set the exception level if applicable
+            if ($exception instanceof HttpException) {
+                $scope->setLevel($this->getSentrySeverity($exception->getLevel()));
             }
 
-            $scope->setLevel($this->getSentrySeverity($exception->getLevel()));
+            // Set the correlation id
+            if (app()->bound(CorrelationMiddleware::ABSTRACT)) {
+                $scope->setTag('correlation_id', app()->make(CorrelationMiddleware::class));
+            }
         });
 
         $sentry->captureException($exception);

@@ -15,6 +15,7 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application;
 use Railgun\Console\Kernel;
 use Railgun\Handlers\Handler;
+use Railgun\Middleware\CorrelationMiddleware;
 use Railgun\Middleware\ImpersonateMiddleware;
 use Railgun\Models\Chapter;
 use Railgun\Models\Course;
@@ -54,7 +55,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Headers
-        $this->app->middleware([ImpersonateMiddleware::class]);
+        $this->app->middleware([
+            CorrelationMiddleware::class,
+            ImpersonateMiddleware::class,
+        ]);
 
         Gate::define('scope', static function (?User $user, string $scope) {
             return $user !== null && in_array($scope, $user->scopes);
