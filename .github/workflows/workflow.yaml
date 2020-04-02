@@ -11,18 +11,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
+        if: "!contains(github.event.head_commit.message, 'lint:skip')"
         uses: actions/checkout@v2
       - name: Setup PHP
+        if: "!contains(github.event.head_commit.message, 'lint:skip')"
         uses: shivammathur/setup-php@2.1.3
         with:
           php-version: 7.4
           coverage: none
           tools: prestissimo
       - name: Install dependencies
+        if: "!contains(github.event.head_commit.message, 'lint:skip')"
         run: composer install --ignore-platform-reqs --no-progress --no-suggest --prefer-dist
       - name: Lint with PHP_CodeSniffer
+        if: "!contains(github.event.head_commit.message, 'lint:skip')"
         run: vendor/bin/phpcs
-  test:
+  tests:
     name: Test with PHPUnit
     runs-on: ubuntu-latest
     services:
@@ -36,10 +40,13 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - name: Checkout
+        if: "!contains(github.event.head_commit.message, 'tests:skip')"
         uses: actions/checkout@v2
       - name: Setup Google Cloud Service Account Key
+        if: "!contains(github.event.head_commit.message, 'tests:skip')"
         run: echo "${{ secrets.GCLOUD_AUTH }}" | base64 -d > storage/keychain/service_account.json
       - name: Setup PHP
+        if: "!contains(github.event.head_commit.message, 'tests:skip')"
         uses: shivammathur/setup-php@2.1.3
         with:
           php-version: 7.4
@@ -47,8 +54,10 @@ jobs:
           coverage: pcov
           tools: prestissimo
       - name: Install dependencies
+        if: "!contains(github.event.head_commit.message, 'tests:skip')"
         run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
       - name: Setup application (environment, JWT key and database seed)
+        if: "!contains(github.event.head_commit.message, 'tests:skip')"
         env:
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
           DB_PASSWORD: '123456'
@@ -57,6 +66,7 @@ jobs:
           php artisan jwt:key
           php artisan migrate --seed
       - name: Test with PHPUnit
+        if: "!contains(github.event.head_commit.message, 'tests:skip')"
         env:
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
           DB_PASSWORD: '123456'
@@ -93,15 +103,15 @@ jobs:
         run: |
           docker push "eu.gcr.io/mathrix-education/education-api:${{ steps.standard-versions.outputs.docker }}"
       - name: Add branch tag if necessary
-        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/v7'
+        if: github.ref == 'refs/heads/v7'
         run: |
           gcloud container images add-tag \
             "eu.gcr.io/mathrix-education/education-api:${{ steps.standard-versions.outputs.docker }}" \
             "eu.gcr.io/mathrix-education/education-api:latest-${{ steps.standard-versions.outputs.branch }}"
   deploy_gke:
     name: Deploy on Google Kubernetes Engine
-    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/v7'
-    needs: [docker, test]
+    if: "github.ref == 'refs/heads/v7' || contains(github.event.head_commit.message, 'deploy:force')"
+    needs: [lint, tests, docker]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -122,8 +132,8 @@ jobs:
           kubectl set image -n education-graphql deployment/api-worker "php-worker=$IMAGE"
   sentry_release:
     name: Create Sentry Release
-    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/v7'
-    needs: [docker, test]
+    if: "github.ref == 'refs/heads/v7' || contains(github.event.head_commit.message, 'deploy:force')"
+    needs: [lint, tests, docker]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -147,7 +157,7 @@ jobs:
           sentry-cli releases finalize ${{ steps.standard-versions.outputs.semver }}
   sentry_deploy:
     name: Deploy Sentry Release
-    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/v7'
+    if: "github.ref == 'refs/heads/v7' || contains(github.event.head_commit.message, 'deploy:force')"
     needs: [deploy_gke]
     runs-on: ubuntu-latest
     steps:
@@ -167,5 +177,4 @@ jobs:
         run: |
           sentry-cli releases deploys \
             ${{ steps.standard-versions.outputs.semver }} \
-            new -e \
-            ${{ steps.standard-versions.outputs.branch }}
+            new -e v7
