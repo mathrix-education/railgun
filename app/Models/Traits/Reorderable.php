@@ -84,7 +84,7 @@ trait Reorderable
             ->get([$this->getOrderColumn()])
             ->first();
 
-        return $max->{$max->getOrderColumn()};
+        return $max ? $max->{$max->getOrderColumn()} : 0;
     }
 
     /**

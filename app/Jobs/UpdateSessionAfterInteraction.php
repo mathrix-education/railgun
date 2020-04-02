@@ -31,15 +31,15 @@ class UpdateSessionAfterInteraction extends Job implements ShouldQueue
         $chapter = $this->interaction->interactable->getChapter();
 
         Session::query()
-            ->where([
-                ['user_id', '=', $this->interaction->user_id],
-                ['discipline_id', '=', $chapter->discipline_id],
-            ])
-            ->updateOrCreate([
-                'user_id'       => $this->interaction->user_id,
-                'discipline_id' => $chapter->discipline_id,
-                'chapter_id'    => $chapter->id,
-                'updated_at'    => $this->interaction->updated_at,
-            ]);
+            ->updateOrCreate(
+                [
+                    'user_id'       => $this->interaction->user_id,
+                    'discipline_id' => $chapter->discipline_id,
+                ],
+                [
+                    'chapter_id' => $chapter->id,
+                    'updated_at' => $this->interaction->updated_at,
+                ],
+            );
     }
 }
