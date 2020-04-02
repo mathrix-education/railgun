@@ -105,11 +105,11 @@ abstract class HttpException extends SymfonyHttpException implements RendersErro
     /**
      * @param Request $request The Illuminate HTTP request.
      *
-     * @return Response The response associated with the exception.
+     * @return JsonResponse|Response The response associated with the exception.
      *
-     * phpcs:disable SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
-    public function toResponse($request): Response
+    public function toResponse($request)
     {
         if (is_string($this->data)) {
             $response = new Response($this->getData(), $this->getStatusCode(), $this->getHeaders());
