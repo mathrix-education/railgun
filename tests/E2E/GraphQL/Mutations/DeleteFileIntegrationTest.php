@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Mutations;
 
+use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Facades\Storage;
 use Tests\E2E\GraphQL\FilesystemTestCase;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
@@ -14,6 +15,7 @@ use function trans;
  */
 class DeleteFileIntegrationTest extends GraphQLIntegrationTestCase
 {
+    use DatabaseTransactions;
     use FilesystemTestCase;
 
     public function executeDeleteBlob(string $path): void

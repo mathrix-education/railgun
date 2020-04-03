@@ -13,7 +13,7 @@ use Nuwave\Lighthouse\Testing\MakesGraphQLRequestsLumen;
 use Railgun\Models\Label;
 use Railgun\Models\Traits\Labelable;
 use Railgun\Models\Traits\Randomizable;
-use Tests\BaseTestCase;
+use Tests\ApplicationTestCase;
 use function array_search;
 use function class_basename;
 use function collect;
@@ -23,7 +23,7 @@ use function factory;
 /**
  * @testdox [Functional] Labelable
  */
-class LabelableTest extends BaseTestCase
+class LabelableTest extends ApplicationTestCase
 {
     use DatabaseTransactions;
     use MakesGraphQLRequestsLumen;

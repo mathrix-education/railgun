@@ -33,7 +33,7 @@ class DismissAllNotificationIntegrationTest extends GraphQLIntegrationTestCase
     /**
      * @testdox dismisses all notifications
      */
-    public function testReadNotification(): void
+    public function testDismissAllNotifications(): void
     {
         $notificationCount      = 5;
         $readNotificationsCount = 2;

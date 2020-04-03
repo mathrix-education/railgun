@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Mutations;
 
+use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Vote;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function factory;
@@ -13,6 +14,8 @@ use function factory;
  */
 class DeleteVoteIntegrationTest extends GraphQLIntegrationTestCase
 {
+    use DatabaseTransactions;
+
     /**
      * @testdox deletes a vote
      */

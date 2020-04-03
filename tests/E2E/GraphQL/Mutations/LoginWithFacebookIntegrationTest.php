@@ -8,6 +8,7 @@ use Facebook\Exceptions\FacebookResponseException;
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
 use Facebook\GraphNodes\GraphUser;
+use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\User;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function app;
@@ -18,6 +19,8 @@ use function env;
  */
 class LoginWithFacebookIntegrationTest extends GraphQLIntegrationTestCase
 {
+    use DatabaseTransactions;
+
     private const QUERY = <<<'GRAPHQL'
     mutation ($accessToken: String!) {
         loginWithFacebook(accessToken: $accessToken) {

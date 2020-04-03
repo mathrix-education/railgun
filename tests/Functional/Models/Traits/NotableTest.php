@@ -14,7 +14,7 @@ use Railgun\Models\Note;
 use Railgun\Models\Traits\Notable;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\User;
-use Tests\BaseTestCase;
+use Tests\ApplicationTestCase;
 use function array_search;
 use function class_basename;
 use function collect;
@@ -26,7 +26,7 @@ use function strtolower;
  * @testdox [Functional] Notable
  * @coversDefaultClass \Railgun\Models\Note
  */
-class NotableTest extends BaseTestCase
+class NotableTest extends ApplicationTestCase
 {
     use DatabaseTransactions;
     use MakesGraphQLRequestsLumen;

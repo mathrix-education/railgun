@@ -6,6 +6,7 @@ namespace Tests\E2E\GraphQL\Mutations;
 
 use Illuminate\Http\UploadedFile;
 use JsonException;
+use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Facades\Storage;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function json_encode;
@@ -16,6 +17,8 @@ use const JSON_THROW_ON_ERROR;
  */
 class CreateFileIntegrationTest extends GraphQLIntegrationTestCase
 {
+    use DatabaseTransactions;
+
     /**
      * Execute the GraphQL "createFile" mutation.
      *

@@ -6,13 +6,13 @@ namespace Tests\Unit\Models;
 
 use Illuminate\Support\Facades\Hash;
 use Railgun\Models\User;
-use Tests\BaseTestCase;
+use Tests\ApplicationTestCase;
 
 /**
  * @testdox [Unit] Model User
  * @coversDefaultClass \Railgun\Models\User
  */
-class UserTest extends BaseTestCase
+class UserTest extends ApplicationTestCase
 {
     /**
      * @testdox hashes passwords on set

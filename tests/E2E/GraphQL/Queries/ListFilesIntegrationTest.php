@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Queries;
 
+use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Facades\Storage;
 use Tests\E2E\GraphQL\FilesystemTestCase;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
@@ -15,6 +16,7 @@ use function trans;
  */
 class ListFilesIntegrationTest extends GraphQLIntegrationTestCase
 {
+    use DatabaseTransactions;
     use FilesystemTestCase;
 
     /**

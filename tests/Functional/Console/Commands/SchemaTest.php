@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Tests\Functional\Console\Commands;
 
 use Illuminate\Support\Facades\Artisan;
-use Tests\BaseTestCase;
+use Tests\ApplicationTestCase;
 
 /**
  * @testdox [Functional] Schema
  */
-class SchemaTest extends BaseTestCase
+class SchemaTest extends ApplicationTestCase
 {
     /**
      * @testdox is validated with lighthouse:validate-schema command

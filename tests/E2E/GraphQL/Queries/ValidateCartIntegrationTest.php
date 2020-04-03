@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Queries;
 
+use Laravel\Lumen\Testing\DatabaseTransactions;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 
 /**
@@ -11,6 +12,8 @@ use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
  */
 class ValidateCartIntegrationTest extends GraphQLIntegrationTestCase
 {
+    use DatabaseTransactions;
+
     private const QUERY = <<<'GRAPHQL'
     query($packIds: [ID!], $trainingIds: [ID!], $premium: Boolean, $coupon: ID) {
         validateCart(

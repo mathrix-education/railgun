@@ -67,13 +67,14 @@
     "web-token/jwt-signature-algorithm-hmac": "^2.1"
   },
   "require-dev": {
+    "brianium/paratest": "^4.0",
     "fzaninotto/faker": "^1.9.1",
     "laravel/tinker": "^2.2",
     "mathrix-education/coding-standard": "v2.x-dev",
     "mockery/mockery": "^1.3",
     "phpunit/phpunit": "^9.0",
-    "squizlabs/php_codesniffer": "^3.5",
-    "roave/security-advisories": "dev-master"
+    "roave/security-advisories": "dev-master",
+    "squizlabs/php_codesniffer": "^3.5"
   },
   "autoload": {
     "psr-4": {

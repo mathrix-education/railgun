@@ -6,10 +6,10 @@ namespace Tests\Unit\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Railgun\Models\User;
-use Tests\BaseTestCase;
+use Tests\ApplicationTestCase;
 use function factory;
 
-class AppServiceProviderTest extends BaseTestCase
+class AppServiceProviderTest extends ApplicationTestCase
 {
     public function testScopeGate(): void
     {

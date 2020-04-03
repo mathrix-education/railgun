@@ -6,7 +6,7 @@ namespace Tests\Unit\GraphQL\Scalars;
 
 use GraphQL\Error\InvariantViolation;
 use Railgun\GraphQL\Scalars\Color;
-use Tests\BaseTestCase;
+use Tests\ApplicationTestCase;
 use Throwable;
 use function collect;
 
@@ -14,7 +14,7 @@ use function collect;
  * @testdox [Unit] Color scalar
  * @coversDefaultClass \Railgun\GraphQL\Scalars\Color
  */
-class ColorTest extends BaseTestCase
+class ColorTest extends ApplicationTestCase
 {
     /**
      * @return mixed[][] The Color validation dataset

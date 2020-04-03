@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\E2E\GraphQL\Mutations;
 
 use Illuminate\Support\Facades\Queue;
+use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Jobs\CleanUserSession;
 use Railgun\Models\Grade;
 use Railgun\Models\User;
@@ -15,6 +16,8 @@ use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
  */
 class UpdateMeIntegrationTest extends GraphQLIntegrationTestCase
 {
+    use DatabaseTransactions;
+
     /**
      * @testdox triggers the CleanUserSession job on grade change.
      */

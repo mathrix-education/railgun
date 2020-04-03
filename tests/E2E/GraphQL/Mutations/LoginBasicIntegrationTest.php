@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\E2E\GraphQL\Mutations;
 
 use JsonException;
+use Laravel\Lumen\Testing\DatabaseTransactions;
 use Mathrix\Lumen\JWT\Drivers\Driver;
 use Railgun\Models\User;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
@@ -20,6 +21,8 @@ use const JSON_THROW_ON_ERROR;
  */
 class LoginBasicIntegrationTest extends GraphQLIntegrationTestCase
 {
+    use DatabaseTransactions;
+
     private const QUERY = <<<'GRAPHQL'
     mutation ($email: String!, $password: String!) {
         loginBasic(email: $email, password: $password) {
