@@ -7,9 +7,9 @@ namespace Tests\Unit;
 use GraphQL\Type\Definition\ResolveInfo;
 use Mockery;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use Tests\BaseTestCase;
+use Tests\ApplicationTestCase;
 
-class GraphQLUnitTestCase extends BaseTestCase
+class GraphQLUnitTestCase extends ApplicationTestCase
 {
     /**
      * Execute a GraphQL Query or Mutation

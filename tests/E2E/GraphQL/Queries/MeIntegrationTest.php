@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Queries;
 
+use Laravel\Lumen\Testing\DatabaseTransactions;
 use Mathrix\Lumen\JWT\Drivers\Driver;
 use Railgun\Models\Chapter;
 use Railgun\Models\Session;
@@ -17,6 +18,8 @@ use function factory;
  */
 class MeIntegrationTest extends GraphQLIntegrationTestCase
 {
+    use DatabaseTransactions;
+
     /**
      * @testdox returns the user id using a true, non-mocked JWT
      */

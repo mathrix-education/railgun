@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\E2E\GraphQL\Mutations;
 
 use Illuminate\Database\Eloquent\Builder;
+use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Pack;
 use Railgun\Models\Training;
 use Railgun\Models\User;
@@ -17,6 +18,8 @@ use function trans;
  */
 class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
 {
+    use DatabaseTransactions;
+
     private const QUERY = <<<'GRAPHQL'
     mutation($packIds: [ID!], $trainingIds: [ID!], $premium: Boolean, $coupon: ID, $paymentMethodId: String!) {
         checkoutCart(

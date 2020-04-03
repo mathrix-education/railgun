@@ -5,6 +5,8 @@
 /vendor/
 
 # Generated files
+/.sonar
+/.scannerwork
 /storage/code-coverage/
 /.phpunit.result.cache
 /schema-directives.graphql

@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace Tests\E2E\Billing\Webhooks;
 
 use Carbon\Carbon;
+use DateTimeInterface;
 use JsonException;
 use Stripe\Event;
 use Stripe\StripeObject;
 use Stripe\WebhookSignature;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
-use function assert;
 use function config;
 use function hash_hmac;
 use function is_int;
+use function is_numeric;
 use function json_encode;
 use const JSON_THROW_ON_ERROR;
 
@@ -81,22 +82,24 @@ abstract class WebhookTestCase extends GraphQLIntegrationTestCase
     /**
      * Sign a payload from Stripe webhooks.
      *
-     * @param string            $payload   The JSON-encoded payload.
-     * @param Carbon|int|string $timestamp The signature timestamp.
+     * @see WebhookSignature::computeSignature()
+     *
+     * @param string            $payload The JSON-encoded payload.
+     * @param Carbon|int|string $date    The signature timestamp.
      *
      * @return string The signature of the (payload|timestamp).
      */
-    protected function sign(string $payload, $timestamp = null): string
+    protected function sign(string $payload, $date = null): string
     {
-        if ($timestamp instanceof Carbon) {
-            $timestamp = $timestamp->getTimestamp();
-        } elseif ($timestamp === null) {
+        if (is_int($date) || is_numeric($date)) {
+            $timestamp = (int)$date;
+        } elseif ($date instanceof DateTimeInterface) {
+            $timestamp = $date->getTimestamp();
+        } elseif ($date === null) {
             $timestamp = Carbon::now()->getTimestamp();
         } else {
-            $timestamp = Carbon::make($timestamp)->getTimestamp();
+            $timestamp = Carbon::make($date)->getTimestamp();
         }
-
-        assert(is_int($timestamp));
 
         $scheme    = WebhookSignature::EXPECTED_SCHEME;
         $signature = hash_hmac(

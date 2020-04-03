@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\E2E\GraphQL\Mutations;
 
 use Illuminate\Support\Facades\Queue;
+use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Jobs\UpdateSessionAfterInteraction;
 use Railgun\Models\Course;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
@@ -14,6 +15,8 @@ use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
  */
 class InteractIntegrationTest extends GraphQLIntegrationTestCase
 {
+    use DatabaseTransactions;
+
     private const QUERY = <<<'GRAPHQL'
     mutation(
         $interactable_type: InteractionType!

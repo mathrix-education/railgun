@@ -63,11 +63,49 @@ jobs:
           STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
           BRAINTREE_PRIVATE_KEY: ${{ secrets.BRAINTREE_PRIVATE_KEY }}
         run: |
-          vendor/bin/phpunit \
-            --testdox \
+          vendor/bin/paratest -f \
             --log-junit=storage/artifacts/phpunit-junit.xml \
             --coverage-clover=storage/artifacts/phpunit-coverage.xml \
             --coverage-text
+      - name: Upload artifacts (JUnit Report, Coverage report)
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: artifacts
+          path: storage/artifacts
+  static_analysis:
+    name: Analyse with Sonar Scanner
+    needs: [tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: Standard versions
+        id: standard-versions
+        uses: mathrix-education/standard-versions@master
+      - name: Pull the git reference
+        run: |
+          git pull origin v7
+          git pull origin "${{ steps.standard-versions.outputs.branch }}"
+      - name: Setup sonar.properties
+        run: |
+          echo "sonar.projectVersion=${{ steps.standard-versions.outputs.semver }}" >> sonar-project.properties
+          echo "sonar.branch.name=${{ steps.standard-versions.outputs.branch }}" >> sonar-project.properties
+          if [[ "${{ steps.standard-versions.outputs.branch }}" != "v7" ]]; then
+            echo "sonar.branch.target=v7" >> sonar-project.properties
+          fi
+      - name: Download artifacts (JUnit Report, Coverage report)
+        uses: actions/download-artifact@v1.0.0
+        with:
+          name: artifacts
+          path: storage/artifacts
+      - name: Run Sonar Scanner
+        uses: mathrix-education/sonar-scanner@1.0.0
+        with:
+          version: 4.2.0.1873 # required
+          scan: true
+          args: -Dsonar.login=${{ secrets.SONAR_TOKEN }}
   docker:
     name: Build and push Docker image
     runs-on: ubuntu-latest

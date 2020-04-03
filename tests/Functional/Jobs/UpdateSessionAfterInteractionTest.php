@@ -12,13 +12,13 @@ use Railgun\Models\Flashcard;
 use Railgun\Models\Grade;
 use Railgun\Models\Interaction;
 use Railgun\Models\User;
-use Tests\BaseTestCase;
+use Tests\ApplicationTestCase;
 use function factory;
 
 /**
  * @testdox [Functional] UpdateSessionAfterInteraction Job
  */
-class UpdateSessionAfterInteractionTest extends BaseTestCase
+class UpdateSessionAfterInteractionTest extends ApplicationTestCase
 {
     /**
      * @testdox replaces an existing session [user_id, discipline_id].

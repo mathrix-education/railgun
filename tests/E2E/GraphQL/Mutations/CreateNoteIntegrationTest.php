@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Mutations;
 
+use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Course;
 use Railgun\Support\Silicate;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
@@ -13,6 +14,8 @@ use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
  */
 class CreateNoteIntegrationTest extends GraphQLIntegrationTestCase
 {
+    use DatabaseTransactions;
+
     /**
      * @testdox creates a note in the database
      */

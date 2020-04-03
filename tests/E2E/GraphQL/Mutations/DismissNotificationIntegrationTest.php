@@ -27,8 +27,10 @@ class DismissNotificationIntegrationTest extends GraphQLIntegrationTestCase
 
     /**
      * @testdox dismisses a single notification
+     *
+     * @depends DismissAllNotificationIntegrationTest::testDismissAllNotifications
      */
-    public function testReadNotification(): void
+    public function testDismissNotification(): void
     {
         $user = $this->actingAsNewUser();
         $user->notifyNow(new CommentReplyNotification(Comment::random(), Comment::random()));

@@ -10,8 +10,8 @@ enum InvoiceStatus {
 type Invoice {
     id: ID!
     amount_paid: Int!
-    hosted_invoice_url: String!
-    invoice_pdf: String!
+    hosted_invoice_url: URL!
+    invoice_pdf: URL!
     payment_intent: PaymentIntent
     number: String!
     status: InvoiceStatus!

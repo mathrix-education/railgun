@@ -12,15 +12,6 @@ jobs:
   migrate_database:
     name: Migrate database to v7
     runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_DATABASE: mathrix_education_testing
-          MYSQL_ROOT_PASSWORD: '123456'
-        ports:
-          - 3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -44,10 +35,9 @@ jobs:
       - name: Install PHP dependencies
         run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
       - name: Migrate database
-        env:
-          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
-          DB_PASSWORD: '123456'
         run: |
+          sudo service mysql start
+          mysql -u "root" -p"root" -Bse "CREATE DATABASE mathrix_education_testing;"
           cp tests/.env .env
           php artisan buster
       - name: Restore generated database

@@ -15,7 +15,7 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 /**
  * Base test class for all application tests.
  */
-abstract class BaseTestCase extends TestCase
+abstract class ApplicationTestCase extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
