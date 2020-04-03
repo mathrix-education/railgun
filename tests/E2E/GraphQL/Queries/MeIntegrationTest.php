@@ -51,9 +51,8 @@ class MeIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testMeSession(): void
     {
-        $user = $this->actingAsNewUser();
-        /** @var Chapter $chapter */
-        $chapter = Chapter::query()->where(['grade_id' => $user->grade_id])->firstOrFail();
+        $chapter = Chapter::random();
+        $user    = $this->actingAsNewUser(['grade_id' => $chapter->grade_id]);
         $session = new Session([
             'user_id'       => $user->id,
             'discipline_id' => $chapter->discipline_id,

@@ -26,7 +26,8 @@ use function str_replace;
  */
 class StripeWebhooksController extends Controller
 {
-    private const EVENT_MAP = [
+    private const IGNORED_MESSAGE = 'Not handled';
+    private const EVENT_MAP       = [
         // Event::CUSTOMER_SUBSCRIPTION_CREATED, // we probably do not want this
         Event::CUSTOMER_SUBSCRIPTION_UPDATED => 'handleCustomerSubscription',
         Event::CUSTOMER_SUBSCRIPTION_DELETED => 'handleCustomerSubscription',
@@ -35,11 +36,11 @@ class StripeWebhooksController extends Controller
     /**
      * Get the handler method based on the Stripe {@see Event} type.
      *
-     * @param string $eventType The Stripe {@see Event} type
+     * @param string|null $eventType The Stripe {@see Event} type
      *
      * @return string The associated handler method name.
      */
-    private function getHandler(string $eventType): string
+    private function getHandler(string $eventType): ?string
     {
         if (array_key_exists($eventType, self::EVENT_MAP)) {
             // Check if the event has been declared in the map.
@@ -50,7 +51,7 @@ class StripeWebhooksController extends Controller
         $method = 'handle' . Str::studly(str_replace('.', '_', $eventType));
 
         if (!method_exists($this, $method)) {
-            throw new UnsupportedEventException($eventType);
+            return null;
         }
 
         return $method;
@@ -77,7 +78,13 @@ class StripeWebhooksController extends Controller
             config('services.stripe.webhook.tolerance'),
         );
 
-        return $this->{$this->getHandler($event->type)}($event);
+        $handler = $this->getHandler($event->type);
+
+        if ($handler === null) {
+            throw new UnsupportedEventException($event);
+        }
+
+        return $this->{$handler}($event);
     }
 
     /**
@@ -85,20 +92,21 @@ class StripeWebhooksController extends Controller
      *
      * @param Event $event The Stripe Event.
      *
-     * @return string The response content.
+     * @return mixed[] The response content.
      *
      * @noinspection PhpUnused
      */
-    public function handleInvoicePaymentSucceeded(Event $event): string
+    public function handleInvoicePaymentSucceeded(Event $event): array
     {
         /** @var Invoice $invoice */
-        $invoice = $event->data;
+        $invoice = $event->data->object;
+        $message = null;
 
         if (Str::contains($invoice->billing_reason, 'subscription')) {
             // This is a subscription invoice
             dispatch(new UpsertSubscription($invoice->subscription));
 
-            return 'SUBSCRIPTION OK';
+            $message = 'Subscription invoice payment handled';
         }
 
         if (
@@ -107,10 +115,13 @@ class StripeWebhooksController extends Controller
         ) {
             dispatch(new DeliverProducts($invoice));
 
-            return 'CART OK';
+            $message = 'Cart invoice payment handled';
         }
 
-        return 'IGNORED';
+        return [
+            'message' => $message ?? self::IGNORED_MESSAGE,
+            'event'   => $event,
+        ];
     }
 
     /**
@@ -118,14 +129,17 @@ class StripeWebhooksController extends Controller
      *
      * @param Event $event The Stripe Event.
      *
-     * @return string The response to send to Stripe.
+     * @return mixed[] The response to send to Stripe.
      *
      * @noinspection PhpUnused
      */
-    public function handleCustomerSubscription(Event $event): string
+    public function handleCustomerSubscription(Event $event): array
     {
-        dispatch(new UpsertSubscription($event->data));
+        dispatch(new UpsertSubscription($event->data->object));
 
-        return 'SUBSCRIPTION OK';
+        return [
+            'message' => 'Subscription handled',
+            'event'   => $event->jsonSerialize(),
+        ];
     }
 }

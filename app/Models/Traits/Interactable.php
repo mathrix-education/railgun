@@ -40,7 +40,7 @@ trait Interactable
      */
     public function interactions(): MorphToMany
     {
-        return $this->morphToMany(Interaction::class, 'interactable');
+        return $this->morphToMany(Interaction::class, 'interactable', 'interactions');
     }
 
     /**
