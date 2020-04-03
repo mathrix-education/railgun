@@ -13,10 +13,11 @@ class ReadChapterBySlugs
      * @param null    $rootValue The parent value, always null in this case.
      * @param mixed[] $args      The query arguments (gradeSlug, disciplineSlug, chapterSlug).
      *
-     * @return Builder<Chapter>
+     * @return Chapter|null The chapter matching the given grade, discipline and chapter slugs if it exists.
      */
-    public function __invoke($rootValue, array $args): Builder
+    public function __invoke($rootValue, array $args): ?Chapter
     {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return Chapter::query()
             ->whereHas('grade', static function (Builder $builder) use ($args): void {
                 $builder->where('slug', '=', $args['gradeSlug']);
@@ -24,6 +25,7 @@ class ReadChapterBySlugs
             ->whereHas('discipline', static function (Builder $builder) use ($args): void {
                 $builder->where('slug', '=', $args['disciplineSlug']);
             })
-            ->where('slug', '=', $args['chapterSlug']);
+            ->where('slug', '=', $args['chapterSlug'])
+            ->first();
     }
 }
