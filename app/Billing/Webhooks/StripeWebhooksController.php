@@ -99,7 +99,7 @@ class StripeWebhooksController extends Controller
     public function handleInvoicePaymentSucceeded(Event $event): array
     {
         /** @var Invoice $invoice */
-        $invoice = $event->data;
+        $invoice = $event->data->object;
         $message = null;
 
         if (Str::contains($invoice->billing_reason, 'subscription')) {
@@ -135,7 +135,7 @@ class StripeWebhooksController extends Controller
      */
     public function handleCustomerSubscription(Event $event): array
     {
-        dispatch(new UpsertSubscription($event->data));
+        dispatch(new UpsertSubscription($event->data->object));
 
         return [
             'message' => 'Subscription handled',

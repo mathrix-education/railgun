@@ -36,6 +36,7 @@ abstract class WebhookTestCase extends GraphQLIntegrationTestCase
             $payload = json_encode($event->jsonSerialize(), JSON_THROW_ON_ERROR, 512);
         } catch (JsonException $exception) {
             $this->fail($exception->getMessage());
+
             return;
         }
 
@@ -73,7 +74,7 @@ abstract class WebhookTestCase extends GraphQLIntegrationTestCase
     {
         return Event::constructFrom([
             'type' => $type,
-            'data' => $data,
+            'data' => ['object' => $data],
         ]);
     }
 
