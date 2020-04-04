@@ -44,7 +44,6 @@ class ExercisesCommand extends V7Command
             })
             ->selectRaw(implode(',', [
                 'modules.type AS type',
-                "'[]' AS content",
                 'modules.questions AS questions',
                 'modules.choices AS choices',
                 'modules.solutions AS solutions',

@@ -44,8 +44,8 @@ class ExercisePipeline
                 new ParseExercise(),
                 new Serialize(['questions', 'choices', 'solutions', 'explanations']),
                 new Strip([
-                    'id', 'type', 'content', 'questions', 'choices', 'solutions', 'explanations', 'order', 'premium',
-                    'visible', 'subject_id', 'created_at', 'updated_at', 'mapping',
+                    'id', 'type', 'questions', 'choices', 'solutions', 'explanations', 'order', 'premium', 'visible',
+                    'subject_id', 'created_at', 'updated_at', 'mapping',
                 ]),
             ])->thenReturn();
     }
