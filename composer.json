@@ -98,5 +98,11 @@
     "preferred-install": "dist",
     "sort-packages": true,
     "optimize-autoloader": true
+  },
+  "scripts": {
+    "tests:ci": [
+      "Composer\\Config::disableProcessTimeout",
+      "paratest -f -p 4 --coverage-clover=storage/artifacts/phpunit-coverage.xml"
+    ]
   }
 }

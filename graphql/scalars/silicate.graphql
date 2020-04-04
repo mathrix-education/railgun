@@ -3,3 +3,14 @@ Silicate wall plain object.
 """
 scalar Silicate @scalar(class: "MLL\\GraphQLScalars\\Mixed")
 
+"""
+List of Silicate walls plain objects.
+Workaround for [nuwave/lighthouse#1264](https://github.com/nuwave/lighthouse/issues/1264).
+"""
+scalar SilicateList @scalar(class: "MLL\\GraphQLScalars\\Mixed")
+
+"""
+List of integers.
+Workaround for [nuwave/lighthouse#1264](https://github.com/nuwave/lighthouse/issues/1264).
+"""
+scalar IntList @scalar(class: "MLL\\GraphQLScalars\\Mixed")
