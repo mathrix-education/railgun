@@ -41,7 +41,7 @@ class Exam extends Model implements Content
     use Randomizable;
     use Reorderable;
 
-    protected $fillable          = [
+    protected       $fillable   = [
         'name',
         'slug',
         'duration',
@@ -51,12 +51,12 @@ class Exam extends Model implements Content
         'visible',
         'chapter_id',
     ];
-    protected $casts             = [
+    protected       $casts      = [
         'content' => 'array',
         'premium' => 'boolean',
         'visible' => 'boolean',
     ];
-    protected array $orderGroups = ['chapter_id'];
+    protected array $orderGroup = ['chapter_id'];
 
     /**
      * @return BelongsTo<Chapter>

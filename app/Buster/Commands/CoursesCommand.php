@@ -8,7 +8,6 @@ use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Railgun\Buster\Pipelines\CoursePipeline;
-use Railgun\Buster\Utils\SetOrder;
 use stdClass;
 use function implode;
 
@@ -48,6 +47,7 @@ class CoursesCommand extends V7Command
                 'modules.id AS id', // keep module ids, for SEO compatibility (mapping is not necessary)
                 'activities.name AS name',
                 "JSON_EXTRACT(modules.content, '$.silicate') AS content",
+                "activities.order AS 'order'",
                 'activities.premium AS premium',
                 'modules.visible AS visible',
                 'modules.seo_index AS seo_index',
@@ -64,7 +64,6 @@ class CoursesCommand extends V7Command
             ->tap(fn(Collection $courses) => $this->line("Found {$courses->count()} courses"))
             ->map(fn(stdClass $course) => $this->pipeline->send($course))
             ->reject(static fn($course) => $course === false)
-            ->pipe(new SetOrder('notion_id'))
             ->tap(fn(Collection $courses) => $this->getOutput()->progressStart($courses->count()))
             ->chunk(self::CHUNK_SIZE)
             ->each(function (Collection $courses): void {

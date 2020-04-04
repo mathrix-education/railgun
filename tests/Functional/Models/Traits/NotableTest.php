@@ -23,7 +23,7 @@ use function factory;
 use function strtolower;
 
 /**
- * @testdox [Functional] Notable
+ * @testdox [Functional] Notable Model trait
  * @coversDefaultClass \Railgun\Models\Note
  */
 class NotableTest extends ApplicationTestCase
@@ -44,7 +44,7 @@ class NotableTest extends ApplicationTestCase
     /**
      * @dataProvider createNotablesDataset
      * @testdox      has a valid notable morph (using $class)
-     * @covers ::notable
+     * @covers       ::notable
      *
      * @param string|Randomizable $class The model class.
      */

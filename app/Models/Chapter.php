@@ -39,7 +39,7 @@ class Chapter extends Model implements Content
     use Randomizable;
     use Reorderable;
 
-    protected $fillable          = [
+    protected       $fillable   = [
         'name',
         'slug',
         'order',
@@ -47,8 +47,8 @@ class Chapter extends Model implements Content
         'grade_id',
         'discipline_id',
     ];
-    protected $casts             = ['visible' => 'boolean'];
-    protected array $orderGroups = ['discipline_id', 'grade_id'];
+    protected       $casts      = ['visible' => 'boolean'];
+    protected array $orderGroup = ['discipline_id', 'grade_id'];
 
     /**
      * @return BelongsTo<Discipline>

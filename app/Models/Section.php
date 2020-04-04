@@ -30,14 +30,14 @@ class Section extends Model
     use Randomizable;
     use Reorderable;
 
-    protected $fillable          = [
+    protected       $fillable   = [
         'name',
         'slug',
         'order',
         'visible',
         'training_id',
     ];
-    protected array $orderGroups = ['training_id'];
+    protected array $orderGroup = ['training_id'];
 
     /**
      * @return BelongsTo<Training>

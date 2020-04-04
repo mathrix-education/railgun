@@ -39,7 +39,7 @@ class Flashcard extends Model implements Content
     use Randomizable;
     use Reorderable;
 
-    protected $fillable          = [
+    protected       $fillable   = [
         'fronts',
         'backs',
         'order',
@@ -47,13 +47,13 @@ class Flashcard extends Model implements Content
         'visible',
         'chapter_id',
     ];
-    protected $casts             = [
+    protected       $casts      = [
         'fronts'  => 'array',
         'backs'   => 'array',
         'premium' => 'boolean',
         'visible' => 'boolean',
     ];
-    protected array $orderGroups = ['chapter_id'];
+    protected array $orderGroup = ['chapter_id'];
 
     /**
      * @return BelongsTo<Chapter>

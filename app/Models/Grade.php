@@ -36,7 +36,7 @@ class Grade extends Model
     use Randomizable;
     use Reorderable;
 
-    protected $fillable          = [
+    protected       $fillable   = [
         'name',
         'slug',
         'order',
@@ -44,8 +44,8 @@ class Grade extends Model
         'parent_id',
         'country_id',
     ];
-    protected $casts             = ['visible' => 'boolean'];
-    protected array $orderGroups = ['country_id'];
+    protected       $casts      = ['visible' => 'boolean'];
+    protected array $orderGroup = ['country_id'];
 
     /**
      * The parent grade.

@@ -16,6 +16,8 @@ trait UUID
 {
     /**
      * On creating, set the primary key as a new uuid.
+     *
+     * @noinspection PhpUnused
      */
     public static function bootUUID(): void
     {
@@ -32,6 +34,8 @@ trait UUID
      * Initialize the model properties to be compatible with the uuid column type.
      *
      * @link https://laravel.com/docs/7.x/eloquent Section "Primary Keys".
+     *
+     * @noinspection PhpUnused
      */
     public function initializeUUID(): void
     {

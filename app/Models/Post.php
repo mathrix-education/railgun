@@ -29,7 +29,7 @@ class Post extends Model
     use Randomizable;
     use Reorderable;
 
-    protected       $fillable    = [
+    protected       $fillable   = [
         'title',
         'slug',
         'content',
@@ -37,8 +37,8 @@ class Post extends Model
         'visible',
         'category_id',
     ];
-    protected       $casts       = ['content' => 'array'];
-    protected array $orderGroups = ['category_id'];
+    protected       $casts      = ['content' => 'array'];
+    protected array $orderGroup = ['category_id'];
 
     /*
     |--------------------------------------------------------------------------
