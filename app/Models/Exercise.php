@@ -19,7 +19,6 @@ use Railgun\Models\Traits\Reorderable;
 /**
  * @property-read int     $id
  * @property      string  $type
- * @property      array   $content
  * @property      array   $questions
  * @property      array   $choices
  * @property      array   $solutions
@@ -55,7 +54,6 @@ class Exercise extends Model implements Content
         'subject_id',
     ];
     protected $casts             = [
-        'content'      => 'array',
         'questions'    => 'array',
         'choices'      => 'array',
         'solutions'    => 'array',
@@ -71,14 +69,6 @@ class Exercise extends Model implements Content
     public function subject(): BelongsTo
     {
         return $this->belongsTo(Subject::class);
-    }
-
-    /**
-     * @return mixed[] The potentially locked "content" field.
-     */
-    public function getContentAttribute(): array
-    {
-        return $this->lock('content', []);
     }
 
     /**

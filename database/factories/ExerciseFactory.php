@@ -45,7 +45,6 @@ $factory->define(Exercise::class, static function (Faker $faker) {
 
     return [
         'type'         => 'mcq',
-        'content'      => Silicate::wall($faker->numberBetween(1, 3)),
         'questions'    => $questions,
         'choices'      => $choices,
         'solutions'    => $solutions,

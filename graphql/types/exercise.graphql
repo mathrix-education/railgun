@@ -5,7 +5,6 @@ enum ExerciseType {
 type Exercise {
     id: ID!
     type: ExerciseType!
-    content: Silicate!
     questions: [Silicate!]!
     choices: [[Silicate!]!]!
     solutions: [[Int!]!]!

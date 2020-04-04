@@ -2,8 +2,7 @@ name: Pipeline
 on:
   push:
     branches:
-      - master
-      - dev
+      - v7
       - v7**
 jobs:
   lint:
@@ -74,6 +73,7 @@ jobs:
           path: storage/artifacts
   static_analysis:
     name: Analyse with Sonar Scanner
+    if: "!contains(github.event.head_commit.message, 'tests:skip')"
     needs: [tests]
     runs-on: ubuntu-latest
     steps:
@@ -106,6 +106,25 @@ jobs:
           version: 4.2.0.1873 # required
           scan: true
           args: -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+  codecov:
+    name: Send coverage reports to codecov
+    if: "!contains(github.event.head_commit.message, 'tests:skip')"
+    needs: [tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: Download artifacts (JUnit Report, Coverage report)
+        uses: actions/download-artifact@v1.0.0
+        with:
+          name: artifacts
+          path: storage/artifacts
+      - uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: storage/artifacts/phpunit-coverage.xml
   docker:
     name: Build and push Docker image
     runs-on: ubuntu-latest
