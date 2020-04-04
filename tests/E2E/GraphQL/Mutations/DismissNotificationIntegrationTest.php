@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Mutations;
 
-use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Comment;
 use Railgun\Notifications\CommentReplyNotification;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 
 /**
  * @testdox [E2E] Mutation dismissNotification
+ *
+ * Database transactions cause a deadlock, thus there are not used here.
  */
 class DismissNotificationIntegrationTest extends GraphQLIntegrationTestCase
 {
-    use DatabaseTransactions;
-
     private const QUERY = <<<'GRAPHQL'
     mutation ($notificationId: ID!) {
         dismissNotification(notificationId: $notificationId) {

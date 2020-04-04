@@ -21,13 +21,13 @@ $factory->define(Exercise::class, static function (Faker $faker) {
 
     for ($i = 0; $i < $questionCount; $i++) {
         // questions
-        $questions[] = str_replace('.', '?', $faker->sentence);
+        $questions[] = Silicate::wall($faker->numberBetween(1, 3));
 
         // choices
         $localChoices = [];
         $choiceCount  = $faker->numberBetween(2, 4);
         for ($j = 0; $j < $choiceCount; $j++) {
-            $localChoices[] = $faker->words($faker->numberBetween(1, 3), true);
+            $localChoices[] = Silicate::wall($faker->numberBetween(1, 3));
         }
         $choices[]   = $localChoices;
         $solutions[] = $faker->numberBetween(0, $choiceCount - 1);
