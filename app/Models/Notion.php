@@ -31,14 +31,14 @@ class Notion extends Model implements Content
     use Randomizable;
     use Reorderable;
 
-    protected $fillable          = [
+    protected       $fillable   = [
         'name',
         'visible',
         'order',
         'chapter_id',
     ];
-    protected $casts             = ['visible' => 'boolean'];
-    protected array $orderGroups = ['chapter_id', 'type'];
+    protected       $casts      = ['visible' => 'boolean'];
+    protected array $orderGroup = ['chapter_id'];
 
     /**
      * @return BelongsTo<Chapter>

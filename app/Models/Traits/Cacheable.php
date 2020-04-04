@@ -16,18 +16,6 @@ use Illuminate\Support\Facades\Cache;
 trait Cacheable
 {
     /**
-     * Get the full qualified cache key.
-     *
-     * @param string $key The cache sun key.
-     *
-     * @return string The full qualified cache key.
-     */
-    protected function getCacheKey(string $key): string
-    {
-        return 'models.' . static::class . ".{$this->getKey()}.$key";
-    }
-
-    /**
      * Cache data for the model.
      *
      * @param string  $key      The cache sub key name.
@@ -39,5 +27,17 @@ trait Cacheable
     {
         return Cache::store('array')
             ->rememberForever($this->getCacheKey($key), $callback);
+    }
+
+    /**
+     * Get the full qualified cache key.
+     *
+     * @param string $key The cache sun key.
+     *
+     * @return string The full qualified cache key.
+     */
+    protected function getCacheKey(string $key): string
+    {
+        return 'models.' . static::class . ".{$this->getKey()}.$key";
     }
 }

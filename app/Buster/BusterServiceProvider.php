@@ -18,6 +18,7 @@ use Railgun\Buster\Commands\FlashcardsCommand;
 use Railgun\Buster\Commands\InitializationCommand;
 use Railgun\Buster\Commands\InteractionsCommand;
 use Railgun\Buster\Commands\MigrateCommand;
+use Railgun\Buster\Commands\OrdersCommand;
 use Railgun\Buster\Commands\PostsCommand;
 use Railgun\Buster\Commands\ProductsCommand;
 use Railgun\Buster\Commands\ReportsCommand;
@@ -69,6 +70,7 @@ class BusterServiceProvider extends ServiceProvider
             UsersCommand::class,
             SessionsCommand::class,
             CountersCommand::class,
+            OrdersCommand::class,
         ]);
     }
 

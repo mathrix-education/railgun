@@ -21,7 +21,7 @@ use function data_get;
 use function factory;
 
 /**
- * @testdox [Functional] Labelable
+ * @testdox [Functional] Labelable Model trait
  */
 class LabelableTest extends ApplicationTestCase
 {

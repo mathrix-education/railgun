@@ -30,14 +30,15 @@ class Subject extends Model implements Content
     use Randomizable;
     use Reorderable;
 
-    protected $fillable          = [
+    protected       $fillable       = [
         'name',
         'order',
         'visible',
         'notion_id',
     ];
-    protected $casts             = ['visible' => 'boolean'];
-    protected array $orderGroups = ['notion_id'];
+    protected       $casts          = ['visible' => 'boolean'];
+    protected array $orderGroup     = ['notion_id'];
+    protected array $orderRelations = [Course::class];
 
     /**
      * @return BelongsTo<Notion>

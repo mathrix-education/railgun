@@ -36,15 +36,17 @@ class ReadChapterBySlugsIntegrationTest extends GraphQLIntegrationTestCase
 
         $discipline = Discipline::random();
 
-        /**
-         * @var Chapter $chapter1
-         * @var Chapter $chapter2
-         */
-        [$chapter1, $chapter2] = factory(Chapter::class, 2)
-            ->create(['slug' => $slug, 'discipline_id' => $discipline->id]);
+        factory(Chapter::class)->create([
+            'slug'          => $slug,
+            'discipline_id' => $discipline->id,
+            'grade_id'      => $grade1->id,
+        ]);
 
-        $chapter1->update(['grade_id' => $grade1->id]);
-        $chapter2->update(['grade_id' => $grade2->id]);
+        factory(Chapter::class)->create([
+            'slug'          => $slug,
+            'discipline_id' => $discipline->id,
+            'grade_id'      => $grade2->id,
+        ]);
 
         $this->graphQL(
             <<<'GRAPHQL'

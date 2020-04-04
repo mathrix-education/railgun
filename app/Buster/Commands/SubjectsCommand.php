@@ -7,7 +7,6 @@ namespace Railgun\Buster\Commands;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Railgun\Buster\Utils\SetOrder;
 use stdClass;
 use function implode;
 
@@ -34,6 +33,7 @@ class SubjectsCommand extends V7Command
             ->join('notions', 'activities.notion_id', '=', 'notions.id')
             ->selectRaw(implode(',', [
                 'activities.name AS name',
+                "activities.order AS 'order'",
                 'activities.visible AS visible',
                 'activities.notion_id AS notion_id',
                 'activities.created_at AS created_at',
@@ -45,7 +45,6 @@ class SubjectsCommand extends V7Command
             ->distinct()
             ->get()
             ->tap(fn(Collection $subjects) => $this->line("Found {$subjects->count()} subjects"))
-            ->pipe(new SetOrder('notion_id'))
             ->map(static fn(stdClass $subject) => (array)$subject)
             ->tap(static fn(Collection $subjects) => DB::table('subjects')->insert($subjects->toArray()));
     }

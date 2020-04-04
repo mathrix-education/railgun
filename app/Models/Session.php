@@ -24,8 +24,8 @@ class Session extends Model
     use Randomizable;
     use UUID;
 
-    public $timestamps  = false;
-    protected $fillable = [
+    public    $timestamps = false;
+    protected $fillable   = [
         'user_id',
         'discipline_id',
         'chapter_id',

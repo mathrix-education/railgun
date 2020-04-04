@@ -46,6 +46,7 @@ class MigrateCommand extends V7Command
         'buster:users',
         'buster:sessions',
         'buster:counters',
+        'buster:orders',
         'migrate',
     ];
 

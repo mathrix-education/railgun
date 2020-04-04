@@ -42,7 +42,7 @@ class Exercise extends Model implements Content
     use Randomizable;
     use Reorderable;
 
-    protected $fillable          = [
+    protected       $fillable   = [
         'type',
         'questions',
         'choices',
@@ -53,7 +53,7 @@ class Exercise extends Model implements Content
         'visible',
         'subject_id',
     ];
-    protected $casts             = [
+    protected       $casts      = [
         'questions'    => 'array',
         'choices'      => 'array',
         'solutions'    => 'array',
@@ -61,7 +61,7 @@ class Exercise extends Model implements Content
         'premium'      => 'boolean',
         'visible'      => 'boolean',
     ];
-    protected array $orderGroups = ['subject_id'];
+    protected array $orderGroup = ['subject_id'];
 
     /**
      * @return BelongsTo<Subject>

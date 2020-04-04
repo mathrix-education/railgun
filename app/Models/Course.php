@@ -44,7 +44,7 @@ class Course extends Model implements Content
     use Randomizable;
     use Reorderable;
 
-    protected $fillable          = [
+    protected       $fillable       = [
         'name',
         'slug',
         'content',
@@ -57,12 +57,13 @@ class Course extends Model implements Content
         'seo_description',
         'notion_id',
     ];
-    protected $casts             = [
+    protected       $casts          = [
         'content'   => 'array',
         'visible'   => 'boolean',
         'seo_index' => 'boolean',
     ];
-    protected array $orderGroups = ['notion_id'];
+    protected array $orderGroup     = ['notion_id'];
+    protected array $orderRelations = [Subject::class];
 
     /**
      * @return BelongsTo<Notion>

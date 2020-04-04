@@ -21,11 +21,17 @@ use function scope;
 trait Lockable
 {
     /**
-     * @return string get the lock mode.
+     * @param string $key   The attribute key
+     * @param mixed  $strip The stripped value
+     *
+     * @return mixed
      */
-    protected function getLockMode(): string
+    protected function lock(string $key, $strip)
     {
-        return property_exists($this, 'strip') ? $this->strip : 'premium';
+        $raw    = $this->getAttributeFromArray($key);
+        $casted = $this->hasCast($key) ? $this->castAttribute($key, $raw) : $raw;
+
+        return $this->isLocked() ? $strip : $casted;
     }
 
     /**
@@ -48,16 +54,10 @@ trait Lockable
     }
 
     /**
-     * @param string $key   The attribute key
-     * @param mixed  $strip The stripped value
-     *
-     * @return mixed
+     * @return string get the lock mode.
      */
-    protected function lock(string $key, $strip)
+    protected function getLockMode(): string
     {
-        $raw    = $this->getAttributeFromArray($key);
-        $casted = $this->hasCast($key) ? $this->castAttribute($key, $raw) : $raw;
-
-        return $this->isLocked() ? $strip : $casted;
+        return property_exists($this, 'strip') ? $this->strip : 'premium';
     }
 }

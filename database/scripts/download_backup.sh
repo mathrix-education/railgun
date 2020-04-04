@@ -10,11 +10,16 @@ echo "Extracting "${DESTINATION_FILE}.gz""
 rm -f "$DESTINATION_FILE"
 gzip -d "$DESTINATION_FILE.gz"
 
-echo "Removing cache table"
-ls -l "$DESTINATION_FILE"
-START=$(($(grep -n "Table structure for table \`cache\`" storage/buster/mathrix_education_v7.sql | cut -d: -f1) - 1))
-END=$(($(grep -n "ALTER TABLE \`cache\` ENABLE KEYS" storage/buster/mathrix_education_v7.sql | cut -d: -f1) + 1))
-sed -i "${START},${END}d" "$DESTINATION_FILE"
+strip() {
+    echo "Removing $1 table"
+    ls -l "$DESTINATION_FILE"
+    START=$(($(grep -n "Table structure for table \`$1\`" "$DESTINATION_FILE" | cut -d: -f1) - 1))
+    END=$(($(grep -n "ALTER TABLE \`$1\` ENABLE KEYS" "$DESTINATION_FILE" | cut -d: -f1) + 1))
+    sed -i "${START},${END}d" "$DESTINATION_FILE"
+}
+
+strip "cache"
+strip "settings"
 
 echo "Patching the database name"
 sed -i "s/mathrix_education_master/${TARGET_DB}/g" "$DESTINATION_FILE"

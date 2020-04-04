@@ -6,13 +6,16 @@ namespace Railgun\Models\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use function array_unshift;
+use function in_array;
 use function property_exists;
 
 /**
  * Allow models to be automatically ordered.
  *
- * @property-read string   $orderColumn The order column. If not defined, it will "order".
- * @property-read string[] $orderGroups The order groups to filter the order column.
+ * @property-read string   $orderName      The order column. If not defined, it will "order".
+ * @property-read string[] $orderGroup     The order columns which define the scope of the order.
+ * @property-read string[] $orderRelations The order models to merge.
  * @mixin Model
  */
 trait Reorderable
@@ -53,7 +56,7 @@ trait Reorderable
         });
         self::updated(static function (Model $model): void {
             /** @var Reorderable $model */
-            foreach ($model->getOrderGroups() as $orderGroup) {
+            foreach ($model->getOrderGroup() as $orderGroup) {
                 if ($model->wasChanged($orderGroup)) {
                     $model->pullOrder();
                     $model->pushOrder();
@@ -74,33 +77,69 @@ trait Reorderable
     /**
      * Get the maximum order matching the order groups.
      *
+     * @param bool                   $withForeign Also calculate the max order for foreign models.
+     * @param Model|Reorderable|null $model       The model to use as a reference.
+     *
      * @return int The maximum order number.
      */
-    public function getMaxOrder(): int
+    public function getMaxOrder(bool $withForeign = true, $model = null): int
     {
-        /** @var Reorderable $max */
-        $max = $this->getQueryOrder()
-            ->orderByDesc($this->getOrderColumn())
-            ->get([$this->getOrderColumn()])
-            ->first();
+        $classes = $withForeign ? $this->getOrderRelations() : [self::class];
+        $max     = -1;
 
-        return $max ? $max->{$max->getOrderColumn()} : 0;
+        foreach ($classes as $class) {
+            if ($class === self::class) {
+                /** @var Reorderable $maxModel */
+                $maxModel = $this->getQueryOrder($model, false)
+                    ->orderByDesc($this->getOrderName())
+                    ->get([$this->getOrderName()])
+                    ->first();
+
+                $theMax = $maxModel !== null ? $maxModel->getOrder() : -1;
+            } else {
+                $theMax = (new $class())->getMaxOrder(false, $this);
+            }
+
+            if ($theMax > $max) {
+                $max = $theMax;
+            }
+        }
+
+        return $max;
+    }
+
+    /**
+     * @return string[] The models which are included in the order computations.
+     */
+    public function getOrderRelations(): array
+    {
+        $models = property_exists($this, 'orderRelations') ? $this->orderRelations : [];
+
+        if (!in_array(self::class, $models, true)) {
+            array_unshift($models, self::class);
+        }
+
+        return $models;
     }
 
     /**
      * Get the builder matching the order groups ({@see static::$orderGroups}).
      *
-     * @param bool $original Use original values instead.
+     * @param Model|Reorderable|null $for      The model to use as a reference.
+     * @param bool                   $original Use original values instead.
      *
      * @return Builder The builder matching the order groups.
      */
-    public function getQueryOrder(bool $original = false): Builder
+    public function getQueryOrder($for = null, bool $original = false): Builder
     {
+        $for ??= $this;
         $query = self::query();
 
-        foreach ($this->getOrderGroups() as $orderColumn) {
-            $value = !$original ? $this->{$orderColumn} : $this->getOriginal($orderColumn);
-            $query = $query->where($orderColumn, '=', $value);
+        foreach ($this->getOrderGroup() as $column) {
+            $value = !$original
+                ? $for->getAttribute($column)
+                : $for->getOriginal($column);
+            $query = $query->where($column, '=', $value);
         }
 
         return $query;
@@ -111,19 +150,19 @@ trait Reorderable
      *
      * @return string[] The order groups.
      */
-    public function getOrderGroups(): array
+    public function getOrderGroup(): array
     {
-        return property_exists($this, 'orderGroups') ? $this->orderGroups : [];
+        return property_exists($this, 'orderGroup') ? $this->orderGroup : [];
     }
 
     /**
      * Get the order column (defaults set to "order").
      *
-     * @return string The order column.
+     * @return string The order column name.
      */
-    public function getOrderColumn(): string
+    public function getOrderName(): string
     {
-        return property_exists($this, 'orderColumn') ? $this->orderColumn : 'order';
+        return property_exists($this, 'orderName') ? $this->orderName : 'order';
     }
 
     /**
@@ -133,19 +172,17 @@ trait Reorderable
      */
     public function getOrder(): ?int
     {
-        return $this->{$this->getOrderColumn()};
+        return $this->getAttribute($this->getOrderName());
     }
 
     /**
      * Set the order.
      *
      * @param int $order The new order.
-     *
-     * @return int The new order.
      */
-    public function setOrder(int $order): int
+    public function setOrder(int $order): void
     {
-        return $this->{$this->getOrderColumn()} = $order;
+        $this->setAttribute($this->getOrderName(), $order);
     }
 
     /**
@@ -153,11 +190,19 @@ trait Reorderable
      */
     public function pushOrder(): void
     {
-        $column = $this->getOrderColumn();
-        $this->getQueryOrder()
-            ->where($this->getKeyName(), '!=', $this->getKey())
-            ->where($column, '>=', $this->getOrder())
-            ->increment($column);
+        foreach ($this->getOrderRelations() as $class) {
+            /** @var Reorderable $model */
+            $model  = $class === self::class ? $this : new $class();
+            $column = $model->getOrderName();
+
+            $query = $model->getQueryOrder($this, false)->where($column, '>=', $this->getOrder());
+
+            if ($class === self::class) {
+                $query = $query->where($this->getKeyName(), '!=', $this->getKey());
+            }
+
+            $query->increment($column);
+        }
     }
 
     /**
@@ -165,13 +210,21 @@ trait Reorderable
      */
     public function pullOrder(): void
     {
-        $prevOrder = $this->getOriginal($this->getOrderColumn());
-        $column    = $this->getOrderColumn();
+        $prevOrder = $this->getOriginal($this->getOrderName());
 
-        $this->getQueryOrder(true)
-            ->where($this->getKeyName(), '!=', $this->getKey())
-            ->where($column, '>', $prevOrder)
-            ->decrement($column);
+        foreach ($this->getOrderRelations() as $class) {
+            /** @var Reorderable $model */
+            $model  = $class === self::class ? $this : new $class();
+            $column = $model->getOrderName();
+
+            $query = $model->getQueryOrder($this, true)->where($column, '>', $prevOrder);
+
+            if ($class === self::class) {
+                $query = $query->where($this->getKeyName(), '!=', $this->getKey());
+            }
+
+            $query->decrement($column);
+        }
     }
 
     /**
@@ -180,18 +233,28 @@ trait Reorderable
     public function moveOrder(): void
     {
         $order         = $this->getOrder();
-        $column        = $this->getOrderColumn();
-        $previousOrder = $this->getOriginal($column);
-        $query         = $this->getQueryOrder()->where($this->getKeyName(), '!=', $this->getKey());
+        $previousOrder = $this->getOriginal($this->getOrderName());
 
-        if ($order > $previousOrder) {
-            $query->where($column, '>', $previousOrder)
-                ->where($column, '<=', $order)
-                ->decrement($column);
-        } elseif ($order < $previousOrder) {
-            $query->where($column, '<', $previousOrder)
-                ->where($column, '>=', $order)
-                ->increment($column);
+        foreach ($this->getOrderRelations() as $class) {
+            /** @var Reorderable $model */
+            $model  = $class === self::class ? $this : new $class();
+            $column = $model->getOrderName();
+
+            $query = $model->getQueryOrder($this, false);
+
+            if ($class === self::class) {
+                $query = $query->where($this->getKeyName(), '!=', $this->getKey());
+            }
+
+            if ($order > $previousOrder) {
+                $query->where($column, '>', $previousOrder)
+                    ->where($column, '<=', $order)
+                    ->decrement($column);
+            } elseif ($order < $previousOrder) {
+                $query->where($column, '<', $previousOrder)
+                    ->where($column, '>=', $order)
+                    ->increment($column);
+            }
         }
     }
 }
