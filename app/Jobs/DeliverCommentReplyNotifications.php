@@ -29,14 +29,19 @@ class DeliverCommentReplyNotifications extends Job
         Comment::query()
             ->with(['user'])
             ->where('parent_id', '=', $this->comment->parent_id)
+            ->where('user_id', '!=', $this->comment->user_id) // exclude the user who posted the comment
             ->get()
-            ->mapWithKeys(fn(Comment $comment) => [$this->comment->user_id => $this->comment])
-            ->values()
             ->prepend(Comment::query()->with(['user'])->findOrFail($this->comment->parent_id))
+            ->sortBy('created_at')
+            ->mapWithKeys(static fn(Comment $comment) => [$comment->user_id => $comment])
+            ->values()
             ->each(function (Comment $userComment): void {
                 $user = $userComment->user;
                 // We are already in a queue, register save the notification right now
-                $user->notifyNow(new CommentReplyNotification($userComment, $this->comment->withoutRelations()));
+                $user->notifyNow(new CommentReplyNotification(
+                    $userComment->withoutRelations(),
+                    $this->comment->withoutRelations(),
+                ));
             });
     }
 }

@@ -125,6 +125,8 @@ class Handler extends ExceptionHandler
      * Report the exception to sentry if necessary.
      *
      * @param Throwable $exception The exception to report.
+     *
+     * @codeCoverageIgnore
      */
     public function reportToSentry(Throwable $exception): void
     {
@@ -167,6 +169,8 @@ class Handler extends ExceptionHandler
      * @param string $psr3LogLevel The PSR3 {@see LogLevel}
      *
      * @return Severity|null The Sentry {@see Severity}
+     *
+     * @codeCoverageIgnore
      */
     private function getSentrySeverity(string $psr3LogLevel): ?Severity
     {

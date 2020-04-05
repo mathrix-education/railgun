@@ -70,7 +70,7 @@ class LabelableTest extends ApplicationTestCase
 
     /**
      * @dataProvider createLabelablesDataset
-     * @testdox      in in the GraphQL type associated with $class
+     * @testdox      is in the GraphQL type associated with $class
      *
      * @param string|Randomizable $class The model class.
      */

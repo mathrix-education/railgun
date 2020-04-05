@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\E2E\GraphQL\Mutations;
 
 use Carbon\Carbon;
-use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Comment;
 use Railgun\Notifications\CommentReplyNotification;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
@@ -17,8 +16,6 @@ use function range;
  */
 class DismissAllNotificationIntegrationTest extends GraphQLIntegrationTestCase
 {
-    use DatabaseTransactions;
-
     private const QUERY = <<<'GRAPHQL'
     mutation {
         dismissAllNotifications(first: 100) {
