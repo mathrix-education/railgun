@@ -7,7 +7,9 @@ namespace Railgun\Models\Traits;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use function array_unshift;
+use function collect;
 use function in_array;
+use function max;
 use function property_exists;
 
 /**
@@ -52,20 +54,19 @@ trait Reorderable
                 return;
             }
 
-            $model->setOrder($max);
+            $model->setOrder(max($max, 0));
         });
         self::updated(static function (Model $model): void {
             /** @var Reorderable $model */
-            foreach ($model->getOrderGroup() as $orderGroup) {
-                if ($model->wasChanged($orderGroup)) {
-                    $model->pullOrder();
-                    $model->pushOrder();
+            $changes = collect($model->getOrderGroup())
+                    ->first(static fn($orderGroup) => $model->wasChanged($orderGroup)) ?? false;
 
-                    return;
-                }
+            if ($changes) {
+                $model->pullOrder();
+                $model->pushOrder();
+            } else {
+                $model->moveOrder();
             }
-
-            $model->moveOrder();
         });
 
         self::deleted(static function (Model $model): void {

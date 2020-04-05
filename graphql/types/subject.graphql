@@ -7,4 +7,5 @@ type Subject {
     updated_at: DateTime!
     notion: Notion! @belongsTo
     exercises: [Exercise!]! @hasMany
+    interaction: Interaction @belongsTo
 }

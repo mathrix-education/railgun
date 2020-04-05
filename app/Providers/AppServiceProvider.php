@@ -17,13 +17,13 @@ use Railgun\Console\Kernel;
 use Railgun\Handlers\Handler;
 use Railgun\Middleware\CorrelationMiddleware;
 use Railgun\Middleware\ImpersonateMiddleware;
-use Railgun\Models\Chapter;
 use Railgun\Models\Course;
 use Railgun\Models\Exam;
 use Railgun\Models\Exercise;
 use Railgun\Models\Flashcard;
 use Railgun\Models\Lesson;
 use Railgun\Models\Pack;
+use Railgun\Models\Subject;
 use Railgun\Models\Training;
 use Railgun\Models\Traits\Acquerable;
 use Railgun\Models\Traits\Commentable;
@@ -81,7 +81,7 @@ class AppServiceProvider extends ServiceProvider
              * @see Notable
              * @see Reportable
              */
-            'subject'   => Chapter::class,
+            'subject'   => Subject::class,
             'course'    => Course::class,
             'exercise'  => Exercise::class,
             'flashcard' => Flashcard::class,

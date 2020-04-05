@@ -29,6 +29,7 @@ class Interaction extends Model
     use Randomizable;
     use UUID;
 
+    public const INTERACTABLES  = [Course::class, Exercise::class, Flashcard::class, Exam::class, Subject::class];
     public const COMPREHENSIONS = ['blur', 'clear'];
 
     protected $fillable = [

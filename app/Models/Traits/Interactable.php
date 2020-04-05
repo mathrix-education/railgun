@@ -6,8 +6,8 @@ namespace Railgun\Models\Traits;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasRelationships;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Queue;
 use Railgun\Jobs\DeleteChapterInteractions;
@@ -36,11 +36,11 @@ trait Interactable
     }
 
     /**
-     * @return MorphToMany<Interaction>
+     * @return MorphMany<Interaction>
      */
-    public function interactions(): MorphToMany
+    public function interactions(): MorphMany
     {
-        return $this->morphToMany(Interaction::class, 'interactable', 'interactions');
+        return $this->morphMany(Interaction::class, 'interactable');
     }
 
     /**
