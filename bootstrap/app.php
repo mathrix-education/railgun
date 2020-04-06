@@ -13,6 +13,7 @@ use Laravel\Lumen\Bootstrap\LoadEnvironmentVariables;
 use Laravel\Tinker\TinkerServiceProvider;
 use Mathrix\Lumen\JWT\Providers\JWTServiceProvider;
 use Mathrix\Mailjet\MailjetServiceProvider;
+use Mathrix\Prometheus\PrometheusServiceProvider;
 use MLL\GraphQLPlayground\GraphQLPlaygroundServiceProvider;
 use Nuwave\Lighthouse\LighthouseServiceProvider;
 use Nuwave\Lighthouse\Tracing\TracingServiceProvider;
@@ -84,6 +85,10 @@ $app->register(BraintreeServiceProvider::class);
 if ($app->environment(['master', 'dev', 'v7']) && !$app->runningUnitTests()) {
     $app->register(SentryServiceProvider::class);
 }
+
+// Prometheus
+$app->configure('prometheus');
+$app->register(PrometheusServiceProvider::class);
 
 // Debug
 if ($app->runningInConsole()) {

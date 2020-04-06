@@ -5,6 +5,22 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Auth;
 use Railgun\Models\User;
 
+if (!function_exists('config_path')) {
+    /**
+     * Get the configuration path.
+     *
+     * @param string $path And additional path to append.
+     *
+     * @return string The configuration path.
+     *
+     * phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.NotCamelCaps
+     */
+    function config_path(string $path = ''): string
+    {
+        return app()->basePath() . '/config' . ($path ? '/' . $path : $path);
+    }
+}
+
 if (!function_exists('hasScope')) {
     /**
      * Check if a user has the given scope.
@@ -51,5 +67,24 @@ if (!function_exists('isPremium')) {
         $user = Auth::user();
 
         return $user instanceof User && $user->premium;
+    }
+}
+
+if (!function_exists('prefix')) {
+    /**
+     * Get the application prefix.
+     *
+     * @param string|null $path       An additional path to add.
+     * @param bool        $underscore Of the prefix should be terminated by an underscore.
+     *
+     * @return string The generated prefix.
+     */
+    function prefix(?string $path = null, bool $underscore = false): string
+    {
+        $prefix  = env('APP_NAME', 'app') . '_' . env('APP_ENV', 'stable');
+        $prefix .= $path ? "_$path" : '';
+        $prefix .= $underscore && $prefix[strlen($prefix) - 1] !== '_' ? '_' : '';
+
+        return $prefix;
     }
 }

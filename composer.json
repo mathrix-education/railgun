@@ -35,6 +35,10 @@
     {
       "type": "path",
       "url": "packages/lumen-mailjet"
+    },
+    {
+      "type": "path",
+      "url": "packages/lumen-prometheus-exporter"
     }
   ],
   "require": {
@@ -54,6 +58,7 @@
     "laravel/lumen-framework": "^7.0",
     "mathrix-education/lumen-jwt": "v3.x-dev",
     "mathrix-education/lumen-mailjet": "^0.1.0",
+    "mathrix-education/lumen-prometheus-exporter": "^0.1",
     "mll-lab/graphql-php-scalars": "^3.0",
     "mll-lab/laravel-graphql-playground": "^2.0",
     "nuwave/lighthouse": "^4.8",

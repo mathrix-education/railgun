@@ -9,6 +9,8 @@ use Railgun\Buster\Pipelines\ExamPipeline;
 
 /**
  * Dummy Command which is only used to test behavioral code.
+ *
+ * @codeCoverageIgnore
  */
 class SandboxCommand extends Command
 {
