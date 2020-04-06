@@ -41,7 +41,7 @@ jobs:
           cp tests/.env .env
           php artisan buster
       - name: Restore generated database
-        if: "github.ref == 'refs/heads/v7' || !contains(github.event.head_commit.message, 'database:restore')"
+        if: "github.ref == 'refs/heads/v7' || contains(github.event.head_commit.message, 'database:restore')"
         run: |
           DATE=$(date +%F_%H-%M-%S)
           DB_SOURCE="mathrix_education_testing"
@@ -50,7 +50,7 @@ jobs:
           BUCKET="gs://mathrix-backups"
           GSOBJECT="$BUCKET/databases/$DB_TARGET/$DB_TARGET-$DATE"
 
-          mysqldump -h 127.0.0.1 -P ${{ job.services.mysql.ports['3306'] }} -u'root' -p'123456' \
+          mysqldump -h 127.0.0.1 -P 3306 -u'root' -p'root' \
             --databases "$DB_SOURCE" --hex-blob --triggers --order-by-primary --no-autocommit \
             --default-character-set=utf8mb4 --single-transaction \
             | sed "s/$DB_SOURCE/$DB_TARGET/g" | gzip | pv \
