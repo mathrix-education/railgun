@@ -7,6 +7,7 @@ use Mathrix\Prometheus\Collectors\QueueCollector;
 use Railgun\Collectors\UserCollector;
 
 return [
+    'redis'      => ['connection' => 'prometheus'],
     'collectors' => [
         HttpCollector::class,
         QueueCollector::class,

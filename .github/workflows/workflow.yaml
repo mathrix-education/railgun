@@ -171,13 +171,17 @@ jobs:
         uses: mathrix-education/setup-gcloud@1.1.0
         with:
           service-account-key: ${{ secrets.GCLOUD_AUTH }}
-      - name: Retrieve Kubernetes Cluster Credentials
-        run: gcloud container clusters get-credentials php-fpm-testing --zone=europe-west1-b
       - name: Change image version
         run: |
           IMAGE="eu.gcr.io/mathrix-education/education-api:${{ steps.standard-versions.outputs.docker }}"
+
+          gcloud container clusters get-credentials php-fpm-testing --zone=europe-west1-b
           kubectl set image -n education-graphql deployment/api-server "php-server=$IMAGE"
           kubectl set image -n education-graphql deployment/api-worker "php-worker=$IMAGE"
+
+          gcloud container clusters get-credentials teknoid --zone=europe-west1-b
+          kubectl set image -n edge deployment/api-server "php-server=$IMAGE"
+          kubectl set image -n edge deployment/api-worker "worker=$IMAGE"
   sentry_release:
     name: Create Sentry Release
     if: "github.ref == 'refs/heads/v7' || contains(github.event.head_commit.message, 'deploy:force')"

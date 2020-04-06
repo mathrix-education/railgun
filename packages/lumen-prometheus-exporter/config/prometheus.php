@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 return [
     'namespace'  => env('APP_NAME') . '_' . env('APP_ENV'),
-    'adapter'    => env('PROMETHEUS_ADAPTER'),
+    'adapter'    => env('PROMETHEUS_ADAPTER', 'memory'),
     'action'     => 'Mathrix\\Prometheus\\Controllers\\PrometheusController@metrics',
     'redis'      => [
         // 'connection' => env('PROMETHEUS_REDIS_CONNECTION', 'prometheus'),
