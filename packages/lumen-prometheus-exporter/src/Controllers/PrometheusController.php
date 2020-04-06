@@ -9,9 +9,9 @@ use Illuminate\Container\Container;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Laravel\Lumen\Routing\Controller;
-use Mathrix\Prometheus\Collectors\Collector;
 use Prometheus\CollectorRegistry;
 use Prometheus\RenderTextFormat;
+use function method_exists;
 
 /**
  * Expose the Prometheus metrics route.
@@ -36,7 +36,10 @@ class PrometheusController extends Controller
     {
         // Trigger all collectors computation
         $this->collectors->each(static function (string $collector): void {
-            BoundMethod::call(Container::getInstance(), "$collector@compute");
+            if (method_exists($collector, 'compute')) {
+                // Allow compute method to use dependency injection
+                BoundMethod::call(Container::getInstance(), "$collector@compute");
+            }
         });
 
         $renderer = new RenderTextFormat();

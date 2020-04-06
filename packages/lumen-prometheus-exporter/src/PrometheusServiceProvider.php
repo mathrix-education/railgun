@@ -8,7 +8,6 @@ use Illuminate\Config\Repository;
 use Illuminate\Container\BoundMethod;
 use Illuminate\Container\Container;
 use Illuminate\Routing\Router;
-use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Mathrix\Prometheus\Controllers\PrometheusController;
 use Prometheus\CollectorRegistry;
@@ -45,13 +44,14 @@ class PrometheusServiceProvider extends ServiceProvider
             return new CollectorRegistry($adapter);
         });
 
+        $collectors = collect($config->get('prometheus.collectors', []))
+            ->each(function (string $collector): void {
+                $this->app->singleton($collector);
+                BoundMethod::call(Container::getInstance(), "$collector@register");
+            });
+
         // Register the collector metrics
-        $this->app->singleton('prometheus.collectors', static function () use ($config): Collection {
-            return collect($config->get('prometheus.collectors', []))
-                ->each(static function (string $collector): void {
-                    BoundMethod::call(Container::getInstance(), "$collector@register");
-                });
-        });
+        $this->app->singleton('prometheus.collectors', static fn() => $collectors);
 
         /** @var Router $router */
         $router = $this->app->make('router');
