@@ -12,7 +12,7 @@ use function array_merge;
 use function factory;
 
 /**
- * @testdox [E2] Mutation createExercise
+ * @testdox [E2E] Mutation createExercise
  */
 class CreateExerciseIntegrationTest extends GraphQLIntegrationTestCase
 {
