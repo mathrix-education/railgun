@@ -6,6 +6,11 @@ type User {
     password: String!
     email: String!
     scopes: [String!]!
+    """
+    If the user has access to premium content.
+    Notice: **may cause an additional delay**.
+    """
+    premium: Boolean!
     premium_bypass: Boolean!
     premium_bypass_expires_at: DateTime
     stripe_id: String
