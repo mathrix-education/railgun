@@ -20,6 +20,7 @@ use Railgun\Billing\Exceptions\InvalidEventSignatureException;
 use Railgun\Exceptions\FileConflictException;
 use Railgun\Exceptions\FileNotFoundException;
 use Railgun\Exceptions\HttpException;
+use Railgun\Exceptions\MethodNotAllowedException;
 use Railgun\Exceptions\ValidationException;
 use Railgun\Middleware\CorrelationMiddleware;
 use Railgun\Models\User;
@@ -29,6 +30,7 @@ use Sentry\State\Scope;
 use Stripe\Exception\CardException as StripeCardException;
 use Stripe\Exception\SignatureVerificationException;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Throwable;
 use function app;
 
@@ -62,6 +64,10 @@ class Handler extends ExceptionHandler
                     $converted,
                 );
             }
+        }
+
+        if ($original instanceof MethodNotAllowedHttpException) {
+            return MethodNotAllowedException::from($original);
         }
 
         if ($original instanceof IlluminateValidationException) {
@@ -114,6 +120,10 @@ class Handler extends ExceptionHandler
      */
     public function report(Throwable $exception): void
     {
+        if ($this->shouldntReport($exception)) {
+            return;
+        }
+
         $exception = $this->transform($exception);
 
         $this->reportToSentry($exception);
@@ -130,11 +140,12 @@ class Handler extends ExceptionHandler
      */
     public function reportToSentry(Throwable $exception): void
     {
-        if (
-            !$this->shouldReport($exception)
-            || !app()->environment(['master', 'dev', 'v7'])
-            || !app()->bound('sentry')
-        ) {
+        if ($exception instanceof HttpException && $exception->getLevel() === LogLevel::DEBUG) {
+            // Ignore DEBUG exceptions
+            return;
+        }
+
+        if (!app()->environment(['production', 'edge']) || !app()->bound('sentry')) {
             return;
         }
 

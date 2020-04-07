@@ -35,6 +35,10 @@
     {
       "type": "path",
       "url": "packages/lumen-mailjet"
+    },
+    {
+      "type": "path",
+      "url": "packages/lumen-prometheus-exporter"
     }
   ],
   "require": {
@@ -54,6 +58,7 @@
     "laravel/lumen-framework": "^7.0",
     "mathrix-education/lumen-jwt": "v3.x-dev",
     "mathrix-education/lumen-mailjet": "^0.1.0",
+    "mathrix-education/lumen-prometheus-exporter": "^0.1",
     "mll-lab/graphql-php-scalars": "^3.0",
     "mll-lab/laravel-graphql-playground": "^2.0",
     "nuwave/lighthouse": "^4.8",
@@ -70,7 +75,7 @@
     "brianium/paratest": "^4.0",
     "fzaninotto/faker": "^1.9.1",
     "laravel/tinker": "^2.2",
-    "mathrix-education/coding-standard": "v2.x-dev",
+    "mathrix-education/coding-standard": "^2.0",
     "mockery/mockery": "^1.3",
     "phpunit/phpunit": "^9.0",
     "roave/security-advisories": "dev-master",

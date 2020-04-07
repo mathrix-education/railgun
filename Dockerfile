@@ -5,7 +5,8 @@ LABEL Maintainer="Mathieu Bour <mathieu@mathrix.fr>" \
 
 ARG RELEASE="no-release"
 ARG EXT_REDIS_VERSION="5.2.1"
-ARG EXT_GRPC_VERSION="1.27.3"
+
+ENV APP_RELEASE=$RELEASE
 
 WORKDIR /var/www
 
@@ -48,7 +49,7 @@ RUN composer global require hirak/prestissimo && \
     composer install --no-suggest --prefer-dist --no-dev --optimize-autoloader && \
     composer clear-cache && \
     rm -rf /usr/bin/composer /root/.composer && \
-    sed -i "s/RELEASE_ALIAS/$RELEASE/g" /var/www/config/sentry.php
+    sed -i "s/RELEASE_ALIAS/$RELEASE/g" /var/www/config/app.php /var/www/config/sentry.php
 
 # Make sure files/folders needed by the processes are accessible when they run under the www-data user
 #RUN chown -R www-data.www-data /run && \
