@@ -21,6 +21,10 @@ class DeliverCommentReplyNotifications extends Job
 
     public function handle(): void
     {
+        if ($this->comment->parent_id === null) {
+            // Drop non-child comments
+        }
+
         /**
          * Not optimal since we need to query the whole discussion, we can use the following technique in the future:
          *

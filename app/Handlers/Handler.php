@@ -14,6 +14,7 @@ use Illuminate\Validation\ValidationException as IlluminateValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use League\Flysystem\FileExistsException as LeagueFileExistsException;
 use League\Flysystem\FileNotFoundException as LeagueFileNotFoundException;
+use Nuwave\Lighthouse\Exceptions\GenericException;
 use Psr\Log\LogLevel;
 use Railgun\Billing\Exceptions\CardException;
 use Railgun\Billing\Exceptions\InvalidEventSignatureException;
@@ -33,6 +34,8 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Throwable;
 use function app;
+use function preg_match;
+use function trans;
 
 /**
  * Handle exceptions and display them in json as response. Also handle Sentry's behavior.
@@ -45,6 +48,8 @@ class Handler extends ExceptionHandler
      * @param Throwable $original The original exception.
      *
      * @return Throwable The transformed exception.
+     *
+     * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
      */
     public function transform(Throwable $original): Throwable
     {
@@ -53,7 +58,7 @@ class Handler extends ExceptionHandler
             $embedded  = $original->getPrevious();
             $converted = $this->transform($embedded);
 
-            if ($converted !== null && $embedded !== $converted) {
+            if ($converted !== null) {
                 // Exception need to be swapped
                 return new GraphQLError(
                     $converted->getMessage(),
@@ -68,6 +73,20 @@ class Handler extends ExceptionHandler
 
         if ($original instanceof MethodNotAllowedHttpException) {
             return MethodNotAllowedException::from($original);
+        }
+
+        if ($original instanceof GenericException && $original->getCategory() === 'validation') {
+            $result = preg_match(
+                '/Validation failed for the field \[(.*)]\./',
+                $original->getMessage(),
+                $matches,
+            );
+
+            if ($result) {
+                $original->message = trans('validation.fails_field', ['field' => $matches[1]]);
+
+                return $original;
+            }
         }
 
         if ($original instanceof IlluminateValidationException) {

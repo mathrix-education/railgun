@@ -83,4 +83,55 @@ class UpdateMeIntegrationTest extends GraphQLIntegrationTestCase
         $this->assertEquals($newUsername, $this->getData('updateMe.username'));
         Queue::assertNotPushed(CleanUserSession::class);
     }
+
+    /**
+     * @testdox fails with validation error when providing a null password.
+     *
+     * @ticket #253
+     */
+    public function testUserPasswordNull(): void
+    {
+        $this->actingAsNewUser();
+        $this->graphQL(
+            <<<'GRAPHQL'
+            mutation($password: String) {
+                updateMe(password: $password) {
+                    id
+                }
+            }
+            GRAPHQL,
+            ['password' => null],
+        );
+
+        $this->assertResponseOk();
+        $this->assertError(null, 'validation');
+    }
+
+    /**
+     * @testdox changes the user grade id.
+     *
+     * @ticket #254
+     */
+    public function testChangeGrade(): void
+    {
+        $user  = $this->actingAsNewUser();
+        $grade = Grade::query()->whereKeyNot($user->grade_id)->inRandomOrder()->firstOrFail();
+
+        $this->graphQL(
+            <<<'GRAPHQL'
+            mutation($grade_id: ID!) {
+                updateMe(grade_id: $grade_id) {
+                    grade {
+                        id
+                    }
+                }
+            }
+            GRAPHQL,
+            ['grade_id' => $grade->getKey()],
+        );
+
+        $this->assertResponseOk();
+        $this->assertEquals($grade->getKey(), $user->refresh()->grade_id);
+        $this->assertEquals($grade->getKey(), $this->getData('grade.id'));
+    }
 }

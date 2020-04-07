@@ -10,23 +10,23 @@ extend type Mutation {
 
     updateUser(
         id: ID!
-        username: String
-        email: String
-        firstname: String
-        lastname: String
-        password: String
-        grade_id: ID
+        username: String @rules(apply: ["string", "max:60"])
+        email: String @rules(apply: ["email", "max:120"])
+        firstname: String @rules(apply: ["string", "max:60"])
+        lastname: String @rules(apply: ["string", "max:60"])
+        password: String @rules(apply: ["string"])
+        grade_id: ID @rules(apply: ["exists:grades,id"])
     ): User @permission(scope: "users:update") @update
 
     """
     Update the current user.
     """
     updateMe(
-        username: String
-        email: String
-        firstname: String
-        lastname: String
-        password: String
-        grade_id: ID
+        username: String @rules(apply: ["string", "max:60"])
+        email: String @rules(apply: ["email", "max:120"])
+        firstname: String @rules(apply: ["string", "max:60"])
+        lastname: String @rules(apply: ["string", "max:60"])
+        password: String @rules(apply: ["string"])
+        grade_id: ID @rules(apply: ["exists:grades,id"])
     ): User @inject(context: "user.id", name: "id") @update
 }
