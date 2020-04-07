@@ -5,6 +5,7 @@ declare(strict_types=1);
 /** @link https://github.com/caouecs/Laravel-lang/blob/master/src/fr/validation.php */
 return [
     'fails' => 'Les données soumises sont invalides',
+    'fails_field' => 'Les données soumises pour le champ [:field] sont invalides',
 
     /*
     |--------------------------------------------------------------------------

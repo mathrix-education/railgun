@@ -40,11 +40,17 @@ class GraphQLIntegrationTestCase extends HttpIntegrationTestCase
      * Get the GraphQL response errors.
      * Shortcut for getContent('errors').
      *
+     * @param string|null $path The error path.
+     *
      * @return mixed
      */
-    protected function getErrors()
+    protected function getErrors(?string $path = null)
     {
-        return $this->getContent('errors');
+        if (!Str::startsWith($path, '0.')) {
+            $path = "0.$path";
+        }
+
+        return $this->getContent('errors' . ($path ? ".$path" : ''));
     }
 
     /**
@@ -71,15 +77,15 @@ class GraphQLIntegrationTestCase extends HttpIntegrationTestCase
     ): void
     {
         if ($expectedMessage !== null) {
-            $this->assertEquals($expectedMessage, $this->getErrors()[0]->message);
+            $this->assertEquals($expectedMessage, $this->getContent('errors.0.message'));
         } else {
-            $this->assertNotEmpty($this->getErrors());
+            $this->assertNotEmpty($this->getContent('errors'));
         }
 
         if ($expectedCategory === null) {
             return;
         }
 
-        $this->assertEquals($expectedCategory, $this->getErrors()[0]->extensions->category);
+        $this->assertEquals($expectedCategory, $this->getContent('errors.0.extensions.category'));
     }
 }
