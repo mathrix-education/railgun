@@ -21,6 +21,8 @@ class NotificationsCommand extends V7Command
     {
         $this->title('Generating comments notifications');
 
+        $this->migrateTo('2020_03_23_164853_create_notifications_table');
+
         Comment::query()
             ->whereNotNull('parent_id')
             ->get()
