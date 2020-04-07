@@ -122,7 +122,7 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
         $tokens = [
             'pm_card_cvcCheckFail'                    => trans('stripe.errors.card.incorrect_cvc'),
             'pm_card_chargeDeclined'                  => trans('stripe.errors.card.generic'),
-            'pm_card_chargeDeclinedInsufficientFunds' => trans('stripe.errors.card.generic'),
+            'pm_card_chargeDeclinedInsufficientFunds' => trans('stripe.errors.card.insufficient_funds'),
             'pm_card_chargeDeclinedIncorrectCvc'      => trans('stripe.errors.card.incorrect_cvc'),
             'pm_card_chargeDeclinedExpiredCard'       => trans('stripe.errors.card.expired'),
             'pm_card_chargeDeclinedProcessingError'   => trans('stripe.errors.card.generic'),
