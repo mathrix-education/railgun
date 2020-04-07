@@ -82,7 +82,7 @@ $app->register(StripeServiceProvider::class);
 $app->register(BraintreeServiceProvider::class);
 
 // Sentry
-if ($app->environment(['master', 'dev', 'v7']) && !$app->runningUnitTests()) {
+if ($app->environment(['stable', 'edge']) && !$app->runningUnitTests()) {
     $app->register(SentryServiceProvider::class);
 }
 
