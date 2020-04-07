@@ -49,7 +49,7 @@ RUN composer global require hirak/prestissimo && \
     composer install --no-suggest --prefer-dist --no-dev --optimize-autoloader && \
     composer clear-cache && \
     rm -rf /usr/bin/composer /root/.composer && \
-    sed -i "s/RELEASE_ALIAS/$RELEASE/g" /var/www/config/sentry.php
+    sed -i "s/RELEASE_ALIAS/$RELEASE/g" /var/www/config/app.php /var/www/config/sentry.php
 
 # Make sure files/folders needed by the processes are accessible when they run under the www-data user
 #RUN chown -R www-data.www-data /run && \

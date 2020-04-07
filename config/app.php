@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 return [
     'name'            => 'Railgun',
-    'env'             => env('APP_ENV', 'master'),
+    'release'         => env('APP_RELEASE', 'RELEASE_ALIAS'),
+    'env'             => env('APP_ENV', 'production'),
     'debug'           => env('APP_DEBUG', false),
     'url'             => env('APP_URL', 'http://localhost'),
     'timezone'        => env('APP_TIMEZONE', 'UTC'),
