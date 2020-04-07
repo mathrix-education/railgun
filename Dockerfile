@@ -5,7 +5,8 @@ LABEL Maintainer="Mathieu Bour <mathieu@mathrix.fr>" \
 
 ARG RELEASE="no-release"
 ARG EXT_REDIS_VERSION="5.2.1"
-ARG EXT_GRPC_VERSION="1.27.3"
+
+ENV APP_RELEASE=$RELEASE
 
 WORKDIR /var/www
 
