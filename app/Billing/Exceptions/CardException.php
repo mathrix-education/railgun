@@ -6,6 +6,7 @@ namespace Railgun\Billing\Exceptions;
 
 use Psr\Log\LogLevel;
 use Railgun\Exceptions\HttpException;
+use Stripe\Charge;
 use Stripe\ErrorObject;
 use Stripe\Exception\CardException as StripeCardException;
 use function trans;
@@ -37,10 +38,16 @@ class CardException extends HttpException
             case ErrorObject::CODE_INVALID_EXPIRY_YEAR:
                 $message = trans('stripe.errors.card.incorrect_exp');
                 break;
-            default:
-                $message = trans('stripe.errors.card.generic');
+            case ErrorObject::CODE_CARD_DECLINED:
+                switch ($cardException->getDeclineCode()) {
+                    case Charge::DECLINED_INSUFFICIENT_FUNDS:
+                        $message = trans('stripe.errors.card.insufficient_funds');
+                        break;
+                }
                 break;
         }
+
+        $message ??= trans('stripe.errors.card.generic');
 
         return new self($message, $cardException);
     }

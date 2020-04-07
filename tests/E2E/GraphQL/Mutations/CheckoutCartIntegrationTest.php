@@ -212,7 +212,7 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
             ],
             'pm_card_chargeDeclinedInsufficientFunds' => [
                 'pm_card_chargeDeclinedInsufficientFunds',
-                trans('stripe.errors.card.generic'),
+                trans('stripe.errors.card.insufficient_funds'),
             ],
             'pm_card_chargeDeclinedIncorrectCvc'      => [
                 'pm_card_chargeDeclinedIncorrectCvc',
