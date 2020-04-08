@@ -11,6 +11,7 @@ use Illuminate\Redis\RedisServiceProvider;
 use Laravel\Lumen\Application;
 use Laravel\Lumen\Bootstrap\LoadEnvironmentVariables;
 use Laravel\Tinker\TinkerServiceProvider;
+use Mathrix\Healthz\HealthzServiceProvider;
 use Mathrix\Lumen\JWT\Providers\JWTServiceProvider;
 use Mathrix\Mailjet\MailjetServiceProvider;
 use Mathrix\Prometheus\PrometheusServiceProvider;
@@ -89,6 +90,8 @@ if ($app->environment(['stable', 'edge']) && !$app->runningUnitTests()) {
 // Prometheus
 $app->configure('prometheus');
 $app->register(PrometheusServiceProvider::class);
+
+$app->register(HealthzServiceProvider::class);
 
 // Debug
 if ($app->runningInConsole()) {

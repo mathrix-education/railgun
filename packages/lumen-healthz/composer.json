@@ -1,0 +1,40 @@
+{
+  "name": "mathrix-education/lumen-healthz",
+  "description": "Lumen healthchecks",
+  "version": "0.1.0",
+  "type": "library",
+  "keywords": [
+    "lumen",
+    "prometheus",
+    "metrics",
+    "exporter"
+  ],
+  "homepage": "https://github.com/mathrix-education/lumen-prometheus-exporter",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Mathieu Bour",
+      "email": "mathieu@mathrix.fr"
+    }
+  ],
+  "support": {
+    "email": "mathieu@mathrix.fr",
+    "issues": "https://github.com/mathrix-education/lumen-prometheus-exporter/issues",
+    "source": "https://github.com/mathrix-education/lumen-prometheus-exporter",
+    "docs": "https://github.com/mathrix-education"
+  },
+  "require": {
+    "illuminate/support": "^7.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Mathrix\\Healthz\\": "src/"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true
+  }
+}
