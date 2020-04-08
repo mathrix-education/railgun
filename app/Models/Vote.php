@@ -7,6 +7,7 @@ namespace Railgun\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\DB;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\UUID;
 
@@ -27,6 +28,21 @@ class Vote extends Model
     use UUID;
 
     protected $fillable = ['user_id', 'comment_id', 'value'];
+
+    public static function booting(): void
+    {
+        parent::booting();
+
+        $updateScore = static function(self $vote): void {
+            DB::update(
+                'UPDATE comments SET score = (SELECT SUM(value) FROM votes WHERE comment_id = ?) WHERE id = ?',
+                [$vote->comment_id, $vote->comment_id],
+            );
+        };
+
+        self::saved($updateScore);
+        self::deleted($updateScore);
+    }
 
     /**
      * @return BelongsTo<User>
