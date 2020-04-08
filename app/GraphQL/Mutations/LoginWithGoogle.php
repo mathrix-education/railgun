@@ -40,6 +40,7 @@ class LoginWithGoogle
             throw new InvalidAuthTokenException('Google');
         }
 
+        /** @var User $user */
         $user = User::query()
             ->where('metadata->google->id', '=', $payload['sub'])
             ->orWhere('email', '=', $payload['email'])
@@ -51,11 +52,15 @@ class LoginWithGoogle
             $user->username  = $payload['name'];
             $user->firstname = $payload['given_name'];
             $user->lastname  = $payload['family_name'];
+            $user->scopes    = [];
             $user->save();
         }
 
         return [
-            'token' => $this->driver->sign($user),
+            'token' => $this->driver->sign([
+                'sub' => (string)$user->getKey(),
+                'scp' => $user->scopes,
+            ]),
         ];
     }
 }

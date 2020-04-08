@@ -27,7 +27,7 @@ use function random_bytes;
 class LoginWithGoogleTest extends GraphQLUnitTestCase
 {
     private string $accessToken;
-    private int $userId;
+    private int    $userId;
 
     /**
      * Initialize the common variables.
@@ -49,10 +49,10 @@ class LoginWithGoogleTest extends GraphQLUnitTestCase
     {
         $this->mock(Google_Client::class, function (MockInterface $googleClient): void {
             $payload = [
-                'sub' => base64_encode(random_bytes(64)),
-                'email' => $this->faker->email,
-                'name' => $this->faker->name,
-                'given_name' => $this->faker->firstName,
+                'sub'         => base64_encode(random_bytes(64)),
+                'email'       => $this->faker->email,
+                'name'        => $this->faker->name,
+                'given_name'  => $this->faker->firstName,
                 'family_name' => $this->faker->lastName,
             ];
 
@@ -75,10 +75,11 @@ class LoginWithGoogleTest extends GraphQLUnitTestCase
         $this->mockPayloadResponseSuccess();
 
         // Mock User
+        /** @var User|MockInterface $user */
         $user = Mockery::mock('overload:' . User::class, Authenticatable::class);
         $user->expects('query->where->orWhere->first')->withNoArgs()->andReturnNull();
         $user->expects('save')->withNoArgs()->andReturnNull();
-        $user->expects('getAuthIdentifier')->withAnyArgs()->andReturns($this->userId);
+        $user->expects('getKey')->withNoArgs()->andReturns($this->userId);
 
         // Call the mutation
         $data = $this->invoke(LoginWithGoogle::class, [
@@ -99,9 +100,11 @@ class LoginWithGoogleTest extends GraphQLUnitTestCase
         $this->mockPayloadResponseSuccess();
 
         // Mock User
+        /** @var User|MockInterface $user */
         $user = Mockery::mock('overload:' . User::class, Authenticatable::class);
         $user->expects('query->where->orWhere->first')->withNoArgs()->andReturns($user);
-        $user->expects('getAuthIdentifier')->withAnyArgs()->andReturns($this->userId);
+        $user->expects('getKey')->withNoArgs()->andReturns($this->userId);
+        $user->scopes = ['a', 'b'];
 
         // Call the mutation
         $data = $this->invoke(LoginWithGoogle::class, [

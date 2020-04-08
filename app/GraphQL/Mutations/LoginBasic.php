@@ -30,6 +30,7 @@ class LoginBasic
      */
     public function __invoke($rootValue, array $args): array
     {
+        /** @var User $user */
         $user = User::query()
             ->where('email', '=', $args['email'])
             ->get(['id', 'password', 'scopes'])
@@ -47,7 +48,10 @@ class LoginBasic
 
         // Sign the JWS
         return [
-            'token' => $this->driver->sign($user),
+            'token' => $this->driver->sign([
+                'sub' => (string)$user->getKey(),
+                'scp' => $user->scopes,
+            ]),
         ];
     }
 }

@@ -51,6 +51,7 @@ class LoginWithFacebook
 
         $graphUser = $response->getGraphUser();
 
+        /** @var User $user */
         $user = User::query()
             ->where('metadata->facebook->id', '=', $graphUser->getId())
             ->orWhere('email', '=', $graphUser->getEmail())
@@ -62,6 +63,7 @@ class LoginWithFacebook
             $user->firstname = $graphUser->getFirstName();
             $user->lastname  = $graphUser->getLastName();
             $user->email     = $graphUser->getEmail();
+            $user->scopes    = [];
             $user->metadata  = array_merge_recursive($user->metadata ?? [], [
                 'facebook' => [
                     'id' => $graphUser->getId(),
@@ -72,7 +74,10 @@ class LoginWithFacebook
         }
 
         return [
-            'token' => $this->driver->sign($user),
+            'token' => $this->driver->sign([
+                'sub' => (string)$user->getKey(),
+                'scp' => $user->scopes,
+            ]),
         ];
     }
 }

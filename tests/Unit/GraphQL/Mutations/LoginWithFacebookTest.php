@@ -84,10 +84,11 @@ class LoginWithFacebookTest extends GraphQLUnitTestCase
         $this->mockFacebook($graphUser);
 
         // Mock User
+        /** @var User|MockInterface $user */
         $user = Mockery::mock('overload:' . User::class, Authenticatable::class);
         $user->expects('query->where->orWhere->first')->withNoArgs()->andReturnNull();
         $user->expects('save')->withNoArgs()->andReturnNull();
-        $user->expects('getAuthIdentifier')->withAnyArgs()->andReturns($this->userId);
+        $user->expects('getKey')->withNoArgs()->andReturns($this->userId);
 
         // Call the mutation
         $data = $this->invoke(LoginWithFacebook::class, [
@@ -113,9 +114,11 @@ class LoginWithFacebookTest extends GraphQLUnitTestCase
         $this->mockFacebook($graphUser);
 
         // Mock User
+        /** @var User|MockInterface $user */
         $user = Mockery::mock('overload:' . User::class, Authenticatable::class);
         $user->expects('query->where->orWhere->first')->withNoArgs()->andReturns($user);
-        $user->expects('getAuthIdentifier')->withAnyArgs()->andReturns($this->userId);
+        $user->expects('getKey')->withNoArgs()->andReturns($this->userId);
+        $user->scopes = ['a', 'b'];
 
         // Call the mutation
         $data = $this->invoke(LoginWithFacebook::class, [
