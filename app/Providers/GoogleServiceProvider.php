@@ -25,6 +25,8 @@ class GoogleServiceProvider extends ServiceProvider implements DeferrableProvide
 
     /**
      * @return string[] The services provided by the provider.
+     *
+     * @codeCoverageIgnore
      */
     public function provides(): array
     {

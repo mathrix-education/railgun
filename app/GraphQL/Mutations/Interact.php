@@ -24,15 +24,19 @@ class Interact
         // Filter args
         switch ($args['interactable_type']) {
             case 'subject':
-                unset($args['comprehension'], $args['score']);
-                break;
-            case 'exam':
-            case 'exercise':
-                unset($args['comprehension']);
+                unset($args['comprehension'], $args['score'], $args['watchtime']);
                 break;
             case 'course':
-            case 'flashcard':
                 unset($args['score']);
+                break;
+            case 'flashcard':
+                unset($args['score'], $args['watchtime']);
+                break;
+            case 'exercise':
+                unset($args['comprehension'], $args['watchtime']);
+                break;
+            case 'exam':
+                unset($args['comprehension']);
                 break;
         }
 

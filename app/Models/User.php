@@ -23,6 +23,7 @@ use Laravel\Lumen\Auth\Authorizable;
 use Railgun\Billing\Models\StripeCustomer;
 use Railgun\Jobs\CleanUserSession;
 use Railgun\Models\Traits\Randomizable;
+use Railgun\Support\LazyStdClass;
 use Stripe\Subscription as StripeSubscription;
 use function uuid_create;
 use function uuid_is_valid;
@@ -49,6 +50,7 @@ use function uuid_is_valid;
  * @property-read string                    $full_name
  * @property-read bool                      $premium If the user is premium
  * @property-read string                    $provider
+ * @property-read LazyStdClass              $statistics
  * ---
  * @property-read Grade                     $grade
  * @property-read Collection|Comment[]      $comments
@@ -189,6 +191,18 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
+     * full_name attribute.
+     */
+    public function getFullNameAttribute(): string
+    {
+        if (!$this->firstname && !$this->lastname) {
+            return $this->username;
+        }
+
+        return "{$this->firstname} {$this->lastname}";
+    }
+
+    /**
      * @return bool If the user is premium.
      */
     public function getPremiumAttribute(): bool
@@ -223,18 +237,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * full_name attribute.
-     */
-    public function getFullNameAttribute(): string
-    {
-        if (!$this->firstname && !$this->lastname) {
-            return $this->username;
-        }
-
-        return "{$this->firstname} {$this->lastname}";
-    }
-
-    /**
      * @return string The login provider.
      */
     public function getProviderAttribute(): string
@@ -258,5 +260,27 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function setPasswordAttribute(string $password): void
     {
         $this->attributes['password'] = Hash::make($password);
+    }
+
+    /**
+     * Get the user statistics.
+     *
+     * @noinspection PhpUnused
+     */
+    public function getStatisticsAttribute(): LazyStdClass
+    {
+        return new LazyStdClass([
+            'interactions' => function () {
+                return Interaction::query()
+                    ->where('user_id', '=', $this->id)
+                    ->count();
+            },
+            'watchtime'    => function () {
+                return (int)Interaction::query()
+                    ->where('user_id', '=', $this->id)
+                    ->whereNotNull('watchtime')
+                    ->sum('watchtime');
+            },
+        ]);
     }
 }

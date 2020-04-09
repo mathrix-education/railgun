@@ -5,23 +5,8 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Auth;
 use Railgun\Models\User;
 
-if (!function_exists('config_path')) {
-    /**
-     * Get the configuration path.
-     *
-     * @param string $path And additional path to append.
-     *
-     * @return string The configuration path.
-     *
-     * phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.NotCamelCaps
-     */
-    function config_path(string $path = ''): string
-    {
-        return app()->basePath() . '/config' . ($path ? '/' . $path : $path);
-    }
-}
+if (!function_exists('hasScope')) { // @codeCoverageIgnore
 
-if (!function_exists('hasScope')) {
     /**
      * Check if a user has the given scope.
      *
@@ -40,7 +25,8 @@ if (!function_exists('hasScope')) {
     }
 }
 
-if (!function_exists('scope')) {
+if (!function_exists('scope')) { // @codeCoverageIgnore
+
     /**
      * Check if the current logged user has the given scope.
      *
@@ -57,7 +43,8 @@ if (!function_exists('scope')) {
     }
 }
 
-if (!function_exists('isPremium')) {
+if (!function_exists('isPremium')) { // @codeCoverageIgnore
+
     /**
      * @return bool Check if the current user is premium.
      */
@@ -70,7 +57,8 @@ if (!function_exists('isPremium')) {
     }
 }
 
-if (!function_exists('prefix')) {
+if (!function_exists('prefix')) { // @codeCoverageIgnore
+
     /**
      * Get the application prefix.
      *

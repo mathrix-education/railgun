@@ -17,6 +17,7 @@ type Interaction {
     interactable_id: Int!
     comprehension: InteractionComprehension
     score: Int
+    watchtime: Int
     created_at: DateTime!
     updated_at: DateTime!
 }
