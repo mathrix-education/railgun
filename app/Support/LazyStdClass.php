@@ -11,6 +11,7 @@ use Iterator;
 use stdClass;
 use function array_key_exists;
 use function array_keys;
+use function array_map;
 use function array_search;
 use function count;
 
@@ -26,7 +27,9 @@ class LazyStdClass extends stdClass implements ArrayAccess, Arrayable, Iterator
      */
     public function __construct(array $resolvers = [])
     {
-        $this->resolvers = $resolvers;
+        $this->resolvers = array_map(static function ($val) {
+            return $val instanceof Closure ? $val : static fn() => $val;
+        }, $resolvers);
     }
 
     /**
@@ -48,10 +51,6 @@ class LazyStdClass extends stdClass implements ArrayAccess, Arrayable, Iterator
     {
         if (!$this->__isset($offset)) {
             return null;
-        }
-
-        if (!$this->resolvers[$offset] instanceof Closure) {
-            return $this->resolvers[$offset];
         }
 
         return $this->resolvers[$offset]();
@@ -128,7 +127,7 @@ class LazyStdClass extends stdClass implements ArrayAccess, Arrayable, Iterator
         }
 
         if (!$this->offsetExists($this->key)) {
-            $this->key = null;
+            $this->key = null; // @codeCoverageIgnore
         }
 
         return true;

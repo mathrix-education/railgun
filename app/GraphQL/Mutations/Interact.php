@@ -32,11 +32,11 @@ class Interact
             case 'flashcard':
                 unset($args['score'], $args['watchtime']);
                 break;
-            case 'exam':
-                unset($args['comprehension']);
-                break;
             case 'exercise':
                 unset($args['comprehension'], $args['watchtime']);
+                break;
+            case 'exam':
+                unset($args['comprehension']);
                 break;
         }
 
