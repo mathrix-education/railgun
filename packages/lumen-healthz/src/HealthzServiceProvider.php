@@ -7,18 +7,21 @@ namespace Mathrix\Healthz;
 use Carbon\Laravel\ServiceProvider;
 use Illuminate\Config\Repository;
 use Illuminate\Routing\Router;
+use function dirname;
 
+/**
+ * Registers the {@see ChecksRegistry} and the check route based in the healthz configuration.
+ */
 class HealthzServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $this->mergeConfigFrom(dirname(__DIR__) . '/config/healthz.php', 'healthz');
+
+        $this->app->singleton(ChecksRegistry::class);
+
         /** @var Repository $config */
         $config = $this->app['config'];
-
-        $this->app->singleton(ChecksCollection::class, static function () use ($config) {
-            return new ChecksCollection($config->get('healthz.checks'));
-        });
 
         /** @var Router $router */
         $router = $this->app['router'];

@@ -91,7 +91,9 @@ if ($app->environment(['stable', 'edge']) && !$app->runningUnitTests()) {
 $app->configure('prometheus');
 $app->register(PrometheusServiceProvider::class);
 
+// Healthz
 $app->register(HealthzServiceProvider::class);
+$app->configure('healthz');
 
 // Debug
 if ($app->runningInConsole()) {

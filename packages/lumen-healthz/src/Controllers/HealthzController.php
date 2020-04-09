@@ -4,42 +4,38 @@ declare(strict_types=1);
 
 namespace Mathrix\Healthz\Controllers;
 
-use Illuminate\Container\Container;
 use Illuminate\Support\Collection;
-use Mathrix\Healthz\ChecksCollection;
+use Mathrix\Healthz\Checks\Check;
+use Mathrix\Healthz\ChecksRegistry;
 use Throwable;
-use function is_int;
-use function is_string;
 use function microtime;
 use function round;
 
+/**
+ * Controller to serve the checks route.
+ */
 class HealthzController
 {
     /**
      * POST /healthz
      *
-     * @return Collection
+     * @param ChecksRegistry $checks The checks registry.
+     *
+     * @return Collection|mixed[]
+     *
+     * @noinspection PhpUnused
      */
-    public function healthz(ChecksCollection $checks): Collection
+    public function healthz(ChecksRegistry $checks): Collection
     {
         return $checks
-            ->map(static function ($options, $check) {
-                if (is_int($check) && is_string($options)) {
-                    $check   = $options;
-                    $options = [];
-                }
-
-                Container::getInstance()->when($check)->needs('$options')->give($options);
-
-                return Container::getInstance()->make($check);
-            })
-            ->mapWithKeys(static function ($check) {
+            ->mapWithKeys(static function (Check $check) {
                 $start = microtime(true);
 
                 try {
                     $details = $check->execute();
                     $data    = ['status' => 'ok'];
-                    if ($details) {
+
+                    if ($check->exposeDetails()) {
                         $data['details'] = $details;
                     }
                 } catch (Throwable $exception) {
@@ -51,7 +47,7 @@ class HealthzController
                     $data['duration'] = round((microtime(true) - $start) * 1000, 2);
                 }
 
-                return [$check::NAME => $data];
+                return [$check->getName() => $data];
             })
             ->toBase();
     }
