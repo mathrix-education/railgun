@@ -22,4 +22,5 @@ type User {
     packs: [Pack!]! @morphMany
     trainings: [Training!]! @morphMany
     sessions: [Session!]! @hasMany
+    statistics: UserStatistics!
 }

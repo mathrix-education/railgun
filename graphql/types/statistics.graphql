@@ -1,0 +1,11 @@
+type UserStatistics {
+    """
+    The number of interactions for the user.
+    """
+    interactions: Int
+
+    """
+    The sum of the user interaction watchtime.
+    """
+    watchtime: Int
+}

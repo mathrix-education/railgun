@@ -48,11 +48,12 @@ class LoginBasicTest extends GraphQLUnitTestCase
 
         $user->email    = $this->email;
         $user->password = Hash::make($this->password);
+        $user->expects('getKey')->withNoArgs()->andReturns($this->userId);
+        $user->scopes = ['a', 'b'];
 
         $user->expects('query->where->get->first')
             ->withNoArgs()
             ->andReturns($user);
-        $user->expects('getAuthIdentifier')->withAnyArgs()->andReturns($this->userId);
 
         $data = $this->invoke(LoginBasic::class, [
             'email'    => $this->email,

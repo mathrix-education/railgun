@@ -25,7 +25,7 @@ class UpdateSessionAfterInteraction extends Job implements ShouldQueue
     {
         if (!($this->interaction instanceof Interaction) || !($this->interaction->interactable instanceof Content)) {
             // This should never happen
-            return;
+            return; // @codeCoverageIgnore
         }
 
         $chapter = $this->interaction->interactable->getChapter();
