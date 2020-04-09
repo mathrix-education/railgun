@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\Collection;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Mathrix\Lumen\JWT\Drivers\Driver;
 use Railgun\Models\Chapter;
+use Railgun\Models\Comment;
 use Railgun\Models\Interaction;
 use Railgun\Models\Session;
 use Railgun\Models\User;
+use Railgun\Notifications\CommentReplyNotification;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function app;
 use function factory;
@@ -117,5 +119,54 @@ class MeIntegrationTest extends GraphQLIntegrationTestCase
         $this->assertNoErrors();
         $this->assertEquals(3, $this->getData('statistics.interactions'));
         $this->assertEquals(30, $this->getData('statistics.watchtime'));
+    }
+
+    /**
+     * @testdox returns the user notifications.
+     */
+    public function testMeNotifications(): void
+    {
+        $expectedCount = 5;
+
+        $user = $this->actingAsNewUser();
+
+        for ($i = 0; $i < $expectedCount; $i++) {
+            $user->notifyNow(new CommentReplyNotification(Comment::random(), Comment::random()));
+        }
+
+        $this->graphQL(
+            <<<'GRAPHQL'
+            query {
+                me {
+                    notifications(first: 10) {
+                        data {
+                            ... on CommentReplyNotification {
+                                id
+                                type
+                                data {
+                                    user_comment {
+                                        id
+                                        user {
+                                            username
+                                        }
+                                    }
+                                    new_comment {
+                                        id
+                                        user {
+                                            username
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            GRAPHQL,
+        );
+
+        $this->assertResponseOk();
+        $this->assertNoErrors();
+        $this->assertCount($expectedCount, $this->getData('notifications.data'));
     }
 }

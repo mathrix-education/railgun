@@ -16,8 +16,8 @@ use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 class DismissNotificationIntegrationTest extends GraphQLIntegrationTestCase
 {
     private const QUERY = <<<'GRAPHQL'
-    mutation ($notificationId: ID!) {
-        dismissNotification(notificationId: $notificationId) {
+    mutation ($id: ID!) {
+        dismissNotification(id: $id) {
             id
             read_at
         }
@@ -35,7 +35,7 @@ class DismissNotificationIntegrationTest extends GraphQLIntegrationTestCase
         $this->assertCount(1, $user->notifications);
         $notification = $user->notifications->first();
 
-        $this->graphQL(self::QUERY, ['notificationId' => $notification->id]);
+        $this->graphQL(self::QUERY, ['id' => $notification->id]);
 
         $this->assertResponseOk();
         $this->assertNoErrors();

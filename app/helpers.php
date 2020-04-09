@@ -76,3 +76,85 @@ if (!function_exists('prefix')) { // @codeCoverageIgnore
         return $prefix;
     }
 }
+
+if (!function_exists('is_serialized')) { // @codeCoverageIgnore
+
+    /**
+     * Extracted from Wordpress source.
+     *
+     * @link https://developer.wordpress.org/reference/functions/is_serialized/
+     *
+     * @param mixed $data   The data to check.
+     * @param bool  $strict Enable strict mode.
+     *
+     * @return bool If the data was serialized using PHP version of {@see serialize()}.
+     *
+     * @codeCoverageIgnore
+     * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
+     * phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.NotCamelCaps
+     */
+    function is_serialized($data, bool $strict = true): bool
+    {
+        // If it isn't a string, it isn't serialized.
+        if (!is_string($data)) {
+            return false;
+        }
+
+        $data = trim($data);
+
+        if ($data === 'N;') {
+            return true;
+        }
+
+        if (strlen($data) < 4 || $data[1] !== ':') {
+            return false;
+        }
+
+        if ($strict) {
+            $lastc = substr($data, -1);
+            if ($lastc !== ';' && $lastc !== '}') {
+                return false;
+            }
+        } else {
+            $semicolon = strpos($data, ';');
+            $brace     = strpos($data, '}');
+            // Either ; or } must exist.
+            if ($semicolon === false && $brace === false) {
+                return false;
+            }
+            // But neither must be in the first X characters.
+            if ($semicolon !== false && $semicolon < 3) {
+                return false;
+            }
+            if ($brace !== false && $brace < 4) {
+                return false;
+            }
+        }
+
+        $token = $data[0];
+
+        switch ($token) {
+            /** @noinspection PhpMissingBreakStatementInspection */
+            case 's':
+                if ($strict) {
+                    if ($data[strlen($data) - 2] !== '"') {
+                        return false;
+                    }
+                } elseif (strpos($data, '"') === false) {
+                    return false;
+                }
+            // Or else fall through.
+            case 'a':
+            case 'O':
+                return (bool)preg_match("/^{$token}:[0-9]+:/s", $data);
+            case 'b':
+            case 'i':
+            case 'd':
+                $end = $strict ? '$' : '';
+
+                return (bool)preg_match("/^{$token}:[0-9.E+-]+;$end/", $data);
+        }
+
+        return false;
+    }
+}

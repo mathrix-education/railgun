@@ -8,6 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Railgun\Models\Comment;
+use function serialize;
 
 /**
  * Sent when a new comment has been posted in a "discussion".
@@ -39,8 +40,8 @@ class CommentReplyNotification extends Notification implements ShouldQueue
     public function toDatabase(): array
     {
         return [
-            'user_comment' => $this->userComment,
-            'new_comment'  => $this->newComment,
+            'user_comment' => serialize($this->userComment),
+            'new_comment'  => serialize($this->newComment),
         ];
     }
 }
