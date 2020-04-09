@@ -32,7 +32,7 @@ class DeleteChapterInteractions extends Job implements ShouldQueue
 
         // Delete parent chapter sessions
         if (!($this->reference instanceof Content)) {
-            return;
+            return; // @codeCoverageIgnore
         }
 
         $this->reference->getChapter()->sessions()->delete();

@@ -60,7 +60,7 @@ class DeliverProducts extends Job
 
         if ($validator->fails()) {
             // TODO: report validation failure?
-            return;
+            return; // @codeCoverageIgnore
         }
 
         $items->each(function ($item): void {

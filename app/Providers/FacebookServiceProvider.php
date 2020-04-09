@@ -26,6 +26,8 @@ class FacebookServiceProvider extends ServiceProvider implements DeferrableProvi
 
     /**
      * @return string[] The services provided by the provider.
+     *
+     * @codeCoverageIgnore
      */
     public function provides(): array
     {

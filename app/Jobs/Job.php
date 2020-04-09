@@ -28,6 +28,8 @@ abstract class Job
      * @param Throwable $exception The exception thrown during the job execution.
      *
      * @throws Throwable
+     *
+     * @codeCoverageIgnore
      */
     public function failed(Throwable $exception): void
     {
