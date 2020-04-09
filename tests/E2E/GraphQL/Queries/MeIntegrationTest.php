@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Queries;
 
+use Illuminate\Database\Eloquent\Collection;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Mathrix\Lumen\JWT\Drivers\Driver;
 use Railgun\Models\Chapter;
+use Railgun\Models\Interaction;
 use Railgun\Models\Session;
 use Railgun\Models\User;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
@@ -82,5 +84,38 @@ class MeIntegrationTest extends GraphQLIntegrationTestCase
         $this->assertNoErrors();
         $this->assertResponseOk();
         $this->assertEquals($chapter->id, $this->getData('me.sessions.0.chapter.id'));
+    }
+
+    /**
+     * @testdox returns the user statistics.
+     */
+    public function testMeStatistics(): void
+    {
+        $user = $this->actingAsNewUser();
+        /** @var Collection|Interaction[] $interactions */
+        $interactions = factory(Interaction::class, 3)->make(['user_id' => $user->id]);
+
+        $interactions[0]->watchtime = 10;
+        $interactions[2]->watchtime = 20;
+
+        $interactions->each(static fn(Interaction $i) => $i->save());
+
+        $this->graphQL(
+            <<<'GRAPHQL'
+            query {
+                me {
+                    statistics {
+                        interactions
+                        watchtime
+                    }
+                }
+            }
+            GRAPHQL,
+        );
+
+        $this->assertResponseOk();
+        $this->assertNoErrors();
+        $this->assertEquals(3, $this->getData('statistics.interactions'));
+        $this->assertEquals(30, $this->getData('statistics.watchtime'));
     }
 }

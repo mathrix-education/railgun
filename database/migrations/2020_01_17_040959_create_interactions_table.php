@@ -19,6 +19,7 @@ class CreateInteractionsTable extends Migration
             $table->morphs('interactable');
             $table->enum('comprehension', ['blur', 'clear'])->nullable();
             $table->unsignedTinyInteger('score')->nullable();
+            $table->unsignedSmallInteger('watchtime')->nullable();
             $table->timestamps();
 
             $table->unique(['user_id', 'interactable_type', 'interactable_id']);
