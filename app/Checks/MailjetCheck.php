@@ -13,6 +13,10 @@ class MailjetCheck extends Check
 {
     private Client $mailjet;
 
+    /**
+     * @param Client  $mailjet The mailjet client.
+     * @param mixed[] $options The check options.
+     */
     public function __construct(Client $mailjet, array $options = [])
     {
         parent::__construct($options);

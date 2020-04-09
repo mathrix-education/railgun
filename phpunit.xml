@@ -21,6 +21,7 @@
       <directory suffix=".php">./app</directory>
       <exclude>
         <directory>./app/Buster</directory>
+        <directory>./app/Checks</directory>
       </exclude>
     </whitelist>
   </filter>
