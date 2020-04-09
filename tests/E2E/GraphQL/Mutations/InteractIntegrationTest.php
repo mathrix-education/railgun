@@ -12,6 +12,7 @@ use Railgun\Models\Course;
 use Railgun\Models\Exam;
 use Railgun\Models\Exercise;
 use Railgun\Models\Flashcard;
+use Railgun\Models\Subject;
 use Railgun\Models\Traits\Interactable;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function class_basename;
@@ -50,6 +51,7 @@ class InteractIntegrationTest extends GraphQLIntegrationTestCase
     public function createInteractSuccessDataset(): array
     {
         return [
+            'subject'   => [Subject::class, null, null, null],
             'course'    => [Course::class, 'clear', null, 10],
             'exercise'  => [Exercise::class, null, 8, null],
             'flashcard' => [Flashcard::class, 'clear', null, null],
