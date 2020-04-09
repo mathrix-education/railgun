@@ -178,6 +178,7 @@ class InteractionsCommand extends V7Command
                 'interactable_id'   => $mapping['interactable_id'],
                 'comprehension'     => $comprehension,
                 'score'             => null,
+                'watchtime'         => null,
                 'created_at'        => $data['created_at'],
                 'updated_at'        => $data['updated_at'],
             ]);

@@ -19,6 +19,7 @@ use Railgun\Models\Traits\UUID;
  * @property      int                                    $interactable_id
  * @property      string                                 $comprehension
  * @property      int                                    $score
+ * @property      int                                    $watchtime
  * @property-read Carbon                                 $created_at
  * @property-read Carbon                                 $updated_at
  * ---
@@ -38,6 +39,7 @@ class Interaction extends Model
         'interactable_id',
         'comprehension',
         'score',
+        'watchtime',
     ];
 
     public static function boot(): void
