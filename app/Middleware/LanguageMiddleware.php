@@ -6,7 +6,7 @@ namespace Railgun\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use function app;
 
 /**
@@ -20,7 +20,7 @@ class LanguageMiddleware
      * @param Request $request The Illuminate HTTP request.
      * @param Closure $next    The next middleware.
      *
-     * @return mixed The final response.
+     * @return Response The final response.
      */
     public function handle(Request $request, Closure $next): Response
     {

@@ -13,7 +13,7 @@ use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function strtoupper;
 
 /**
- * @testdox [E2E] Mutation createComment
+ * @testdox Mutation createComment
  */
 class CreateCommentIntegrationTest extends GraphQLIntegrationTestCase
 {

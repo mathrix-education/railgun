@@ -14,7 +14,7 @@ use function collect;
 use function factory;
 
 /**
- * @testdox [E2E] Mutation createCourse
+ * @testdox Mutation createCourse
  */
 class CreateCourseIntegrationTest extends GraphQLIntegrationTestCase
 {

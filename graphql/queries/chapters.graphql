@@ -1,28 +1,34 @@
 extend type Query {
-    "List chapters matching a given grade id and discipline id."
-    listChaptersByGradeAndDiscipline(
-        gradeId: ID! @where(key: "grade_id")
-        disciplineId: ID! @where(key: "discipline_id")
-    ): [Chapter!]! @all
+    """
+    List chapters matching a given criteria.
+    The available options (mutually exclusive) are:
 
-    "List chapters matching a given grade slug and discipline slug."
-    listChaptersByGradeSlugAndDisciplineSlug(
-        gradeSlug: String!
-        disciplineSlug: String!
+    - `gradeId` AND `disciplineId`
+    - `gradeSlug` AND `disciplineSlug`
+    """
+    listChapters(
+        gradeId: ID @rules(apply: ["required_with:disciplineId", "required_without:gradeSlug,disciplineSlug"])
+        disciplineId: ID @rules(apply: ["required_with:gradeId", "required_without:gradeSlug,disciplineSlug"])
+        gradeSlug: String @rules(apply: ["required_with:disciplineSlug", "required_without:gradeId,disciplineId"])
+        disciplineSlug: String @rules(apply: ["required_with:gradeSlug", "required_without:gradeId,disciplineId"])
     ): [Chapter!]!
 
-    "Read an existing chapter."
-    readChapter(id: ID @eq): Chapter @find
+    """
+    List chapters matching a given criteria.
+    The available options (mutually exclusive) are:
 
-    "Read an existing chapter using its slug, and its linked discipline and grade slug."
-    readChapterBySlugs(
-        chapterSlug: String!
-        disciplineSlug: String!
-        gradeSlug: String!
-    ): Chapter!
+    - `id`
+    - `chapterSlug` AND `disciplineSlug` AND `gradeSlug`
+    """
+    readChapter(
+        id: ID @rules(apply: ["required_without:chapterSlug,disciplineSlug,gradeSlug"])
+        chapterSlug: String @rules(apply: ["required_with:disciplineSlug,gradeSlug", "required_without:id"])
+        disciplineSlug: String @rules(apply: ["required_with:chapterSlug,gradeSlug", "required_without:id"])
+        gradeSlug: String @rules(apply: ["required_with:chapterSlug,disciplineSlug", "required_without:id"])
+    ): Chapter
 
     "Search for chapters."
-    searchChapters(query: String): [Chapter!]! @paginate(
+    searchChapters(query: String!): [Chapter!]! @paginate(
         builder: "\\Railgun\\GraphQL\\Queries\\SearchChapters"
     )
 }

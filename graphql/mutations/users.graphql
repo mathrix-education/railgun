@@ -1,7 +1,7 @@
 extend type Mutation {
     createUser(
-        username: String!
-        email: String!
+        username: String! @rules(apply: ["unique:users,username"])
+        email: String! @rules(apply: ["email", "unique:users,email"])
         firstname: String
         lastname: String
         password: String!

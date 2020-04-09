@@ -12,7 +12,7 @@ use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function trans;
 
 /**
- * @testdox [E2E] Query readCourse
+ * @testdox Query readCourse
  */
 class ReadCourseIntegrationTest extends GraphQLIntegrationTestCase
 {

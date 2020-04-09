@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\GraphQL\Mutations;
+namespace Tests\Functional\GraphQL\Mutations;
 
 use Exception;
 use Google_Client;
@@ -12,19 +12,19 @@ use Mockery\MockInterface;
 use Railgun\Exceptions\InvalidAuthTokenException;
 use Railgun\GraphQL\Mutations\LoginWithGoogle;
 use Railgun\Models\User;
-use Tests\Unit\GraphQLUnitTestCase;
+use Tests\Functional\GraphQL\GraphQLFunctionalTestCase;
 use function base64_encode;
 use function random_bytes;
 
 /**
- * @testdox [Unit] Mutation loginWithGoogle
+ * @testdox Mutation loginWithGoogle
  * @coversDefaultClass \Railgun\GraphQL\Mutations\LoginWithGoogle
  * @uses                \Mathrix\Lumen\JWT\Drivers\Driver
  *
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
  */
-class LoginWithGoogleTest extends GraphQLUnitTestCase
+class LoginWithGoogleTest extends GraphQLFunctionalTestCase
 {
     private string $accessToken;
     private int    $userId;

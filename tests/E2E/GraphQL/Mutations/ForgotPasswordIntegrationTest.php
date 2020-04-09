@@ -12,7 +12,7 @@ use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function factory;
 
 /**
- * @testdox [E2E] Mutation forgotPassword
+ * @testdox Mutation forgotPassword
  */
 class ForgotPasswordIntegrationTest extends GraphQLIntegrationTestCase
 {

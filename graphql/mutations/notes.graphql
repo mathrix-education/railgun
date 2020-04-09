@@ -7,5 +7,5 @@ extend type Mutation {
 
     updateNote(id: ID!, content: Silicate): Note! @update
 
-    deleteNote(id: ID!): Note @permission(scope: "notes:delete") @delete
+    deleteNote(id: ID!): Note! @permission(scope: "notes:delete") @delete
 }

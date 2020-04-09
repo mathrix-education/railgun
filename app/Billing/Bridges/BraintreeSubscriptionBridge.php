@@ -22,6 +22,8 @@ use const JSON_THROW_ON_ERROR;
 
 /**
  * Convert a {@see BraintreeSubscription} to an Eloquent {@see Subscription}.
+ *
+ * @codeCoverageIgnore Only used in Buster.
  */
 class BraintreeSubscriptionBridge
 {

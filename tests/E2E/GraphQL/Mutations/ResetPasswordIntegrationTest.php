@@ -15,7 +15,7 @@ use Throwable;
 use function factory;
 
 /**
- * @testdox [E2E] Mutation resetPassword
+ * @testdox Mutation resetPassword
  */
 class ResetPasswordIntegrationTest extends GraphQLIntegrationTestCase
 {

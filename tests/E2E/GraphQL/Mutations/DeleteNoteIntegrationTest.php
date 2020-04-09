@@ -10,7 +10,7 @@ use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function factory;
 
 /**
- * @testdox [E2E] Mutation deleteNote
+ * @testdox Mutation deleteNote
  */
 class DeleteNoteIntegrationTest extends GraphQLIntegrationTestCase
 {
@@ -25,6 +25,7 @@ class DeleteNoteIntegrationTest extends GraphQLIntegrationTestCase
         $note = factory(Note::class)->create([
             'notable_type' => 'course',
             'notable_id'   => $course->id,
+            'deleted_at'   => null,
         ]);
 
         $this->actingAsNewUser(['scopes' => ['notes:delete']]);
@@ -47,8 +48,8 @@ class DeleteNoteIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->assertResponseOk();
         $this->assertNoErrors();
-        $this->assertEquals($note->id, $this->getData('deleteNote.id'));
-        $this->assertEquals($course->id, $this->getData('deleteNote.notable.id'));
+        $this->assertEquals($note->id, $this->getData('id'));
+        $this->assertEquals($course->id, $this->getData('notable.id'));
 
         $note->refresh();
         $this->assertNotNull($note->deleted_at);

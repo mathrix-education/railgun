@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Functional\Models;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Interaction;
 use Railgun\Models\User;
@@ -17,6 +18,22 @@ use function factory;
 class UserTest extends ApplicationTestCase
 {
     use DatabaseTransactions;
+
+    /**
+     * @testdox hashes passwords on set
+     * @covers ::setPasswordAttribute
+     */
+    public function testSetPasswordAttribute(): void
+    {
+        $user           = new User();
+        $password       = '123456';
+        $user->password = $password;
+
+        $this->assertNotEquals($password, $user->password);
+        $this->assertTrue(Hash::check($password, $user->password));
+        $this->assertFalse(Hash::needsRehash($user->password));
+        $this->assertNotEmpty($user->getAttribute('password'));
+    }
 
     /**
      * @testdox returns the user statistics.

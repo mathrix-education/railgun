@@ -14,7 +14,7 @@ use function in_array;
 use function trans;
 
 /**
- * @testdox [E2E] Mutation createSubscription
+ * @testdox Mutation createSubscription
  */
 class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
 {

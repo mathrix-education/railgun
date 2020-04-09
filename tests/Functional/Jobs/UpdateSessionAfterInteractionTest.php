@@ -16,7 +16,7 @@ use Tests\ApplicationTestCase;
 use function factory;
 
 /**
- * @testdox [Functional] UpdateSessionAfterInteraction Job
+ * @testdox UpdateSessionAfterInteraction Job
  */
 class UpdateSessionAfterInteractionTest extends ApplicationTestCase
 {

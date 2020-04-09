@@ -21,7 +21,7 @@ use function strtolower;
 use function strtoupper;
 
 /**
- * @testdox [E2E] Mutation interact
+ * @testdox Mutation interact
  */
 class InteractIntegrationTest extends GraphQLIntegrationTestCase
 {

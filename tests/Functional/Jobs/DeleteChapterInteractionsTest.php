@@ -9,7 +9,7 @@ use Railgun\Models\Course;
 use Tests\ApplicationTestCase;
 
 /**
- * @testdox [Functional] DeleteChapterInteractions Job
+ * @testdox DeleteChapterInteractions Job
  * @coversDefaultClass \Railgun\Jobs\DeleteChapterInteractions
  */
 class DeleteChapterInteractionsTest extends ApplicationTestCase

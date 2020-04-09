@@ -12,7 +12,7 @@ use Railgun\Models\User;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 
 /**
- * @testdox [E2E] Mutation updateMe
+ * @testdox Mutation updateMe
  */
 class UpdateMeIntegrationTest extends GraphQLIntegrationTestCase
 {

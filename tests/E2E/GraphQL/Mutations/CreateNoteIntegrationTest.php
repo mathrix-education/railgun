@@ -10,7 +10,7 @@ use Railgun\Support\Silicate;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 
 /**
- * @testdox [E2E] Mutation createNote
+ * @testdox Mutation createNote
  */
 class CreateNoteIntegrationTest extends GraphQLIntegrationTestCase
 {

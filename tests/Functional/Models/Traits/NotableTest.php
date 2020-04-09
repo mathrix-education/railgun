@@ -23,7 +23,7 @@ use function factory;
 use function strtolower;
 
 /**
- * @testdox [Functional] Notable Model trait
+ * @testdox Notable Model trait
  * @coversDefaultClass \Railgun\Models\Note
  */
 class NotableTest extends ApplicationTestCase

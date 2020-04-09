@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Artisan;
 use Tests\ApplicationTestCase;
 
 /**
- * @testdox [Functional] Schema
+ * @testdox Schema
  */
 class SchemaTest extends ApplicationTestCase
 {

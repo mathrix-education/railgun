@@ -18,7 +18,7 @@ use function factory;
 use function range;
 
 /**
- * @testdox [Functional] Orderable Model trait
+ * @testdox Orderable Model trait
  */
 class OrderableTest extends ApplicationTestCase
 {

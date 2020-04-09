@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Mails;
+namespace Tests\Functional\Mails;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Jose\Component\Checker\InvalidClaimException;

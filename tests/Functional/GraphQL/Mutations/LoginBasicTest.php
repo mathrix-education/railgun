@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\GraphQL\Mutations;
+namespace Tests\Functional\GraphQL\Mutations;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Hash;
@@ -11,17 +11,17 @@ use Mockery\MockInterface;
 use Railgun\Exceptions\InvalidCredentialsException;
 use Railgun\GraphQL\Mutations\LoginBasic;
 use Railgun\Models\User;
-use Tests\Unit\GraphQLUnitTestCase;
+use Tests\Functional\GraphQL\GraphQLFunctionalTestCase;
 
 /**
- * @testdox [Unit] Mutation loginBasic
+ * @testdox Mutation loginBasic
  * @coversDefaultClass \Railgun\GraphQL\Mutations\LoginBasic
  * @uses                \Mathrix\Lumen\JWT\Drivers\Driver
  *
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
  */
-class LoginBasicTest extends GraphQLUnitTestCase
+class LoginBasicTest extends GraphQLFunctionalTestCase
 {
     private int    $userId;
     private string $email;

@@ -6,9 +6,10 @@ namespace Railgun\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use function app;
 use function is_string;
+use function method_exists;
 use function uuid_create;
 use function uuid_is_valid;
 
@@ -24,9 +25,9 @@ class CorrelationMiddleware
      * @param Request $request The Illuminate HTTP request.
      * @param Closure $next    The next middleware.
      *
-     * @return mixed The final response.
+     * @return Response The final response.
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         $correlationId = $request->header(self::HEADER);
 
@@ -40,7 +41,7 @@ class CorrelationMiddleware
         /** @var Response|mixed $response */
         $response = $next($request);
 
-        if ($response instanceof Response) {
+        if (method_exists($response, 'header')) {
             $response->header(self::HEADER, $correlationId);
         }
 

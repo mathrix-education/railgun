@@ -12,7 +12,7 @@ use function collect;
 use function range;
 
 /**
- * @testdox [E2E] Mutation dismissNotification
+ * @testdox Mutation dismissNotification
  */
 class DismissAllNotificationIntegrationTest extends GraphQLIntegrationTestCase
 {

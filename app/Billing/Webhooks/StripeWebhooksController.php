@@ -28,7 +28,6 @@ class StripeWebhooksController extends Controller
 {
     private const IGNORED_MESSAGE = 'Not handled';
     private const EVENT_MAP       = [
-        // Event::CUSTOMER_SUBSCRIPTION_CREATED, // we probably do not want this
         Event::CUSTOMER_SUBSCRIPTION_UPDATED => 'handleCustomerSubscription',
         Event::CUSTOMER_SUBSCRIPTION_DELETED => 'handleCustomerSubscription',
     ];

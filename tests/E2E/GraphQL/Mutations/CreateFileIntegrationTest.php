@@ -13,7 +13,7 @@ use function json_encode;
 use const JSON_THROW_ON_ERROR;
 
 /**
- * @testdox [E2E] Mutation createFile
+ * @testdox Mutation createFile
  */
 class CreateFileIntegrationTest extends GraphQLIntegrationTestCase
 {

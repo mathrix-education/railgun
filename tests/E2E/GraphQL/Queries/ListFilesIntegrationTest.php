@@ -12,7 +12,7 @@ use function collect;
 use function trans;
 
 /**
- * @testdox [E2E] Mutation listFiles
+ * @testdox Mutation listFiles
  */
 class ListFilesIntegrationTest extends GraphQLIntegrationTestCase
 {
