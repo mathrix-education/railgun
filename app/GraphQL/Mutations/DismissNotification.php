@@ -25,10 +25,9 @@ class DismissNotification
     {
         /** @var User $user */
         $user = $context->user();
-        $id   = $args['notificationId'];
 
         /** @var Notification $notification */
-        $notification = $user->notifications()->where('id', '=', $id)->first();
+        $notification = $user->notifications()->where('id', '=', $args['id'])->first();
 
         if (!$notification instanceof Notification) {
             // User does not owns the notification

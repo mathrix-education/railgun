@@ -2,7 +2,7 @@ extend type Mutation {
     """
     Mark a notification as read.
     """
-    dismissNotification(notificationId: ID!): Notification @guard
+    dismissNotification(id: ID!): Notification @guard
 
     """
     Mark all notifications as read.
