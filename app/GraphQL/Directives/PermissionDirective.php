@@ -28,6 +28,8 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
 {
     /**
      * SDL definition of the directive.
+     *
+     * @codeCoverageIgnore
      */
     public static function definition(): string
     {
@@ -55,6 +57,11 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
         SDL;
     }
 
+    /**
+     * @return string The directive name.
+     *
+     * @codeCoverageIgnore
+     */
     public function name(): string
     {
         return 'permission';

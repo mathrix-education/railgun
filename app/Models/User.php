@@ -13,8 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Notifications\DatabaseNotification as Notification;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Notifications\RoutesNotifications;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -22,6 +21,7 @@ use Illuminate\Support\Facades\Queue;
 use Laravel\Lumen\Auth\Authorizable;
 use Railgun\Billing\Models\StripeCustomer;
 use Railgun\Jobs\CleanUserSession;
+use Railgun\Models\Traits\HasDatabaseNotifications;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Support\LazyStdClass;
 use Stripe\Subscription as StripeSubscription;
@@ -57,17 +57,15 @@ use function uuid_is_valid;
  * @property-read Collection|Vote[]         $votes
  * @property-read Collection|Interaction[]  $interactions
  * @property-read Collection|Session[]      $sessions
- * @property-read Collection|Notification[] $notifications
- * @property-read Collection|Notification[] $unreadNotifications
- * @property-read Collection|Notification[] $readNotifications
  * @property-read Collection|Subscription[] $subscriptions
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable;
     use Authorizable;
-    use Notifiable;
+    use HasDatabaseNotifications;
     use Randomizable;
+    use RoutesNotifications;
     use StripeCustomer;
 
     protected $fillable   = [

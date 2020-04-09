@@ -30,7 +30,7 @@ class ForgotPassword
         $user = User::query()->where('email', '=', $email)->first();
 
         if ($user === null) {
-            // User was not found, sleep a random delay to mitigate timing-base attacks.
+            // User was not found, sleep a random delay to mitigate timing-based attacks.
             try {
                 $delay = random_int(300000, 700000);
             } catch (Throwable $e) {
