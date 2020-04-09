@@ -34,6 +34,10 @@
   "repositories": [
     {
       "type": "path",
+      "url": "packages/lumen-healthz"
+    },
+    {
+      "type": "path",
       "url": "packages/lumen-mailjet"
     },
     {
@@ -56,6 +60,7 @@
     "illuminate/notifications": "^7.0",
     "illuminate/redis": "^7.0",
     "laravel/lumen-framework": "^7.0",
+    "mathrix-education/lumen-healthz": "^0.1.0",
     "mathrix-education/lumen-jwt": "v3.x-dev",
     "mathrix-education/lumen-mailjet": "^0.1.0",
     "mathrix-education/lumen-prometheus-exporter": "^0.1",

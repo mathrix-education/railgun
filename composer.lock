@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8c5ff077c5db7cff66dc29e68ba2e09d",
+    "content-hash": "fa8e7d9b1ec246372d7ddbe5fc62a391",
     "packages": [
         {
             "name": "braintree/braintree_php",
@@ -3278,6 +3278,47 @@
                 "swiftmailer"
             ],
             "time": "2019-06-13T12:40:37+00:00"
+        },
+        {
+            "name": "mathrix-education/lumen-healthz",
+            "version": "0.1.0",
+            "dist": {
+                "type": "path",
+                "url": "packages/lumen-healthz",
+                "reference": "1f6a39c96918abe241817ebc91517d5681a10d43"
+            },
+            "require": {
+                "illuminate/support": "^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mathrix\\Healthz\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mathieu Bour",
+                    "email": "mathieu@mathrix.fr"
+                }
+            ],
+            "description": "Lumen healthchecks",
+            "homepage": "https://github.com/mathrix-education/lumen-prometheus-exporter",
+            "keywords": [
+                "exporter",
+                "lumen",
+                "metrics",
+                "prometheus"
+            ],
+            "support": {
+                "email": "mathieu@mathrix.fr",
+                "issues": "https://github.com/mathrix-education/lumen-prometheus-exporter/issues",
+                "source": "https://github.com/mathrix-education/lumen-prometheus-exporter",
+                "docs": "https://github.com/mathrix-education"
+            }
         },
         {
             "name": "mathrix-education/lumen-jwt",

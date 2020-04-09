@@ -6,6 +6,7 @@ namespace Railgun\Providers;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
+use Psr\Log\LoggerInterface;
 use Railgun\Billing\Webhooks\StripeWebhooksController;
 use Stripe\Stripe;
 use function config;
@@ -19,6 +20,7 @@ class StripeServiceProvider extends ServiceProvider
     {
         // Register the Stripe API Key
         Stripe::setApiKey(config('services.stripe.secret'));
+        Stripe::setLogger($this->app->make(LoggerInterface::class));
 
         // Register the webhooks route
         /** @var Router $router */
