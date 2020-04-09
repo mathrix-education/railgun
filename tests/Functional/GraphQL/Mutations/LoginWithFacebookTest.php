@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\GraphQL\Mutations;
+namespace Tests\Functional\GraphQL\Mutations;
 
 use Exception;
 use Facebook\Exceptions\FacebookAuthenticationException;
@@ -14,19 +14,19 @@ use Mockery\MockInterface;
 use Railgun\Exceptions\InvalidAuthTokenException;
 use Railgun\GraphQL\Mutations\LoginWithFacebook;
 use Railgun\Models\User;
-use Tests\Unit\GraphQLUnitTestCase;
+use Tests\Functional\GraphQL\GraphQLFunctionalTestCase;
 use function base64_encode;
 use function random_bytes;
 
 /**
- * @testdox [Unit] Mutation loginWithFacebook
+ * @testdox Mutation loginWithFacebook
  * @coversDefaultClass \Railgun\GraphQL\Mutations\LoginWithFacebook
  * @uses                \Mathrix\Lumen\JWT\Drivers\Driver
  *
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
  */
-class LoginWithFacebookTest extends GraphQLUnitTestCase
+class LoginWithFacebookTest extends GraphQLFunctionalTestCase
 {
     private string $accessToken;
     private int    $userId;

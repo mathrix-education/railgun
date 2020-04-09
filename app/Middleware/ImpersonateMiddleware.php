@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Http\Request;
 use Railgun\Models\User;
+use Symfony\Component\HttpFoundation\Response;
 use function scope;
 
 /**
@@ -28,9 +29,9 @@ class ImpersonateMiddleware
      * @param Request $request The Illuminate HTTP request.
      * @param Closure $next    The next middleware.
      *
-     * @return mixed The final response.
+     * @return Response The final response.
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         if ($request->hasHeader(self::HEADER) && scope('users:impersonate')) {
             $targetId = $request->header(self::HEADER);

@@ -14,7 +14,7 @@ use function array_intersect;
 use function trans;
 
 /**
- * @testdox [E2E] Mutation checkoutCart
+ * @testdox Mutation checkoutCart
  */
 class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
 {

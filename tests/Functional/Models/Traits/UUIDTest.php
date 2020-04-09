@@ -9,7 +9,7 @@ use Railgun\Models\Traits\UUID;
 use Tests\ApplicationTestCase;
 
 /**
- * @testdox [Functional] UUID Model trait
+ * @testdox UUID Model trait
  * @coversDefaultClass \Railgun\Models\Traits\UUID
  */
 class UUIDTest extends ApplicationTestCase

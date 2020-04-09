@@ -9,7 +9,7 @@ use Railgun\Notifications\CommentReplyNotification;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 
 /**
- * @testdox [E2E] Mutation dismissNotification
+ * @testdox Mutation dismissNotification
  *
  * Database transactions cause a deadlock, thus there are not used here.
  */

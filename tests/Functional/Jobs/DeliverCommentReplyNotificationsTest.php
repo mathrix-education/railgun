@@ -13,7 +13,7 @@ use Tests\ApplicationTestCase;
 use function factory;
 
 /**
- * @testdox [Functional] DeliverCommentReplyNotifications Job
+ * @testdox DeliverCommentReplyNotifications Job
  * @coversDefaultClass \Railgun\Jobs\DeliverCommentReplyNotifications
  */
 class DeliverCommentReplyNotificationsTest extends ApplicationTestCase

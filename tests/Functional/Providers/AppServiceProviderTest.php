@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Providers;
+namespace Tests\Functional\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Railgun\Models\User;

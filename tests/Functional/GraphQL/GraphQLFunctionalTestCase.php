@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit;
+namespace Tests\Functional\GraphQL;
 
 use GraphQL\Type\Definition\ResolveInfo;
 use Mockery;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Tests\ApplicationTestCase;
 
-class GraphQLUnitTestCase extends ApplicationTestCase
+class GraphQLFunctionalTestCase extends ApplicationTestCase
 {
     /**
      * Execute a GraphQL Query or Mutation

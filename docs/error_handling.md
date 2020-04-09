@@ -10,12 +10,29 @@ The general shape of an error payload is the following:
 {
   "errors": [
     {
-      
+      "message": "The error message",
+      "extensions": {
+        "category": "error-category",
+        "foo": "bar",
+        "bar": "baz"
+      }
     }
   ]
 }
 ```
 
+## Category
+Each error should have a `"category"` field in its `"extension"` map.
+The category allows the client to determine the actions to take depending on the current context.
+
+There are reserved categories names:
+
+| Category     | Description                                                            |
+|--------------|------------------------------------------------------------------------|
+| `"internal"` | An unexpected internal error. This should not be reported to the user. |
+| `"graphql"`  | GraphQL syntax error                                                   |
+
+### Standard errors
 ## Validation
 Category: `"validation"`
 
@@ -43,12 +60,12 @@ Example:
       {
          "message":"Les données soumises pour le champ [updateMe] sont invalides",
          "extensions": {
+            "category":"validation",
             "validation":{ 
                "password": [
                   "Le champ mot de passe doit être une chaîne de caractères."
                ]
-            },
-            "category":"validation"
+            }
          }
       }
    ]

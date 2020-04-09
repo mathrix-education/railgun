@@ -17,7 +17,7 @@ use Tests\ApplicationTestCase;
 use function factory;
 
 /**
- * @testdox [Functional] CleanUserSession Job
+ * @testdox CleanUserSession Job
  * @coversDefaultClass \Railgun\Jobs\CleanUserSession
  */
 class CleanUserSessionTest extends ApplicationTestCase

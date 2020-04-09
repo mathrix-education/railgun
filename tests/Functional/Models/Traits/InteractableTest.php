@@ -20,7 +20,7 @@ use function data_get;
 use function factory;
 
 /**
- * @testdox [Functional] Interactable Model trait
+ * @testdox Interactable Model trait
  */
 class InteractableTest extends ApplicationTestCase
 {

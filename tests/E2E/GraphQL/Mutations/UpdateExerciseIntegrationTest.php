@@ -11,7 +11,7 @@ use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function factory;
 
 /**
- * @testdox [E2E] Mutation updateExercise
+ * @testdox Mutation updateExercise
  */
 class UpdateExerciseIntegrationTest extends GraphQLIntegrationTestCase
 {

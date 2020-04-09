@@ -1,5 +1,17 @@
 #!/usr/bin/env bash
-TARGET_DB=${1:-mathrix_education_local}
+# Default options
+DB_TARGET="mathrix_education_local"
+
+while getopts ":t:" opt; do
+    case ${opt} in
+    t)
+        DB_TARGET="$OPTARG"
+        ;;
+    \?)
+        ;;
+    esac
+done
+
 DESTINATION_FILE=storage/buster/mathrix_education_v7.sql
 BACKUP_FILE=$(gsutil ls gs://mathrix-backups/databases/mathrix_education_master/ | tail -1)
 
@@ -22,6 +34,6 @@ strip "cache"
 strip "settings"
 
 echo "Patching the database name"
-sed -i "s/mathrix_education_master/${TARGET_DB}/g" "$DESTINATION_FILE"
+sed -i "s/mathrix_education_master/${DB_TARGET}/g" "$DESTINATION_FILE"
 ls -l "$DESTINATION_FILE"
 

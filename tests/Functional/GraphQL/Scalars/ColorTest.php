@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\GraphQL\Scalars;
+namespace Tests\Functional\GraphQL\Scalars;
 
 use GraphQL\Error\InvariantViolation;
 use Railgun\GraphQL\Scalars\Color;
@@ -11,7 +11,7 @@ use Throwable;
 use function collect;
 
 /**
- * @testdox [Unit] Color scalar
+ * @testdox Color scalar
  * @coversDefaultClass \Railgun\GraphQL\Scalars\Color
  */
 class ColorTest extends ApplicationTestCase

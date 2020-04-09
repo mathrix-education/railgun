@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\GraphQL\Scalars;
+namespace Tests\Functional\GraphQL\Scalars;
 
 use GraphQL\Error\InvariantViolation;
 use Railgun\GraphQL\Scalars\URL;

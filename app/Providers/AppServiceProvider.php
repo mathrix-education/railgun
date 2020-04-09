@@ -18,6 +18,7 @@ use Railgun\Console\Kernel;
 use Railgun\Handlers\Handler;
 use Railgun\Middleware\CorrelationMiddleware;
 use Railgun\Middleware\ImpersonateMiddleware;
+use Railgun\Middleware\LanguageMiddleware;
 use Railgun\Models\Course;
 use Railgun\Models\Exam;
 use Railgun\Models\Exercise;
@@ -57,6 +58,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // Headers
         $this->app->middleware([
+            LanguageMiddleware::class,
             CorrelationMiddleware::class,
             PrometheusMiddleware::class,
             ImpersonateMiddleware::class,

@@ -25,6 +25,8 @@ class BraintreeServiceProvider extends ServiceProvider implements DeferrableProv
 
     /**
      * @return string[] The services provided by the provider.
+     *
+     * @codeCoverageIgnore
      */
     public function provides(): array
     {

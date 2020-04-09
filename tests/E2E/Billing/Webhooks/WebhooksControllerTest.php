@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\E2E\Billing\Webhooks;
 
 /**
- * @testdox [E2E] Webhooks Controller
+ * @testdox Webhooks Controller
  */
 class WebhooksControllerTest extends WebhookTestCase
 {

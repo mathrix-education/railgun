@@ -8,7 +8,7 @@ use Laravel\Lumen\Testing\DatabaseTransactions;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 
 /**
- * @testdox [E2E] Query validateCart
+ * @testdox Query validateCart
  */
 class ValidateCartIntegrationTest extends GraphQLIntegrationTestCase
 {

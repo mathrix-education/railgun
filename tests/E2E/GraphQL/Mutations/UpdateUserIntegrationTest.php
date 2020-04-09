@@ -10,7 +10,7 @@ use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function factory;
 
 /**
- * [E2E] Mutation updateUser
+ * Mutation updateUser
  */
 class UpdateUserIntegrationTest extends GraphQLIntegrationTestCase
 {
