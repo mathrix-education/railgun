@@ -43,6 +43,8 @@ $factory->define(Exercise::class, static function (Faker $faker) {
 
     $timestamps = Timestamps::factory();
 
+    $subject = Subject::random();
+
     return [
         'type'         => 'mcq',
         'questions'    => $questions,
@@ -50,9 +52,9 @@ $factory->define(Exercise::class, static function (Faker $faker) {
         'solutions'    => $solutions,
         'explanations' => $explanations,
         'order'        => 99,
-        'premium'      => $faker->boolean(90),
+        'premium'      => $subject->premium,
         'visible'      => $faker->boolean(90),
-        'subject_id'   => Subject::random()->id,
+        'subject_id'   => $subject->id,
         'created_at'   => $timestamps->createdAt,
         'updated_at'   => $timestamps->updatedAt,
     ];

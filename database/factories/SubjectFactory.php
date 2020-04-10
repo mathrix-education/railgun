@@ -18,6 +18,7 @@ $factory->define(Subject::class, static function (Faker $faker) {
     return [
         'name'       => $name,
         'order'      => 99,
+        'premium'    => $faker->boolean(10),
         'visible'    => $faker->boolean(90),
         'notion_id'  => Notion::random()->id,
         'created_at' => $timestamps->createdAt,

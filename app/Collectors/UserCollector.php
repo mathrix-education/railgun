@@ -28,8 +28,9 @@ class UserCollector extends Collector
     {
         DB::table('grades')
             ->join('users', 'grades.id', '=', 'users.grade_id')
-            ->groupBy('users.grade_id')
             ->selectRaw('`grades`.`name`, count(`users`.`grade_id`) as `count`')
+            ->whereNotNull('users.grade_id')
+            ->groupBy('users.grade_id')
             ->get()
             ->each(function (stdClass $line): void {
                 $this->gauge('users_registered_total')->set($line->count, [$line->name]);

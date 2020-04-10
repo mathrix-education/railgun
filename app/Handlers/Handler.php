@@ -39,8 +39,6 @@ use function trans;
 
 /**
  * Handle exceptions and display them in json as response. Also handle Sentry's behavior.
- *
- * @codeCoverageIgnore
  */
 class Handler extends ExceptionHandler
 {
@@ -128,6 +126,7 @@ class Handler extends ExceptionHandler
      * @throws Throwable
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @codeCoverageIgnore
      */
     public function render($request, Throwable $exception)
     {
@@ -138,6 +137,8 @@ class Handler extends ExceptionHandler
      * @param Throwable $exception The exception to report.
      *
      * @throws Exception
+     *
+     * @codeCoverageIgnore
      */
     public function report(Throwable $exception): void
     {
@@ -156,6 +157,8 @@ class Handler extends ExceptionHandler
      * Report the exception to sentry if necessary.
      *
      * @param Throwable $exception The exception to report.
+     *
+     * @codeCoverageIgnore
      */
     public function reportToSentry(Throwable $exception): void
     {

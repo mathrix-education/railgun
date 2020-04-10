@@ -18,6 +18,7 @@ use Railgun\Models\Traits\Reorderable;
  * @property-read int                   $id
  * @property-read string                $name
  * @property      int                   $order
+ * @property      bool                  $premium
  * @property      bool                  $visible
  * @property      int                   $notion_id
  * @property-read Carbon                $created_at
@@ -35,12 +36,28 @@ class Subject extends Model implements Content
     protected       $fillable       = [
         'name',
         'order',
+        'premium',
         'visible',
         'notion_id',
     ];
-    protected       $casts          = ['visible' => 'boolean'];
+    protected       $casts          = [
+        'premium' => 'boolean',
+        'visible' => 'boolean',
+    ];
     protected array $orderGroup     = ['notion_id'];
     protected array $orderRelations = [Course::class];
+
+    public static function booting(): void
+    {
+        $premiumSync = static function (Subject $subject): void {
+            if ($subject->isDirty('premium')) {
+                $subject->exercises()->update(['premium' => $subject->premium]);
+            }
+        };
+
+        self::creating($premiumSync);
+        self::updating($premiumSync);
+    }
 
     /**
      * @return BelongsTo<Notion>

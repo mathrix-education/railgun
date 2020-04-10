@@ -27,13 +27,7 @@ class DismissNotification
         $user = $context->user();
 
         /** @var Notification $notification */
-        $notification = $user->notifications()->where('id', '=', $args['id'])->first();
-
-        if (!$notification instanceof Notification) {
-            // User does not owns the notification
-            return null;
-        }
-
+        $notification = $user->notifications()->where('id', '=', $args['id'])->firstOrFail();
         $notification->markAsRead();
 
         return $notification;

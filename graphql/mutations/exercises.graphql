@@ -7,7 +7,6 @@ extend type Mutation {
         solutions: [IntList!]!
         explanations: [SilicateList!]!
         order: Int
-        premium: Boolean!
         visible: Boolean!
         subject_id: ID!
         labels: ManageLabels
@@ -22,7 +21,6 @@ extend type Mutation {
         solutions: [IntList!]
         explanations: [SilicateList!]
         order: Int
-        premium: Boolean
         visible: Boolean
         subject_id: ID
         labels: ManageLabels

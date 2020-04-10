@@ -7,8 +7,8 @@ namespace Tests\E2E\GraphQL\Mutations;
 use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Exercise;
+use Railgun\Models\Subject;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
-use function array_merge;
 use function factory;
 
 /**
@@ -43,7 +43,6 @@ class CreateExerciseIntegrationTest extends GraphQLIntegrationTestCase
                 $solutions: [IntList!]!
                 $explanations: [SilicateList!]!
                 $order: Int
-                $premium: Boolean!
                 $visible: Boolean!
                 $subject_id: ID!
             ) {
@@ -54,7 +53,6 @@ class CreateExerciseIntegrationTest extends GraphQLIntegrationTestCase
                     solutions: $solutions
                     explanations: $explanations
                     order: $order
-                    premium: $premium
                     visible: $visible
                     subject_id: $subject_id
                 ) {
@@ -71,12 +69,11 @@ class CreateExerciseIntegrationTest extends GraphQLIntegrationTestCase
      *
      * @ticket #243
      */
-    public function test(): void
+    public function testCreate(): void
     {
-        $variables = array_merge(
-            factory(Exercise::class)->raw(),
-            ['type' => 'MCQ', 'premium' => false],
-        );
+        /** @var Subject $subject */
+        $subject   = factory(Subject::class)->create(['premium' => false]);
+        $variables = factory(Exercise::class)->raw(['type' => 'MCQ', 'subject_id' => $subject->id]);
         $this->actingAsNewUser('exercises:create');
 
         $this->executeCreateExercise($variables);

@@ -17,6 +17,7 @@ class CreateSubjectsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->unsignedTinyInteger('order');
+            $table->boolean('premium');
             $table->boolean('visible');
             $table->unsignedBigInteger('notion_id');
             $table->timestamps();

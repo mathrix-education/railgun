@@ -7,6 +7,7 @@ namespace Tests\E2E\GraphQL\Mutations;
 use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Exercise;
+use Railgun\Models\Subject;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function factory;
 
@@ -42,7 +43,6 @@ class UpdateExerciseIntegrationTest extends GraphQLIntegrationTestCase
                 $solutions: [IntList!]
                 $explanations: [SilicateList!]
                 $order: Int
-                $premium: Boolean
                 $visible: Boolean
                 $subject_id: ID
             ) {
@@ -53,7 +53,6 @@ class UpdateExerciseIntegrationTest extends GraphQLIntegrationTestCase
                     solutions: $solutions
                     explanations: $explanations
                     order: $order
-                    premium: $premium
                     visible: $visible
                     subject_id: $subject_id
                 ) {
@@ -74,9 +73,11 @@ class UpdateExerciseIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testUpdateExercise(): void
     {
+        /** @var Subject $subject */
+        $subject = factory(Subject::class)->create(['premium' => false]);
         /** @var Exercise $exercise */
-        $exercise  = factory(Exercise::class)->create();
-        $variables = factory(Exercise::class)->raw(['id' => $exercise->id, 'premium' => false]);
+        $exercise  = factory(Exercise::class)->create(['subject_id' => $subject->id]);
+        $variables = factory(Exercise::class)->raw(['id' => $exercise->id, 'subject_id' => $subject->id]);
 
         $this->actingAsNewUser('exercises:update');
         $this->executeUpdateExercise($variables);
