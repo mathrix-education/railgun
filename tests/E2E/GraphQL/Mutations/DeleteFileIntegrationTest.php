@@ -67,4 +67,19 @@ class DeleteFileIntegrationTest extends GraphQLIntegrationTestCase
         $this->assertResponseOk();
         $this->assertError(trans('storage.errors.file_not_found', ['file' => $path]));
     }
+
+    /**
+     * @testdox fails to delete a directory.
+     */
+    public function testDeleteDirectory(): void
+    {
+        $path = $this->getTestPath('foo');
+        $this->seedTestDirectory(['foo/bar.txt']);
+        $this->actingAsNewUser('files:delete');
+
+        $this->executeDeleteBlob($path);
+
+        $this->assertResponseOk();
+        $this->assertError(trans('storage.errors.file_not_found', ['file' => $path]));
+    }
 }

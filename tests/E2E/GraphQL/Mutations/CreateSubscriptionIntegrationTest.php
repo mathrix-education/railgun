@@ -156,4 +156,18 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
         $this->assertEquals($expectedMessage, $this->getContent('errors.0.message'));
         $this->assertEquals(0, $user->subscriptions->count()); // No new subscription
     }
+
+    /**
+     * @testdox fails to create a subscription because the user is already premium.
+     */
+    public function testFailsAlreadyPremium(): void
+    {
+        $user = $this->actingAsNewUser(['premium_bypass' => true]);
+        $this->assertTrue($user->premium);
+
+        $this->executeCreateSubscription('MONTHLY', 'pm_card_fr');
+
+        $this->assertResponseOk();
+        $this->assertError(trans('billing.errors.already_premium_you'), 'cart');
+    }
 }
