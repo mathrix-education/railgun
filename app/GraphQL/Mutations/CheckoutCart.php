@@ -8,7 +8,6 @@ use Illuminate\Support\Collection;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Railgun\Billing\Cart\Cart;
 use Railgun\Billing\Models\Premium;
-use Railgun\GraphQL\Traits\SetupCustomer;
 use Railgun\Jobs\DeliverProducts;
 use Railgun\Models\Pack;
 use Railgun\Models\Training;
@@ -23,8 +22,6 @@ use function strtolower;
 
 class CheckoutCart
 {
-    use SetupCustomer;
-
     /**
      * @var Collection|InvoiceItem[] $invoiceItems The created invoice items. This proper is used to cancel all the
      *      upcoming invoice items if an exception is thrown.
@@ -49,8 +46,9 @@ class CheckoutCart
     {
         // Setup the customer
         $paymentMethodId = $args['paymentMethodId'];
-        /** @noinspection PhpParamsInspection */
-        $user = $this->setupCustomer($context->user(), $paymentMethodId);
+        /** @var User $user */
+        $user = $context->user();
+        $user->createCustomer($paymentMethodId);
 
         // Validate the cart for the current customer
         $cart = (new Cart($args['cart'], $user))->validate();

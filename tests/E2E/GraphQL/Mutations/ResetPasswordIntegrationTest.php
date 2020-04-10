@@ -69,4 +69,30 @@ class ResetPasswordIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->assertInstanceOf(InvalidAuthTokenException::class, $exception);
     }
+
+    /**
+     * @testdox resets the password of the targeted user in debug mode.
+     */
+    public function testValidTokenDebugMode(): void
+    {
+        $this->app->make('config')->set('app.debug', true); // Enable debug
+
+        $oldPassword = $this->faker->password;
+        $newPassword = $this->faker->password;
+
+        /** @var User $user */
+        $user = factory(User::class)->create();
+        $user->update(['password' => $oldPassword]);
+
+        $this->graphQL(self::QUERY, ['token' => $user->id, 'newPassword' => $newPassword]);
+
+        $this->assertResponseOk();
+        $this->assertNoErrors();
+        $this->assertTrue($this->getData('resetPassword'));
+
+        // Assert that the password now works
+        $user->refresh();
+        $this->assertFalse(Hash::check($oldPassword, $user->password));
+        $this->assertTrue(Hash::check($newPassword, $user->password));
+    }
 }

@@ -123,4 +123,40 @@ class MoveFileIntegrationTest extends GraphQLIntegrationTestCase
         Storage::assertExists($source);
         Storage::assertExists($destination);
     }
+
+    /**
+     * @testdox fails to move a directory.
+     */
+    public function testMoveDirectory(): void
+    {
+        $this->seedTestDirectory(['foo/bar.txt']);
+        $source      = $this->getTestPath('foo');
+        $destination = $this->getTestPath('baz');
+
+        $this->actingAsNewUser('files:move');
+        $this->executeMoveFile($source, $destination, false);
+
+        $this->assertResponseOk();
+        $this->assertNoErrors();
+        Storage::assertExists($source);
+        Storage::assertMissing($destination);
+    }
+
+    /**
+     * @testdox moves a file to a directory.
+     */
+    public function testMoveFileToDirectory(): void
+    {
+        $this->seedTestDirectory(['foo/bar.txt', 'baz/foo.txt']);
+        $source      = $this->getTestPath('foo/bar.txt');
+        $destination = $this->getTestPath('baz');
+
+        $this->actingAsNewUser('files:move');
+        $this->executeMoveFile($source, $destination, false);
+
+        $this->assertResponseOk();
+        $this->assertNoErrors();
+        Storage::assertMissing($source);
+        Storage::assertExists($destination . '/bar.txt');
+    }
 }

@@ -7,7 +7,6 @@ namespace Railgun\GraphQL\Mutations;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Railgun\Billing\Exceptions\AlreadyPremiumException;
 use Railgun\Billing\Models\Plan;
-use Railgun\GraphQL\Traits\SetupCustomer;
 use Railgun\Jobs\UpsertSubscription;
 use Railgun\Models\Subscription;
 use Railgun\Models\User;
@@ -21,8 +20,6 @@ use function dispatch_now;
  */
 class CreateSubscription
 {
-    use SetupCustomer;
-
     /**
      * @param null           $rootValue The parent value, always null in this case.
      * @param mixed[]        $args      The mutation arguments.
@@ -43,7 +40,7 @@ class CreateSubscription
         }
 
         $paymentMethodId = $args['paymentMethodId'];
-        $user            = $this->setupCustomer($user, $paymentMethodId);
+        $user->createCustomer($paymentMethodId);
 
         $plan = new Plan($args['planId']);
 

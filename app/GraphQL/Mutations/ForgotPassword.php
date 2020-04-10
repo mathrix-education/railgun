@@ -33,9 +33,9 @@ class ForgotPassword
             // User was not found, sleep a random delay to mitigate timing-based attacks.
             try {
                 $delay = random_int(300000, 700000);
-            } catch (Throwable $e) {
+            } catch (Throwable $e) { // @codeCoverageIgnoreStart
                 $delay = 500000;
-            }
+            } // @codeCoverageIgnoreEnd
 
             usleep($delay);
 

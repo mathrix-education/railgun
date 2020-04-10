@@ -20,11 +20,6 @@ class Timestamps
     public DateTime $updatedAt;
     public DateTime $deletedAt;
 
-    private function __construct()
-    {
-        // Direct new() is forbidden
-    }
-
     /**
      * @param mixed $start The minimal start date.
      * @param int   $bias  The probability that the updated_at is the same as the created_at.
@@ -51,7 +46,7 @@ class Timestamps
 
         if ($start === '-1 month' && $bias === 90) {
             /** @var Collection $timestamps */
-            $timestamps = Cache::remember(self::CACHE_KEY, 3600, static function () use (
+            $timestamps = Cache::remember(self::CACHE_KEY, 10, static function () use (
                 $start,
                 $bias,
                 $generator

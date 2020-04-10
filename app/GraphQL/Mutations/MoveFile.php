@@ -32,12 +32,12 @@ class MoveFile
             throw new FileNotFoundException($destination);
         }
 
-        if ($args['override'] && $disk->exists($destination)) {
+        if ($disk->exists($destination)) {
             $destinationFile = Storage::normalize($disk->getMetadata($destination));
 
             if ($destinationFile['type'] === 'dir') {
                 $destination .= '/' . $file['basename'];
-            } else {
+            } elseif ($args['override']) {
                 $disk->delete($destination);
             }
         }

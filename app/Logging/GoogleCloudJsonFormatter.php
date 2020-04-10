@@ -142,14 +142,14 @@ class GoogleCloudJsonFormatter extends JsonFormatter
     private function getHttpRequest(): array
     {
         if (!app()->bound('request')) {
-            return [];
+            return []; // @codeCoverageIgnore
         }
 
         /** @var Request $request */
         $request = app()->make('request');
 
         if ($request === null) {
-            return [];
+            return []; // @codeCoverageIgnore
         }
 
         return [

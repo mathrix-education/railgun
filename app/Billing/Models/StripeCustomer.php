@@ -62,8 +62,13 @@ trait StripeCustomer
      *
      * @throws ApiErrorException
      */
-    public function createCustomer(?string $paymentMethodId = null): Customer
+    public function createCustomer(?string &$paymentMethodId = null): Customer
     {
+        if ($this->isStripeCustomer()) {
+            $paymentMethodId = $this->attachPaymentMethod($paymentMethodId)->id;
+            return $this->asStripeCustomer();
+        }
+
         $payload = [
             'email'    => $this->email,
             'metadata' => [
@@ -83,6 +88,8 @@ trait StripeCustomer
 
         $this->stripe_id = $customer->id;
         $this->save();
+
+        $paymentMethodId = (string)$customer->invoice_settings->default_payment_method;
 
         return $customer;
     }
