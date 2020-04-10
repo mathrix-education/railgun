@@ -5,6 +5,8 @@ type Lesson {
     content: Silicate!
     order: Int!
     visible: Boolean!
+    created_at: DateTime!
+    updated_at: DateTime!
     section: Section! @belongsTo
     comments: [Comment!] @morphMany
     """
