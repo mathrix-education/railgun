@@ -21,6 +21,7 @@ class SearchCoursesIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testSearch(): void
     {
+        $this->actingAsNewUser(['premium_bypass' => true]);
         $query = explode('-', Course::random()->slug)[0];
 
         $this->graphQL(
