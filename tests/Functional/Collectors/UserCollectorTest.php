@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\DB;
 use Mockery;
 use Mockery\MockInterface;
 use Railgun\Collectors\UserCollector;
-use Railgun\Models\Grade;
 use Tests\ApplicationTestCase;
 
 /**

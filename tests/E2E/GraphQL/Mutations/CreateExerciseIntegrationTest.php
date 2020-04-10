@@ -9,7 +9,6 @@ use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Exercise;
 use Railgun\Models\Subject;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
-use function array_merge;
 use function factory;
 
 /**
