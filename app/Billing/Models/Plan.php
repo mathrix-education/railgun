@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Railgun\Billing\Models;
 
 use Carbon\Carbon;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use function collect;
 use function round;
 
-class Plan
+class Plan implements Arrayable
 {
     public const MONTHLY_PLAN    = 'v5_monthly';
     public const ANNUALLY_PLAN   = 'v5_annually';

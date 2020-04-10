@@ -6,6 +6,7 @@ namespace Railgun\Jobs;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
 use Railgun\Billing\Cart\Cart;
 use Railgun\Models\Acquisition;
@@ -15,6 +16,7 @@ use RuntimeException;
 use Stripe\Invoice;
 use Stripe\StripeObject;
 use function collect;
+use function config;
 
 /**
  * Using a Stripe {@see Invoice}, deliver the corresponding products to a user.
@@ -30,8 +32,6 @@ class DeliverProducts extends Job
     public function __construct(Invoice $invoice)
     {
         $this->invoice = $invoice;
-        /** @noinspection PhpFieldAssignmentTypeMismatchInspection */
-        $this->user = User::query()->where('stripe_id', '=', $this->invoice->customer)->firstOrFail();
     }
 
     /**
@@ -39,6 +39,20 @@ class DeliverProducts extends Job
      */
     public function handle(): void
     {
+        try {
+            /** @var User $user */
+            $user = User::query()->where('stripe_id', '=', $this->invoice->customer)->firstOrFail();
+        } catch (ModelNotFoundException $exception) {
+            if (config('services.stripe.sandbox')) {
+                // Allow user to not exists in test mode since we are using them for integration tests
+                return;
+            }
+
+            throw $exception;
+        }
+
+        $this->user = $user;
+
         if ($this->invoice->metadata['type'] !== Cart::IDENTIFIER) {
             return;
         }

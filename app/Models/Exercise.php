@@ -49,7 +49,6 @@ class Exercise extends Model implements Content
         'solutions',
         'explanations',
         'order',
-        'premium',
         'visible',
         'subject_id',
     ];
@@ -62,6 +61,17 @@ class Exercise extends Model implements Content
         'visible'      => 'boolean',
     ];
     protected array $orderGroup = ['subject_id'];
+
+    public static function booting(): void
+    {
+        $premiumSync = static function (Exercise $exercise): void {
+            // Set the premium state to the same as the parent subject
+            $exercise->premium = $exercise->subject->premium;
+        };
+
+        self::creating($premiumSync);
+        self::updating($premiumSync);
+    }
 
     /**
      * @return BelongsTo<Subject>

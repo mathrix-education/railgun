@@ -34,6 +34,7 @@ class SubjectsCommand extends V7Command
             ->selectRaw(implode(',', [
                 'activities.name AS name',
                 "activities.order AS 'order'",
+                'activities.premium AS premium',
                 'activities.visible AS visible',
                 'activities.notion_id AS notion_id',
                 'activities.created_at AS created_at',

@@ -50,7 +50,6 @@ $factory->define(Exercise::class, static function (Faker $faker) {
         'solutions'    => $solutions,
         'explanations' => $explanations,
         'order'        => 99,
-        'premium'      => $faker->boolean(90),
         'visible'      => $faker->boolean(90),
         'subject_id'   => Subject::random()->id,
         'created_at'   => $timestamps->createdAt,

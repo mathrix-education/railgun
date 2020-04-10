@@ -42,7 +42,7 @@ class InvoicePaymentSucceededWebhookTest extends WebhookTestCase
         $this->assertResponseOk();
         Bus::assertDispatched(
             DeliverProducts::class,
-            static fn(DeliverProducts $job): bool => $user->is($job->user) && $invoice->id === $job->invoice->id,
+            static fn(DeliverProducts $job): bool => $invoice->id === $job->invoice->id,
         );
     }
 
