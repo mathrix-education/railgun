@@ -6,6 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Railgun\Models\Notion;
 
 class AddTypeToNotionsTable extends Migration
 {
@@ -15,7 +16,7 @@ class AddTypeToNotionsTable extends Migration
     public function up(): void
     {
         Schema::table('notions', static function (Blueprint $table): void {
-            $table->enum('type', ['standard', 'summary'])->default('standard')->after('id');
+            $table->enum('type', Notion::TYPES)->default(Notion::TYPE_STANDARD)->after('id');
         });
 
         DB::unprepared('alter table `notions` alter column `type` drop default');

@@ -31,6 +31,10 @@ class Notion extends Model implements Content
     use Randomizable;
     use Reorderable;
 
+    public const TYPE_STANDARD = 'standard';
+    public const TYPE_SUMMARY  = 'summary';
+    public const TYPES         = [self::TYPE_STANDARD, self::TYPE_SUMMARY];
+
     protected       $fillable   = [
         'name',
         'visible',
