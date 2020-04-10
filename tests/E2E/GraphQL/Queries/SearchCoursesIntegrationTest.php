@@ -8,6 +8,7 @@ use Railgun\Models\Course;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function count;
 use function explode;
+use function mb_strtolower;
 use function substr_count;
 
 /**
@@ -45,7 +46,7 @@ class SearchCoursesIntegrationTest extends GraphQLIntegrationTestCase
         $this->assertNoErrors();
         $this->assertGreaterThanOrEqual(
             count($this->getData('data')),
-            substr_count($this->response->getContent(), $query),
+            substr_count(mb_strtolower($this->response->getContent()), $query),
         );
     }
 }

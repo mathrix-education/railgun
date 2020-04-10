@@ -19,7 +19,7 @@ class CreateUserIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testExistingEmail(): void
     {
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->create(['username' => $this->faker->userName]);
 
         $this->graphQL(
             <<<'GRAPHQL'
