@@ -23,6 +23,7 @@ extend type Mutation {
         premium: Boolean
         visible: Boolean
         chapter_id: ID
+        labels: ManageLabels
     ): Exam @permission(scope: "exams:update") @update
 
     "Delete an existing exam."
