@@ -10,7 +10,6 @@ input CreateLabel {
 Update an existing label.
 """
 input UpdateLabel {
-    id: ID!
     name: String
     color: Color
 }

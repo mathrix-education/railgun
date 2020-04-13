@@ -9,7 +9,6 @@ input CreateLesson {
 }
 
 input UpdateLesson {
-    id: ID!
     name: String
     slug: String
     content: Silicate
