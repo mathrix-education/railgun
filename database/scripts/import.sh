@@ -29,6 +29,9 @@ DB_SERVICE_ACCOUNT="p731492094632-9gcerm@gcp-sa-cloud-sql.iam.gserviceaccount.co
 BUCKET="gs://mathrix-backups"
 OBJECT="$BUCKET/databases/$DB_TARGET/$DB_TARGET-$DATE.sql.gz"
 
+MYSQLDUMP_VERSION=$(mysqldump --version | sed 's/.*Ver \([5|8]\).*/\1/')
+
+MYSQLDUMP_CMD=$(cat <<-END
 mysqldump \
     -h 127.0.0.1 \
     --port=3306 \
@@ -41,12 +44,18 @@ mysqldump \
     --no-autocommit \
     --default-character-set=utf8mb4 \
     --single-transaction \
-    --column-statistics=0 \
     | sed "s/$DB_SOURCE/$DB_TARGET/g" \
     | gzip \
     | pv \
     | gsutil cp - "$OBJECT"
+END
+)
 
+if [[ "$MYSQLDUMP_VERSION" == "8" ]]; then
+    MYSQLDUMP_CMD=${MYSQLDUMP_CMD/mysqldump /mysqldump --column-statistics=0}
+fi
+
+eval "$MYSQLDUMP_CMD"
 gsutil acl ch -u "$DB_SERVICE_ACCOUNT:W" "$BUCKET"
 gsutil acl ch -u "$DB_SERVICE_ACCOUNT:R" "$OBJECT"
 gcloud sql import sql mysql "$OBJECT" "--database=$DB_TARGET" --quiet
