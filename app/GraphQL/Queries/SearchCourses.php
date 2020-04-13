@@ -28,7 +28,6 @@ class SearchCourses
             ->where('name', 'LIKE', $like)
             ->orWhere('slug', 'LIKE', $like)
             ->orWhere('seo_title', 'LIKE', $like)
-            ->orWhere('seo_slug', 'LIKE', $like)
             ->orWhere('seo_keywords', 'LIKE', $like)
             ->orWhere('seo_description', 'LIKE', $like)
             ->orWhere('content', 'LIKE', $like);

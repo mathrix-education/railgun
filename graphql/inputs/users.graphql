@@ -1,0 +1,17 @@
+input CreateUser {
+    username: String! @rules(apply: ["unique:users,username"])
+    email: String! @rules(apply: ["email", "max:120", "unique:users,email"])
+    firstname: String @rules(apply: ["string", "max:60"])
+    lastname: String @rules(apply: ["string", "max:60"])
+    password: String!
+    grade_id: ID @rules(apply: ["exists:grades,id"])
+}
+
+input UpdateUser {
+    username: String @rules(apply: ["string", "max:60"])
+    email: String @rules(apply: ["email", "max:120"])
+    firstname: String @rules(apply: ["string", "max:60"])
+    lastname: String @rules(apply: ["string", "max:60"])
+    password: String @rules(apply: ["sometimes", "required"])
+    grade_id: ID @rules(apply: ["exists:grades,id"])
+}

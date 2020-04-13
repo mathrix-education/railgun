@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Railgun\Models\Traits\Acquerable;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
+use Railgun\Models\Traits\Sluggable;
 
 /**
  * @property-read int         $id
@@ -28,6 +29,7 @@ class Training extends Model
     use Acquerable;
     use Reorderable;
     use Randomizable;
+    use Sluggable;
 
     protected $fillable = [
         'name',

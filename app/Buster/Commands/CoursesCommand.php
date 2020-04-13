@@ -46,13 +46,13 @@ class CoursesCommand extends V7Command
             ->selectRaw(implode(',', [
                 'modules.id AS id', // keep module ids, for SEO compatibility (mapping is not necessary)
                 'activities.name AS name',
+                'modules.seo_slug AS slug',
                 "JSON_EXTRACT(modules.content, '$.silicate') AS content",
                 "activities.order AS 'order'",
                 'activities.premium AS premium',
                 'modules.visible AS visible',
                 'modules.seo_index AS seo_index',
                 'modules.seo_title AS seo_title',
-                'modules.seo_slug AS seo_slug',
                 'modules.seo_description AS seo_description',
                 'modules.seo_keywords AS seo_keywords',
                 'activities.notion_id AS notion_id',

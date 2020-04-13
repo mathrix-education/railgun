@@ -1,0 +1,17 @@
+input CreateGrade {
+    name: String!
+    slug: String!
+    order: Int
+    visible: Boolean!
+    parent_id: ID
+    country_id: ID!
+}
+
+input UpdateGrade {
+    name: String
+    slug: String
+    order: Int
+    visible: Boolean
+    parent_id: ID
+    country_id: ID
+}

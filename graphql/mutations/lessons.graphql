@@ -1,27 +1,17 @@
 extend type Mutation {
     "Create a new lesson."
     createLesson(
-        name: String!
-        slug: String!
-        content: Silicate!
-        order: Int
-        visible: Boolean!
-        section_id: ID
-        labels: ManageLabels
+        input: CreateLesson! @spread
     ): Lesson! @permission(scope: "lessons:create") @create
 
     "Update an existing lesson."
     updateLesson(
         id: ID!
-        name: String
-        slug: String
-        content: Silicate
-        order: Int
-        visible: Boolean
-        section_id: ID
-        labels: ManageLabels
+        input: UpdateLesson! @spread
     ): Lesson! @permission(scope: "lessons:update") @update
 
     "Delete an existing lesson."
-    deleteLesson(id: ID!): Lesson @permission(scope: "lessons:delete") @delete
+    deleteLesson(
+        id: ID!
+    ): Lesson @permission(scope: "lessons:delete") @delete
 }

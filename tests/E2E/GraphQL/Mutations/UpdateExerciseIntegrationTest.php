@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Mutations;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Exercise;
@@ -25,38 +26,15 @@ class UpdateExerciseIntegrationTest extends GraphQLIntegrationTestCase
     {
         $this->graphQL(
             <<<'GRAPHQL'
-            fragment BasicExercise on Exercise {
-                id
-                questions
-                solutions
-                explanations
-                choices
-                premium
-                updated_at
-                __typename
-            }
-
-            mutation(
-                $id: ID!
-                $questions: [Silicate!]
-                $choices: [SilicateList!]
-                $solutions: [IntList!]
-                $explanations: [SilicateList!]
-                $order: Int
-                $visible: Boolean
-                $subject_id: ID
-            ) {
-                updateExercise(
-                    id: $id
-                    questions: $questions
-                    choices: $choices
-                    solutions: $solutions
-                    explanations: $explanations
-                    order: $order
-                    visible: $visible
-                    subject_id: $subject_id
-                ) {
-                    ...BasicExercise
+            mutation($id: ID!, $input: UpdateExercise!) {
+                updateExercise(id: $id, input: $input) {
+                    id
+                    questions
+                    solutions
+                    explanations
+                    choices
+                    premium
+                    updated_at
                 }
             }
             GRAPHQL,
@@ -77,10 +55,17 @@ class UpdateExerciseIntegrationTest extends GraphQLIntegrationTestCase
         $subject = factory(Subject::class)->create(['premium' => false]);
         /** @var Exercise $exercise */
         $exercise  = factory(Exercise::class)->create(['subject_id' => $subject->id]);
-        $variables = factory(Exercise::class)->raw(['id' => $exercise->id, 'subject_id' => $subject->id]);
+        $variables = factory(Exercise::class)->raw([
+            'id'         => $exercise->id,
+            'type'       => 'MCQ',
+            'subject_id' => $subject->id,
+        ]);
 
         $this->actingAsNewUser('exercises:update');
-        $this->executeUpdateExercise($variables);
+        $this->executeUpdateExercise([
+            'id'    => Arr::pull($variables, 'id'),
+            'input' => Arr::except($variables, ['premium', 'created_at', 'updated_at']),
+        ]);
 
         $this->assertResponseOk();
         $this->assertNoErrors();

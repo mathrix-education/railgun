@@ -1,0 +1,15 @@
+input CreateSection {
+    name: String!
+    slug: String!
+    order: Int
+    visible: Boolean!
+    training_id: ID!
+}
+
+input UpdateSection {
+    name: String
+    slug: String
+    order: Int
+    visible: Boolean
+    training_id: ID
+}

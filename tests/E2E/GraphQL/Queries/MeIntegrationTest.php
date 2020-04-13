@@ -9,6 +9,7 @@ use Laravel\Lumen\Testing\DatabaseTransactions;
 use Mathrix\Lumen\JWT\Drivers\Driver;
 use Railgun\Models\Chapter;
 use Railgun\Models\Comment;
+use Railgun\Models\Course;
 use Railgun\Models\Interaction;
 use Railgun\Models\Session;
 use Railgun\Models\User;
@@ -94,8 +95,17 @@ class MeIntegrationTest extends GraphQLIntegrationTestCase
     public function testMeStatistics(): void
     {
         $user = $this->actingAsNewUser();
+
         /** @var Collection|Interaction[] $interactions */
-        $interactions = factory(Interaction::class, 3)->make(['user_id' => $user->id]);
+        $interactions = factory(Course::class, 3)
+            ->create(['visible' => true])
+            ->map(static function (Course $course) use ($user) {
+                return factory(Interaction::class)->make([
+                    'interactable_type' => 'course',
+                    'interactable_id'   => $course->id,
+                    'user_id'           => $user->id,
+                ]);
+            });
 
         $interactions[0]->watchtime = 10;
         $interactions[2]->watchtime = 20;

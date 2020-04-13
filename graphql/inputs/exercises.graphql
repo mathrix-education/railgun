@@ -1,0 +1,23 @@
+input CreateExercise {
+    type: ExerciseType!
+    questions: [Silicate!]!
+    choices: [SilicateList!]!
+    solutions: [IntList!]!
+    explanations: [SilicateList!]!
+    order: Int
+    visible: Boolean!
+    subject_id: ID!
+    labels: ManageLabels
+}
+
+input UpdateExercise {
+    type: ExerciseType
+    questions: [Silicate!]
+    choices: [SilicateList!]
+    solutions: [IntList!]
+    explanations: [SilicateList!]
+    order: Int
+    visible: Boolean
+    subject_id: ID
+    labels: ManageLabels
+}

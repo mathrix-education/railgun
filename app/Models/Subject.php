@@ -13,10 +13,12 @@ use Railgun\Models\Traits\Content;
 use Railgun\Models\Traits\Interactable;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
+use Railgun\Models\Traits\Sluggable;
 
 /**
  * @property-read int                   $id
  * @property-read string                $name
+ * @property-read string                $slug
  * @property      int                   $order
  * @property      bool                  $premium
  * @property      bool                  $visible
@@ -32,9 +34,11 @@ class Subject extends Model implements Content
     use Interactable;
     use Randomizable;
     use Reorderable;
+    use Sluggable;
 
     protected       $fillable       = [
         'name',
+        'slug',
         'order',
         'premium',
         'visible',

@@ -1,23 +1,17 @@
 extend type Mutation {
     "Create a new report."
     createReport(
-        type: String!
-        content: String!
-        status: String!
-        reportable_type: String!
-        reportable_id: ID!
+        input: CreateReport! @spread
     ): Report! @create
 
     "Update an existing report."
     updateReport(
         id: ID!
-        type: String
-        content: String
-        status: String
-        reportable_type: String
-        reportable_id: ID
+        input: UpdateReport! @spread
     ): Report @permission(scope: "reports:update")  @update
 
     "Delete an existing report."
-    deleteReport(id: ID!): Report @permission(scope: "reports:delete")  @delete
+    deleteReport(
+        id: ID!
+    ): Report @permission(scope: "reports:delete")  @delete
 }

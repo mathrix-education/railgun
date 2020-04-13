@@ -1,0 +1,17 @@
+input CreateChapter {
+    name: String!
+    slug: String!
+    order: Int
+    visible: Boolean!
+    discipline_id: ID!
+    grade_id: ID!
+}
+
+input UpdateChapter {
+    name: String
+    slug: String
+    order: Int
+    visible: Boolean
+    discipline_id: ID
+    grade_id: ID
+}

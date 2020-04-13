@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Railgun\Models\Traits\Randomizable;
+use Railgun\Models\Traits\Sluggable;
 
 /**
  * A category is a group of related posts.
@@ -24,6 +25,7 @@ use Railgun\Models\Traits\Randomizable;
 class Category extends Model
 {
     use Randomizable;
+    use Sluggable;
 
     protected $fillable = ['name', 'slug'];
 

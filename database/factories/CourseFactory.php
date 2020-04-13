@@ -27,7 +27,6 @@ $factory->define(Course::class, static function (Faker $faker) {
         'premium'         => $faker->boolean(90),
         'visible'         => $visible,
         'seo_index'       => $visible ? $faker->boolean(90) : false,
-        'seo_slug'        => $slug,
         'seo_keywords'    => implode(',', $faker->words(3)),
         'seo_description' => $faker->sentence,
         'notion_id'       => Notion::random()->id,

@@ -1,25 +1,17 @@
 extend type Mutation {
     "Create a new chapter."
     createChapter(
-        name: String!
-        slug: String!
-        order: Int
-        visible: Boolean!
-        discipline_id: ID!
-        grade_id: ID!
+        input: CreateChapter! @spread
     ): Chapter! @permission(scope: "chapters:create") @create
 
     "Update an existing chapter."
     updateChapter(
         id: ID!
-        name: String
-        slug: String
-        order: Int
-        visible: Boolean
-        discipline_id: ID
-        grade_id: ID
+        input: UpdateChapter! @spread
     ): Chapter @permission(scope: "categories:update") @update
 
     "Delete an existing chapter."
-    deleteChapter(id: ID!): Chapter @permission(scope: "categories:delete") @delete
+    deleteChapter(
+        id: ID!
+    ): Chapter @permission(scope: "categories:delete") @delete
 }

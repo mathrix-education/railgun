@@ -32,7 +32,6 @@ class SearchCoursesIntegrationTest extends GraphQLIntegrationTestCase
                         name
                         slug
                         seo_title
-                        seo_slug
                         seo_keywords
                         seo_description
                         content

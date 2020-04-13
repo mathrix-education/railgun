@@ -6,7 +6,6 @@ namespace Railgun\Buster\Pipelines;
 
 use Illuminate\Pipeline\Pipeline;
 use Railgun\Buster\Pipes\ReportPipe;
-use Railgun\Buster\Pipes\Slug;
 use Railgun\Buster\Pipes\ToArray;
 use Railgun\Buster\Pipes\ValidateCourse;
 use stdClass;
@@ -32,7 +31,6 @@ class CoursePipeline
                 new ToArray(),
                 new ReportPipe('exercise'),
                 new ValidateCourse(),
-                new Slug(),
             ])
             ->thenReturn();
     }

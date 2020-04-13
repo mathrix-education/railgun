@@ -28,20 +28,8 @@ class InteractIntegrationTest extends GraphQLIntegrationTestCase
     use DatabaseTransactions;
 
     private const QUERY = <<<'GRAPHQL'
-    mutation(
-        $interactable_type: InteractionType!
-        $interactable_id: ID!
-        $comprehension: InteractionComprehension
-        $score: Int
-        $watchtime: Int
-    ) {
-        interact(
-            interactable_type: $interactable_type
-            interactable_id: $interactable_id
-            comprehension: $comprehension
-            score: $score
-            watchtime: $watchtime
-        )
+    mutation($input: CreateInteraction!) {
+        interact(input: $input)
     }
     GRAPHQL;
 
@@ -97,7 +85,7 @@ class InteractIntegrationTest extends GraphQLIntegrationTestCase
             $variables['watchtime'] = $watchtime;
         }
 
-        $this->graphQL(self::QUERY, $variables);
+        $this->graphQL(self::QUERY, ['input' => $variables]);
 
         $this->assertResponseOk();
         $this->assertNoErrors();

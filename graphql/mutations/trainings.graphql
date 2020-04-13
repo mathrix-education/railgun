@@ -1,25 +1,13 @@
 extend type Mutation {
     "Create a new training."
     createTraining(
-        name: String!
-        slug: String!
-        image: URL
-        buyable: Boolean!
-        price: Int!
-        order: Int
-        visible: Boolean!
+        input: CreateTraining! @spread
     ): Training @permission(scope: "trainings:create") @create
 
     "Update an existing training."
     updateTraining(
         id: ID!
-        name: String
-        slug: String
-        image: URL
-        buyable: Boolean
-        price: Int
-        order: Int
-        visible: Boolean
+        input: UpdateTraining! @spread
     ): Training @permission(scope: "trainings:update") @update
 
     "Delete an existing traiting."

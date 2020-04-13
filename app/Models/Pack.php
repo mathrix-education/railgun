@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Railgun\Models\Traits\Acquerable;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
+use Railgun\Models\Traits\Sluggable;
 
 /**
  * @property-read int                   $id
@@ -30,6 +31,7 @@ class Pack extends Model
     use Acquerable;
     use Randomizable;
     use Reorderable;
+    use Sluggable;
 
     protected $fillable = [
         'name',

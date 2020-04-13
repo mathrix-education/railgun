@@ -37,6 +37,7 @@ class FlashcardsCommand extends V7Command
             ->join('activities', 'modules.activity_id', '=', 'activities.id')
             ->join('notions', 'activities.notion_id', '=', 'notions.id')
             ->selectRaw(implode(',', [
+                'activities.name AS name',
                 'questions AS fronts',
                 'corrections AS backs',
                 'activities.premium AS premium',

@@ -1,0 +1,17 @@
+input CreatePack {
+    name: String!
+    slug: String!
+    available: Boolean!
+    price: Int!
+    order: Int
+    visible: Boolean!
+}
+
+input UpdatePack {
+    name: String
+    slug: String
+    available: Boolean
+    price: Int!
+    order: Int
+    visible: Boolean
+}

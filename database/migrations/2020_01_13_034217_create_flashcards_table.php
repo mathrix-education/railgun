@@ -15,6 +15,8 @@ class CreateFlashcardsTable extends Migration
     {
         Schema::create('flashcards', static function (Blueprint $table): void {
             $table->bigIncrements('id');
+            $table->string('name');
+            $table->string('slug');
             $table->json('fronts');
             $table->json('backs');
             $table->unsignedTinyInteger('order');

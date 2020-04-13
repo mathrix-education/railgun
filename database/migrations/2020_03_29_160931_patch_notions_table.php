@@ -6,9 +6,10 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 use Railgun\Models\Notion;
 
-class AddTypeToNotionsTable extends Migration
+class PatchNotionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -17,9 +18,18 @@ class AddTypeToNotionsTable extends Migration
     {
         Schema::table('notions', static function (Blueprint $table): void {
             $table->enum('type', Notion::TYPES)->default(Notion::TYPE_STANDARD)->after('id');
+            $table->string('slug')->after('name')->nullable();
         });
 
+        DB::table('notions')
+            ->get(['id', 'name'])
+            ->each(static function (stdClass $notion): void {
+                DB::table('notions')->where('id', '=', $notion->id)
+                    ->update(['slug' => Str::slug($notion->name)]);
+            });
+
         DB::unprepared('alter table `notions` alter column `type` drop default');
+        DB::unprepared('alter table notions modify slug varchar(255) not null;');
     }
 
     /**
@@ -28,7 +38,7 @@ class AddTypeToNotionsTable extends Migration
     public function down(): void
     {
         Schema::table('notions', static function (Blueprint $table): void {
-            $table->dropColumn('type');
+            $table->dropColumn(['type', 'slug']);
         });
     }
 }

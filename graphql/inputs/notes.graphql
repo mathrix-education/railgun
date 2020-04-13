@@ -1,0 +1,9 @@
+input CreateNote {
+    content: Silicate!
+    notable_type: NotableType!
+    notable_id: ID!
+}
+
+input UpdateNote {
+    content: Silicate
+}

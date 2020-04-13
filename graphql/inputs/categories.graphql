@@ -1,0 +1,9 @@
+input CreateCategory {
+    name: String!
+    slug: String!
+}
+
+input UpdateCategory {
+    name: String
+    slug: String
+}

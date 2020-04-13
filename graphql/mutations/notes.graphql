@@ -1,11 +1,17 @@
 extend type Mutation {
+    "Create a new note."
     createNote(
-        content: Silicate!
-        notable_type: NotableType!
-        notable_id: ID!
+        input: CreateNote! @spread
     ): Note @permission(scope: "notes:create") @create @inject(context: "user.id", name: "user_id")
 
-    updateNote(id: ID!, content: Silicate): Note! @update
+    "Update an existing note."
+    updateNote(
+        id: ID!
+        input: UpdateNote @spread
+    ): Note!  @permission(scope: "notes:create") @update @inject(context: "user.id", name: "user_id")
 
-    deleteNote(id: ID!): Note! @permission(scope: "notes:delete") @delete
+    "Delete an existing note."
+    deleteNote(
+        id: ID!
+    ): Note! @permission(scope: "notes:delete") @delete
 }

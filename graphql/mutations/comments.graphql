@@ -1,19 +1,17 @@
 extend type Mutation {
     "Create a new comment"
     createComment(
-        content: String!
-        "The comment parent id, may be provided only if the comment is an answer to another comment."
-        parent_id: ID
-        commentable_type: CommentableType!
-        commentable_id: ID!
+        input: CreateComment! @spread
     ): Comment! @create @inject(context: "user.id", name: "user_id")
 
     "Update an existing comment"
     updateComment(
         id: ID!
-        content: String
+        input: UpdateComment! @spread
     ): Comment @permission(scope: "comments:update") @update @inject(context: "user.id", name: "user_id")
 
     "Delete an existing comment"
-    deleteComment(id: ID!): Comment @permission(scope: "comments:delete") @delete
+    deleteComment(
+        id: ID!
+    ): Comment @permission(scope: "comments:delete") @delete
 }

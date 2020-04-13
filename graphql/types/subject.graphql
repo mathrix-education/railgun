@@ -1,7 +1,9 @@
 type Subject {
     id: ID!
     name: String!
+    slug: String!
     order: Int!
+    premium: Boolean!
     visible: Boolean!
     created_at: DateTime!
     updated_at: DateTime!

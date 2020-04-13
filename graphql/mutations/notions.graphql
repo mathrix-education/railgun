@@ -1,23 +1,17 @@
 extend type Mutation {
     "Create a new notion."
     createNotion(
-        type: NotionType!
-        name: String!
-        order: Int
-        visible: Boolean!
-        chapter_id: ID!
+        input: CreateNotion! @spread
     ): Notion! @permission(scope: "notions:create") @create
 
     "Update an existing notion."
     updateNotion(
         id: ID!
-        type: NotionType
-        name: String
-        order: Int
-        visible: Boolean
-        chapter_id: ID
+        input: UpdateNotion! @spread
     ): Notion @permission(scope: "notions:update") @update
 
     "Delete an existing notion."
-    deleteNotion(id: ID!): Notion @permission(scope: "notions:delete") @delete
+    deleteNotion(
+        id: ID!
+    ): Notion @permission(scope: "notions:delete") @delete
 }

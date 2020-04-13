@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Railgun\Models\Traits\Randomizable;
+use Railgun\Models\Traits\Sluggable;
 
 /**
  * @property-read int                $id
@@ -23,6 +24,7 @@ use Railgun\Models\Traits\Randomizable;
 class Country extends Model
 {
     use Randomizable;
+    use Sluggable;
 
     protected $fillable = ['name', 'slug', 'visible'];
     protected $casts    = ['visible' => 'boolean'];

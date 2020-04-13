@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
+use Railgun\Models\Traits\Sluggable;
 
 /**
  * @property-read int                 $id
@@ -29,6 +30,7 @@ class Section extends Model
 {
     use Randomizable;
     use Reorderable;
+    use Sluggable;
 
     protected       $fillable   = [
         'name',

@@ -7,6 +7,7 @@ type Notion {
     id: ID!
     type: NotionType!
     name: String!
+    slug: String!
     order: Int!
     visible: Boolean!
     created_at: DateTime!

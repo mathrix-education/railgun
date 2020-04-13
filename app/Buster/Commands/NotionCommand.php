@@ -24,7 +24,7 @@ class NotionCommand extends V7Command
     {
         $this->title('Patching summary notions');
 
-        $this->migrateTo('2020_03_29_160931_add_type_to_notions_table');
+        $this->migrateTo('2020_03_29_160931_patch_notions_table');
 
         $count = DB::table('notions')
             ->where([['name', 'LIKE', '%cours%'], ['id', '<', 2210]])

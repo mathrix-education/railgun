@@ -23,7 +23,6 @@ class CreateCoursesTable extends Migration
             $table->boolean('visible');
             $table->boolean('seo_index')->default(0);
             $table->string('seo_title')->nullable();
-            $table->string('seo_slug')->nullable();
             $table->string('seo_keywords')->nullable();
             $table->string('seo_description')->nullable();
             $table->unsignedBigInteger('notion_id');

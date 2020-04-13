@@ -23,16 +23,8 @@ class CreateUserIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->graphQL(
             <<<'GRAPHQL'
-            mutation(
-                $username: String!
-                $email: String!
-                $password: String!
-            ) {
-                createUser(
-                    username: $username
-                    email: $email
-                    password: $password
-                ) {
+            mutation($input: CreateUser!) {
+                createUser(input: $input) {
                     id
                     username
                     email
@@ -40,9 +32,11 @@ class CreateUserIntegrationTest extends GraphQLIntegrationTestCase
             }
             GRAPHQL,
             [
-                'username' => $user->username,
-                'email'    => $user->email,
-                'password' => $this->faker->password,
+                'input' => [
+                    'username' => $user->username,
+                    'email'    => $user->email,
+                    'password' => $this->faker->password,
+                ],
             ],
         );
 

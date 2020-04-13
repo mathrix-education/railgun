@@ -26,12 +26,8 @@ class CreateNoteIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->graphQL(
             <<<'GRAPHQL'
-            mutation($content: Silicate!, $notable_type: NotableType!, $notable_id: ID!) {
-                createNote(
-                    content: $content
-                    notable_type: $notable_type
-                    notable_id: $notable_id
-                ) {
+            mutation($input: CreateNote!) {
+                createNote(input: $input) {
                     id
                     notable {
                         ... on Course {
@@ -42,9 +38,11 @@ class CreateNoteIntegrationTest extends GraphQLIntegrationTestCase
             }
             GRAPHQL,
             [
-                'content'      => Silicate::wall(),
-                'notable_type' => 'COURSE',
-                'notable_id'   => $course->id,
+                'input' => [
+                    'content'      => Silicate::wall(),
+                    'notable_type' => 'COURSE',
+                    'notable_id'   => $course->id,
+                ],
             ],
         );
 
