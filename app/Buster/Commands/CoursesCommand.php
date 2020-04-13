@@ -7,6 +7,7 @@ namespace Railgun\Buster\Commands;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Railgun\Buster\Pipelines\CoursePipeline;
 use stdClass;
 use function implode;
@@ -62,6 +63,11 @@ class CoursesCommand extends V7Command
             ]))
             ->get()
             ->tap(fn(Collection $courses) => $this->line("Found {$courses->count()} courses"))
+            ->map(static function (stdClass $course) {
+                $course->slug ??= Str::slug($course->name);
+
+                return $course;
+            })
             ->map(fn(stdClass $course) => $this->pipeline->send($course))
             ->reject(static fn($course) => $course === false)
             ->tap(fn(Collection $courses) => $this->getOutput()->progressStart($courses->count()))
