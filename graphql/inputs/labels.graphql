@@ -24,6 +24,10 @@ input ManageLabels {
     """
     sync: [ID!]
     """
+    Connect labels to the model, if and only of they are not already attached.
+    """
+    syncWithoutDetaching: [ID!]
+    """
     Connect labels to the model.
     """
     connect: [ID!]

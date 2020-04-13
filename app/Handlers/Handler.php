@@ -6,6 +6,7 @@ namespace Railgun\Handlers;
 
 use Exception;
 use GraphQL\Error\Error as GraphQLError;
+use Illuminate\Database\QueryException as IlluminateQueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -22,6 +23,7 @@ use Railgun\Exceptions\FileConflictException;
 use Railgun\Exceptions\FileNotFoundException;
 use Railgun\Exceptions\HttpException;
 use Railgun\Exceptions\MethodNotAllowedException;
+use Railgun\Exceptions\QueryException;
 use Railgun\Exceptions\ValidationException;
 use Railgun\Middleware\CorrelationMiddleware;
 use Railgun\Models\User;
@@ -112,6 +114,10 @@ class Handler extends ExceptionHandler
         if ($original instanceof SignatureVerificationException) {
             // Convert Stripe signature exception
             return new InvalidEventSignatureException($original);
+        }
+
+        if ($original instanceof IlluminateQueryException) {
+            return new QueryException($original);
         }
 
         return $original;
