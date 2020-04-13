@@ -49,8 +49,17 @@ class ExamPipeline
                 new Serialize(['content']),
                 new Slug(),
                 new Strip([
-                    'name', 'slug', 'duration', 'content', 'order', 'premium', 'visible', 'chapter_id',
-                    'created_at', 'updated_at', 'mapping',
+                    'name',
+                    'slug',
+                    'duration',
+                    'content',
+                    'order',
+                    'premium',
+                    'visible',
+                    'chapter_id',
+                    'created_at',
+                    'updated_at',
+                    'mapping',
                 ]),
             ])
             ->thenReturn();

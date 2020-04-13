@@ -1,23 +1,17 @@
 extend type Mutation {
     "Create a new section."
     createSection(
-        name: String!
-        slug: String!
-        order: Int
-        visible: Boolean!
-        training_id: ID!
+        input: CreateSection! @spread
     ): Section! @permission(scope: "sections:create") @create
 
     "Update an existing section."
     updateSection(
         id: ID!
-        name: String
-        slug: String
-        order: Int
-        visible: Boolean
-        training_id: ID
-    ): Section @permission(scope: "sections:update") @update
+        input: UpdateSection! @spread
+    ): Section! @permission(scope: "sections:update") @update
 
     "Delete an existing section."
-    deleteSection(id: ID!): Section @permission(scope: "sections:delete") @delete
+    deleteSection(
+        id: ID!
+    ): Section! @permission(scope: "sections:delete") @delete
 }

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Railgun\Models\Traits\Randomizable;
+use Railgun\Models\Traits\Sluggable;
 
 /**
  * @property-read int                  $id
@@ -26,8 +27,13 @@ use Railgun\Models\Traits\Randomizable;
 class Discipline extends Model
 {
     use Randomizable;
+    use Sluggable;
 
-    protected $fillable = ['id', 'name', 'slug', 'beta'];
+    protected $fillable = [
+        'name',
+        'slug',
+        'beta',
+    ];
     protected $casts    = [
         'visible' => 'boolean',
         'beta'    => 'boolean',

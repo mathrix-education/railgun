@@ -1,0 +1,15 @@
+input CreateReport {
+    type: String!
+    content: String!
+    status: String!
+    reportable_type: String!
+    reportable_id: ID!
+}
+
+input UpdateReport {
+    type: String
+    content: String
+    status: String
+    reportable_type: String
+    reportable_id: ID
+}

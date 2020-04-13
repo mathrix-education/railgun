@@ -20,13 +20,8 @@ class CreateCommentIntegrationTest extends GraphQLIntegrationTestCase
     use DatabaseTransactions;
 
     private const QUERY = <<<'GRAPHQL'
-    mutation($content: String!, $parent_id: ID, $commentable_type: CommentableType!, $commentable_id: ID!) {
-        createComment(
-            content: $content
-            parent_id: $parent_id
-            commentable_type: $commentable_type
-            commentable_id: $commentable_id
-        ) {
+    mutation($input: CreateComment!) {
+        createComment(input: $input) {
             id
             content
             score
@@ -46,9 +41,11 @@ class CreateCommentIntegrationTest extends GraphQLIntegrationTestCase
         $content = $this->faker->text;
 
         $this->graphQL(self::QUERY, [
-            'content'          => $content,
-            'commentable_type' => 'COURSE',
-            'commentable_id'   => $course->id,
+            'input' => [
+                'content'          => $content,
+                'commentable_type' => 'COURSE',
+                'commentable_id'   => $course->id,
+            ],
         ]);
 
         $this->assertResponseOk();
@@ -78,10 +75,12 @@ class CreateCommentIntegrationTest extends GraphQLIntegrationTestCase
         $commentableType = strtoupper($parent->commentable_type);
 
         $this->graphQL(self::QUERY, [
-            'content'          => $content,
-            'parent_id'        => $parent->id,
-            'commentable_type' => $commentableType,
-            'commentable_id'   => $parent->commentable_id,
+            'input' => [
+                'content'          => $content,
+                'parent_id'        => $parent->id,
+                'commentable_type' => $commentableType,
+                'commentable_id'   => $parent->commentable_id,
+            ],
         ]);
 
         $this->assertResponseOk();

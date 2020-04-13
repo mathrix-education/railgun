@@ -1,17 +1,17 @@
 extend type Mutation {
     "Create a new category."
     createCategory(
-        name: String!
-        slug: String!
+        input: CreateCategory! @spread
     ): Category! @permission(scope: "categories:create") @create
 
     "Update an existing category."
     updateCategory(
         id: ID!
-        name: String
-        slug: String
+        input: UpdateCategory! @spread
     ): Category @permission(scope: "categories:update") @update
 
     "Delete an existing category."
-    deleteCategory(id: ID!): Category @permission(scope: "categories:delete") @delete
+    deleteCategory(
+        id: ID!
+    ): Category @permission(scope: "categories:delete") @delete
 }

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
+use Railgun\Models\Traits\Sluggable;
 
 /**
  * @property-read int         $id
@@ -28,6 +29,7 @@ class Post extends Model
 {
     use Randomizable;
     use Reorderable;
+    use Sluggable;
 
     protected       $fillable   = [
         'title',

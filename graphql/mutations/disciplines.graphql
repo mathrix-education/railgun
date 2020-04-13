@@ -1,19 +1,17 @@
 extend type Mutation {
     "Create a new discipline."
     createDiscipline(
-        name: String
-        slug: String
-        beta: Boolean
+        input: CreateDiscipline @spread
     ): Discipline @permission(scope: "disciplines:create") @create
 
     "Update an existing disicpline."
     updateDiscipline(
         id: ID!
-        name: String
-        slug: String
-        beta: Boolean
+        input: UpdateDiscipline @spread
     ): Discipline @permission(scope: "disciplines:update") @update
 
     "Delete an existing discipline."
-    deleteDiscipline(id: ID!): Discipline @permission(scope: "disciplines:delete") @delete
+    deleteDiscipline(
+        id: ID!
+    ): Discipline @permission(scope: "disciplines:delete") @delete
 }

@@ -1,0 +1,11 @@
+input CreateComment {
+    content: String!
+    "The comment parent id, may be provided only if the comment is an answer to another comment."
+    parent_id: ID
+    commentable_type: CommentableType!
+    commentable_id: ID!
+}
+
+input UpdateComment {
+    content: String
+}

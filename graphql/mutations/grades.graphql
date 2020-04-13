@@ -1,25 +1,17 @@
 extend type Mutation {
     "Create a new grade."
     createGrade(
-        name: String!
-        slug: String!
-        order: Int
-        visible: Boolean!
-        parent_id: ID
-        country_id: ID!
+        input: CreateGrade! @spread
     ): Grade @permission(scope: "grades:create") @create
 
     "Update an existing grade."
     updateGrade(
         id: ID!
-        name: String
-        slug: String
-        order: Int
-        visible: Boolean
-        parent_id: ID
-        country_id: ID
+        input: UpdateGrade! @spread
     ): Grade @permission(scope: "grades:update") @update
 
     "Delete an existing grade."
-    deleteGrade(id: ID!): Grade @permission(scope: "grades:delete") @delete
+    deleteGrade(
+        id: ID!
+    ): Grade @permission(scope: "grades:delete") @delete
 }

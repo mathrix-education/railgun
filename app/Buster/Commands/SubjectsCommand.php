@@ -7,6 +7,7 @@ namespace Railgun\Buster\Commands;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use stdClass;
 use function implode;
 
@@ -46,7 +47,11 @@ class SubjectsCommand extends V7Command
             ->distinct()
             ->get()
             ->tap(fn(Collection $subjects) => $this->line("Found {$subjects->count()} subjects"))
-            ->map(static fn(stdClass $subject) => (array)$subject)
+            ->map(static function (stdClass $subject): array {
+                $subject->slug = Str::slug($subject->name);
+
+                return (array)$subject;
+            })
             ->tap(static fn(Collection $subjects) => DB::table('subjects')->insert($subjects->toArray()));
     }
 }

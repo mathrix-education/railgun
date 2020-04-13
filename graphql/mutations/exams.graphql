@@ -1,31 +1,17 @@
 extend type Mutation {
     "Create a new exam."
     createExam(
-        name: String!
-        slug: String!
-        duration: Int
-        content: Silicate!
-        order: Int
-        premium: Boolean!
-        visible: Boolean!
-        chapter_id: ID!
-        labels: ManageLabels
+        input: CreateExam! @spread
     ): Exam @permission(scope: "exams:create") @create
 
     "Update an existing exam."
     updateExam(
         id: ID!
-        name: String
-        slug: String
-        duration: Int
-        content: Silicate
-        order: Int
-        premium: Boolean
-        visible: Boolean
-        chapter_id: ID
-        labels: ManageLabels
+        input: UpdateExam! @spread
     ): Exam @permission(scope: "exams:update") @update
 
     "Delete an existing exam."
-    deleteExam(id: ID!): Exam  @permission(scope: "exams:delete") @delete
+    deleteExam(
+        id: ID!
+    ): Exam  @permission(scope: "exams:delete") @delete
 }

@@ -1,27 +1,17 @@
 extend type Mutation {
     "Create a new flashcard."
     createFlashcard (
-        fronts: [Silicate!]!
-        backs: [Silicate!]!
-        order: Int!
-        premium: Boolean!
-        visible: Boolean!
-        chapter_id: ID!
-        labels: ManageLabels
+        input: CreateFlashcard! @spread
     ): Flashcard @permission(scope: "flashcards:create") @create
 
     "Update an existing flashcard."
     updateFlashcard (
         id: ID!
-        fronts: [Silicate!]
-        backs: [Silicate!]
-        order: Int
-        premium: Boolean
-        visible: Boolean
-        chapter_id: ID
-        labels: ManageLabels
+        input: UpdateFlashcard! @spread
     ): Flashcard @permission(scope: "flashcards:update") @update
 
     "Delete an existing flashcard."
-    deleteFlashcard(id: ID!): Flashcard  @permission(scope: "flashcards:delete") @delete
+    deleteFlashcard(
+        id: ID!
+    ): Flashcard  @permission(scope: "flashcards:delete") @delete
 }

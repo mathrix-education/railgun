@@ -1,25 +1,17 @@
 extend type Mutation {
     "Create a new posts."
     createPost(
-        title: String!
-        slug: String!
-        content: Silicate!
-        order: Int
-        visible: Boolean!
-        category_id: ID
+        input: CreatePost! @spread
     ): Post @permission(scope: "posts:create") @create
 
     "Update an existing post."
     updatePost(
         id: ID!
-        title: String
-        slug: String
-        content: Silicate
-        order: Int
-        visible: Boolean
-        category_id: ID
+        input: UpdatePost! @spread
     ): Post @permission(scope: "posts:update") @update
 
     "Delete an existing post."
-    deletePost(id: ID!): Post @permission(scope: "posts:delete") @delete
+    deletePost(
+        id: ID!
+    ): Post @permission(scope: "posts:delete") @delete
 }

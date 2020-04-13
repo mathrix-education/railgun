@@ -1,5 +1,7 @@
 type Flashcard {
     id: ID!
+    name: String!
+    slug: String!
     fronts: [Silicate!]!
     backs: [Silicate!]!
     order: Int!

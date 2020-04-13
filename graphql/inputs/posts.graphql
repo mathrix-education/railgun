@@ -1,0 +1,17 @@
+input CreatePost {
+    title: String!
+    slug: String!
+    content: Silicate!
+    order: Int
+    visible: Boolean!
+    category_id: ID
+}
+
+input UpdatePost {
+    title: String
+    slug: String
+    content: Silicate
+    order: Int
+    visible: Boolean
+    category_id: ID
+}

@@ -15,6 +15,7 @@ use Railgun\Models\Traits\Lockable;
 use Railgun\Models\Traits\Notable;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
+use Railgun\Models\Traits\Sluggable;
 
 /**
  * @property-read int     $id
@@ -40,6 +41,7 @@ class Exam extends Model implements Content
     use Notable;
     use Randomizable;
     use Reorderable;
+    use Sluggable;
 
     protected       $fillable   = [
         'name',

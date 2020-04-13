@@ -33,8 +33,8 @@ class UpdateMeIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->graphQL(
             <<<'GRAPHQL'
-            mutation($grade_id: ID) {
-                updateMe(grade_id: $grade_id) {
+            mutation($input: UpdateUser!) {
+                updateMe(input: $input) {
                     id
                     grade {
                         id
@@ -42,7 +42,7 @@ class UpdateMeIntegrationTest extends GraphQLIntegrationTestCase
                 }
             }
             GRAPHQL,
-            ['grade_id' => $grade->id],
+            ['input' => ['grade_id' => $grade->id]],
         );
 
         $this->assertResponseOk();
@@ -67,13 +67,13 @@ class UpdateMeIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->graphQL(
             <<<'GRAPHQL'
-            mutation($username: String) {
-                updateMe(username: $username) {
+            mutation($input: UpdateUser!) {
+                updateMe(input: $input) {
                     username
                 }
             }
             GRAPHQL,
-            ['username' => $newUsername],
+            ['input' => ['username' => $newUsername]],
         );
         $user->refresh();
 
@@ -94,13 +94,13 @@ class UpdateMeIntegrationTest extends GraphQLIntegrationTestCase
         $this->actingAsNewUser();
         $this->graphQL(
             <<<'GRAPHQL'
-            mutation($password: String) {
-                updateMe(password: $password) {
+            mutation($input: UpdateUser!) {
+                updateMe(input: $input) {
                     id
                 }
             }
             GRAPHQL,
-            ['password' => null],
+            ['input' => ['password' => null]],
         );
 
         $this->assertResponseOk();
@@ -119,15 +119,15 @@ class UpdateMeIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->graphQL(
             <<<'GRAPHQL'
-            mutation($grade_id: ID!) {
-                updateMe(grade_id: $grade_id) {
+            mutation($input: UpdateUser!) {
+                updateMe(input: $input) {
                     grade {
                         id
                     }
                 }
             }
             GRAPHQL,
-            ['grade_id' => $grade->getKey()],
+            ['input' => ['grade_id' => $grade->getKey()]],
         );
 
         $this->assertResponseOk();

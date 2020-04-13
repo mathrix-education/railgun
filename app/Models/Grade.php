@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
+use Railgun\Models\Traits\Sluggable;
 
 /**
  * @property-read int                $id
@@ -35,6 +36,7 @@ class Grade extends Model
 {
     use Randomizable;
     use Reorderable;
+    use Sluggable;
 
     protected       $fillable   = [
         'name',

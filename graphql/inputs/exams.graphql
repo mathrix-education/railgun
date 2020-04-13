@@ -1,0 +1,23 @@
+input CreateExam {
+    name: String!
+    slug: String!
+    duration: Int
+    content: Silicate!
+    order: Int
+    premium: Boolean!
+    visible: Boolean!
+    chapter_id: ID!
+    labels: ManageLabels
+}
+
+input UpdateExam {
+    name: String
+    slug: String
+    duration: Int
+    content: Silicate
+    order: Int
+    premium: Boolean
+    visible: Boolean
+    chapter_id: ID
+    labels: ManageLabels
+}

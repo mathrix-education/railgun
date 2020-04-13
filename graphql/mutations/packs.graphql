@@ -1,25 +1,17 @@
 extend type Mutation {
     "Create new a pack."
     createPack(
-        name: String!
-        slug: String!
-        buyable: Boolean!
-        price: Int!
-        order: Int
-        visible: Boolean!
+        input: CreatePack! @spread
     ): Pack @permission(scope: "packs:create") @create
 
     "Update an existing pack."
     updatePack(
         id: ID!
-        name: String
-        slug: String
-        buyable: Boolean
-        price: Int!
-        order: Int
-        visible: Boolean
+        input: UpdatePack! @spread
     ): Pack @permission(scope: "packs:update") @update
 
     "Delete an existing pack."
-    deletePack(id: ID!): Pack @permission(scope: "packs:delete") @delete
+    deletePack(
+        id: ID!
+    ): Pack @permission(scope: "packs:delete") @delete
 }

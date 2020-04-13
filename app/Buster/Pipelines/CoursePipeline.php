@@ -32,7 +32,6 @@ class CoursePipeline
                 new ToArray(),
                 new ReportPipe('exercise'),
                 new ValidateCourse(),
-                new Slug(),
             ])
             ->thenReturn();
     }

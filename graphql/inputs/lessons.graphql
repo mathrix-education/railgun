@@ -1,0 +1,20 @@
+input CreateLesson {
+    name: String!
+    slug: String!
+    content: Silicate!
+    order: Int
+    visible: Boolean!
+    section_id: ID
+    labels: ManageLabels
+}
+
+input UpdateLesson {
+    id: ID!
+    name: String
+    slug: String
+    content: Silicate
+    order: Int
+    visible: Boolean
+    section_id: ID
+    labels: ManageLabels
+}

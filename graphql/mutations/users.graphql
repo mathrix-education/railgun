@@ -1,32 +1,17 @@
 extend type Mutation {
     createUser(
-        username: String! @rules(apply: ["unique:users,username"])
-        email: String! @rules(apply: ["email", "unique:users,email"])
-        firstname: String
-        lastname: String
-        password: String!
-        grade_id: ID
+        input: CreateUser! @spread
     ): User @create
 
     updateUser(
         id: ID!
-        username: String @rules(apply: ["string", "max:60"])
-        email: String @rules(apply: ["email", "max:120"])
-        firstname: String @rules(apply: ["string", "max:60"])
-        lastname: String @rules(apply: ["string", "max:60"])
-        password: String @rules(apply: ["string"])
-        grade_id: ID @rules(apply: ["exists:grades,id"])
+        input: UpdateUser! @spread
     ): User @permission(scope: "users:update") @update
 
     """
     Update the current user.
     """
     updateMe(
-        username: String @rules(apply: ["string", "max:60"])
-        email: String @rules(apply: ["email", "max:120"])
-        firstname: String @rules(apply: ["string", "max:60"])
-        lastname: String @rules(apply: ["string", "max:60"])
-        password: String @rules(apply: ["string"])
-        grade_id: ID @rules(apply: ["exists:grades,id"])
+        input: UpdateUser! @spread
     ): User @inject(context: "user.id", name: "id") @update
 }

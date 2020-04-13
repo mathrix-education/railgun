@@ -8,6 +8,7 @@ use Illuminate\Pipeline\Pipeline;
 use Railgun\Buster\Pipes\ParseFlashcard;
 use Railgun\Buster\Pipes\ReportPipe;
 use Railgun\Buster\Pipes\Serialize;
+use Railgun\Buster\Pipes\Slug;
 use Railgun\Buster\Pipes\Strip;
 use Railgun\Buster\Pipes\ToArray;
 use Railgun\Buster\Pipes\TrimFlashcard;
@@ -43,8 +44,19 @@ class FlashcardPipeline
                 new ValidateFlashcard(),
                 new ParseFlashcard(),
                 new Serialize(['fronts', 'backs']),
+                new Slug(),
                 new Strip([
-                    'id', 'fronts', 'backs', 'order', 'premium', 'visible', 'chapter_id', 'created_at', 'updated_at',
+                    'id',
+                    'name',
+                    'slug',
+                    'fronts',
+                    'backs',
+                    'order',
+                    'premium',
+                    'visible',
+                    'chapter_id',
+                    'created_at',
+                    'updated_at',
                     'mapping',
                 ]),
             ])->thenReturn();

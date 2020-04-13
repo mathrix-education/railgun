@@ -1,0 +1,18 @@
+input CreateNotion {
+    type: NotionType!
+    name: String!
+    "The notion slug. If not specified, it will be generated from the Notion name."
+    slug: String
+    order: Int
+    visible: Boolean!
+    chapter_id: ID!
+}
+
+input UpdateNotion {
+    type: NotionType
+    name: String
+    slug: String
+    order: Int
+    visible: Boolean
+    chapter_id: ID
+}

@@ -43,24 +43,8 @@ class CreateCourseIntegrationTest extends GraphQLIntegrationTestCase
         $this->actingAsNewUser('*');
         $this->graphQL(
             <<<'GRAPHQL'
-            mutation(
-                $name: String!
-                $slug: String!
-                $content: Silicate!
-                $premium: Boolean!
-                $visible: Boolean!
-                $notion_id: ID!
-                $labels: ManageLabels
-            ) {
-                createCourse(
-                    name: $name
-                    slug: $slug
-                    content: $content
-                    premium: $premium
-                    visible: $visible
-                    notion_id: $notion_id
-                    labels: $labels
-                ) {
+            mutation($input: CreateCourse!) {
+                createCourse(input: $input) {
                     id
                     labels {
                         id
@@ -69,7 +53,7 @@ class CreateCourseIntegrationTest extends GraphQLIntegrationTestCase
                 }
             }
             GRAPHQL,
-            $payload,
+            ['input' => $payload],
         );
 
         $actualLabelIds = collect($this->getData('createCourse.labels'))->map(static fn($l) => $l->id)->toArray();

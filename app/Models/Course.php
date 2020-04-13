@@ -15,6 +15,7 @@ use Railgun\Models\Traits\Lockable;
 use Railgun\Models\Traits\Notable;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
+use Railgun\Models\Traits\Sluggable;
 
 /**
  * @property-read int    $id
@@ -26,7 +27,6 @@ use Railgun\Models\Traits\Reorderable;
  * @property      bool   $visible
  * @property      bool   $seo_index
  * @property      string $seo_title
- * @property      string $seo_slug
  * @property      string $seo_description
  * @property      int    $notion_id
  * @property-read Carbon $created_at
@@ -43,6 +43,7 @@ class Course extends Model implements Content
     use Notable;
     use Randomizable;
     use Reorderable;
+    use Sluggable;
 
     protected       $fillable       = [
         'name',
@@ -53,7 +54,6 @@ class Course extends Model implements Content
         'visible',
         'seo_index',
         'seo_title',
-        'seo_slug',
         'seo_description',
         'notion_id',
     ];

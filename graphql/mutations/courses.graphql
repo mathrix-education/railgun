@@ -1,37 +1,13 @@
 extend type Mutation {
     "Create a new course."
     createCourse(
-        name: String!
-        slug: String!
-        content: Silicate!
-        order: Int
-        premium: Boolean!
-        visible: Boolean!
-        seo_index: Boolean
-        seo_title: String
-        seo_slug: String
-        seo_keywords: String
-        seo_description: String
-        notion_id: ID!
-        labels: ManageLabels
-    ): Course  @permission(scope: "courses:create") @create
+        input: CreateCourse! @spread
+    ): Course @permission(scope: "courses:create") @create
 
     "Update an existing course."
     updateCourse(
         id: ID!
-        name: String
-        slug: String
-        content: Silicate
-        order: Int
-        premium: Boolean
-        visible: Boolean
-        seo_index: Boolean
-        seo_title: String
-        seo_slug: String
-        seo_keywords: String
-        seo_description: String
-        notion_id: ID
-        labels: ManageLabels
+        input: UpdateCourse! @spread
     ): Course @permission(scope: "courses:update") @update
 
     "Delete an existing course."

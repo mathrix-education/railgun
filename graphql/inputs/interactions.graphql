@@ -1,0 +1,22 @@
+input CreateInteraction {
+    """
+    The model type related to the interaction.
+    """
+    interactable_type: InteractionType!
+    """
+    The model id related to the interaction.
+    """
+    interactable_id: ID!
+    """
+    The interaction comprehesion level.
+    """
+    comprehension: InteractionComprehension
+    """
+    The interaction score. Maximum value is 255.
+    """
+    score: Int @rules(apply: ["max:255"])
+    """
+    The interaction watchtime. Maximum value is 65535.
+    """
+    watchtime: Int @rules(apply: ["max:65535"])
+}

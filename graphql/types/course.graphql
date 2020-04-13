@@ -11,7 +11,6 @@ type Course {
     visible: Boolean!
     seo_index: Boolean!
     seo_title: String
-    seo_slug: String
     seo_keywords: String
     seo_description: String
     created_at: DateTime!

@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Railgun\Models\Traits\Content;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
+use Railgun\Models\Traits\Sluggable;
 
 /**
  * A chapter is the base wrapper of all the Mathrix Education content.
@@ -38,6 +39,7 @@ class Chapter extends Model implements Content
 {
     use Randomizable;
     use Reorderable;
+    use Sluggable;
 
     protected       $fillable   = [
         'name',

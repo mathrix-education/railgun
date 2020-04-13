@@ -1,0 +1,9 @@
+input CreateCountry {
+    name: String!
+    slug: String!
+}
+
+input UpdateCountry {
+    name: String
+    slug: String
+}

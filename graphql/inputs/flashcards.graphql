@@ -1,0 +1,25 @@
+input CreateFlashcard {
+    name: String!
+    "The flashcard slug. If not specified, it will be generated from the Notion name."
+    slug: String
+    fronts: [Silicate!]!
+    backs: [Silicate!]!
+    order: Int!
+    premium: Boolean!
+    visible: Boolean!
+    chapter_id: ID!
+    labels: ManageLabels
+}
+
+input UpdateFlashcard {
+    name: String
+    "The flashcard slug."
+    slug: String
+    fronts: [Silicate!]
+    backs: [Silicate!]
+    order: Int
+    premium: Boolean
+    visible: Boolean
+    chapter_id: ID
+    labels: ManageLabels
+}

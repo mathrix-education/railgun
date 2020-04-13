@@ -1,0 +1,11 @@
+input CreateDiscipline {
+    name: String!
+    slug: String!
+    beta: Boolean!
+}
+
+input UpdateDiscipline {
+    name: String
+    slug: String
+    beta: Boolean
+}

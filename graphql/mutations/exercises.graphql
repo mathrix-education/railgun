@@ -1,31 +1,17 @@
 extend type Mutation {
     "Create a new exercise."
     createExercise(
-        type: ExerciseType!
-        questions: [Silicate!]!
-        choices: [SilicateList!]!
-        solutions: [IntList!]!
-        explanations: [SilicateList!]!
-        order: Int
-        visible: Boolean!
-        subject_id: ID!
-        labels: ManageLabels
+        input: CreateExercise! @spread
     ): Exercise @permission(scope: "exercises:create") @create
 
     "Update an existing exercise."
     updateExercise(
         id: ID!
-        type: ExerciseType
-        questions: [Silicate!]
-        choices: [SilicateList!]
-        solutions: [IntList!]
-        explanations: [SilicateList!]
-        order: Int
-        visible: Boolean
-        subject_id: ID
-        labels: ManageLabels
+        input: UpdateExercise! @spread
     ): Exercise @permission(scope: "exercises:update") @update
 
     "Delete an existing exercise."
-    deleteExercise(id: ID!): Exercise @permission(scope: "exercises:delete") @delete
+    deleteExercise(
+        id: ID!
+    ): Exercise @permission(scope: "exercises:delete") @delete
 }

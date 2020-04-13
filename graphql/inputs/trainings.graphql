@@ -1,0 +1,19 @@
+input CreateTraining {
+    name: String!
+    slug: String!
+    image: URL
+    available: Boolean!
+    price: Int!
+    order: Int
+    visible: Boolean!
+}
+
+input UpdateTraining {
+    name: String
+    slug: String
+    image: URL
+    available: Boolean
+    price: Int
+    order: Int
+    visible: Boolean
+}

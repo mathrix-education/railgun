@@ -26,8 +26,8 @@ class UpdateCourseIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->graphQL(
             <<<'GRAPHQL'
-            mutation($id: ID!, $labels: ManageLabels) {
-                updateCourse(id: $id, labels: $labels) {
+            mutation($id: ID!, $input: UpdateCourse!) {
+                updateCourse(id: $id, input: $input) {
                     id
                     labels {
                         id
@@ -36,7 +36,12 @@ class UpdateCourseIntegrationTest extends GraphQLIntegrationTestCase
                 }
             }
             GRAPHQL,
-            ['id' => $course->id, 'labels' => ['connect' => [$label->id]]],
+            [
+                'id' => $course->id,
+                'input' => [
+                    'labels' => ['connect' => [$label->id]],
+                ],
+            ],
         );
 
         $this->seeInDatabase('labelables', [
