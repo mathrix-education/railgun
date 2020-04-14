@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Traits\Cacheable;
 use Stripe\Invoice;
 use Stripe\Subscription as StripeSubscription;
+use function preg_match;
 
 /**
  * @property      string       $id
@@ -22,6 +23,7 @@ use Stripe\Subscription as StripeSubscription;
  * @property      Carbon       $updated_at
  * @property      Carbon|null  $canceled_at
  * ---
+ * @property-read string       $processor
  * @property-read Invoice|null $latest_invoice
  * ---
  * @property-read User         $user
@@ -30,9 +32,12 @@ class Subscription extends Model
 {
     use Cacheable;
 
-    public            $incrementing = false;
-    protected         $keyType      = 'string';
-    protected         $fillable     = [
+    public const PROCESSOR_STRIPE    = 'stripe';
+    public const PROCESSOR_BRAINTREE = 'braintree';
+
+    public    $incrementing = false;
+    protected $keyType      = 'string';
+    protected $fillable     = [
         'id',
         'plan',
         'customer_id',
@@ -43,21 +48,34 @@ class Subscription extends Model
         'updated_at',
         'canceled_at',
     ];
-    protected         $casts        = [
+    protected $casts        = [
         'current_period_start' => 'datetime',
         'current_period_end'   => 'datetime',
         'canceled_at'          => 'datetime',
     ];
-    protected Invoice $latestInvoice;
 
+    /**
+     * @return BelongsTo<User>
+     */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'customer_id', 'stripe_id');
+        if ($this->processor === self::PROCESSOR_STRIPE) {
+            return $this->belongsTo(User::class, 'customer_id', 'stripe_id');
+        }
+
+        return $this->belongsTo(User::class, 'customer_id', 'braintree_id');
     }
 
-    public function userBraintree(): BelongsTo
+    /**
+     * @return string The processor name.
+     */
+    public function getProcessorAttribute(): string
     {
-        return $this->belongsTo(User::class, 'customer_id', 'braintree_id');
+        if (preg_match('/^sub_[a-zA-Z0-9]{14}$/', $this->id)) {
+            return self::PROCESSOR_STRIPE;
+        }
+
+        return self::PROCESSOR_BRAINTREE;
     }
 
     /**

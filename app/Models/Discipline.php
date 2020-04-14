@@ -56,6 +56,9 @@ class Discipline extends Model
         return $this->hasMany(Chapter::class);
     }
 
+    /**
+     * @return HasMany<Session>
+     */
     public function sessions(): HasMany
     {
         return $this->hasMany(Session::class);

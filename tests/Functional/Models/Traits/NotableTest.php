@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Nuwave\Lighthouse\Testing\MakesGraphQLRequestsLumen;
-use Railgun\Models\Label;
 use Railgun\Models\Note;
 use Railgun\Models\Traits\Notable;
 use Railgun\Models\Traits\Randomizable;
@@ -36,7 +35,7 @@ class NotableTest extends ApplicationTestCase
      */
     public function createNotablesDataset(): array
     {
-        return collect(Label::LABELABLES)
+        return collect(Note::NOTABLES)
             ->mapWithKeys(static fn($c) => [class_basename($c) => [$c]])
             ->toArray();
     }

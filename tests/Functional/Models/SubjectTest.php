@@ -5,18 +5,22 @@ declare(strict_types=1);
 namespace Tests\Functional\Models;
 
 use Illuminate\Database\Eloquent\Collection;
+use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Exercise;
 use Railgun\Models\Subject;
-use Tests\ApplicationTestCase;
 use function factory;
 
 /**
- * @testdox Model Subjects
+ * @testdox Model Subject
+ * @coversDefaultClass \Railgun\Models\Subject
  */
-class SubjectTest extends ApplicationTestCase
+class SubjectTest extends ModelTestCase
 {
+    use DatabaseTransactions;
+
     /**
      * @testdox syncs has its premium attribute sync with its exercises.
+     * @covers ::booting
      */
     public function testExercisesPremiumSync(): void
     {
@@ -36,5 +40,31 @@ class SubjectTest extends ApplicationTestCase
             $e->refresh();
             $this->assertTrue($e->premium);
         });
+    }
+
+    /**
+     * @covers ::notion
+     */
+    public function testNotion(): void
+    {
+        $this->assertBelongsTo(Subject::class, 'notion');
+    }
+
+    /**
+     * @covers ::notion
+     */
+    public function testExercises(): void
+    {
+        $this->assertHasMany(Subject::class, 'exercises');
+    }
+
+    /**
+     * @covers ::getChapter
+     */
+    public function testGetChapter(): void
+    {
+        /** @var Subject $instance */
+        $instance = factory(Subject::class)->create();
+        $this->assertNotNull($instance->getChapter());
     }
 }

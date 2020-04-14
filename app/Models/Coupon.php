@@ -17,8 +17,8 @@ use Railgun\Models\Traits\Randomizable;
  * @property-read Carbon $created_at
  * @property-read Carbon $updated_at
  * ---
- * @property-read bool   $expired
  * @property-read bool   $exhausted
+ * @property-read bool   $expired
  * @property-read bool   $valid
  */
 class Coupon extends Model
@@ -29,18 +29,27 @@ class Coupon extends Model
     protected $casts    = ['expires_at' => 'datetime'];
     protected $appends  = ['expired', 'exhausted', 'valid'];
 
-    public function getExpiredAttribute(): bool
-    {
-        return $this->expires_at === null || $this->expires_at->isFuture();
-    }
-
+    /**
+     * @return bool If the coupon is exhausted.
+     */
     public function getExhaustedAttribute(): bool
     {
         return $this->counter === 0;
     }
 
+    /**
+     * @return bool If the coupon has expired.
+     */
+    public function getExpiredAttribute(): bool
+    {
+        return $this->expires_at !== null && $this->expires_at->isPast();
+    }
+
+    /**
+     * @return bool If the coupon is valid and thus is applicable.
+     */
     public function getValidAttribute(): bool
     {
-        return !$this->expired && !$this->exhausted;
+        return !$this->exhausted && !$this->expired;
     }
 }
