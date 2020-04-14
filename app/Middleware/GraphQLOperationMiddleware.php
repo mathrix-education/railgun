@@ -35,20 +35,20 @@ class GraphQLOperationMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$request->has('operationId')) {
+        if (!$request->has('operationName')) {
             return $next($request);
         }
 
-        $start    = microtime();
+        $start    = microtime(true);
         $response = $next($request);
-        $latency  = microtime() - $start;
+        $latency  = microtime(true) - $start;
 
-        $operationId = $request->json('operationId');
+        $operation = $request->json('operationName');
         $this->collector
-            ->counter(GraphQLCollector::GRAPHQL_OPERATIONS_TOTAL)->inc([$operationId]);
+            ->counter(GraphQLCollector::GRAPHQL_OPERATIONS_TOTAL)->inc([$operation]);
         $this->collector
             ->histogram(GraphQLCollector::GRAPHQL_OPERATIONS_LATENCY_SECONDS)
-            ->observe($latency, [$operationId]);
+            ->observe($latency, [$operation]);
 
         return $response;
     }
