@@ -43,8 +43,8 @@ class PrometheusMiddleware
                 $response->getStatusCode(),
             ];
 
-            $this->collector->counter('http_request_total')->inc($route);
-            $this->collector->histogram('http_requests_latency_milliseconds')->observe($latency, $route);
+            $this->collector->counter(HttpCollector::HTTP_REQUESTS_TOTAL)->inc($route);
+            $this->collector->histogram(HttpCollector::HTTP_REQUESTS_LATENCY_SECONDS)->observe($latency, $route);
         }
 
         return $response;

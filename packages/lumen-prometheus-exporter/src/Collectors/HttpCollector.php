@@ -4,23 +4,22 @@ declare(strict_types=1);
 
 namespace Mathrix\Prometheus\Collectors;
 
-use Prometheus\Histogram;
-use function array_map;
-
 class HttpCollector extends Collector
 {
+    public const HTTP_REQUESTS_TOTAL           = 'http_requests_total';
+    public const HTTP_REQUESTS_LATENCY_SECONDS = 'http_requests_latency_seconds';
+
     public function register(): void
     {
         $this->counter(
-            'http_request_total',
+            self::HTTP_REQUESTS_TOTAL,
             'It observe requests totals',
             ['method', 'route', 'status'],
         );
         $this->histogram(
-            'http_requests_latency_milliseconds',
+            self::HTTP_REQUESTS_LATENCY_SECONDS,
             'The latencies of the HTTP requests per route',
             ['method', 'route', 'status'],
-            array_map(static fn($v) => $v * 1000, Histogram::getDefaultBuckets()),
         );
     }
 }
