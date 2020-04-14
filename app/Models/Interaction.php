@@ -12,6 +12,8 @@ use Railgun\Jobs\UpdateSessionAfterInteraction;
 use Railgun\Models\Traits\Content;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\UUID;
+use RuntimeException;
+use function get_class;
 
 /**
  * @property      int                                    $user_id
@@ -62,6 +64,10 @@ class Interaction extends Model
             return $this->interactable->getChapter();
         }
 
-        return null;
+        // @codeCoverageIgnoreStart
+        throw new RuntimeException(
+            'Interaction::$interactable is not an instance of Content, got:' . get_class($this->interactable),
+        );
+        // @codeCoverageIgnoreEnd
     }
 }

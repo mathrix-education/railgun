@@ -84,7 +84,7 @@ class Chapter extends Model implements Content
     public function summary(): HasOne
     {
         return $this->hasOne(Notion::class)
-            ->where('type', '=', 'summary');
+            ->where('type', '=', Notion::TYPE_SUMMARY);
     }
 
     /**

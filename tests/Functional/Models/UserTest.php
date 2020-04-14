@@ -9,15 +9,47 @@ use Illuminate\Support\Facades\Hash;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Interaction;
 use Railgun\Models\User;
-use Tests\ApplicationTestCase;
 use function factory;
 
 /**
+ * @testdox Model User
  * @coversDefaultClass \Railgun\Models\User
  */
-class UserTest extends ApplicationTestCase
+class UserTest extends ModelTestCase
 {
     use DatabaseTransactions;
+
+    /**
+     * @covers ::grade
+     */
+    public function testGrade(): void
+    {
+        $this->assertBelongsTo(User::class, 'grade');
+    }
+
+    /**
+     * @covers ::comments
+     */
+    public function testComments(): void
+    {
+        $this->assertHasMany(User::class, 'comments');
+    }
+
+    /**
+     * @covers ::interactions
+     */
+    public function testInteractions(): void
+    {
+        $this->assertHasMany(User::class, 'interactions');
+    }
+
+    /**
+     * @covers ::votes
+     */
+    public function testVotes(): void
+    {
+        $this->assertHasMany(User::class, 'votes');
+    }
 
     /**
      * @testdox hashes passwords on set

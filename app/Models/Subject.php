@@ -53,14 +53,11 @@ class Subject extends Model implements Content
 
     public static function booting(): void
     {
-        $premiumSync = static function (Subject $subject): void {
+        self::saving(static function (Subject $subject): void {
             if ($subject->isDirty('premium')) {
                 $subject->exercises()->update(['premium' => $subject->premium]);
             }
-        };
-
-        self::creating($premiumSync);
-        self::updating($premiumSync);
+        });
     }
 
     /**

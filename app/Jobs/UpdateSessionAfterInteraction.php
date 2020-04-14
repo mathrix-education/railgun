@@ -14,7 +14,7 @@ use Railgun\Models\Traits\Content;
  */
 class UpdateSessionAfterInteraction extends Job implements ShouldQueue
 {
-    private Interaction $interaction;
+    public Interaction $interaction;
 
     public function __construct(Interaction $interaction)
     {

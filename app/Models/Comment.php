@@ -77,6 +77,9 @@ class Comment extends Model
             ->orderBy('created_at');
     }
 
+    /**
+     * @return MorphTo The model which own the comment.
+     */
     public function commentable(): MorphTo
     {
         return $this->morphTo();
