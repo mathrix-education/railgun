@@ -33,9 +33,12 @@ class Vote extends Model
     {
         parent::booting();
 
-        $updateScore = static function(self $vote): void {
+        $updateScore = static function (self $vote): void {
             DB::update(
-                'UPDATE comments SET score = (SELECT SUM(value) FROM votes WHERE comment_id = ?) WHERE id = ?',
+                <<<'MYSQL'
+                UPDATE comments
+                SET score = (SELECT IFNULL(SUM(value), 0) FROM votes WHERE comment_id = ?) WHERE id = ?
+                MYSQL,
                 [$vote->comment_id, $vote->comment_id],
             );
         };

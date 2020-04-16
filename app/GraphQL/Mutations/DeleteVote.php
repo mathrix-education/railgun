@@ -17,15 +17,15 @@ class DeleteVote
      * @param null    $rootValue The parent value, always null in this case.
      * @param mixed[] $args      The mutation arguments.
      *
-     * @return mixed
+     * @return Vote The deleted vote model.
      *
      * @throws Exception
      */
     public function __invoke($rootValue, array $args): Vote
     {
         /** @var Vote $vote */
-        $vote = Vote::query()->where($args)->first();
-        Vote::query()->where($args)->delete(); // TODO: change that
+        $vote = Vote::query()->where($args)->firstOrFail();
+        $vote->delete();
 
         return $vote;
     }
