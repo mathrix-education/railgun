@@ -38,6 +38,7 @@ class Notion extends Model implements Content
     public const TYPES         = [self::TYPE_STANDARD, self::TYPE_SUMMARY];
 
     protected       $fillable   = [
+        'type',
         'name',
         'slug',
         'visible',
