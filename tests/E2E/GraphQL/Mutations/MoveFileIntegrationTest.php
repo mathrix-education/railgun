@@ -119,7 +119,8 @@ class MoveFileIntegrationTest extends GraphQLIntegrationTestCase
         $this->executeMoveFile($source, $destination, false);
 
         $this->assertResponseOk();
-        $this->assertError();
+        $this->assertErrorCode('FILE_CONFLICT');
+        $this->assertErrorCategory('storage');
         Storage::assertExists($source);
         Storage::assertExists($destination);
     }
@@ -137,7 +138,8 @@ class MoveFileIntegrationTest extends GraphQLIntegrationTestCase
         $this->executeMoveFile($source, $destination, false);
 
         $this->assertResponseOk();
-        $this->assertNoErrors();
+        $this->assertErrorCode('FILE_NOT_FOUND');
+        $this->assertErrorCategory('storage');
         Storage::assertExists($source);
         Storage::assertMissing($destination);
     }

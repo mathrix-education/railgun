@@ -6,7 +6,6 @@ namespace Railgun\Handlers;
 
 use Closure;
 use GraphQL\Error\Error;
-use Illuminate\Contracts\Debug\ExceptionHandler;
 use Nuwave\Lighthouse\Execution\ErrorHandler;
 use Nuwave\Lighthouse\Execution\ExtensionErrorHandler;
 use function app;
@@ -19,24 +18,23 @@ use function app;
 class GraphQLHandler implements ErrorHandler
 {
     /**
-     * @param Error   $error The current GraphQL {@see Error}
-     * @param Closure $next  The next handler callback.
+     * @param Error   $original The current GraphQL {@see Error}
+     * @param Closure $next     The next handler callback.
      *
      * @return mixed[]
      */
-    public static function handle(Error $error, Closure $next): array
+    public static function handle(Error $original, Closure $next): array
     {
-        $handler = app()->make(ExceptionHandler::class);
+        /** @var ExceptionPipeline $pipeline */
+        $pipeline = app()->make(ExceptionPipeline::class);
 
-        if ($handler instanceof Handler) {
-            /** @var Error $transformed */
-            $transformed = $handler->transform($error);
+        /** @var Error $transformed */
+        $transformed = $pipeline->transform($original);
 
-            if ($transformed instanceof Error) {
-                return $next($transformed);
-            }
+        if ($transformed instanceof Error) {
+            return $next($transformed);
         }
 
-        return $next($error);
+        return $next($original); // @codeCoverageIgnore
     }
 }

@@ -66,6 +66,8 @@ class HttpIntegrationTestCase extends ApplicationTestCase
      */
     protected function dump(): void
     {
+        $this->tearDown();
+        self::tearDownAfterClass();
         $content = $this->getContent();
         /** @noinspection ForgottenDebugOutputInspection */
         dump($content);

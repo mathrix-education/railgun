@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Railgun\Exceptions;
 
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Validation\ValidationException as IlluminateValidationException;
 use Psr\Log\LogLevel;
 use Throwable;
 use function trans;
@@ -17,16 +15,17 @@ class ValidationException extends HttpException
 {
     protected string  $level    = LogLevel::NOTICE;
     protected string  $category = 'validation';
-    private Validator $validator;
+    /** @var string[] $errors The validation errors */
+    private array $errors;
 
     /**
-     * @param Validator      $validator The validator instance which owns the failed validation rules.
-     * @param string|null    $message   The validation failure message.
-     * @param Throwable|null $previous  The previous exception, if any.
+     * @param mixed[]        $errors   The validation errors.
+     * @param string|null    $message  The validation failure message.
+     * @param Throwable|null $previous The previous exception, if any.
      */
     public function __construct(
-        Validator $validator,
         ?string $message = null,
+        array $errors = [],
         ?Throwable $previous = null
     )
     {
@@ -37,26 +36,14 @@ class ValidationException extends HttpException
 
         parent::__construct($message, $previous);
 
-        $this->validator = $validator;
-    }
-
-    /**
-     * Create a new instance based on a {@see ValidationException}
-     *
-     * @param IlluminateValidationException $source The Laravel ValidationException.
-     *
-     * @return static
-     */
-    public static function from(IlluminateValidationException $source): self
-    {
-        return new self($source->validator, $source->getMessage(), $source);
+        $this->errors = $errors;
     }
 
     /**
      * @return mixed[] The validation error messages.
      */
-    public function extensionsContent(): array
+    public function extensions(): array
     {
-        return $this->validator->errors()->messages();
+        return ['validation' => $this->errors];
     }
 }

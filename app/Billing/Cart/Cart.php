@@ -67,7 +67,7 @@ class Cart
         $input['packIds']     ??= [];
         $input['trainingIds'] ??= [];
         $input['premium']     ??= false;
-        $input['couponCode']  ??= null;
+        $input['coupon']      ??= null;
 
         $this->input = $input;
     }
@@ -83,7 +83,7 @@ class Cart
             ->get();
         $this->trainings = Training::query()->whereIn('id', $this->input['trainingIds'])->get();
         $this->premium   = $this->input['premium'] ? new Premium() : null;
-        $this->coupon    = Coupon::query()->find($this->input['couponCode']);
+        $this->coupon    = Coupon::query()->find($this->input['coupon']);
     }
 
     /**

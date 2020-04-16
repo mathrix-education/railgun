@@ -65,7 +65,9 @@ class DeleteFileIntegrationTest extends GraphQLIntegrationTestCase
         $this->executeDeleteBlob($path);
 
         $this->assertResponseOk();
-        $this->assertError(trans('storage.errors.file_not_found', ['file' => $path]));
+        $this->assertErrorCode('FILE_NOT_FOUND');
+        $this->assertErrorCategory('storage');
+        $this->assertErrorMessage(trans('storage.errors.file_not_found', ['file' => $path]));
     }
 
     /**
@@ -80,6 +82,8 @@ class DeleteFileIntegrationTest extends GraphQLIntegrationTestCase
         $this->executeDeleteBlob($path);
 
         $this->assertResponseOk();
-        $this->assertError(trans('storage.errors.file_not_found', ['file' => $path]));
+        $this->assertErrorCode('FILE_NOT_FOUND');
+        $this->assertErrorCategory('storage');
+        $this->assertErrorMessage(trans('storage.errors.file_not_found', ['file' => $path]));
     }
 }

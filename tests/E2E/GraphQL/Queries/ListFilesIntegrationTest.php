@@ -95,9 +95,8 @@ class ListFilesIntegrationTest extends GraphQLIntegrationTestCase
         $this->executeListFiles($directory);
 
         $this->assertResponseOk();
-        $this->assertError(
-            trans('storage.errors.directory_not_found', ['directory' => $directory]),
-            'storage',
-        );
+        $this->assertErrorCode('DIRECTORY_NOT_FOUND');
+        $this->assertErrorCategory('storage');
+        $this->assertErrorMessage(trans('storage.errors.directory_not_found', ['directory' => $directory]));
     }
 }

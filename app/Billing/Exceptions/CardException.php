@@ -55,7 +55,7 @@ class CardException extends HttpException
     /**
      * @return mixed[]
      */
-    public function extensionsContent(): array
+    public function extensions(): array
     {
         $previous = $this->getPrevious();
 

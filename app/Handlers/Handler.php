@@ -5,166 +5,71 @@ declare(strict_types=1);
 namespace Railgun\Handlers;
 
 use Exception;
-use GraphQL\Error\Error as GraphQLError;
-use Illuminate\Database\QueryException as IlluminateQueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException as IlluminateValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
-use League\Flysystem\FileExistsException as LeagueFileExistsException;
-use League\Flysystem\FileNotFoundException as LeagueFileNotFoundException;
-use Nuwave\Lighthouse\Exceptions\GenericException;
 use Psr\Log\LogLevel;
-use Railgun\Billing\Exceptions\CardException;
-use Railgun\Billing\Exceptions\InvalidEventSignatureException;
-use Railgun\Exceptions\FileConflictException;
-use Railgun\Exceptions\FileNotFoundException;
 use Railgun\Exceptions\HttpException;
-use Railgun\Exceptions\MethodNotAllowedException;
-use Railgun\Exceptions\QueryException;
-use Railgun\Exceptions\ValidationException;
 use Railgun\Middleware\CorrelationMiddleware;
 use Railgun\Models\User;
 use Sentry\Severity;
 use Sentry\State\Hub;
 use Sentry\State\Scope;
-use Stripe\Exception\CardException as StripeCardException;
-use Stripe\Exception\SignatureVerificationException;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
-use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Throwable;
 use function app;
-use function preg_match;
-use function trans;
 
 /**
  * Handle exceptions and display them in json as response. Also handle Sentry's behavior.
+ *
+ * @codeCoverageIgnore
  */
 class Handler extends ExceptionHandler
 {
-    /**
-     * Transform an exception before reporting.
-     *
-     * @param Throwable $original The original exception.
-     *
-     * @return Throwable The transformed exception.
-     *
-     * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
-     */
-    public function transform(Throwable $original): Throwable
+    private ExceptionPipeline $pipeline;
+
+    public function __construct(ExceptionPipeline $pipeline)
     {
-        if ($original instanceof GraphQLError && $original->getPrevious() instanceof Throwable) {
-            // Handle GraphQL embedded exceptions
-            $embedded  = $original->getPrevious();
-            $converted = $this->transform($embedded);
-
-            if ($converted !== null) {
-                // Exception need to be swapped
-                return new GraphQLError(
-                    $converted->getMessage(),
-                    $original->nodes,
-                    $original->getSource(),
-                    $original->getPositions(),
-                    $original->getPath(),
-                    $converted,
-                );
-            }
-        }
-
-        if ($original instanceof MethodNotAllowedHttpException) {
-            return MethodNotAllowedException::from($original);
-        }
-
-        if ($original instanceof GenericException && $original->getCategory() === 'validation') {
-            $result = preg_match(
-                '/Validation failed for the field \[(.*)]\./',
-                $original->getMessage(),
-                $matches,
-            );
-
-            if ($result) {
-                $original->message = trans('validation.fails_field', ['field' => $matches[1]]);
-
-                return $original;
-            }
-        }
-
-        if ($original instanceof IlluminateValidationException) {
-            // Convert validation exceptions
-            return ValidationException::from($original);
-        }
-
-        if ($original instanceof StripeCardException) {
-            // Convert Stripe card exceptions
-            return CardException::from($original);
-        }
-
-        if ($original instanceof LeagueFileNotFoundException) {
-            // Convert League exception
-            return new FileNotFoundException($original->getPath(), $original);
-        }
-
-        if ($original instanceof LeagueFileExistsException) {
-            // Convert League exception
-            return new FileConflictException($original->getPath(), $original);
-        }
-
-        if ($original instanceof SignatureVerificationException) {
-            // Convert Stripe signature exception
-            return new InvalidEventSignatureException($original);
-        }
-
-        if ($original instanceof IlluminateQueryException) {
-            return new QueryException($original);
-        }
-
-        return $original;
+        $this->pipeline = $pipeline;
     }
 
     /**
-     * @param Request   $request   The Illuminate HTTP request.
-     * @param Throwable $exception The exception to render.
+     * @param Request|mixed $request   The Illuminate HTTP request.
+     * @param Throwable     $exception The exception to render.
      *
      * @return JsonResponse|Response|SymfonyResponse The response object to send.
      *
      * @throws Throwable
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @codeCoverageIgnore
      */
-    public function render($request, Throwable $exception)
+    public function render($request, Throwable $exception): SymfonyResponse
     {
-        return parent::render($request, $this->transform($exception));
+        return parent::render($request, $this->pipeline->transform($exception));
     }
 
     /**
      * @param Throwable $exception The exception to report.
      *
      * @throws Exception
-     *
-     * @codeCoverageIgnore
      */
     public function report(Throwable $exception): void
     {
-        if ($this->shouldntReport($exception)) {
+        $transformed = $this->pipeline->transform($exception);
+
+        if ($this->shouldntReport($exception) || $this->shouldntReport($transformed)) {
             return;
         }
 
-        $exception = $this->transform($exception);
+        $this->reportToSentry($transformed);
 
-        $this->reportToSentry($exception);
-
-        parent::report($exception);
+        parent::report($transformed);
     }
 
     /**
      * Report the exception to sentry if necessary.
      *
      * @param Throwable $exception The exception to report.
-     *
-     * @codeCoverageIgnore
      */
     public function reportToSentry(Throwable $exception): void
     {

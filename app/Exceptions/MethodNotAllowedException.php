@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Railgun\Exceptions;
 
 use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Throwable;
 use function app;
 
@@ -15,7 +14,7 @@ use function app;
 class MethodNotAllowedException extends HttpException
 {
     /** @var int $statusCode The response status code. */
-    protected int $statusCode = 403;
+    protected int $statusCode = 405;
 
     public function __construct(?string $message = null, ?Throwable $previous = null)
     {
@@ -31,13 +30,5 @@ class MethodNotAllowedException extends HttpException
         }
 
         parent::__construct($message ?? 'Method not allowed', $previous);
-    }
-
-    public static function from(MethodNotAllowedHttpException $original): self
-    {
-        $exception = new self($original->getMessage(), $original);
-        $exception->setHeaders($original->getHeaders());
-
-        return $exception;
     }
 }

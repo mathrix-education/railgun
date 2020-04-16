@@ -78,7 +78,9 @@ class ReadCourseIntegrationTest extends GraphQLIntegrationTestCase
         );
 
         $this->assertResponseOk();
-        $this->assertError(trans('auth.missing_scope', ['scope' => 'notes:read']));
+        $this->assertErrorCode('MISSING_SCOPE');
+        $this->assertErrorCategory('authorization');
+        $this->assertErrorMessage(trans('auth.missing_scope', ['scope' => 'notes:read']));
     }
 
     /**

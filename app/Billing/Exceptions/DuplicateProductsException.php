@@ -13,7 +13,7 @@ use function trans;
 /**
  * Thrown when the cart contains duplicated items.
  */
-class DuplicateProducts extends HttpException
+class DuplicateProductsException extends HttpException
 {
     protected string $level    = LogLevel::NOTICE;
     protected string $category = 'cart';

@@ -15,6 +15,7 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application;
 use Mathrix\Prometheus\Middleware\PrometheusMiddleware;
 use Railgun\Console\Kernel;
+use Railgun\Handlers\ExceptionPipeline;
 use Railgun\Handlers\Handler;
 use Railgun\Middleware\CorrelationMiddleware;
 use Railgun\Middleware\ImpersonateMiddleware;
@@ -49,6 +50,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(CacheImplementation::class, CacheContract::class);
         $this->app->singleton(ExceptionHandler::class, Handler::class);
         $this->app->singleton(KernelContract::class, Kernel::class);
+        $this->app->singleton(ExceptionPipeline::class);
     }
 
     /**

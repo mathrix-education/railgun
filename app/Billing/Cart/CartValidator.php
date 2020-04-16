@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Railgun\Billing\Cart;
 
-use Railgun\Billing\Exceptions\DuplicateProducts;
+use Railgun\Billing\Exceptions\AlreadyBoughtException;
+use Railgun\Billing\Exceptions\AlreadyPremiumException;
+use Railgun\Billing\Exceptions\DuplicateProductsException;
 use Railgun\Billing\Exceptions\InvalidCouponCodeException;
 use Railgun\Billing\Exceptions\UnavailableProducts;
 use Railgun\Models\Pack;
+use Railgun\Models\Training;
+use function collect;
 
 /**
  * Validate a {@see Cart}.
@@ -43,18 +47,20 @@ class CartValidator
      */
     private function checkDuplicates(): void
     {
-        // Check that there is no pack <=> training collision
-        $trainings = $this->cart->trainings->merge(
-            $this->cart->packs
-                ->map(static fn(Pack $pack) => $pack->trainings)
-                ->flatten(1),
-        );
+        $trainingsIds     = $this->cart->trainings->pluck('id')->toArray();
+        $packTrainingsIds = $this->cart->packs
+            ->map(static fn(Pack $pack) => $pack->trainings)
+            ->flatten(1)
+            ->pluck('id')
+            ->toArray();
 
-        $duplicateIds = $trainings->pluck('id')->duplicates();
+        $ids = collect([...$trainingsIds, ...$packTrainingsIds]);
+
+        $duplicateIds = $ids->duplicates();
 
         if ($duplicateIds->isNotEmpty()) {
-            $duplicateNames = $trainings->whereIn('id', $duplicateIds)->pluck('name');
-            throw new DuplicateProducts($duplicateNames->toArray());
+            $duplicateNames = $this->cart->trainings->whereIn('id', $duplicateIds)->pluck('name');
+            throw new DuplicateProductsException($duplicateNames->toArray());
         }
     }
 
@@ -77,24 +83,17 @@ class CartValidator
      */
     private function checkCouponCode(): void
     {
-        if ($this->cart->input['couponCode'] === null) {
+        if ($this->cart->input['coupon'] === null) {
             // No coupon code was provided, skip
             return;
         }
 
-        if ($this->cart->input['couponCode'] !== null && $this->cart->coupon === null) {
-            // The coupon could not be found
-            throw new InvalidCouponCodeException($this->cart->input['couponCode']);
-        }
-
-        if (!$this->cart->coupon->expired) {
-            // The coupon has expired
-            throw new InvalidCouponCodeException($this->cart->input['couponCode']);
-        }
-
-        if (!$this->cart->coupon->exhausted) {
-            // The coupon is exhausted
-            throw new InvalidCouponCodeException($this->cart->input['couponCode']);
+        if (
+            ($this->cart->input['coupon'] !== null && $this->cart->coupon === null) // The coupon could not be found
+            || $this->cart->coupon->expired // The coupon has expired
+            || $this->cart->coupon->exhausted // The coupon is exhausted
+        ) {
+            throw new InvalidCouponCodeException($this->cart->input['coupon']);
         }
     }
 
@@ -108,7 +107,21 @@ class CartValidator
             return;
         }
 
-        // TODO: implement it
+        $invalid = collect([
+            ...$this->cart->trainings->filter(function (Training $training) {
+                return $this->cart->user->owns($training);
+            }),
+            ...$this->cart->packs->filter(function (Pack $pack) {
+                return $this->cart->user->owns($pack);
+            }),
+        ]);
+
+        if ($invalid->isNotEmpty()) {
+            throw new AlreadyBoughtException(
+                $invalid->pluck('name')->toArray(),
+                $this->cart->user->id,
+            );
+        }
     }
 
     /**
@@ -121,6 +134,8 @@ class CartValidator
             return;
         }
 
-        // TODO: implement it
+        if ($this->cart->premium !== null && $this->cart->user->premium) {
+            throw new AlreadyPremiumException($this->cart->user->id);
+        }
     }
 }

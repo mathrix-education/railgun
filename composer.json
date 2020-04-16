@@ -91,7 +91,8 @@
       "Railgun\\": "app/"
     },
     "files": [
-      "app/helpers.php"
+      "app/helpers.php",
+      "resources/lang/fr/helpers.php"
     ]
   },
   "autoload-dev": {
