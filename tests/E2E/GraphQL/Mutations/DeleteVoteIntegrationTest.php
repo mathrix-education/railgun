@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\E2E\GraphQL\Mutations;
 
 use Laravel\Lumen\Testing\DatabaseTransactions;
+use Railgun\Models\Comment;
 use Railgun\Models\Vote;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function factory;
@@ -21,8 +22,16 @@ class DeleteVoteIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testDeleteVote(): void
     {
+        /** @var Comment $comment */
+        $comment = factory(Comment::class)->create();
         /** @var Vote $vote */
-        $vote = factory(Vote::class)->create();
+        $vote = factory(Vote::class)->create([
+            'value' => 1,
+            'comment_id' => $comment->id,
+        ]);
+
+        $comment->refresh();
+        $this->assertEquals(1, $comment->score);
 
         $this->actingAs($vote->user);
 
@@ -32,6 +41,7 @@ class DeleteVoteIntegrationTest extends GraphQLIntegrationTestCase
                 deleteVote(comment_id: $comment_id) {
                     comment {
                         id
+                        score
                     }
                     user {
                         id
@@ -44,8 +54,11 @@ class DeleteVoteIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->assertResponseOk();
         $this->assertNoErrors();
-        $this->assertEquals($vote->comment_id, $this->getData('deleteVote.comment.id'));
-        $this->assertEquals($vote->user_id, $this->getData('deleteVote.user.id'));
+
+        $this->assertEquals(0, $this->getData('comment.score'));
+        $this->assertEquals($vote->comment_id, $this->getData('comment.id'));
+        $this->assertEquals($vote->user_id, $this->getData('user.id'));
+
         $this->notSeeInDatabase('votes', [
             'comment_id' => $vote->comment_id,
             'user_id'    => $vote->comment_id,
