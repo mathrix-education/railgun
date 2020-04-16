@@ -73,7 +73,7 @@ class Subject extends Model implements Content
      */
     public function exercises(): HasMany
     {
-        return $this->hasMany(Exercise::class);
+        return $this->hasMany(Exercise::class)->orderBy('order');
     }
 
     /**
