@@ -1,7 +1,7 @@
 extend type Mutation {
     createUser(
         input: CreateUser! @spread
-    ): User @create
+    ): User @permission(scope: "users:update") @create
 
     updateUser(
         id: ID!

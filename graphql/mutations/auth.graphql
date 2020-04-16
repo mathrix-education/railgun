@@ -9,6 +9,14 @@ type Email {
 
 extend type Mutation {
     """
+    Register a new user into the application using email/password credentials.
+    """
+    registerBasic(
+        email: String! @rules(apply: ["email", "max:120", "unique:users,email"])
+        password: String!
+    ): JWT!
+
+    """
     Login a user into the application using email/password credentials.
     """
     loginBasic(email: String!, password: String!): JWT!
