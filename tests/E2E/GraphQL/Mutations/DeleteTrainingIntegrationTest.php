@@ -18,7 +18,7 @@ class DeleteTrainingIntegrationTest extends GraphQLIntegrationTestCase
     use DatabaseTransactions;
 
     /**
-     * @testdox fails to delete a course when it is not empty.
+     * @testdox fails to delete a training when it is not empty.
      */
     public function testDeleteNonEmpty(): void
     {
@@ -40,7 +40,8 @@ class DeleteTrainingIntegrationTest extends GraphQLIntegrationTestCase
         );
 
         $this->assertResponseOk();
-        $this->assertNoErrors();
+        $this->assertErrorCode('FOREIGN_KEY_CONSTRAINT');
+        $this->assertErrorCategory('database');
         $this->seeInDatabase('trainings', ['id' => $training->id]);
     }
 }

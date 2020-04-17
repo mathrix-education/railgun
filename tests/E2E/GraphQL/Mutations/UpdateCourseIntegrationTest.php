@@ -55,6 +55,6 @@ class UpdateCourseIntegrationTest extends GraphQLIntegrationTestCase
         );
 
         $this->assertResponseOk();
-        $this->assertError(null, 'database');
+        $this->assertErrorCategory('database');
     }
 }

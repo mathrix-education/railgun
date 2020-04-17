@@ -28,6 +28,6 @@ class ValidateCart
 
         $cart = new Cart($args['cart'], $user);
 
-        return $cart->toGraphQL();
+        return $cart->validate()->toGraphQL();
     }
 }

@@ -12,19 +12,18 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\RoutesNotifications;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Queue;
 use Laravel\Lumen\Auth\Authorizable;
+use Railgun\Billing\Models\OwnsProducts;
+use Railgun\Billing\Models\OwnsSubscriptions;
 use Railgun\Billing\Models\StripeCustomer;
 use Railgun\Jobs\CleanUserSession;
+use Railgun\Models\Traits\Cacheable;
 use Railgun\Models\Traits\HasDatabaseNotifications;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Support\LazyStdClass;
-use Stripe\Subscription as StripeSubscription;
 use function uuid_create;
 use function uuid_is_valid;
 
@@ -57,13 +56,15 @@ use function uuid_is_valid;
  * @property-read Collection|Vote[]         $votes
  * @property-read Collection|Interaction[]  $interactions
  * @property-read Collection|Session[]      $sessions
- * @property-read Collection|Subscription[] $subscriptions
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable;
     use Authorizable;
+    use Cacheable;
     use HasDatabaseNotifications;
+    use OwnsProducts;
+    use OwnsSubscriptions;
     use Randomizable;
     use RoutesNotifications;
     use StripeCustomer;
@@ -163,32 +164,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * @return HasMany<Subscription>
-     */
-    public function subscriptions(): HasMany
-    {
-        return $this->hasMany(Subscription::class, 'customer_id', 'stripe_id');
-    }
-
-    /**
-     * @return MorphToMany<Pack>
-     */
-    public function packs(): MorphToMany
-    {
-        return $this->morphedByMany(Pack::class, 'product', 'acquisitions')
-            ->as(Acquisition::class);
-    }
-
-    /**
-     * @return MorphToMany<Training>
-     */
-    public function trainings(): MorphToMany
-    {
-        return $this->morphedByMany(Training::class, 'product', 'acquisitions')
-            ->as(Acquisition::class);
-    }
-
-    /**
      * full_name attribute.
      */
     public function getFullNameAttribute(): string
@@ -198,40 +173,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         }
 
         return "{$this->firstname} {$this->lastname}";
-    }
-
-    /**
-     * @return bool If the user is premium.
-     */
-    public function getPremiumAttribute(): bool
-    {
-        if ($this->premium_bypass) {
-            // Permanent premium bypass
-            return true;
-        }
-
-        if ($this->premium_bypass_expires_at instanceof Carbon && $this->premium_bypass_expires_at->isFuture()) {
-            // Temporary premium_bypass
-            return true;
-        }
-
-        // Cache for the current request
-        return Cache::store('array')->rememberForever('user.' . $this->id . '.premium', function (): bool {
-            $customerIds = [];
-
-            if ($this->stripe_id !== null) {
-                $customerIds[] = $this->stripe_id;
-            }
-
-            if ($this->braintree_id !== null) {
-                $customerIds[] = $this->braintree_id;
-            }
-
-            return DB::table('subscriptions')
-                ->whereIn('status', [StripeSubscription::STATUS_ACTIVE, StripeSubscription::STATUS_TRIALING])
-                ->whereIn('customer_id', $customerIds)
-                ->exists();
-        });
     }
 
     /**

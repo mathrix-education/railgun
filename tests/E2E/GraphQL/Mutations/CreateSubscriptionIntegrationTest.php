@@ -11,6 +11,7 @@ use Railgun\Models\Subscription;
 use stdClass;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function in_array;
+use function strtolower;
 use function trans;
 
 /**
@@ -61,7 +62,7 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
         // Build the dataset
         foreach ($paymentMethods as $paymentMethodId => $expectedStatus) {
             foreach ($plans as $planId) {
-                $dataset["$planId|$paymentMethodId => $expectedStatus"] = [
+                $dataset[strtolower($planId) . "|$paymentMethodId => $expectedStatus"] = [
                     $planId,
                     $paymentMethodId,
                     $expectedStatus,
@@ -168,6 +169,8 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
         $this->executeCreateSubscription('MONTHLY', 'pm_card_fr');
 
         $this->assertResponseOk();
-        $this->assertError(trans('billing.errors.already_premium_you'), 'cart');
+        $this->assertErrorCode('ALREADY_PREMIUM');
+        $this->assertErrorCategory('cart');
+        $this->assertErrorMessage(trans('billing.errors.already_premium_you'));
     }
 }

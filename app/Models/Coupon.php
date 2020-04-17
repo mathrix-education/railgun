@@ -25,9 +25,11 @@ class Coupon extends Model
 {
     use Randomizable;
 
-    protected $fillable = ['id', 'type', 'value', 'counter', 'expires_at'];
-    protected $casts    = ['expires_at' => 'datetime'];
-    protected $appends  = ['expired', 'exhausted', 'valid'];
+    protected $keyType      = 'string';
+    public    $incrementing = false;
+    protected $fillable     = ['id', 'type', 'value', 'counter', 'expires_at'];
+    protected $casts        = ['expires_at' => 'datetime'];
+    protected $appends      = ['expired', 'exhausted', 'valid'];
 
     /**
      * @return bool If the coupon is exhausted.

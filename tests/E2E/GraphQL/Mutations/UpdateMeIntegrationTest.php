@@ -104,7 +104,8 @@ class UpdateMeIntegrationTest extends GraphQLIntegrationTestCase
         );
 
         $this->assertResponseOk();
-        $this->assertError(null, 'validation');
+        $this->assertErrorCode('VALIDATION');
+        $this->assertErrorCategory('validation');
     }
 
     /**

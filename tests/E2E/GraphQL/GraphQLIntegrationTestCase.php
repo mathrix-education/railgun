@@ -60,32 +60,40 @@ class GraphQLIntegrationTestCase extends HttpIntegrationTestCase
      */
     protected function assertNoErrors(): void
     {
-        $errors = $this->getErrors();
-        $this->assertNull($errors, "Found errors: \n"
+        $errors = $this->getContent('errors');
+        $this->assertNull($errors, "Expected no errors, but found errors: \n"
             . json_encode($errors, JSON_PRETTY_PRINT, 512));
     }
 
     /**
-     * Assert that a particular GraphQL was thrown.
-     *
-     * @param string|null $expectedMessage  If not null, check the error message.
-     * @param string|null $expectedCategory If not null, check the error category.
+     * @param string $expectedPattern The expected error message pattern.
      */
-    protected function assertError(
-        ?string $expectedMessage = null,
-        ?string $expectedCategory = null
-    ): void
+    public function assertErrorMessageMatches(string $expectedPattern): void
     {
-        if ($expectedMessage !== null) {
-            $this->assertEquals($expectedMessage, $this->getContent('errors.0.message'));
-        } else {
-            $this->assertNotEmpty($this->getContent('errors'));
-        }
+        $this->assertMatchesRegularExpression($expectedPattern, $this->getContent('errors.0.extensions.message'));
+    }
 
-        if ($expectedCategory === null) {
-            return;
-        }
+    /**
+     * @param string $expectedMessage The expected error message.
+     */
+    public function assertErrorMessage(string $expectedMessage): void
+    {
+        $this->assertEquals($expectedMessage, $this->getContent('errors.0.message'));
+    }
 
+    /**
+     * @param string $expectedCode The expected error code.
+     */
+    public function assertErrorCode(string $expectedCode): void
+    {
+        $this->assertEquals($expectedCode, $this->getContent('errors.0.extensions.code'));
+    }
+
+    /**
+     * @param string $expectedCategory The expected error category.
+     */
+    public function assertErrorCategory(string $expectedCategory): void
+    {
         $this->assertEquals($expectedCategory, $this->getContent('errors.0.extensions.category'));
     }
 }

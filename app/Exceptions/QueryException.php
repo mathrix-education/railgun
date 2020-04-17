@@ -15,19 +15,19 @@ class QueryException extends HttpException
 {
     protected string $category = 'database';
 
-    public function __construct(Throwable $previous)
+    public function __construct(?string $message, Throwable $previous)
     {
         if ($previous instanceof IlluminateQueryException) {
-            parent::__construct($previous->errorInfo[2], $previous);
+            parent::__construct($message ?? $previous->errorInfo[2], $previous);
         } else {
-            parent::__construct($previous->getMessage(), $previous);
+            parent::__construct($message ?? $previous->getMessage(), $previous);
         }
     }
 
     /**
      * @return mixed[]
      */
-    public function extensionsContent(): array
+    public function extensions(): array
     {
         $previous = $this->getPrevious();
 
@@ -38,9 +38,9 @@ class QueryException extends HttpException
         assert($previous instanceof IlluminateQueryException);
 
         return [
-            'errorInf' => $previous->errorInfo,
-            'query'    => $previous->getSql(),
-            'bindings' => $previous->getBindings(),
+            'errorInfo' => $previous->errorInfo,
+            'query'     => $previous->getSql(),
+            'bindings'  => $previous->getBindings(),
         ];
     }
 }

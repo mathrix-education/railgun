@@ -34,7 +34,7 @@ class MissingScopeException extends HttpException
     /**
      * @return mixed[]
      */
-    public function extensionsContent(): array
+    public function extensions(): array
     {
         return [
             'scopes' => $this->scopes,

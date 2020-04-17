@@ -9,6 +9,8 @@ use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
+use JsonException;
 use JsonSerializable;
 use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
 use Psr\Log\LoggerInterface;
@@ -19,13 +21,21 @@ use Symfony\Component\HttpKernel\Exception\HttpException as SymfonyHttpException
 use Throwable;
 use Traversable;
 use function app;
+use function array_merge;
+use function class_basename;
 use function is_array;
 use function is_int;
 use function is_string;
 use function iterator_to_array;
+use function json_decode;
+use function json_encode;
+use function method_exists;
+use const JSON_THROW_ON_ERROR;
 
 /**
  * Base exception for GraphQL errors.
+ *
+ * @method array extensions()
  */
 abstract class HttpException extends SymfonyHttpException implements RendersErrorsExtensions, Responsable
 {
@@ -70,13 +80,15 @@ abstract class HttpException extends SymfonyHttpException implements RendersErro
 
     /**
      * @param string|int|mixed[]|stdClass|Arrayable|JsonSerializable|Traversable $data The response data.
+     *
+     * @throws JsonException
      */
     public function setData($data): void
     {
         if (is_string($data) || is_int($data)) {
             $this->data = (string)$data;
         } elseif (is_array($data) || $data instanceof stdClass) {
-            $this->data = (array)$data;
+            $this->data = json_decode(json_encode($data, JSON_THROW_ON_ERROR, 512), true, 512, JSON_THROW_ON_ERROR);
         } elseif ($data instanceof Arrayable) {
             $this->data = $data->toArray();
         } elseif ($data instanceof JsonSerializable) {
@@ -96,7 +108,8 @@ abstract class HttpException extends SymfonyHttpException implements RendersErro
         $data = $this->data ?? $this->extensionsContent();
 
         if (is_array($data)) {
-            $data['message'] = $this->getMessage();
+            $data['message']    = $this->getMessage();
+            $data['extensions'] = $this->extensionsContent();
         }
 
         return $data;
@@ -163,12 +176,38 @@ abstract class HttpException extends SymfonyHttpException implements RendersErro
     }
 
     /**
+     * Since {@see Exception::getCode} is final, we use the alternative getErrorCode.
+     *
+     * @return string The error code.
+     *
+     * phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps
+     */
+    public function getCode_(): string
+    {
+        return Str::of(class_basename(static::class))
+            ->replace('Exception', '')
+            ->replace('Error', '')
+            ->snake()
+            ->upper()
+            ->__toString();
+    }
+
+    /**
      * Default GraphQL exception payload ({@see RendersErrorsExtensions} for details).
      *
      * @return mixed[] The extension payload.
      */
     public function extensionsContent(): array
     {
-        return [];
+        $extensions = [
+            'code'     => $this->getCode_(),
+            'category' => $this->getCategory(),
+        ];
+
+        if (method_exists($this, 'extensions')) {
+            $extensions = array_merge($extensions, $this->extensions());
+        }
+
+        return $extensions;
     }
 }

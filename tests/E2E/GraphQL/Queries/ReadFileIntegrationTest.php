@@ -73,10 +73,9 @@ class ReadFileIntegrationTest extends GraphQLIntegrationTestCase
         $this->executeReadFile($file);
 
         $this->assertResponseOk();
-        $this->assertError(
-            trans('storage.errors.file_not_found', ['file' => Util::normalizePath($path)]),
-            'storage',
-        );
+        $this->assertErrorCode('FILE_NOT_FOUND');
+        $this->assertErrorCategory('storage');
+        $this->assertErrorMessage(trans('storage.errors.file_not_found', ['file' => Util::normalizePath($path)]));
     }
 
     /**
@@ -92,9 +91,8 @@ class ReadFileIntegrationTest extends GraphQLIntegrationTestCase
         $this->executeReadFile($dir);
 
         $this->assertResponseOk();
-        $this->assertError(
-            trans('storage.errors.file_not_found', ['file' => $path]),
-            'storage',
-        );
+        $this->assertErrorCode('FILE_NOT_FOUND');
+        $this->assertErrorCategory('storage');
+        $this->assertErrorMessage(trans('storage.errors.file_not_found', ['file' => Util::normalizePath($path)]));
     }
 }

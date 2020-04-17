@@ -19,6 +19,7 @@ class CreateUserIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testExistingEmail(): void
     {
+        /** @var User $user */
         $user = factory(User::class)->create(['username' => $this->faker->userName]);
 
         $this->graphQL(
@@ -41,7 +42,8 @@ class CreateUserIntegrationTest extends GraphQLIntegrationTestCase
         );
 
         $this->assertResponseOk();
-        $this->assertError(null, 'validation');
+        $this->assertErrorCode('VALIDATION');
+        $this->assertErrorCategory('validation');
         $this->assertCount(1, DB::table('users')->where([
             'username' => $user->username,
             'email'    => $user->email,

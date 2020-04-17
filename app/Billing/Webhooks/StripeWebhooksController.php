@@ -17,7 +17,7 @@ use Stripe\Invoice;
 use Stripe\Webhook;
 use function array_key_exists;
 use function config;
-use function dispatch;
+use function dispatch_now;
 use function method_exists;
 use function str_replace;
 
@@ -103,7 +103,7 @@ class StripeWebhooksController extends Controller
 
         if (Str::contains($invoice->billing_reason, 'subscription')) {
             // This is a subscription invoice
-            dispatch(new UpsertSubscription($invoice->subscription));
+            dispatch_now(new UpsertSubscription($invoice->subscription));
 
             $message = 'Subscription invoice payment handled';
         }
@@ -112,7 +112,7 @@ class StripeWebhooksController extends Controller
             $invoice->billing_reason === Invoice::BILLING_REASON_MANUAL
             && $invoice->metadata->type === Cart::IDENTIFIER
         ) {
-            dispatch(new DeliverProducts($invoice));
+            dispatch_now(new DeliverProducts($invoice));
 
             $message = 'Cart invoice payment handled';
         }
@@ -134,7 +134,7 @@ class StripeWebhooksController extends Controller
      */
     public function handleCustomerSubscription(Event $event): array
     {
-        dispatch(new UpsertSubscription($event->data->object));
+        dispatch_now(new UpsertSubscription($event->data->object));
 
         return [
             'message' => 'Subscription handled',
