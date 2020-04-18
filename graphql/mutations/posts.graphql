@@ -6,7 +6,6 @@ extend type Mutation {
 
     "Update an existing post."
     updatePost(
-        id: ID!
         input: UpdatePost! @spread
     ): Post @permission(scope: "posts:update") @update
 

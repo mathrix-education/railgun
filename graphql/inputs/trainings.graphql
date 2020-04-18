@@ -9,6 +9,7 @@ input CreateTraining {
 }
 
 input UpdateTraining {
+    id: ID!
     name: String
     slug: String
     image: URL

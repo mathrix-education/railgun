@@ -6,7 +6,6 @@ extend type Mutation {
 
     "Update an existing category."
     updateCategory(
-        id: ID!
         input: UpdateCategory! @spread
     ): Category @permission(scope: "categories:update") @update
 

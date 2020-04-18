@@ -49,6 +49,7 @@ class MigrateCommand extends V7Command
         'buster:orders',
         'buster:notifications',
         'buster:notions',
+        'buster:chapters',
         'migrate',
     ];
 

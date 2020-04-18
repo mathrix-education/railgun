@@ -8,6 +8,16 @@ input CreateUser {
 }
 
 input UpdateUser {
+    id: ID!
+    username: String @rules(apply: ["unique:users,username", "max:60"])
+    email: String @rules(apply: ["email", "max:120"])
+    firstname: String @rules(apply: ["max:60"])
+    lastname: String @rules(apply: ["max:60"])
+    password: String @rules(apply: ["sometimes", "required"])
+    grade_id: ID @rules(apply: ["exists:grades,id"])
+}
+
+input UpdateMe {
     username: String @rules(apply: ["unique:users,username", "max:60"])
     email: String @rules(apply: ["email", "max:120"])
     firstname: String @rules(apply: ["max:60"])

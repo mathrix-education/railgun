@@ -11,6 +11,7 @@ input CreateExercise {
 }
 
 input UpdateExercise {
+    id: ID!
     type: ExerciseType
     questions: [Silicate!]
     choices: [SilicateList!]

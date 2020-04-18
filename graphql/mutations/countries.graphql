@@ -6,7 +6,6 @@ extend type Mutation {
 
     "Update an existing country"
     updateCountry(
-        id: ID!
         input: UpdateCountry! @spread
     ): Country @permission(scope: "countries:update") @update
 

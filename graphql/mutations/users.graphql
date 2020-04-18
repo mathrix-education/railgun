@@ -4,7 +4,6 @@ extend type Mutation {
     ): User @permission(scope: "users:update") @create
 
     updateUser(
-        id: ID!
         input: UpdateUser! @spread
     ): User @permission(scope: "users:update") @update
 
@@ -12,6 +11,6 @@ extend type Mutation {
     Update the current user.
     """
     updateMe(
-        input: UpdateUser! @spread
+        input: UpdateMe! @spread
     ): User @inject(context: "user.id", name: "id") @update
 }

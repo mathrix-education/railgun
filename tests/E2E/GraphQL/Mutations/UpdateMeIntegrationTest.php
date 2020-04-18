@@ -33,7 +33,7 @@ class UpdateMeIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->graphQL(
             <<<'GRAPHQL'
-            mutation($input: UpdateUser!) {
+            mutation($input: UpdateMe!) {
                 updateMe(input: $input) {
                     id
                     grade {
@@ -67,7 +67,7 @@ class UpdateMeIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->graphQL(
             <<<'GRAPHQL'
-            mutation($input: UpdateUser!) {
+            mutation($input: UpdateMe!) {
                 updateMe(input: $input) {
                     username
                 }
@@ -94,7 +94,7 @@ class UpdateMeIntegrationTest extends GraphQLIntegrationTestCase
         $this->actingAsNewUser();
         $this->graphQL(
             <<<'GRAPHQL'
-            mutation($input: UpdateUser!) {
+            mutation($input: UpdateMe!) {
                 updateMe(input: $input) {
                     id
                 }
@@ -120,7 +120,7 @@ class UpdateMeIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->graphQL(
             <<<'GRAPHQL'
-            mutation($input: UpdateUser!) {
+            mutation($input: UpdateMe!) {
                 updateMe(input: $input) {
                     grade {
                         id

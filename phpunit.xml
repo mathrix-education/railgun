@@ -22,7 +22,4 @@
       </exclude>
     </whitelist>
   </filter>
-  <php>
-    <env name="LIGHTHOUSE_CACHE_ENABLE" value="true"/>
-  </php>
 </phpunit>

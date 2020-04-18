@@ -6,7 +6,6 @@ extend type Mutation {
 
     "Update an existing pack."
     updatePack(
-        id: ID!
         input: UpdatePack! @spread
     ): Pack @permission(scope: "packs:update") @update
 

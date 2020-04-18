@@ -6,7 +6,6 @@ extend type Mutation {
 
     "Update an existing exercise."
     updateExercise(
-        id: ID!
         input: UpdateExercise! @spread
     ): Exercise @permission(scope: "exercises:update") @update
 

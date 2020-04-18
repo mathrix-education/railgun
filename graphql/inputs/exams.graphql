@@ -11,6 +11,7 @@ input CreateExam {
 }
 
 input UpdateExam {
+    id: ID!
     name: String
     slug: String
     duration: Int

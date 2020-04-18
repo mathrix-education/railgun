@@ -12,6 +12,7 @@ input CreateFlashcard {
 }
 
 input UpdateFlashcard {
+    id: ID!
     name: String
     "The flashcard slug."
     slug: String
