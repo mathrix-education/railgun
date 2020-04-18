@@ -6,6 +6,7 @@ input CreateSubject {
 }
 
 input UpdateSubject {
+    id: ID!
     name: String
     order: Int
     visible: Boolean

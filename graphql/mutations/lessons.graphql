@@ -6,7 +6,6 @@ extend type Mutation {
 
     "Update an existing lesson."
     updateLesson(
-        id: ID!
         input: UpdateLesson! @spread
     ): Lesson! @permission(scope: "lessons:update") @update
 

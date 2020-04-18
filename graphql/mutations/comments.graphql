@@ -6,7 +6,6 @@ extend type Mutation {
 
     "Update an existing comment"
     updateComment(
-        id: ID!
         input: UpdateComment! @spread
     ): Comment @permission(scope: "comments:update") @update @inject(context: "user.id", name: "user_id")
 

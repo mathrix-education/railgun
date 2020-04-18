@@ -9,6 +9,7 @@ input CreateNotion {
 }
 
 input UpdateNotion {
+    id: ID!
     type: NotionType
     name: String
     slug: String

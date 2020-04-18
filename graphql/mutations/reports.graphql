@@ -6,7 +6,6 @@ extend type Mutation {
 
     "Update an existing report."
     updateReport(
-        id: ID!
         input: UpdateReport! @spread
     ): Report @permission(scope: "reports:update")  @update
 

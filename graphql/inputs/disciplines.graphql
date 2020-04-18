@@ -5,6 +5,7 @@ input CreateDiscipline {
 }
 
 input UpdateDiscipline {
+    id: ID!
     name: String
     slug: String
     beta: Boolean

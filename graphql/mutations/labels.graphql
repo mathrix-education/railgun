@@ -8,7 +8,6 @@ extend type Mutation {
     Update an existing label.
     """
     updateLabel(
-        id: ID!
         input: UpdateLabel @spread
     ): Label @update
 

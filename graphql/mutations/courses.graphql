@@ -6,7 +6,6 @@ extend type Mutation {
 
     "Update an existing course."
     updateCourse(
-        id: ID!
         input: UpdateCourse! @spread
     ): Course @permission(scope: "courses:update") @update
 

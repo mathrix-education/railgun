@@ -6,7 +6,6 @@ extend type Mutation {
 
     "Update an existing grade."
     updateGrade(
-        id: ID!
         input: UpdateGrade! @spread
     ): Grade @permission(scope: "grades:update") @update
 

@@ -8,6 +8,7 @@ input CreateChapter {
 }
 
 input UpdateChapter {
+    id: ID!
     name: String
     slug: String
     order: Int

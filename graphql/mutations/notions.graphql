@@ -6,7 +6,6 @@ extend type Mutation {
 
     "Update an existing notion."
     updateNotion(
-        id: ID!
         input: UpdateNotion! @spread
     ): Notion @permission(scope: "notions:update") @update
 

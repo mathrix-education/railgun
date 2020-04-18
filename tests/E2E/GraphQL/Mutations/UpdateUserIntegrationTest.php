@@ -29,8 +29,8 @@ class UpdateUserIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->graphQL(
             <<<'GRAPHQL'
-            mutation($id: ID!, $input: UpdateUser!) {
-                updateUser(id: $id, input: $input) {
+            mutation($input: UpdateUser!) {
+                updateUser(input: $input) {
                     id
                     grade {
                         id
@@ -39,8 +39,8 @@ class UpdateUserIntegrationTest extends GraphQLIntegrationTestCase
             }
             GRAPHQL,
             [
-                'id'    => $user->id,
                 'input' => [
+                    'id'       => $user->id,
                     'grade_id' => $grade->getKey(),
                 ],
             ],

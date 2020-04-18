@@ -2,13 +2,12 @@ extend type Mutation {
     "Create a new chapter."
     createChapter(
         input: CreateChapter! @spread
-    ): Chapter! @permission(scope: "chapters:create") @create
+    ): Chapter! @permission(scope: "chapters:create") @create @chapterSlugRule
 
     "Update an existing chapter."
     updateChapter(
-        id: ID!
         input: UpdateChapter! @spread
-    ): Chapter @permission(scope: "categories:update") @update
+    ): Chapter @permission(scope: "chapters:update") @update @chapterSlugRule
 
     "Delete an existing chapter."
     deleteChapter(

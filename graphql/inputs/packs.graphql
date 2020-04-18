@@ -8,6 +8,7 @@ input CreatePack {
 }
 
 input UpdatePack {
+    id: ID!
     name: String
     slug: String
     available: Boolean

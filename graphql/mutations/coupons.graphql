@@ -6,7 +6,6 @@ extend type Mutation {
 
     "Update an existing coupon"
     updateCoupon(
-        id: ID!
         input: UpdateCoupon! @spread
     ): Coupon @permission(scope: "coupons:update") @update
 

@@ -6,7 +6,6 @@ extend type Mutation {
 
     "Update an existing subject."
     updateSubject(
-        id: ID!
         input: UpdateSubject! @spread
     ): Subject @permission(scope: "subjects:update") @update
 

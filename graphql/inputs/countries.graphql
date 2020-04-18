@@ -4,6 +4,7 @@ input CreateCountry {
 }
 
 input UpdateCountry {
+    id: ID!
     name: String
     slug: String
 }

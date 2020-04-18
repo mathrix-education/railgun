@@ -6,7 +6,6 @@ extend type Mutation {
 
     "Update an existing flashcard."
     updateFlashcard (
-        id: ID!
         input: UpdateFlashcard! @spread
     ): Flashcard @permission(scope: "flashcards:update") @update
 

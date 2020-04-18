@@ -6,7 +6,6 @@ extend type Mutation {
 
     "Update an existing note."
     updateNote(
-        id: ID!
         input: UpdateNote @spread
     ): Note!  @permission(scope: "notes:create") @update @inject(context: "user.id", name: "user_id")
 

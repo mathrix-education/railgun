@@ -16,8 +16,6 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Railgun\Exceptions\MissingScopeException;
 use Railgun\Models\User;
 use RuntimeException;
-use function array_intersect;
-use function count;
 use function in_array;
 
 /**
@@ -36,23 +34,12 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
         return /** @lang GraphQL */ <<<'SDL'
         """
         Check that the current user has the required scope.
-        There are three strategies: scope, anyOf and allOf.
         """
         directive @permission(
             """
             The scope to check.
             """
-            scope: String
-            
-            """
-            The scopes to check. To pass the directive, the user must have any of the provided scopes.
-            """
-            anyOf: [String!]
-            
-            """
-            The scopes to check. To pass the directive, the user must have all the provided scopes.
-            """
-            allOf: [String!]
+            scope: String!
         ) on FIELD_DEFINITION | OBJECT
         SDL;
     }
@@ -69,42 +56,26 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
 
     /**
      * Check that the current user has the required scope.
-     * TODO: check allOf and anyOf
      *
      * @throws RuntimeException
      * @throws MissingScopeException
      */
     private function checkScope(): void
     {
-        if ($this->directiveHasArgument('scope')) {
-            $scopes = [$this->directiveArgValue('scope')];
-            $min    = 1;
-        } elseif ($this->directiveHasArgument('allOf')) {
-            $scopes = [$this->directiveArgValue('allOf')];
-            $min    = count($scopes);
-        } elseif ($this->directiveHasArgument('anyOf')) {
-            $scopes = [$this->directiveArgValue('anyOf')];
-            $min    = 1;
-        } else {
-            throw new RuntimeException('PermissionDirective: at least of scope, allOf or anyOf arguments is required.');
-        }
+        $scope = $this->directiveArgValue('scope');
 
         /** @var User $user */
         $user = Auth::user();
 
         if ($user === null) {
-            throw new MissingScopeException($scopes);
+            throw new MissingScopeException([$scope]);
         }
 
-        if (in_array('*', $user->scopes)) {
-            // Users with scope '*' may bypass this verification.
-            return;
-        }
-
-        $result = array_intersect($user->scopes, $scopes);
-
-        if (count($result) < $min) {
-            throw new MissingScopeException($scopes);
+        if (
+            !in_array('*', $user->scopes, true) // Users with scope '*' may bypass this verification.
+            && !in_array($scope, $user->scopes, true)
+        ) {
+            throw new MissingScopeException([$scope]);
         }
     }
 

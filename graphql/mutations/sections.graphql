@@ -6,7 +6,6 @@ extend type Mutation {
 
     "Update an existing section."
     updateSection(
-        id: ID!
         input: UpdateSection! @spread
     ): Section! @permission(scope: "sections:update") @update
 

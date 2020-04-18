@@ -7,7 +7,7 @@ extend type Mutation {
     """
     Mark all notifications as read.
     """
-    dismissAllNotifications: [Notification!]! @guard  @paginate(
+    dismissAllNotifications: [Notification!]! @guard @paginate(
         builder: "\\Railgun\\GraphQL\\Mutations\\DismissAllNotifications"
     )
 }

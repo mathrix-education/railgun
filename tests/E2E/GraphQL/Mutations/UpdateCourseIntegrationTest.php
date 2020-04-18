@@ -18,6 +18,52 @@ class UpdateCourseIntegrationTest extends GraphQLIntegrationTestCase
     use DatabaseTransactions;
 
     /**
+     * @param mixed[] $input The UpdateCourse input.
+     */
+    private function executeUpdateCourse(array $input): void
+    {
+        $this->graphQL(
+            <<<'GRAPHQL'
+            mutation($input: UpdateCourse!) {
+                updateCourse(input: $input) {
+                    id
+                    labels {
+                        id
+                        name
+                    }
+                }
+            }
+            GRAPHQL,
+            ['input' => $input],
+        );
+    }
+
+    /**
+     * @testdox connects a label to an existing course.
+     */
+    public function testConnectCourse(): void
+    {
+        $this->actingAsNewUser(['scopes' => ['labels:read', 'courses:update']]);
+        /** @var Course $course */
+        $course = factory(Course::class)->create();
+        /** @var Label $label */
+        $label = factory(Label::class)->create();
+
+        $this->executeUpdateCourse([
+            'id'     => $course->id,
+            'labels' => ['connect' => [$label->id]],
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertNoErrors();
+        $this->seeInDatabase('labelables', [
+            'labelable_id'   => $course->id,
+            'labelable_type' => 'course',
+            'label_id'       => $label->id,
+        ]);
+    }
+
+    /**
      * @testdox fails to connect a label twice to a course.
      *
      * @ticket #293
@@ -33,26 +79,10 @@ class UpdateCourseIntegrationTest extends GraphQLIntegrationTestCase
 
         $course->labels()->attach($label->id);
 
-        $this->graphQL(
-            <<<'GRAPHQL'
-            mutation($id: ID!, $input: UpdateCourse!) {
-                updateCourse(id: $id, input: $input) {
-                    id
-                    labels {
-                        id
-                    }
-                }
-            } 
-            GRAPHQL,
-            [
-                'id'    => $course->id,
-                'input' => [
-                    'labels' => [
-                        'connect' => [$label->id],
-                    ],
-                ],
-            ],
-        );
+        $this->executeUpdateCourse([
+            'id'     => $course->id,
+            'labels' => ['connect' => [$label->id]],
+        ]);
 
         $this->assertResponseOk();
         $this->assertErrorCategory('database');

@@ -7,6 +7,7 @@ namespace Railgun\Buster;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application;
 use Railgun\Buster\Commands\AcquisitionsCommand;
+use Railgun\Buster\Commands\ChaptersCommand;
 use Railgun\Buster\Commands\CleanCommand;
 use Railgun\Buster\Commands\CommentsCommand;
 use Railgun\Buster\Commands\CountersCommand;
@@ -75,6 +76,7 @@ class BusterServiceProvider extends ServiceProvider
             OrdersCommand::class,
             NotificationsCommand::class,
             NotionCommand::class,
+            ChaptersCommand::class,
         ]);
     }
 

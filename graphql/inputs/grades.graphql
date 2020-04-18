@@ -8,6 +8,7 @@ input CreateGrade {
 }
 
 input UpdateGrade {
+    id: ID!
     name: String
     slug: String
     order: Int

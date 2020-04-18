@@ -6,7 +6,6 @@ extend type Mutation {
 
     "Update an existing disicpline."
     updateDiscipline(
-        id: ID!
         input: UpdateDiscipline @spread
     ): Discipline @permission(scope: "disciplines:update") @update
 

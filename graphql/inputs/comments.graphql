@@ -7,5 +7,6 @@ input CreateComment {
 }
 
 input UpdateComment {
+    id: ID!
     content: String
 }
