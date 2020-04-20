@@ -1,6 +1,7 @@
 input CreateSubject {
     name: String!
     order: Int
+    premium: Boolean!
     visible: Boolean!
     notion_id: ID!
 }
@@ -9,6 +10,7 @@ input UpdateSubject {
     id: ID!
     name: String
     order: Int
+    premium: Boolean
     visible: Boolean
     notion_id: ID
 }

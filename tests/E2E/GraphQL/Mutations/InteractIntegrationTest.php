@@ -12,10 +12,12 @@ use Railgun\Models\Course;
 use Railgun\Models\Exam;
 use Railgun\Models\Exercise;
 use Railgun\Models\Flashcard;
+use Railgun\Models\Interaction;
 use Railgun\Models\Subject;
 use Railgun\Models\Traits\Interactable;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function class_basename;
+use function factory;
 use function forward_static_call_array;
 use function strtolower;
 use function strtoupper;
@@ -27,11 +29,20 @@ class InteractIntegrationTest extends GraphQLIntegrationTestCase
 {
     use DatabaseTransactions;
 
-    private const QUERY = <<<'GRAPHQL'
-    mutation($input: CreateInteraction!) {
-        interact(input: $input)
+    /**
+     * @param mixed[] $input The interact mutation arguments.
+     */
+    private function executeInteract(array $input): void
+    {
+        $this->graphQL(
+            <<<'GRAPHQL'
+            mutation($input: CreateInteraction!) {
+                interact(input: $input)
+            }
+            GRAPHQL,
+            ['input' => $input],
+        );
     }
-    GRAPHQL;
 
     /**
      * @return mixed[][] The dataset
@@ -68,24 +79,24 @@ class InteractIntegrationTest extends GraphQLIntegrationTestCase
         /** @var Interactable|Model $model */
         $model = forward_static_call_array([$class, 'random'], []);
 
-        $variables = [
+        $input = [
             'interactable_type' => strtoupper(class_basename($class)),
             'interactable_id'   => $model->getKey(),
         ];
 
         if ($comprehension) {
-            $variables['comprehension'] = strtoupper($comprehension);
+            $input['comprehension'] = strtoupper($comprehension);
         }
 
         if ($score) {
-            $variables['score'] = $score;
+            $input['score'] = $score;
         }
 
         if ($watchtime) {
-            $variables['watchtime'] = $watchtime;
+            $input['watchtime'] = $watchtime;
         }
 
-        $this->graphQL(self::QUERY, ['input' => $variables]);
+        $this->executeInteract($input);
 
         $this->assertResponseOk();
         $this->assertNoErrors();
@@ -98,5 +109,30 @@ class InteractIntegrationTest extends GraphQLIntegrationTestCase
             'watchtime'         => $watchtime,
         ]);
         Queue::assertPushed(UpdateSessionAfterInteraction::class);
+    }
+
+    /**
+     * @testdox reset the comprehension level to null.
+     */
+    public function testInteractSetNull(): void
+    {
+        $user = $this->actingAsNewUser();
+        /** @var Interaction $interaction */
+        $interaction = factory(Interaction::class)->create([
+            'interactable_id'   => Course::random()->id,
+            'interactable_type' => 'course',
+            'user_id'           => $user->id,
+            'comprehension'     => 'clear',
+        ]);
+
+        $input = [
+            'interactable_id'   => $interaction->interactable_id,
+            'interactable_type' => 'COURSE',
+            'comprehension'     => null,
+        ];
+
+        $this->executeInteract($input);
+
+        $this->assertNull($interaction->refresh()->comprehension);
     }
 }
