@@ -6,7 +6,9 @@ namespace Tests\E2E\GraphQL\Queries;
 
 use Railgun\Models\Chapter;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
+use function array_map;
 use function count;
+use function sort;
 
 /**
  * @testdox Query listChapters
@@ -34,6 +36,7 @@ class ListChaptersIntegrationTest extends GraphQLIntegrationTestCase
                 ) {
                     id
                     slug
+                    order
                     discipline {
                         id
                         slug
@@ -69,6 +72,12 @@ class ListChaptersIntegrationTest extends GraphQLIntegrationTestCase
             $this->assertEquals($chapter->grade_id, $chapterData->grade->id);
             $this->assertEquals($chapter->discipline_id, $chapterData->discipline->id);
         }
+
+        // Assert chapters ordered
+        $actualOrder   = array_map(static fn($c) => $c->order, $chapters);
+        $expectedOrder = $actualOrder;
+        sort($expectedOrder);
+        $this->assertEquals($expectedOrder, $actualOrder);
     }
 
     /**
