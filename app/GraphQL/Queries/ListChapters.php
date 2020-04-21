@@ -21,7 +21,7 @@ class ListChapters
      */
     public function __invoke($rootValue, array $args): Collection
     {
-        $query = Chapter::query();
+        $query = Chapter::query()->orderBy('order');
 
         if (array_key_exists('gradeId', $args)) {
             $query->where('grade_id', '=', $args['gradeId']);
