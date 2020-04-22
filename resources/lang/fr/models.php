@@ -27,7 +27,7 @@ return [
     'report'       => 'rapport|rapports',
     'section'      => 'section|sections',
     'session'      => 'session|sessions',
-    'subjects'     => 'sujet|sujets',
+    'subject'      => 'sujet|sujets',
     'subscription' => 'souscription|souscriptions',
     'training'     => 'formation|formations',
     'user'         => 'utilisateur|utilisateurs',
