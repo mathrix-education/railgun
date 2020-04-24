@@ -67,7 +67,7 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         Gate::define('scope', static function (?User $user, string $scope) {
-            return $user !== null && in_array($scope, $user->scopes);
+            return $user !== null && in_array($scope, $user->scopes, true);
         });
 
         // MorphMap

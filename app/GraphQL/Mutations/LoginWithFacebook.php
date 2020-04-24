@@ -7,9 +7,9 @@ namespace Railgun\GraphQL\Mutations;
 use Facebook\Exceptions\FacebookAuthenticationException;
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
-use Mathrix\Lumen\JWT\Drivers\Driver;
 use Railgun\Exceptions\InvalidAuthTokenException;
 use Railgun\Models\User;
+use Windy\Guardian\Guardian;
 use function array_merge_recursive;
 
 /**
@@ -21,12 +21,10 @@ class LoginWithFacebook
     public const GET_ME_URL = '/me?fields=id,first_name,last_name,email';
 
     private Facebook $facebook;
-    private Driver   $driver;
 
-    public function __construct(Facebook $facebook, Driver $driver)
+    public function __construct(Facebook $facebook)
     {
         $this->facebook = $facebook;
-        $this->driver   = $driver;
     }
 
     /**
@@ -74,7 +72,7 @@ class LoginWithFacebook
         }
 
         return [
-            'token' => $this->driver->sign([
+            'token' => Guardian::sign([
                 'sub' => (string)$user->getKey(),
                 'scp' => $user->scopes,
             ]),

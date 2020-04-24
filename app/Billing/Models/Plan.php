@@ -40,6 +40,7 @@ class Plan
             'prorated'         => true,
         ],
     ];
+
     public string  $id;
     public string  $period;
     public int     $price_per_period;

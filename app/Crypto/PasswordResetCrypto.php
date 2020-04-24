@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Railgun\Crypto;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
-use Jose\Component\Checker\InvalidClaimException;
-use Jose\Component\Checker\MissingMandatoryClaimException;
 use JsonException;
-use Mathrix\Lumen\JWT\Drivers\Driver;
-use Mathrix\Lumen\JWT\Utils\JWTConfig;
 use Railgun\Exceptions\InvalidAuthTokenException;
 use Railgun\Models\User;
+use Windy\Guardian\Exceptions\InvalidClaimException;
+use Windy\Guardian\Exceptions\InvalidSignatureException;
+use Windy\Guardian\Guardian;
 use function array_key_exists;
 use function hash;
 use function json_decode;
@@ -33,9 +32,7 @@ class PasswordResetCrypto
      */
     public function get(User $user): string
     {
-        $driver = Driver::from(JWTConfig::key('reset'), JWTConfig::payload('reset'));
-
-        return $driver->sign([
+        return Guardian::get('reset')->sign([
             'sub' => $user->uuid,
             'hsh' => hash('sha256', $user->password),
         ]);
@@ -52,13 +49,13 @@ class PasswordResetCrypto
      */
     public function check(string $token): User
     {
-        $driver = Driver::from(JWTConfig::key('reset'), JWTConfig::payload('reset'));
+        $authority = Guardian::get('reset');
         try {
-            $driver->verify($token);
-            $driver->check($token);
-            $json    = $driver->unserialize($token)->getPayload();
+            $authority->verify($token, true);
+            $authority->check($token, true);
+            $json    = $authority->unserialize($token)->getPayload();
             $payload = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
-        } catch (InvalidClaimException | MissingMandatoryClaimException | JsonException $exception) {
+        } catch (InvalidSignatureException | InvalidClaimException | JsonException $exception) {
             // Catch any
             throw new InvalidAuthTokenException();
         }

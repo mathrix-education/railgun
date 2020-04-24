@@ -12,7 +12,6 @@ use Laravel\Lumen\Application;
 use Laravel\Lumen\Bootstrap\LoadEnvironmentVariables;
 use Laravel\Tinker\TinkerServiceProvider;
 use Mathrix\Healthz\HealthzServiceProvider;
-use Mathrix\Lumen\JWT\Providers\JWTServiceProvider;
 use Mathrix\Mailjet\MailjetServiceProvider;
 use Mathrix\Prometheus\PrometheusServiceProvider;
 use MLL\GraphQLPlayground\GraphQLPlaygroundServiceProvider;
@@ -27,6 +26,7 @@ use Railgun\Providers\GoogleServiceProvider;
 use Railgun\Providers\StripeServiceProvider;
 use Sentry\Laravel\ServiceProvider as SentryServiceProvider;
 use Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider;
+use Windy\Guardian\GuardianServiceProvider;
 
 (new LoadEnvironmentVariables(dirname(__DIR__)))->bootstrap();
 
@@ -39,8 +39,8 @@ $app->configure('auth');
 $app->configure('cache');
 $app->configure('database');
 $app->configure('filesystems');
+$app->configure('guardian');
 $app->configure('graphql-playground');
-$app->configure('jwt');
 $app->configure('lighthouse');
 $app->configure('logging');
 $app->configure('mail');
@@ -61,7 +61,7 @@ $app->register(TracingServiceProvider::class);
 $app->register(GraphQLPlaygroundServiceProvider::class);
 
 // Authentication
-$app->register(JWTServiceProvider::class);
+$app->register(GuardianServiceProvider::class);
 $app->register(GoogleServiceProvider::class);
 $app->register(FacebookServiceProvider::class);
 $app->register(CryptoServiceProvider::class);

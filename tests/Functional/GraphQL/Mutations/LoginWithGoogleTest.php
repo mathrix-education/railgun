@@ -19,7 +19,6 @@ use function random_bytes;
 /**
  * @testdox Mutation loginWithGoogle
  * @coversDefaultClass \Railgun\GraphQL\Mutations\LoginWithGoogle
- * @uses                \Mathrix\Lumen\JWT\Drivers\Driver
  *
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled

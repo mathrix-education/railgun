@@ -42,12 +42,6 @@ class Post extends Model
     protected       $casts      = ['content' => 'array'];
     protected array $orderGroup = ['category_id'];
 
-    /*
-    |--------------------------------------------------------------------------
-    | Relations
-    |--------------------------------------------------------------------------
-    */
-
     /**
      * @return BelongsTo<Category>
      */

@@ -22,6 +22,7 @@ use const JSON_THROW_ON_ERROR;
 class ExamsCommand extends V7Command
 {
     private const CHUNK_SIZE = 100;
+
     /**
      * @var string $signature The command signature.
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint

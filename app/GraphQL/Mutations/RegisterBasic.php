@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Railgun\GraphQL\Mutations;
 
-use Mathrix\Lumen\JWT\Drivers\Driver;
 use Railgun\Models\User;
+use Windy\Guardian\Guardian;
 
 /**
  * Mutation registerBasic.
@@ -13,13 +13,6 @@ use Railgun\Models\User;
  */
 class RegisterBasic
 {
-    private Driver $driver;
-
-    public function __construct(Driver $driver)
-    {
-        $this->driver = $driver;
-    }
-
     /**
      * @param null    $rootValue The parent value, always null in this case.
      * @param mixed[] $args      The mutation arguments (email, password).
@@ -33,7 +26,7 @@ class RegisterBasic
 
         // Sign the JWS
         return [
-            'token' => $this->driver->sign([
+            'token' => Guardian::sign([
                 'sub' => (string)$user->getKey(),
                 'scp' => $user->scopes,
             ]),

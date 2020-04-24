@@ -6,13 +6,14 @@ use Railgun\Models\User;
 
 return [
     'defaults'  => [
-        'guard'     => 'api',
+        'guard'     => 'guardian',
         'passwords' => 'users',
     ],
     'guards'    => [
-        'api' => [
-            'driver'   => 'jwt',
-            'provider' => 'users',
+        'guardian' => [
+            'driver'    => 'guardian',
+            'provider'  => 'users',
+            'authority' => 'login',
         ],
     ],
     'providers' => [
