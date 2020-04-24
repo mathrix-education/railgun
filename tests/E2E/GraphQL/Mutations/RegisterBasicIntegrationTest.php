@@ -7,10 +7,9 @@ namespace Tests\E2E\GraphQL\Mutations;
 use Illuminate\Support\Facades\Hash;
 use JsonException;
 use Laravel\Lumen\Testing\DatabaseTransactions;
-use Mathrix\Lumen\JWT\Drivers\Driver;
 use Railgun\Models\User;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
-use function app;
+use Windy\Guardian\Guardian;
 use function json_decode;
 use const JSON_THROW_ON_ERROR;
 
@@ -52,10 +51,9 @@ class RegisterBasicIntegrationTest extends GraphQLIntegrationTestCase
         $user = User::query()->where('email', '=', $email)->firstOrFail();
         $this->assertTrue(Hash::check($password, $user->password));
 
-        /** @var Driver $driver */
-        $driver = app()->make(Driver::class);
-        $this->assertTrue($driver->verify($token));
-        $payload = json_decode($driver->unserialize($token)->getPayload(), false, 512, JSON_THROW_ON_ERROR);
+        $authority = Guardian::get('login');
+        $this->assertTrue($authority->verify($token));
+        $payload = json_decode($authority->unserialize($token)->getPayload(), false, 512, JSON_THROW_ON_ERROR);
         $this->assertEquals($payload->sub, $user->id);
     }
 }

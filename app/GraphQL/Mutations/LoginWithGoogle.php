@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Railgun\GraphQL\Mutations;
 
 use Google_Client;
-use Mathrix\Lumen\JWT\Drivers\Driver;
 use Railgun\Exceptions\InvalidAuthTokenException;
 use Railgun\Models\User;
+use Windy\Guardian\Guardian;
 
 /**
  * Mutation loginWithGoogle.
@@ -15,12 +15,10 @@ use Railgun\Models\User;
  */
 class LoginWithGoogle
 {
-    private Driver        $driver;
     private Google_Client $client;
 
-    public function __construct(Driver $driver, Google_Client $client)
+    public function __construct(Google_Client $client)
     {
-        $this->driver = $driver;
         $this->client = $client;
     }
 
@@ -57,7 +55,7 @@ class LoginWithGoogle
         }
 
         return [
-            'token' => $this->driver->sign([
+            'token' => Guardian::sign([
                 'sub' => (string)$user->getKey(),
                 'scp' => $user->scopes,
             ]),

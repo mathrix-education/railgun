@@ -4,15 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Mails;
 
-use Illuminate\Contracts\Container\BindingResolutionException;
-use Jose\Component\Checker\InvalidClaimException;
-use Jose\Component\Checker\MissingMandatoryClaimException;
 use JsonException;
-use Mathrix\Lumen\JWT\Drivers\Driver;
-use Mathrix\Lumen\JWT\Utils\JWTConfig;
 use Railgun\Mails\PasswordForgottenMail;
 use Railgun\Models\User;
 use Tests\ApplicationTestCase;
+use Windy\Guardian\Guardian;
 use function explode;
 use function factory;
 use function hash;
@@ -26,9 +22,6 @@ use const JSON_THROW_ON_ERROR;
 class PasswordForgottenMailTest extends ApplicationTestCase
 {
     /**
-     * @throws BindingResolutionException
-     * @throws InvalidClaimException
-     * @throws MissingMandatoryClaimException
      * @throws JsonException
      */
     public function testConstruct(): void
@@ -41,14 +34,14 @@ class PasswordForgottenMailTest extends ApplicationTestCase
         $this->assertIsString($mail->resetLink);
         $this->assertLessThan(2000, strlen($mail->resetLink));
 
-        $driver  = Driver::from(JWTConfig::key('reset'), JWTConfig::payload('reset'));
-        $token   = explode('?token=', $mail->resetLink)[1];
-        $jws     = $driver->unserialize($token);
-        $payload = json_decode($jws->getPayload(), true, 512, JSON_THROW_ON_ERROR);
+        $authority = Guardian::get('reset');
+        $token     = explode('?token=', $mail->resetLink)[1];
+        $jws       = $authority->unserialize($token);
+        $payload   = json_decode($jws->getPayload(), true, 512, JSON_THROW_ON_ERROR);
 
         $this->assertEquals(1, $jws->countSignatures());
-        $this->assertTrue($driver->check($jws));
-        $this->assertTrue($driver->verify($jws));
+        $this->assertTrue($authority->check($jws));
+        $this->assertTrue($authority->verify($jws));
         $this->assertEquals($user->uuid, $payload['sub']);
         $this->assertEquals(hash('sha256', $user->password), $payload['hsh']);
     }

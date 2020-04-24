@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Railgun\GraphQL\Mutations;
 
-use Illuminate\Support\Facades\Hash;
-use Mathrix\Lumen\JWT\Drivers\Driver;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Railgun\Exceptions\InvalidCredentialsException;
 use Railgun\Models\User;
+use Windy\Guardian\Guardian;
 
 /**
  * Mutation loginBasic.
@@ -15,13 +16,6 @@ use Railgun\Models\User;
  */
 class LoginBasic
 {
-    private Driver $driver;
-
-    public function __construct(Driver $driver)
-    {
-        $this->driver = $driver;
-    }
-
     /**
      * @param null    $rootValue The parent value, always null in this case.
      * @param mixed[] $args      The mutation arguments.
@@ -30,25 +24,16 @@ class LoginBasic
      */
     public function __invoke($rootValue, array $args): array
     {
+        if (!Auth::attempt(Arr::only($args, ['email', 'password']))) {
+            throw new InvalidCredentialsException();
+        }
+
         /** @var User $user */
-        $user = User::query()
-            ->where('email', '=', $args['email'])
-            ->get(['id', 'password', 'scopes'])
-            ->first();
-
-        if ($user === null) {
-            throw new InvalidCredentialsException();
-        }
-
-        $logged = Hash::check($args['password'], $user->password);
-
-        if (!$logged) {
-            throw new InvalidCredentialsException();
-        }
+        $user = Auth::user();
 
         // Sign the JWS
         return [
-            'token' => $this->driver->sign([
+            'token' => Guardian::sign([
                 'sub' => (string)$user->getKey(),
                 'scp' => $user->scopes,
             ]),

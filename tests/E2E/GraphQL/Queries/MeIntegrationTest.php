@@ -6,7 +6,6 @@ namespace Tests\E2E\GraphQL\Queries;
 
 use Illuminate\Database\Eloquent\Collection;
 use Laravel\Lumen\Testing\DatabaseTransactions;
-use Mathrix\Lumen\JWT\Drivers\Driver;
 use Railgun\Models\Chapter;
 use Railgun\Models\Comment;
 use Railgun\Models\Course;
@@ -15,7 +14,7 @@ use Railgun\Models\Session;
 use Railgun\Models\User;
 use Railgun\Notifications\CommentReplyNotification;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
-use function app;
+use Windy\Guardian\Guardian;
 use function factory;
 
 /**
@@ -31,10 +30,8 @@ class MeIntegrationTest extends GraphQLIntegrationTestCase
     public function testBearerAuth(): void
     {
         /** @var User $user */
-        $user = factory(User::class)->create();
-        /** @var Driver $driver */
-        $driver = app()->make(Driver::class);
-        $bearer = $driver->sign($user);
+        $user   = factory(User::class)->create();
+        $bearer = Guardian::get('login')->sign($user);
 
         $this->postGraphQL(
             [

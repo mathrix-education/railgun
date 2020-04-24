@@ -21,7 +21,6 @@ use function random_bytes;
 /**
  * @testdox Mutation loginWithFacebook
  * @coversDefaultClass \Railgun\GraphQL\Mutations\LoginWithFacebook
- * @uses                \Mathrix\Lumen\JWT\Drivers\Driver
  *
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled

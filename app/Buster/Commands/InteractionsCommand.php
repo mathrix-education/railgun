@@ -151,7 +151,7 @@ class InteractionsCommand extends V7Command
 
             $data = array_combine($headers, $row);
 
-            if (!in_array($data['markable_type'], ['activity', 'module'])) {
+            if (!in_array($data['markable_type'], ['activity', 'module'], true)) {
                 continue;
             }
 

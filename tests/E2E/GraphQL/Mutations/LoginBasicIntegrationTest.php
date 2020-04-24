@@ -6,10 +6,9 @@ namespace Tests\E2E\GraphQL\Mutations;
 
 use JsonException;
 use Laravel\Lumen\Testing\DatabaseTransactions;
-use Mathrix\Lumen\JWT\Drivers\Driver;
 use Railgun\Models\User;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
-use function app;
+use Windy\Guardian\Guardian;
 use function env;
 use function factory;
 use function json_decode;
@@ -53,14 +52,13 @@ class LoginBasicIntegrationTest extends GraphQLIntegrationTestCase
 
         $token = $this->getData('loginBasic.token');
 
-        /** @var Driver $driver */
-        $driver  = app()->make(Driver::class);
-        $payload = json_decode($driver->unserialize($token)->getPayload(), false, 512, JSON_THROW_ON_ERROR);
+        $authority = Guardian::get('login');
+        $payload   = json_decode($authority->unserialize($token)->getPayload(), false, 512, JSON_THROW_ON_ERROR);
 
         $this->assertResponseOk();
         $this->assertNoErrors();
         $this->assertNotNull($token);
-        $this->assertTrue($driver->verify($token));
+        $this->assertTrue($authority->verify($token));
         $this->assertEquals($payload->sub, $user->id);
     }
 

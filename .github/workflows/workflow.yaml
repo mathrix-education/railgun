@@ -52,7 +52,6 @@ jobs:
           sudo service mysql start
           mysql -u "root" -p"root" -Bse "CREATE DATABASE mathrix_education_testing;"
           cp tests/.env .env
-          php artisan jwt:key
           php artisan migrate --seed
       - name: Test with PHPUnit
         if: "!contains(github.event.head_commit.message, 'tests:skip')"
