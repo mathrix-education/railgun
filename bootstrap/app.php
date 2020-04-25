@@ -17,6 +17,7 @@ use Mathrix\Prometheus\PrometheusServiceProvider;
 use MLL\GraphQLPlayground\GraphQLPlaygroundServiceProvider;
 use Nuwave\Lighthouse\LighthouseServiceProvider;
 use Nuwave\Lighthouse\Tracing\TracingServiceProvider;
+use Railgun\Actions\SitemapAction;
 use Railgun\Buster\BusterServiceProvider;
 use Railgun\Providers\AppServiceProvider;
 use Railgun\Providers\BraintreeServiceProvider;
@@ -102,5 +103,8 @@ if ($app->runningInConsole()) {
 if ($app->runningInConsole() && class_exists(TinkerServiceProvider::class)) {
     $app->register(TinkerServiceProvider::class);
 }
+
+// Routes
+$app->router->get('sitemap', SitemapAction::class);
 
 return $app;

@@ -72,6 +72,7 @@
     "stripe/stripe-php": "^7.17.0",
     "superbalist/laravel-google-cloud-storage": "^2.2",
     "symfony/polyfill-uuid": "^1.15",
+    "thepixeldeveloper/sitemap": "^5.1",
     "vlucas/phpdotenv": "^4.0",
     "web-token/jwt-signature-algorithm-eddsa": "^2.1",
     "web-token/jwt-signature-algorithm-hmac": "^2.1"

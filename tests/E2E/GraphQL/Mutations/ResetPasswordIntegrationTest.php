@@ -11,7 +11,6 @@ use Railgun\Crypto\PasswordResetCrypto;
 use Railgun\Exceptions\InvalidAuthTokenException;
 use Railgun\Models\User;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
-use Throwable;
 use function factory;
 
 /**
@@ -59,15 +58,8 @@ class ResetPasswordIntegrationTest extends GraphQLIntegrationTestCase
         $this->assertTrue(Hash::check($newPassword, $user->password));
 
         // Assert that token is not valid anymore
-        $exception = null;
-
-        try {
-            $crypto->check($token);
-        } catch (Throwable $e) {
-            $exception = $e;
-        }
-
-        $this->assertInstanceOf(InvalidAuthTokenException::class, $exception);
+        $this->expectException(InvalidAuthTokenException::class);
+        $crypto->check($token);
     }
 
     /**

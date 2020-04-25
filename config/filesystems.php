@@ -21,10 +21,10 @@ return [
             'key_file'        => '',
             'bucket'          => env('GOOGLE_CLOUD_STORAGE_BUCKET'),
             'path_prefix'     => env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', ''),
-            'storage_api_uri' => env('CDN_URL') . with(
-                env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', ''),
-                static fn(string $prefix) => $prefix !== '' ? '/' . $prefix : $prefix,
-            ),
+            'storage_api_uri' => 'https://' . env('GOOGLE_CLOUD_STORAGE_BUCKET') . with(
+                    env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', ''),
+                    static fn(string $prefix) => $prefix !== '' ? '/' . $prefix : $prefix,
+                ),
             'visibility'      => 'public',
             'cache'           => true,
         ],
