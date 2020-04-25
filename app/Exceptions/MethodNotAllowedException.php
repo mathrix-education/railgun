@@ -25,6 +25,7 @@ class MethodNotAllowedException extends HttpException
                 'method' => $request->getMethod(),
                 'route'  => $request->getPathInfo() ?: '/',
             ];
+            $this->setData($data);
 
             $message = "Method {$data['method']} is not allowed on route {$data['route']}";
         }
