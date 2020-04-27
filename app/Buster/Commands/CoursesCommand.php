@@ -10,7 +10,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Railgun\Buster\Pipelines\CoursePipeline;
 use stdClass;
+use function array_keys;
+use function array_values;
 use function implode;
+use function preg_replace;
+use function str_replace;
 
 /**
  * Migrate modules => courses
@@ -63,13 +67,36 @@ class CoursesCommand extends V7Command
             ]))
             ->get()
             ->tap(fn(Collection $courses) => $this->line("Found {$courses->count()} courses"))
-            ->map(static function (stdClass $course) {
-                $course->slug ??= Str::slug($course->name);
+            ->map(fn(stdClass $course) => $this->pipeline->send($course))
+            ->reject(static fn($course) => $course === false)
+            ->map(static function (array $course) {
+                $course['slug'] = Str::slug($course['slug'] ?? $course['name']);
+
+                $specialCharsMap = [
+                    '&nbsp;' => ' ',
+                    '&lt;'   => '<',
+                    '&gt;'   => '>',
+                    '&amp;'  => '&',
+                    '&quot;' => '\\"',
+                ];
+
+                $course['content'] = str_replace(
+                    array_keys($specialCharsMap),
+                    array_values($specialCharsMap),
+                    $course['content'],
+                );
+
+                $drop = [
+                    '/<span.*?>/',
+                    '/<\/span>/',
+                    '/<p.*?>/',
+                    '/<\/p>/',
+                ];
+
+                $course['content'] = preg_replace($drop, '', $course['content']);
 
                 return $course;
             })
-            ->map(fn(stdClass $course) => $this->pipeline->send($course))
-            ->reject(static fn($course) => $course === false)
             ->tap(fn(Collection $courses) => $this->getOutput()->progressStart($courses->count()))
             ->chunk(self::CHUNK_SIZE)
             ->each(function (Collection $courses): void {
