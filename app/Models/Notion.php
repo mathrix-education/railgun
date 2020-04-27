@@ -46,7 +46,7 @@ class Notion extends Model implements Content
         'chapter_id',
     ];
     protected       $casts      = ['visible' => 'boolean'];
-    protected array $orderGroup = ['chapter_id'];
+    protected array $orderGroup = ['chapter_id', 'type'];
 
     /**
      * @return BelongsTo<Chapter>
