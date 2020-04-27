@@ -212,10 +212,23 @@ class ProductsCommand extends V7Command
                     ->update(['type' => 'lesson']);
             });
 
+        DB::table('modules')
+            ->whereIn(
+                'id',
+                DB::table('products')
+                    ->where('type', '=', 'lesson')
+                    ->select(['module_id'])
+                    ->get()
+                    ->pluck('module_id'),
+            )
+            ->where('content', '=', '')
+            ->orWhereNull('content')
+            ->update(['content' => '{"silicate":[]}']);
+
         DB::table('products')
-            ->join(DB::raw('products AS products2'), static function (JoinClause $join): void {
-                $join->on('products.parent_id', '=', 'products2.id')
-                    ->where('products2.type', '=', 'section');
+            ->join(DB::raw('products AS sections'), static function (JoinClause $join): void {
+                $join->on('products.parent_id', '=', 'sections.id')
+                    ->where('sections.type', '=', 'section');
             })
             ->where('products.type', '=', 'lesson')
             ->join('modules', 'products.module_id', '=', 'modules.id')
