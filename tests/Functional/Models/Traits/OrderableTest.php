@@ -29,12 +29,16 @@ class OrderableTest extends ApplicationTestCase
     {
         $chapterId = DB::table('chapters')->insertGetId(factory(Chapter::class)->raw());
         /** @var Collection|Notion[] $notions */
-        $notions = factory(Notion::class, 5)->create(['chapter_id' => $chapterId]);
+        $notions = factory(Notion::class, 5)->create([
+            'chapter_id' => $chapterId,
+            'type' => Notion::TYPE_STANDARD,
+        ]);
 
         // -> 0, 1, 2, 3, 4
 
         $notions->push(factory(Notion::class)->create([
             'chapter_id' => $chapterId,
+            'type'       => Notion::TYPE_STANDARD,
             'order'      => 3,
         ]));
 
