@@ -53,5 +53,11 @@ class CleanCommand extends V7Command
             ->whereNotIn('id', $whitelist)
             ->delete();
         $this->line("Deleted $notionCount invalid notions");
+
+        // Delete empty subjects
+        $subjectIds   = DB::table('exercises')->select(['subject_id'])->get()->pluck('subject_id');
+        $subjectCount = DB::table('subjects')->whereNotIn('id', $subjectIds->toArray())->delete();
+
+        $this->line("Deleted $subjectCount empty subject");
     }
 }
