@@ -10,7 +10,6 @@ use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Exercise;
 use Railgun\Models\Subject;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
-use function array_merge;
 use function factory;
 
 /**
@@ -64,10 +63,7 @@ class UpdateExerciseIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->actingAsNewUser('exercises:update');
         $this->executeUpdateExercise([
-            'input' => array_merge(
-                ['id' => Arr::pull($variables, 'id')],
-                Arr::except($variables, ['premium', 'created_at', 'updated_at']),
-            ),
+            'input' => Arr::except($variables, ['premium', 'created_at', 'updated_at']),
         ]);
 
         $this->assertResponseOk();

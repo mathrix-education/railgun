@@ -6,9 +6,9 @@ type Exercise {
     id: ID!
     type: ExerciseType!
     questions: [Silicate!]!
-    choices: [SilicateList!]!
-    solutions: [IntList!]!
-    explanations: [SilicateList!]!
+    choices: [[Silicate!]!]!
+    solutions: [[Int!]!]!
+    explanations: [[Silicate!]!]!
     order: Int!
     """
     If the flashcard is premium-locked.
