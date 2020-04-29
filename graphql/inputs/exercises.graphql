@@ -15,7 +15,7 @@ input UpdateExercise {
     type: ExerciseType
     questions: [Silicate!]
     choices: [[Silicate!]!]
-    solutions: [[Int!]!]!
+    solutions: [[Int!]!]
     explanations: [[Silicate!]!]
     order: Int
     visible: Boolean

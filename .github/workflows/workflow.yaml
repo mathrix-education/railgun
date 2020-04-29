@@ -2,8 +2,10 @@ name: Pipeline
 on:
   push:
     branches:
-      - v7
-      - v7**
+      - '**'
+      - master
+      - stage
+      - production
 jobs:
   lint:
     name: Lint with PHP_CodeSniffer
@@ -95,55 +97,53 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Standard versions
-        id: standard-versions
-        uses: mathrix-education/standard-versions@master
       - name: Build Docker image
         run: |
-          docker pull \
-            "eu.gcr.io/mathrix-education/education-api:latest-${{ steps.standard-versions.outputs.branch }}" || true
           docker build \
-            --build-arg "RELEASE=${{ steps.standard-versions.outputs.semver }}" \
-            --cache-from "eu.gcr.io/mathrix-education/education-api:latest-${{ steps.standard-versions.outputs.branch }}" \
-            --tag "eu.gcr.io/mathrix-education/education-api:${{ steps.standard-versions.outputs.docker }}" .
+            --build-arg "RELEASE=$(./mapping semver)" \
+            --tag $(./mapping docker) \
+            .
       - name: Setup Google Cloud SDK
         uses: mathrix-education/setup-gcloud@1.1.0
         with:
           service-account-key: ${{ secrets.GCLOUD_AUTH }}
           configure-docker: true
       - name: Push image to Google Cloud Container Registry
-        run: |
-          docker push "eu.gcr.io/mathrix-education/education-api:${{ steps.standard-versions.outputs.docker }}"
+        run: docker push $(./mapping docker)
       - name: Add branch tag if necessary
-        if: github.ref == 'refs/heads/v7'
-        run: |
-          gcloud container images add-tag \
-            "eu.gcr.io/mathrix-education/education-api:${{ steps.standard-versions.outputs.docker }}" \
-            "eu.gcr.io/mathrix-education/education-api:latest-${{ steps.standard-versions.outputs.branch }}"
+        if: >-
+          github.ref == 'refs/heads/master'
+          || github.ref == 'refs/heads/stage'
+          || github.ref == 'refs/heads/production'
+        run: gcloud container images add-tag $(./mapping docker) $(./mapping docker latest)
   deploy_gke:
     name: Deploy on Google Kubernetes Engine
-    if: "github.ref == 'refs/heads/v7' || contains(github.event.head_commit.message, 'deploy:force')"
+    if: >-
+      github.ref == 'refs/heads/master'
+      || github.ref == 'refs/heads/stage'
+      || github.ref == 'refs/heads/production'
+      || contains(github.event.head_commit.message, 'deploy:force')
     needs: [lint, tests, docker]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Standard versions
-        id: standard-versions
-        uses: mathrix-education/standard-versions@master
       - name: Setup Google Cloud SDK
         uses: mathrix-education/setup-gcloud@1.1.0
         with:
           service-account-key: ${{ secrets.GCLOUD_AUTH }}
       - name: Change image version
         run: |
-          IMAGE="eu.gcr.io/mathrix-education/education-api:${{ steps.standard-versions.outputs.docker }}"
           gcloud container clusters get-credentials teknoid --zone=europe-west1-b
-          kubectl set image -n edge deployment/railgun-server "server=$IMAGE"
-          kubectl set image -n edge deployment/railgun-worker "worker=$IMAGE"
+          kubectl set image -n $(./mapping ns) deployment/railgun-server "server=$(./mapping docker)"
+          kubectl set image -n $(./mapping ns) deployment/railgun-worker "worker=$(./mapping docker)"
   sentry_release:
     name: Create Sentry Release
-    if: "github.ref == 'refs/heads/v7' || contains(github.event.head_commit.message, 'deploy:force')"
+    if: >-
+      github.ref == 'refs/heads/master'
+      || github.ref == 'refs/heads/stage'
+      || github.ref == 'refs/heads/production'
+      || contains(github.event.head_commit.message, 'deploy:force')
     needs: [lint, tests, docker]
     runs-on: ubuntu-latest
     steps:
@@ -151,41 +151,34 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: '0'
-      - name: Standard versions
-        id: standard-versions
-        uses: mathrix-education/standard-versions@master
       - name: Setup Sentry CLI
         uses: mathrix-education/setup-sentry-cli@0.1.0
         with:
-          url: https://sentry.mathrix.tech
           token: ${{ SECRETS.SENTRY_TOKEN }}
           organization: mathrix-tech
-          project: education-api
+          project: railgun
       - name: Create Sentry Release
         run: |
-          sentry-cli releases new ${{ steps.standard-versions.outputs.semver }}
-          sentry-cli releases set-commits ${{ steps.standard-versions.outputs.semver }} --auto
-          sentry-cli releases finalize ${{ steps.standard-versions.outputs.semver }}
+          sentry-cli releases new $(./mapping semver)
+          sentry-cli releases set-commits $(./mapping semver) --auto
+          sentry-cli releases finalize $(./mapping semver)
   sentry_deploy:
     name: Deploy Sentry Release
-    if: "github.ref == 'refs/heads/v7' || contains(github.event.head_commit.message, 'deploy:force')"
+    if: >-
+      github.ref == 'refs/heads/master'
+      || github.ref == 'refs/heads/stage'
+      || github.ref == 'refs/heads/production'
+      || contains(github.event.head_commit.message, 'deploy:force')
     needs: [deploy_gke]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Standard versions
-        id: standard-versions
-        uses: mathrix-education/standard-versions@master
       - name: Setup Sentry CLI
         uses: mathrix-education/setup-sentry-cli@0.1.0
         with:
-          url: https://sentry.mathrix.tech
           token: ${{ SECRETS.SENTRY_TOKEN }}
           organization: mathrix-tech
-          project: education-api
+          project: railgun
       - name: Create Sentry Release
-        run: |
-          sentry-cli releases deploys \
-            ${{ steps.standard-versions.outputs.semver }} \
-            new -e edge
+        run: sentry-cli releases deploys $(./mapping semver) new -e $(./mapping env)
