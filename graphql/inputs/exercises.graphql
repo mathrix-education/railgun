@@ -14,9 +14,9 @@ input UpdateExercise {
     id: ID!
     type: ExerciseType
     questions: [Silicate!]
-    choices: [[Silicate!]!]!
+    choices: [[Silicate!]!]
     solutions: [[Int!]!]!
-    explanations: [[Silicate!]!]!
+    explanations: [[Silicate!]!]
     order: Int
     visible: Boolean
     subject_id: ID
