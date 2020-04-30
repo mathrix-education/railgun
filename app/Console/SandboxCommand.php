@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Railgun\Console;
 
 use Illuminate\Console\Command;
-use Railgun\Buster\Pipelines\ExamPipeline;
 
 /**
  * Dummy Command which is only used to test behavioral code.
@@ -20,8 +19,8 @@ class SandboxCommand extends Command
      */
     protected $signature = 'sandbox';
 
-    public function handle(ExamPipeline $converter): void
+    public function handle(): void
     {
-        // Implement sandbox command
+        // Implement sandbpx command
     }
 }

@@ -6,6 +6,7 @@ const {readFileSync} = require('fs');
 const {execSync} = require('child_process');
 
 // Constants
+const versionFile = 'composer.json';
 const dockerImage = 'eu.gcr.io/mathrix-education/education-api'
 
 function usage() {
@@ -22,7 +23,7 @@ function exec(command) {
 }
 
 function version() {
-  return JSON.parse(readFileSync(`${__dirname}/composer.json`).toString()).version;
+  return JSON.parse(readFileSync(`${__dirname}/${versionFile}`).toString()).version;
 }
 
 function ref() {
