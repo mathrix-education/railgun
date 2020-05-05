@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Railgun\Models\Chapter;
 
 /**
- * Query searchChapter.
+ * Query searchChapters.
  * Search chapters using a query string.
  */
 class SearchChapters

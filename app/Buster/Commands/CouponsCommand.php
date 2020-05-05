@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Railgun\Buster\Commands;
 
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use stdClass;
+use function array_merge;
 use function implode;
 
 /**
@@ -35,7 +37,13 @@ class CouponsCommand extends V7Command
                 'updated_at',
             ]))
             ->get()
-            ->map(static fn(stdClass $coupon) => (array)$coupon)
+            ->map(static function (stdClass $coupon) {
+                // Ensure that all coupons got non-null created_at and updated_at
+                return array_merge([
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ], (array)$coupon);
+            })
             ->tap(function (Collection $coupons): void {
                 $this->line("Found {$coupons->count()} coupons");
                 DB::table('coupons')->insert($coupons->toArray());

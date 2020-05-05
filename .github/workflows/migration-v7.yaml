@@ -2,8 +2,7 @@ name: Migration V7
 on:
   push:
     branches:
-      - v7
-      - v7**
+      - master
     paths:
       - '.github/workflows/migration-v7.yaml'
       - 'app/Buster/**'
