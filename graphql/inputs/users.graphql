@@ -4,6 +4,7 @@ input CreateUser {
     firstname: String @rules(apply: ["string", "max:60"])
     lastname: String @rules(apply: ["string", "max:60"])
     password: String!
+    scopes: [String] @permission(scope: "*")
     grade_id: ID @rules(apply: ["exists:grades,id"])
 }
 
@@ -14,6 +15,7 @@ input UpdateUser {
     firstname: String @rules(apply: ["max:60"])
     lastname: String @rules(apply: ["max:60"])
     password: String @rules(apply: ["sometimes", "required"])
+    scopes: [String] @permission(scope: "*")
     grade_id: ID @rules(apply: ["exists:grades,id"])
 }
 

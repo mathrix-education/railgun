@@ -75,6 +75,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'firstname',
         'lastname',
         'password',
+        'scopes',
         'grade_id',
     ];
     protected $hidden     = [
