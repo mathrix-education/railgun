@@ -23,7 +23,7 @@ class SearchUsersIntegrationTest extends GraphQLIntegrationTestCase
     {
         $this->actingAsNewUser('users:read');
 
-        $query = substr(User::random()->username, 0, 3);
+        $query = substr(User::query()->whereNotNull('username')->firstOrFail()->username, 0, 3);
 
         $this->graphQL(
             <<<'GRAPHQL'
