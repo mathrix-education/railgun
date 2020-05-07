@@ -62,7 +62,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->middleware([
             LanguageMiddleware::class,
             CorrelationMiddleware::class,
-            PrometheusMiddleware::class,
+            // PrometheusMiddleware::class,
             ImpersonateMiddleware::class,
         ]);
 
