@@ -62,16 +62,16 @@ if (!function_exists('prefix')) { // @codeCoverageIgnore
     /**
      * Get the application prefix.
      *
-     * @param string|null $path       An additional path to add.
-     * @param bool        $underscore Of the prefix should be terminated by an underscore.
+     * @param string|null $path  An additional path to add.
+     * @param bool        $colon If the prefix should be terminated by an underscore.
      *
      * @return string The generated prefix.
      */
-    function prefix(?string $path = null, bool $underscore = false): string
+    function prefix(?string $path = null, bool $colon = false): string
     {
-        $prefix  = env('APP_NAME', 'app') . '_' . env('APP_ENV', 'stable');
-        $prefix .= $path ? "_$path" : '';
-        $prefix .= $underscore && $prefix[strlen($prefix) - 1] !== '_' ? '_' : '';
+        $prefix  = env('APP_NAME', 'app') . ':' . env('APP_RELEASE', 'stable') . '';
+        $prefix .= $path ? ":$path" : '';
+        $prefix .= $colon && $prefix[strlen($prefix) - 1] !== ':' ? ':' : '';
 
         return $prefix;
     }

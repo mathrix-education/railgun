@@ -9,7 +9,6 @@ use GraphQL\Validator\Rules\QueryDepth;
 use Nuwave\Lighthouse\Execution\ExtensionErrorHandler;
 use Nuwave\Lighthouse\Support\Http\Middleware\AcceptJson;
 use Railgun\Handlers\GraphQLHandler;
-use Railgun\Middleware\GraphQLOperationMiddleware;
 
 return [
     'route'                   => [
@@ -17,7 +16,7 @@ return [
         'name'       => 'graphql',
         'middleware' => [
             AcceptJson::class,
-            GraphQLOperationMiddleware::class,
+            // GraphQLOperationMiddleware::class,
         ],
     ],
     'schema'                  => [

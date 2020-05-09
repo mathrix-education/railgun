@@ -28,6 +28,7 @@ use Railgun\Providers\StripeServiceProvider;
 use Sentry\Laravel\ServiceProvider as SentryServiceProvider;
 use Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider;
 use Windy\Guardian\GuardianServiceProvider;
+use Windy\LaravelCacheFallback\CacheFallbackServiceProvider;
 
 (new LoadEnvironmentVariables(dirname(__DIR__)))->bootstrap();
 
@@ -55,6 +56,7 @@ $app->register(AppServiceProvider::class);
 $app->register(FilesystemServiceProvider::class);
 $app->register(RedisServiceProvider::class);
 $app->register(NotificationServiceProvider::class);
+$app->register(CacheFallbackServiceProvider::class);
 
 // GraphQL
 $app->register(LighthouseServiceProvider::class);

@@ -68,6 +68,7 @@ jobs:
             --coverage-clover=storage/artifacts/phpunit-coverage.xml \
             --coverage-text
       - name: Upload artifacts (JUnit Report, Coverage report)
+        if: "!contains(github.event.head_commit.message, 'tests:skip')"
         uses: actions/upload-artifact@v1.0.0
         with:
           name: artifacts
@@ -115,6 +116,7 @@ jobs:
           github.ref == 'refs/heads/master'
           || github.ref == 'refs/heads/stage'
           || github.ref == 'refs/heads/production'
+          || contains(github.event.head_commit.message, 'deploy:force')
         run: gcloud container images add-tag $(./mapping docker) $(./mapping docker latest)
   deploy_gke:
     name: Deploy on Google Kubernetes Engine
