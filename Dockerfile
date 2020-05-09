@@ -30,7 +30,11 @@ RUN mkdir -p /usr/src/php/ext && \
         /usr/local/etc/php-fpm.conf.d/www.conf.default \
         /var/www/* \
         /var/cache/apk/* && \
-    php -m
+    php -m && \
+    # Healthcheck
+    wget -O /usr/local/bin/php-fpm-healthcheck \
+        https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/master/php-fpm-healthcheck && \
+    chmod +x /usr/local/bin/php-fpm-healthcheck
 
 # Copy configuriations and scripts
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint
@@ -56,8 +60,7 @@ RUN composer global require hirak/prestissimo && \
 #    chown -R www-data.www-data /var/www
 
 # Declare healthcheck
-# HEALTHCHECK CMD /usr/local/bin/healthcheck || exit 1 # TODO: change it when we go stable
-HEALTHCHECK CMD exit 0
+HEALTHCHECK CMD /usr/local/bin/healthcheck
 
 USER www-data
 
