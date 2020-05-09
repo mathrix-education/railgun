@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application;
-use Mathrix\Prometheus\Middleware\PrometheusMiddleware;
 use Railgun\Console\Kernel;
 use Railgun\Handlers\ExceptionPipeline;
 use Railgun\Handlers\Handler;
