@@ -264,7 +264,8 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
         $user = $this->actingAsNewUser();
         $user->createCustomer();
 
-        $trainingIds = [Training::random()->id];
+        /** @var Training $training */
+        $training = Training::query()->where('available', '=', true)->firstOrFail();
 
         $this->graphQL(
             <<<'GRAPHQL'
@@ -277,13 +278,13 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
             }
             GRAPHQL,
             [
-                'cart'            => ['trainingIds' => $trainingIds],
+                'cart'            => ['trainingIds' => [$training->id]],
                 'paymentMethodId' => 'pm_card_fr',
             ],
         );
 
         $this->assertResponseOk();
         $this->assertNoErrors();
-        $this->assertProductsDelivered($user, [], $trainingIds);
+        $this->assertProductsDelivered($user, [], [$training->id]);
     }
 }
