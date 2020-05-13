@@ -21,6 +21,6 @@ class SandboxCommand extends Command
 
     public function handle(): void
     {
-        // Implement sandbpx command
+        // Implement sandbox command
     }
 }

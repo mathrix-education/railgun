@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\E2E\GraphQL\Queries;
 
 use Railgun\Models\Chapter;
+use Railgun\Models\Course;
+use Railgun\Models\Grade;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function count;
 use function explode;
@@ -21,20 +23,29 @@ class SearchChaptersIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testSearch(): void
     {
-        $query = explode('-', Chapter::random()->slug)[0];
+        /** @var Chapter $reference */
+        $reference = Course::query()
+            ->where('visible', '=', true)
+            ->firstOrFail();
+
+        $query = $this->faker->randomElement(explode('-', $reference->slug));
 
         $this->graphQL(
             <<<'GRAPHQL'
-            query($query: String!) {
-                searchChapters(query: $query, first: 100) {
+            query($query: String!, $grade_id: ID!) {
+                searchChapters(query: $query, grade_id: $grade_id, first: 100) {
                     data {
+                        id
                         name
                         slug
+                        grade {
+                            name
+                        }
                     }
                 }
             }
             GRAPHQL,
-            ['query' => $query],
+            ['query' => $query, 'grade_id' => Grade::random()->id],
         );
 
         $this->assertResponseOk();
