@@ -9,6 +9,7 @@ use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Pack;
 use Railgun\Models\Training;
 use Railgun\Models\User;
+use Stripe\Exception\ApiErrorException;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function array_intersect;
 use function trans;
@@ -249,5 +250,40 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
         $this->assertFalse($user->isStripeCustomer());
         $this->assertFalse($user->premium);
         $this->assertProductsNotDelivered($user, $variables['packIds'], $variables['trainingIds']);
+    }
+
+    /**
+     * @testdox creates invoice when the user is already a Stripe customer.
+     *
+     * @throws ApiErrorException
+     *
+     * @ticket #347
+     */
+    public function testCheckoutAlreadyStripeCustomer(): void
+    {
+        $user = $this->actingAsNewUser();
+        $user->createCustomer();
+
+        $trainingIds = [Training::random()->id];
+
+        $this->graphQL(
+            <<<'GRAPHQL'
+            mutation CheckoutCart($cart: CartInput, $paymentMethodId: String!) {
+                checkoutCart(cart: $cart, paymentMethodId: $paymentMethodId) {
+                    id
+                    status
+                    __typename
+                }
+            }
+            GRAPHQL,
+            [
+                'cart'            => ['trainingIds' => $trainingIds],
+                'paymentMethodId' => 'pm_card_fr',
+            ],
+        );
+
+        $this->assertResponseOk();
+        $this->assertNoErrors();
+        $this->assertProductsDelivered($user, [], $trainingIds);
     }
 }

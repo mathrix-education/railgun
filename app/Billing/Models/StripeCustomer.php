@@ -127,7 +127,7 @@ trait StripeCustomer
         return collect(PaymentMethod::all([
             'customer' => $this->stripe_id,
             'type'     => 'card',
-        ]));
+        ])->data);
     }
 
     /**
@@ -155,7 +155,7 @@ trait StripeCustomer
             return $existing;
         }
 
-        $paymentMethod->attach($this->stripe_id);
+        $paymentMethod->attach(['customer' => $this->stripe_id]);
 
         return $paymentMethod;
     }
