@@ -65,12 +65,12 @@ class GradeWeights
      * Generate the weights based on an entry grade id.
      *
      * @param int   $gradeId The grade id.
-     * @param int   $weight  The current weight.
+     * @param float $weight  The current weight.
      * @param int[] $lines   The already defined lines.
      *
      * @return int[] The completed lines.
      */
-    private function buildWeights(int $gradeId, int $weight, array $lines): array
+    private function buildWeights(int $gradeId, float $weight, array $lines): array
     {
         if (array_key_exists($gradeId, $lines)) {
             // Grade is already in the lines, return immediately to avoid infinite loops.
@@ -86,8 +86,10 @@ class GradeWeights
         }
 
         if (array_key_exists($gradeId, $this->parents)) {
+            $initial = $weight === 0 ? 0.5 : 0;
+
             foreach ($this->parents[$gradeId] as $parentId) {
-                $lines = $this->buildWeights($parentId, $weight + 1, $lines);
+                $lines = $this->buildWeights($parentId, $weight + $initial + 1, $lines);
             }
         }
 
