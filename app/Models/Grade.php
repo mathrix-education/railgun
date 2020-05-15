@@ -101,4 +101,12 @@ class Grade extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    /**
+     * @return BelongsToMany<Training>
+     */
+    public function trainings(): BelongsToMany
+    {
+        return $this->belongsToMany(Training::class);
+    }
 }

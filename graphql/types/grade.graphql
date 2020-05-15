@@ -8,4 +8,5 @@ type Grade {
     country: Country! @belongsTo
     chapters: [Chapter!]! @hasMany
     disciplines: [Discipline!]! @belongsToMany
+    trainings: [Training!]! @belongsToMany
 }

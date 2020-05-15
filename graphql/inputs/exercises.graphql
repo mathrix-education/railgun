@@ -7,7 +7,7 @@ input CreateExercise {
     order: Int
     visible: Boolean!
     subject_id: ID!
-    labels: ManageLabels
+    labels: BelongsToMany
 }
 
 input UpdateExercise {
@@ -20,5 +20,5 @@ input UpdateExercise {
     order: Int
     visible: Boolean
     subject_id: ID
-    labels: ManageLabels
+    labels: BelongsToMany
 }

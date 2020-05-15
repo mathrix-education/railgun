@@ -17,6 +17,8 @@ class CreateTrainingsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('slug');
+            $table->tinyInteger('duration');
+            $table->json('content');
             $table->string('image')->nullable();
             $table->boolean('available');
             $table->unsignedSmallInteger('price');

@@ -54,4 +54,12 @@ class GradeTest extends ModelTestCase
     {
         $this->assertHasMany(Grade::class, 'users');
     }
+
+    /**
+     * @covers ::trainings
+     */
+    public function testTrainings(): void
+    {
+        $this->assertBelongsToMany(Grade::class, 'trainings');
+    }
 }

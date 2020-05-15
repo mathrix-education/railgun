@@ -7,10 +7,13 @@ namespace Railgun\Buster\Commands;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Railgun\Buster\Silicate\BrickFactory;
 use Railgun\Buster\Utils\SetOrder;
 use stdClass;
 use function implode;
+use function json_encode;
 use function str_replace;
+use const JSON_THROW_ON_ERROR;
 
 /**
  * Migrate products => packs, trainings, sections, lessons
@@ -81,7 +84,13 @@ class ProductsCommand extends V7Command
             ]))
             ->get()
             ->pipe(new SetOrder())
-            ->map(static fn(stdClass $product) => (array)$product)
+            ->map(static function (stdClass $product) {
+                $product->duration = 20;
+                $wall              = [BrickFactory::text("Description pour la formation {$product->name}")];
+                $product->content  = json_encode($wall, JSON_THROW_ON_ERROR);
+
+                return (array)$product;
+            })
             ->tap(function (Collection $trainings): void {
                 $this->line("Found {$trainings->count()} trainings");
                 DB::table('trainings')->insert($trainings->toArray());

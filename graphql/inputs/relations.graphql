@@ -1,0 +1,21 @@
+"""
+Manage the children attached to a model.
+"""
+input BelongsToMany {
+    """
+    Replace the current children of the model.
+    """
+    sync: [ID!]
+    """
+    Connect children to the model, if and only of they are not already attached.
+    """
+    syncWithoutDetaching: [ID!]
+    """
+    Connect children to the model.
+    """
+    connect: [ID!]
+    """
+    Disconnect children from the model.
+    """
+    disconnect: [ID!]
+}
