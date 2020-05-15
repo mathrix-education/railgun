@@ -40,5 +40,5 @@ jobs:
           cp tests/.env .env
           php artisan buster
       - name: Restore generated database
-        if: "github.ref == 'refs/heads/v7' || contains(github.event.head_commit.message, 'database:restore')"
+        if: "github.ref == 'refs/heads/master' || contains(github.event.head_commit.message, 'database:restore')"
         run: ./database/scripts/import.sh -u root -p root -s mathrix_education_testing -t mathrix_education_v7
