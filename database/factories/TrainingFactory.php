@@ -6,6 +6,7 @@ use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;
 use Railgun\Models\Training;
+use Railgun\Support\Silicate;
 use Railgun\Support\Timestamps;
 
 /**
@@ -18,6 +19,8 @@ $factory->define(Training::class, static function (Faker $faker) {
     return [
         'name'       => $name,
         'slug'       => Str::ucfirst($name),
+        'duration'   => $faker->numberBetween(1, 4) * 10,
+        'content'    => Silicate::wall(),
         'available'  => $faker->boolean(90),
         'price'      => $faker->numberBetween(4, 9) * 100,
         'order'      => 99,

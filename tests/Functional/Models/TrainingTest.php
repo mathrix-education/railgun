@@ -27,4 +27,12 @@ class TrainingTest extends ModelTestCase
     {
         $this->assertHasMany(Training::class, 'sections');
     }
+
+    /**
+     * @covers ::grades
+     */
+    public function testGrades(): void
+    {
+        $this->assertBelongsToMany(Training::class, 'grades');
+    }
 }

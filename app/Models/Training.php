@@ -34,6 +34,8 @@ class Training extends Model
     protected $fillable = [
         'name',
         'slug',
+        'duration',
+        'content',
         'image',
         'available',
         'price',
@@ -41,6 +43,7 @@ class Training extends Model
         'visible',
     ];
     protected $casts    = [
+        'content'   => 'array',
         'available' => 'boolean',
         'visible'   => 'boolean',
     ];
@@ -59,5 +62,13 @@ class Training extends Model
     public function sections(): HasMany
     {
         return $this->hasMany(Section::class)->orderBy('order');
+    }
+
+    /**
+     * @return BelongsToMany<Grade>
+     */
+    public function grades(): BelongsToMany
+    {
+        return $this->belongsToMany(Grade::class);
     }
 }

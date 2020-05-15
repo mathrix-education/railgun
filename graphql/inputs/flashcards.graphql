@@ -8,7 +8,7 @@ input CreateFlashcard {
     premium: Boolean!
     visible: Boolean!
     chapter_id: ID!
-    labels: ManageLabels
+    labels: BelongsToMany
 }
 
 input UpdateFlashcard {
@@ -22,5 +22,5 @@ input UpdateFlashcard {
     premium: Boolean
     visible: Boolean
     chapter_id: ID
-    labels: ManageLabels
+    labels: BelongsToMany
 }

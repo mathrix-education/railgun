@@ -1,20 +1,26 @@
 input CreateTraining {
     name: String!
     slug: String!
+    duration: Int!
+    content: Silicate!
     image: URL
     available: Boolean!
     price: Int!
     order: Int
     visible: Boolean!
+    grades: BelongsToMany
 }
 
 input UpdateTraining {
     id: ID!
     name: String
     slug: String
+    duration: Int
+    content: Silicate
     image: URL
     available: Boolean
     price: Int
     order: Int
     visible: Boolean
+    grades: BelongsToMany
 }

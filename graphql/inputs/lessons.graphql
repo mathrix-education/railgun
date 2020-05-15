@@ -5,7 +5,7 @@ input CreateLesson {
     order: Int
     visible: Boolean!
     section_id: ID
-    labels: ManageLabels
+    labels: BelongsToMany
 }
 
 input UpdateLesson {
@@ -16,5 +16,5 @@ input UpdateLesson {
     order: Int
     visible: Boolean
     section_id: ID
-    labels: ManageLabels
+    labels: BelongsToMany
 }

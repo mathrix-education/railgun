@@ -7,7 +7,7 @@ input CreateExam {
     premium: Boolean!
     visible: Boolean!
     chapter_id: ID!
-    labels: ManageLabels
+    labels: BelongsToMany
 }
 
 input UpdateExam {
@@ -20,5 +20,5 @@ input UpdateExam {
     premium: Boolean
     visible: Boolean
     chapter_id: ID
-    labels: ManageLabels
+    labels: BelongsToMany
 }

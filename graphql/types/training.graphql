@@ -2,6 +2,8 @@ type Training {
     id: ID!
     name: String!
     slug: String!
+    duration: Int!
+    content: Silicate!
     image: URL
     available: Boolean!
     price: Int!
@@ -9,6 +11,7 @@ type Training {
     visible: Boolean!
     created_at: DateTime!
     updated_at: DateTime!
+    grades: [Grade!]! @belongsToMany
     sections: [Section!]! @hasMany
     packs: [Pack!]! @belongsToMany
 }
