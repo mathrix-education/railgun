@@ -23,4 +23,5 @@ type User {
     trainings: [Training!]! @morphMany
     sessions: [Session!]! @hasMany
     statistics: UserStatistics!
+    subscriptions: [Subscription_!]! @hasMany
 }

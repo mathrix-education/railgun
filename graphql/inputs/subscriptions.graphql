@@ -1,0 +1,9 @@
+input CreateSubscription {
+    planId: PlanID!
+    paymentMethodId: String!
+}
+
+input UpdateSubscription {
+    id: ID!
+    paymentMethodId: String!
+}

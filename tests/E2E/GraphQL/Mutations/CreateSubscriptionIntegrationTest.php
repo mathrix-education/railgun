@@ -25,8 +25,8 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
     {
         $this->graphQL(
             <<<'GRAPHQL'
-            mutation ($planId: PlanID!, $paymentMethodId: String!) {
-                createSubscription(planId: $planId, paymentMethodId: $paymentMethodId) {
+            mutation ($input: CreateSubscription!) {
+                createSubscription(input: $input) {
                     id
                     status
                     latest_invoice {
@@ -39,8 +39,10 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
             }
             GRAPHQL,
             [
-                'planId'          => $planId,
-                'paymentMethodId' => $paymentMethodId,
+                'input' => [
+                    'planId'          => $planId,
+                    'paymentMethodId' => $paymentMethodId,
+                ],
             ],
         );
     }

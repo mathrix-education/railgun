@@ -1,0 +1,22 @@
+enum CardType {
+    AMEX @enum(value: "amex")
+    DINERS @enum(value: "diners")
+    DISCOVER @enum(value: "discover")
+    JCB @enum(value: "jcb")
+    MASTERCARD @enum(value: "mastercard")
+    UNIONPAY @enum(value: "unionpay")
+    VISA @enum(value: "visa")
+    UNKNOWN @enum(value: "unknown")
+}
+
+type Card {
+    "The name of the card owner."
+    name: String
+    brand: CardType!
+    "Two-digit number representing the card’s expiration month with leading zero if necessary."
+    exp_month: String!
+    "Four-digit number representing the card’s expiration year."
+    exp_year: String!
+    "The last four digits of the card."
+    last4: String!
+}

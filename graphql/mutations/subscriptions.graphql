@@ -8,5 +8,16 @@ extend type Mutation {
     `latest_invoice.payment_intent.status`.
     See the [Payement Intent State Machine](https://stripe.com/docs/payments/intents) for further information.
     """
-    createSubscription(planId: PlanID!, paymentMethodId: String!): Subscription_!
+    createSubscription(input: CreateSubscription! @spread): Subscription_!
+
+    """
+    Update an existing subscription payment method.
+    A new payement method can be created using Stripe.js
+    [createPaymentMethod](https://stripe.com/docs/js/payment_methods/create_payment_method).
+
+    You should request for the `latest_invoice.payement_intent.client_secret` and check the
+    `latest_invoice.payment_intent.status`.
+    See the [Payement Intent State Machine](https://stripe.com/docs/payments/intents) for further information.
+    """
+    updateSubscription(input: UpdateSubscription! @spread): Subscription_!
 }
