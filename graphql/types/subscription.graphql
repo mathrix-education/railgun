@@ -18,5 +18,8 @@ type Subscription_ {
     created_at: DateTime
     updated_at: DateTime
     canceled_at: DateTime
+    "The subscription latest ince, might be null if the subscription belongs to Braintree."
     latest_invoice: Invoice
+    "The subscription card, might be null if the subscription belongs to Braintree."
+    card: Card
 }

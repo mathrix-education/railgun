@@ -11,6 +11,8 @@ use Railgun\Models\Traits\Cacheable;
 use Stripe\Invoice;
 use Stripe\Subscription as StripeSubscription;
 use function preg_match;
+use function str_pad;
+use const STR_PAD_LEFT;
 
 /**
  * @property      string       $id
@@ -86,12 +88,49 @@ class Subscription extends Model
     public function getLatestInvoiceAttribute(): ?Invoice
     {
         return $this->cache('latest_invoice', function () {
+            if ($this->processor === self::PROCESSOR_BRAINTREE) {
+                return null;
+            }
+
             $subscription = StripeSubscription::retrieve([
                 'id'     => $this->id,
                 'expand' => ['latest_invoice.payment_intent'],
             ]);
 
             return $subscription->latest_invoice;
+        });
+    }
+
+    /**
+     * Get the Stripe card details from the nested payment_method field.
+     *
+     * @return mixed[] The card details.
+     */
+    public function getCardAttribute(): array
+    {
+        return $this->cache('payment_method', function () {
+            if ($this->processor === self::PROCESSOR_BRAINTREE) {
+                return null;
+            }
+
+            $subscription = StripeSubscription::retrieve([
+                'id'     => $this->id,
+                'expand' => ['default_payment_method'],
+            ]);
+
+            $paymentMethod = $subscription->default_payment_method;
+
+            if ($paymentMethod->type !== 'card') {
+                return null;
+            }
+
+            return [
+                'name'      => $paymentMethod->billing_details->name,
+                'brand'     => $paymentMethod->card->brand,
+                'exp_month' => str_pad((string)$paymentMethod->card->exp_month, 2, '0', STR_PAD_LEFT),
+                'exp_year'  => (string)$paymentMethod->card->exp_year,
+                'last4'     => $paymentMethod->card->last4,
+            ];
         });
     }
 }

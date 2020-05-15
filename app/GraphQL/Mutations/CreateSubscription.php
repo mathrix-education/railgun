@@ -22,7 +22,7 @@ class CreateSubscription
 {
     /**
      * @param null           $rootValue The parent value, always null in this case.
-     * @param mixed[]        $args      The mutation arguments.
+     * @param mixed[]        $args      The mutation arguments (planId, paymentMethodId).
      * @param GraphQLContext $context   The GraphQL context which holds the user.
      *
      * @return Subscription The newly created subscription.

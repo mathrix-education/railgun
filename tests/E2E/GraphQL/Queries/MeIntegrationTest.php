@@ -6,6 +6,8 @@ namespace Tests\E2E\GraphQL\Queries;
 
 use Illuminate\Database\Eloquent\Collection;
 use Laravel\Lumen\Testing\DatabaseTransactions;
+use Railgun\Billing\Models\Plan;
+use Railgun\Jobs\UpsertSubscription;
 use Railgun\Models\Chapter;
 use Railgun\Models\Comment;
 use Railgun\Models\Course;
@@ -13,9 +15,13 @@ use Railgun\Models\Interaction;
 use Railgun\Models\Session;
 use Railgun\Models\User;
 use Railgun\Notifications\CommentReplyNotification;
+use Stripe\Exception\ApiErrorException;
+use Stripe\Subscription;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use Windy\Guardian\Guardian;
+use function dispatch_now;
 use function factory;
+use function strlen;
 
 /**
  * @testdox [E2] Query me
@@ -175,5 +181,66 @@ class MeIntegrationTest extends GraphQLIntegrationTestCase
         $this->assertResponseOk();
         $this->assertNoErrors();
         $this->assertCount($expectedCount, $this->getData('notifications.data'));
+    }
+
+    /**
+     * @testdox returns the user subscriptions details.
+     *
+     * @throws ApiErrorException
+     */
+    public function testReadSubscriptionCards(): void
+    {
+        $user            = $this->actingAsNewUser();
+        $paymentMethodId = 'pm_card_fr';
+        $customer        = $user->createCustomer($paymentMethodId);
+        $user->refresh();
+
+        $subscription = Subscription::create([
+            'customer'               => $customer->id,
+            'default_payment_method' => $paymentMethodId,
+            'items'                  => [
+                ['plan' => Plan::MONTHLY_PLAN],
+            ],
+            'metadata'               => [
+                'user_id' => $user->id,
+            ],
+        ]);
+
+        dispatch_now(new UpsertSubscription($subscription));
+
+        $this->graphQL(
+            <<<'GRAPHQL'
+            query {
+                me {
+                    id
+                    subscriptions {
+                        id
+                        latest_invoice {
+                            id
+                            amount_paid
+                            hosted_invoice_url
+                            invoice_pdf
+                            number
+                            status
+                        }
+                        card {
+                            name
+                            brand
+                            exp_month
+                            exp_year
+                            last4
+                        }
+                    }
+                }
+            }
+            GRAPHQL,
+        );
+
+        $this->assertResponseOk();
+        $this->assertNoErrors();
+        $this->assertNotNull($this->getData('subscriptions.0.card'));
+        $this->assertEquals(2, strlen($this->getData('subscriptions.0.card.exp_month')));
+        $this->assertEquals(4, strlen($this->getData('subscriptions.0.card.exp_year')));
+        $this->assertEquals(4, strlen($this->getData('subscriptions.0.card.last4')));
     }
 }
