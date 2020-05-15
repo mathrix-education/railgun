@@ -51,7 +51,7 @@ class UpdateCourseIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->executeUpdateCourse([
             'id'     => $course->id,
-            'labels' => ['connect' => [$label->id]],
+            'labels' => ['add' => [$label->id]],
         ]);
 
         $this->assertResponseOk();
@@ -61,30 +61,5 @@ class UpdateCourseIntegrationTest extends GraphQLIntegrationTestCase
             'labelable_type' => 'course',
             'label_id'       => $label->id,
         ]);
-    }
-
-    /**
-     * @testdox fails to connect a label twice to a course.
-     *
-     * @ticket #293
-     */
-    public function testLabelConnectedTwice(): void
-    {
-        $this->actingAsNewUser(['scopes' => ['courses:update', 'labels:read']]);
-
-        /** @var Course $course */
-        $course = factory(Course::class)->create();
-        /** @var Label $label */
-        $label = factory(Label::class)->create();
-
-        $course->labels()->attach($label->id);
-
-        $this->executeUpdateCourse([
-            'id'     => $course->id,
-            'labels' => ['connect' => [$label->id]],
-        ]);
-
-        $this->assertResponseOk();
-        $this->assertErrorCategory('database');
     }
 }

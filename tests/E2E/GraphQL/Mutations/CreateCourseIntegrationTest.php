@@ -38,7 +38,7 @@ class CreateCourseIntegrationTest extends GraphQLIntegrationTestCase
 
         $labelIds = factory(Label::class, $expectedLabelsCount)->create()->pluck('id')->toArray();
 
-        $payload['labels'] = ['connect' => $labelIds];
+        $payload['labels'] = ['add' => $labelIds];
 
         $this->actingAsNewUser('*');
         $this->graphQL(
