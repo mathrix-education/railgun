@@ -1,21 +1,13 @@
 """
-Manage the children attached to a model.
+Manage the related models.
 """
 input BelongsToMany {
     """
-    Replace the current children of the model.
+    Replace the related models. Any previously linked model which is not in the passed [ID] will be detached.
     """
-    sync: [ID!]
+    replace: [ID!] @rename(attribute: "sync")
     """
-    Connect children to the model, if and only of they are not already attached.
+    Add the passed ids to the linked model.
     """
-    syncWithoutDetaching: [ID!]
-    """
-    Connect children to the model.
-    """
-    connect: [ID!]
-    """
-    Disconnect children from the model.
-    """
-    disconnect: [ID!]
+    add: [ID!] @rename(attribute: "syncWithoutDetaching")
 }

@@ -49,7 +49,7 @@ class CreateTrainingIntegrationTest extends GraphQLIntegrationTestCase
         $grade = Grade::random();
         $input = array_merge(
             Arr::except(factory(Training::class)->raw(), ['created_at', 'updated_at']),
-            ['grades' => ['sync' => [$grade->id]]],
+            ['grades' => ['replace' => [$grade->id]]],
         );
 
         $this->actingAsNewUser('trainings:create');

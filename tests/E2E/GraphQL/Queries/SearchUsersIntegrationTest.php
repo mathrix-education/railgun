@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Queries;
 
+use Exception;
 use Railgun\Models\User;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function count;
 use function mb_strtolower;
+use function random_int;
+use function strlen;
 use function substr;
 use function substr_count;
 
@@ -18,12 +21,15 @@ class SearchUsersIntegrationTest extends GraphQLIntegrationTestCase
 {
     /**
      * @testdox search users
+     *
+     * @throws Exception
      */
     public function testSearch(): void
     {
         $this->actingAsNewUser('users:read');
 
-        $query = substr(User::query()->whereNotNull('username')->firstOrFail()->username, 0, 3);
+        $username = User::query()->whereNotNull('username')->firstOrFail()->username;
+        $query    = mb_strtolower(substr($username, random_int(0, strlen($username) - 4), 3));
 
         $this->graphQL(
             <<<'GRAPHQL'
