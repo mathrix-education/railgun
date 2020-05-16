@@ -6,9 +6,12 @@ namespace Railgun\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Prometheus\Exception\MetricNotFoundException;
 use Prometheus\Exception\MetricsRegistrationException;
+use Prometheus\Exception\StorageException;
 use Railgun\Collectors\GraphQLCollector;
+use RedisException;
 use Symfony\Component\HttpFoundation\Response;
 use function microtime;
 
@@ -44,11 +47,17 @@ class GraphQLOperationMiddleware
         $latency  = microtime(true) - $start;
 
         $operation = $request->json('operationName');
-        $this->collector
-            ->counter(GraphQLCollector::GRAPHQL_OPERATIONS_TOTAL)->inc([$operation]);
-        $this->collector
-            ->histogram(GraphQLCollector::GRAPHQL_OPERATIONS_LATENCY_SECONDS)
-            ->observe($latency, [$operation]);
+
+        try {
+            $this->collector
+                ->counter(GraphQLCollector::GRAPHQL_OPERATIONS_TOTAL)->inc([$operation]);
+            $this->collector
+                ->histogram(GraphQLCollector::GRAPHQL_OPERATIONS_LATENCY_SECONDS)
+                ->observe($latency, [$operation]);
+        } catch (StorageException | RedisException $exception) {
+            // Silently log the exception but don't throw as the response was already built
+            Log::error($exception->getMessage(), ['exception' => $exception]);
+        }
 
         return $response;
     }

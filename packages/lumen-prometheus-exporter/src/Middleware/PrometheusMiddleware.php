@@ -6,9 +6,12 @@ namespace Mathrix\Prometheus\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Mathrix\Prometheus\Collectors\HttpCollector;
 use Prometheus\Exception\MetricNotFoundException;
 use Prometheus\Exception\MetricsRegistrationException;
+use Prometheus\Exception\StorageException;
+use RedisException;
 use Symfony\Component\HttpFoundation\Response;
 use function microtime;
 
@@ -43,8 +46,12 @@ class PrometheusMiddleware
                 $response->getStatusCode(),
             ];
 
-            $this->collector->counter(HttpCollector::HTTP_REQUESTS_TOTAL)->inc($route);
-            $this->collector->histogram(HttpCollector::HTTP_REQUESTS_LATENCY_SECONDS)->observe($latency, $route);
+            try {
+                $this->collector->counter(HttpCollector::HTTP_REQUESTS_TOTAL)->inc($route);
+                $this->collector->histogram(HttpCollector::HTTP_REQUESTS_LATENCY_SECONDS)->observe($latency, $route);
+            } catch (StorageException | RedisException $exception) {
+                Log::error($exception->getMessage(), ['exception' => $exception]);
+            }
         }
 
         return $response;
