@@ -78,14 +78,12 @@ class GoogleCloudJsonFormatter extends JsonFormatter
 
         // Initialize the payload
         $payload = [
-            'severity'    => $record['level_name'],
-            'timestamp'   => [
+            'severity'  => $record['level_name'],
+            'timestamp' => [
                 'seconds' => $date->getTimestamp(),
-                'nanos'   => 0,
+                'nanos'   => (int)$date->format('u') * 1000,
             ],
-            'jsonPayload' => [
-                'message' => $record['message'],
-            ],
+            'message'   => $record['message'],
         ];
 
         // Include the httpRequest field if applicable
@@ -139,17 +137,22 @@ class GoogleCloudJsonFormatter extends JsonFormatter
      *
      * @return mixed[] The Google Cloud LogEntry httpRequest field as an array.
      */
-    private function getHttpRequest(): array
+    private function getHttpRequest(): ?array
     {
         if (!app()->bound('request')) {
-            return []; // @codeCoverageIgnore
+            return null; // @codeCoverageIgnore
         }
 
         /** @var Request $request */
         $request = app()->make('request');
 
         if ($request === null) {
-            return []; // @codeCoverageIgnore
+            return null; // @codeCoverageIgnore
+        }
+
+        if ($request->userAgent() === 'Symfony') {
+            // Do not log default Symfony request as it is always bound.
+            return null; // @codeCoverageIgnore
         }
 
         return [

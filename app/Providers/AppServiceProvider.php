@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application;
+use Mathrix\Prometheus\Middleware\PrometheusMiddleware;
 use Railgun\Console\Kernel;
 use Railgun\Handlers\ExceptionPipeline;
 use Railgun\Handlers\Handler;
@@ -61,7 +62,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->middleware([
             LanguageMiddleware::class,
             CorrelationMiddleware::class,
-            // PrometheusMiddleware::class,
+            PrometheusMiddleware::class,
             ImpersonateMiddleware::class,
         ]);
 

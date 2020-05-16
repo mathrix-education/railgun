@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Railgun\Middleware;
 
 use Closure;
+use Illuminate\Container\Container;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use function app;
 use function is_string;
 use function method_exists;
 use function uuid_create;
@@ -36,7 +36,7 @@ class CorrelationMiddleware
             $request->headers->set(self::HEADER, $correlationId);
         }
 
-        app()->instance(self::ABSTRACT, $correlationId);
+        Container::getInstance()->instance(self::ABSTRACT, $correlationId);
 
         /** @var Response|mixed $response */
         $response = $next($request);
