@@ -8,6 +8,7 @@ use Railgun\Collectors\GraphQLCollector;
 use Railgun\Collectors\UserCollector;
 
 return [
+    'namespace'  => env('APP_NAME'),
     'redis'      => ['connection' => 'prometheus'],
     'collectors' => [
         HttpCollector::class,
