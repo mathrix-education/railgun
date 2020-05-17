@@ -8,6 +8,7 @@ use Illuminate\Container\Container;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Redis\Connections\Connection;
 use Illuminate\Redis\RedisManager;
+use RedisException;
 use function array_merge;
 
 class RedisCheck extends Check
@@ -27,10 +28,24 @@ class RedisCheck extends Check
         $this->manager = Container::getInstance()->make('redis');
 
         parent::__construct(array_merge([
-            'connection' => $this->manager->getName(),
+            'connection' => $this->getRedisConnectionName(),
         ], $options));
+    }
 
-        $this->redis = $this->manager->connection($this->options['connection']);
+    /**
+     * Safely get the default redis connection name.
+     *
+     * @param string $default The default name to apply of the Redis connection cannot be established.
+     *
+     * @return string The default Redis connection name.
+     */
+    private function getRedisConnectionName(string $default = 'default'): string
+    {
+        try {
+            return $this->manager->getName();
+        } catch (RedisException $exception) {
+            return $default;
+        }
     }
 
     /**
@@ -39,9 +54,9 @@ class RedisCheck extends Check
     public function getName(): string
     {
         return 'redis' . (
-            $this->options['connection'] === $this->manager->getName()
+            $this->options['connection'] === $this->getRedisConnectionName()
                 ? ''
-                : '_' . $this->manager->getName()
+                : '_' . $this->getRedisConnectionName()
             );
     }
 
@@ -52,6 +67,8 @@ class RedisCheck extends Check
      */
     public function execute(): array
     {
+        $this->redis = $this->manager->connection($this->options['connection']);
+
         return [
             'get' => $this->redis->command('set', ['hello', 'miam']),
             'set' => $this->redis->command('get', ['hello']),

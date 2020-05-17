@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Mathrix\Healthz\Controllers;
 
-use Illuminate\Support\Collection;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Mathrix\Healthz\Checks\Check;
 use Mathrix\Healthz\ChecksRegistry;
 use Throwable;
+use function explode;
+use function in_array;
 use function microtime;
 use function round;
 
@@ -17,18 +20,26 @@ use function round;
 class HealthzController
 {
     /**
-     * POST /healthz
+     * GET /healthz
      *
-     * @param ChecksRegistry $checks The checks registry.
+     * @param Request        $request The Illuminate HTTP request.
+     * @param ChecksRegistry $checks  The checks registry.
      *
-     * @return Collection|mixed[]
+     * @return JsonResponse The checks responses.
      *
      * @noinspection PhpUnused
      */
-    public function healthz(ChecksRegistry $checks): Collection
+    public function healthz(Request $request, ChecksRegistry $checks): JsonResponse
     {
-        return $checks
-            ->mapWithKeys(static function (Check $check) {
+        /** @var string[] $only */
+        $only   = explode(',', $request->query('checks', 'all'));
+        $status = 200;
+
+        $data = $checks
+            ->filter(static function (Check $check) use ($only) {
+                return in_array('all', $only, true) ? true : in_array($check->getName(), $only, true);
+            })
+            ->mapWithKeys(static function (Check $check) use (&$status) {
                 $start = microtime(true);
 
                 try {
@@ -39,10 +50,11 @@ class HealthzController
                         $data['details'] = $details;
                     }
                 } catch (Throwable $exception) {
-                    $data = [
+                    $data   = [
                         'status'  => 'failure',
                         'message' => $exception->getMessage(),
                     ];
+                    $status = 500;
                 } finally {
                     $data['duration'] = round((microtime(true) - $start) * 1000, 2);
                 }
@@ -50,5 +62,7 @@ class HealthzController
                 return [$check->getName() => $data];
             })
             ->toBase();
+
+        return new JsonResponse($data, $status);
     }
 }
