@@ -18,6 +18,7 @@ use Railgun\Console\Kernel;
 use Railgun\Handlers\ExceptionPipeline;
 use Railgun\Handlers\Handler;
 use Railgun\Middleware\CorrelationMiddleware;
+use Railgun\Middleware\HttpLoggingMiddleware;
 use Railgun\Middleware\ImpersonateMiddleware;
 use Railgun\Middleware\LanguageMiddleware;
 use Railgun\Models\Course;
@@ -33,6 +34,7 @@ use Railgun\Models\Traits\Commentable;
 use Railgun\Models\Traits\Labelable;
 use Railgun\Models\Traits\Notable;
 use Railgun\Models\User;
+use Railgun\Support\PHPPMStatus;
 use function in_array;
 
 /**
@@ -51,6 +53,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(ExceptionHandler::class, Handler::class);
         $this->app->singleton(KernelContract::class, Kernel::class);
         $this->app->singleton(ExceptionPipeline::class);
+        $this->app->singleton(PHPPMStatus::class);
     }
 
     /**
@@ -60,6 +63,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // Headers
         $this->app->middleware([
+            HttpLoggingMiddleware::class,
             LanguageMiddleware::class,
             CorrelationMiddleware::class,
             PrometheusMiddleware::class,

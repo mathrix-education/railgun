@@ -1,6 +1,7 @@
 /.idea
 /.git
 /.github
+/.ppm
 /public/router.php
 /storage/framework/cache/data
 /storage/framework/testing
@@ -12,5 +13,6 @@
 /.env.example
 /.gitignore
 /.standard-commitrc.json
+/schema-directives.graphql
 /phpcs.xml
 /phpunit.xml

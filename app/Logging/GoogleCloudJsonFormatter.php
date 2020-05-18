@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Railgun\Logging;
 
+use Illuminate\Container\Container;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use JsonException;
 use Monolog\DateTimeImmutable;
@@ -13,16 +14,12 @@ use Monolog\Formatter\JsonFormatter;
 use Railgun\Middleware\CorrelationMiddleware;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
-use function app;
 use function array_key_exists;
 use function array_map;
 use function array_merge;
 use function collect;
 use function get_class;
 use function json_encode;
-use function mb_strlen;
-use function microtime;
-use function str_replace;
 use const JSON_THROW_ON_ERROR;
 
 /**
@@ -32,9 +29,12 @@ use const JSON_THROW_ON_ERROR;
  */
 class GoogleCloudJsonFormatter extends JsonFormatter
 {
+    public const NO_MESSAGE = 'no-message';
+
     /**
      * {@inheritdoc}
      *
+     * @throws BindingResolutionException
      * @throws JsonException
      */
     public function format(array $record): string
@@ -70,6 +70,8 @@ class GoogleCloudJsonFormatter extends JsonFormatter
      * @param mixed[] $record The Monolog record.
      *
      * @return mixed[] The record as a Google Cloud LogEntry.
+     *
+     * @throws BindingResolutionException
      */
     protected function toGoogleCloudLogging(array $record): array
     {
@@ -78,23 +80,26 @@ class GoogleCloudJsonFormatter extends JsonFormatter
 
         // Initialize the payload
         $payload = [
-            'severity'  => $record['level_name'],
-            'timestamp' => [
+            'severity'    => $record['level_name'],
+            'timestamp'   => [
                 'seconds' => $date->getTimestamp(),
                 'nanos'   => (int)$date->format('u') * 1000,
             ],
-            'message'   => $record['message'],
+            'httpRequest' => (new HttpRequestLogEntry())->toArray(),
+            'message'     => $record['message'],
         ];
 
-        // Include the httpRequest field if applicable
-        $httpRequest = $this->getHttpRequest();
-        if ($httpRequest !== null) {
-            $payload['httpRequest'] = $httpRequest;
+        if ($payload['message'] === self::NO_MESSAGE) {
+            unset($payload['message']);
+        }
+
+        if ($payload['httpRequest'] === null) {
+            unset($payload['httpRequest']);
         }
 
         // Include the correlation id if applicable
-        if (app()->bound(CorrelationMiddleware::ABSTRACT)) {
-            $payload['correlation'] = app()->make(CorrelationMiddleware::ABSTRACT);
+        if (Container::getInstance()->bound(CorrelationMiddleware::ABSTRACT)) {
+            $payload['correlation'] = Container::getInstance()->make(CorrelationMiddleware::ABSTRACT);
         }
 
         // Include the embedded exception if applicable
@@ -128,43 +133,5 @@ class GoogleCloudJsonFormatter extends JsonFormatter
         $payload = array_merge($record['context'], $record['extra'], $payload);
 
         return $payload;
-    }
-
-    /**
-     * Format the Lumen request to a Google Cloud Logging-compatible httpRequest entry.
-     *
-     * @link https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#httprequest
-     *
-     * @return mixed[] The Google Cloud LogEntry httpRequest field as an array.
-     */
-    private function getHttpRequest(): ?array
-    {
-        if (!app()->bound('request')) {
-            return null; // @codeCoverageIgnore
-        }
-
-        /** @var Request $request */
-        $request = app()->make('request');
-
-        if ($request === null) {
-            return null; // @codeCoverageIgnore
-        }
-
-        if ($request->userAgent() === 'Symfony') {
-            // Do not log default Symfony request as it is always bound.
-            return null; // @codeCoverageIgnore
-        }
-
-        return [
-            'requestMethod' => $request->getMethod(),
-            'requestUrl'    => str_replace($request->getBaseUrl(), '', $request->fullUrl()),
-            'requestSize'   => mb_strlen($request->getContent(), '8bit'),
-            'status'        => 200,
-            'userAgent'     => $request->userAgent(),
-            'remoteIp'      => $request->getClientIp(),
-            'referer'       => $request->header('Referer'),
-            'latency'       => (microtime(true) - (float)$request->server('REQUEST_TIME_FLOAT')) . 's',
-            'protocol'      => $request->getProtocolVersion(),
-        ];
     }
 }
