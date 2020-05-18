@@ -37,24 +37,28 @@ $factory->define(Interaction::class, static function (Faker $faker) {
             $data += [
                 'comprehension' => $faker->randomElement(Interaction::COMPREHENSIONS),
                 'score'         => null,
+                'total'         => null,
             ];
             break;
         case Exercise::class:
             $data += [
                 'comprehension' => $faker->randomElement(Interaction::COMPREHENSIONS),
                 'score'         => $faker->boolean ? 20 : 0,
+                'total'         => 20,
             ];
             break;
         case Flashcard::class:
             $data += [
                 'comprehension' => null,
                 'score'         => null,
+                'total'         => null,
             ];
             break;
         case Exam::class:
             $data += [
                 'comprehension' => null,
                 'score'         => $faker->numberBetween(5, 20),
+                'total'         => 20,
             ];
             break;
     }

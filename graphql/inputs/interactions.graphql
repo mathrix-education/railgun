@@ -16,6 +16,10 @@ input CreateInteraction {
     """
     score: Int @rules(apply: ["max:255"])
     """
+    The interaction total score. Maximum value is 255.
+    """
+    total: Int @rules(apply: ["max:255"])
+    """
     The interaction watchtime. Maximum value is 65535.
     """
     watchtime: Int @rules(apply: ["max:65535"])
