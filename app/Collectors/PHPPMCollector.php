@@ -5,50 +5,39 @@ declare(strict_types=1);
 namespace Railgun\Collectors;
 
 use Mathrix\Prometheus\Collectors\Collector;
+use Prometheus\Exception\MetricNotFoundException;
+use Prometheus\Exception\MetricsRegistrationException;
 use Railgun\Support\PHPPMStatus;
-use function array_key_exists;
 
 class PHPPMCollector extends Collector
 {
-    private const PHPPM_WORKERS_TEMPLATE = 'phppm_workers_';
-    private const PHPPM_WORKERS_METRICS  = ['total', 'ready', 'busy', 'created', 'registered', 'closed'];
-    private const PHPPM_REQUESTS_TOTAL   = 'phppm_requests_total';
+    private const PHPPM_WORKERS_TOTAL  = 'phppm_workers_total';
+    private const PHPPM_REQUESTS_TOTAL = 'phppm_requests_total';
 
     /**
-     * Get the metric full qualified name.
-     *
-     * @param string $metric The PHPPM worker metric name.
-     *
-     * @return string The metric full qualified name.
+     * @throws MetricNotFoundException
+     * @throws MetricsRegistrationException
      */
-    private function getName(string $metric): string
-    {
-        $name = $metric === 'total' ? 'total' : "{$metric}_total";
-
-        return self::PHPPM_WORKERS_TEMPLATE . $name;
-    }
-
     public function register(): void
     {
-        foreach (self::PHPPM_WORKERS_METRICS as $metric) {
-            $help = $metric === 'total'
-                ? 'The total number php-pm workers.'
-                : "The total number of $metric php-pm workers.";
-
-            $this->gauge($this->getName($metric), $help);
-        }
-
-        $this->gauge(self::PHPPM_REQUESTS_TOTAL, 'The total number of requests handled by php-pm');
+        $this->gauge(self::PHPPM_WORKERS_TOTAL, 'The total number php-pm workers.', ['status']);
+        $this->gauge(self::PHPPM_REQUESTS_TOTAL, 'The total number of requests handled by php-pm', ['worker']);
     }
 
-    public function compute(PHPPMStatus $status): void
+    /**
+     * @param PHPPMStatus $data The PHP-PM status data.
+     *
+     * @throws MetricNotFoundException
+     * @throws MetricsRegistrationException
+     */
+    public function compute(PHPPMStatus $data): void
     {
-        foreach (self::PHPPM_WORKERS_METRICS as $metric) {
-            if (array_key_exists($metric, $status->workers)) {
-                $this->gauge($this->getName($metric))->set($status->workers[$metric]);
-            }
+        foreach ($data->workers as $status => $total) {
+            $this->gauge(self::PHPPM_WORKERS_TOTAL)->set($total, [$status]);
         }
 
-        $this->gauge(self::PHPPM_REQUESTS_TOTAL)->set($status->handled_requests);
+        foreach ($data->handled_requests_per_worker as $worker => $total) {
+            $this->gauge(self::PHPPM_REQUESTS_TOTAL)->set($total, [$worker]);
+        }
     }
 }

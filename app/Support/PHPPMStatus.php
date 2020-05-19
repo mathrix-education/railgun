@@ -32,14 +32,10 @@ class PHPPMStatus implements Arrayable
     private array $data;
 
     /**
-     * Reload the status.
+     * @return mixed[] Get the PHP-PM status data.
      */
-    public function reload(): void
+    public function getData(): array
     {
-        if (time() - $this->time <= $this->ttl) {
-            return;
-        }
-
         $process = new Process(['./vendor/bin/ppm', 'status']);
         $buffer  = '';
 
@@ -49,13 +45,25 @@ class PHPPMStatus implements Arrayable
             }
         });
 
-        $this->data = with(
+        return with(
             Str::of($buffer)
                 ->substr(strpos($buffer, 'status'))
                 ->trim()
                 ->replace("\t", '  '), // replace tab indentation by two spaces
             static fn(Stringable $string) => Yaml::parse((string)$string),
         );
+    }
+
+    /**
+     * Reload the status.
+     */
+    public function reload(): void
+    {
+        if (time() - $this->time <= $this->ttl) {
+            return;
+        }
+
+        $this->data = $this->getData();
         $this->time = time();
     }
 
