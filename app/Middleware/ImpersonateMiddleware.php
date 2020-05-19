@@ -41,6 +41,9 @@ class ImpersonateMiddleware
             $this->auth->guard()->setUser($target);
         }
 
-        return $next($request);
+        $response = $next($request);
+        $this->auth->guard()->logout();
+
+        return $response;
     }
 }
