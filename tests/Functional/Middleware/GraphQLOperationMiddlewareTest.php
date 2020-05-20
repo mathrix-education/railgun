@@ -20,6 +20,7 @@ class GraphQLOperationMiddlewareTest extends ApplicationTestCase
     /**
      * @testdox does not the Prometheus metrics whe operationName is not provided.
      * @covers ::handle
+     * @covers ::terminate
      */
     public function testWithoutOperationName(): void
     {
@@ -33,11 +34,13 @@ class GraphQLOperationMiddlewareTest extends ApplicationTestCase
         /** @var GraphQLOperationMiddleware $instance */
         $instance = $this->app->make(GraphQLOperationMiddleware::class);
         $instance->handle($request, static fn() => new Response());
+        $instance->terminate($request);
     }
 
     /**
      * @testdox update the Prometheus metrics whe operationName is provided.
      * @covers ::handle
+     * @covers ::terminate
      */
     public function testWithOperationName(): void
     {
@@ -53,5 +56,6 @@ class GraphQLOperationMiddlewareTest extends ApplicationTestCase
         /** @var GraphQLOperationMiddleware $instance */
         $instance = $this->app->make(GraphQLOperationMiddleware::class);
         $instance->handle($request, static fn() => new Response());
+        $instance->terminate($request);
     }
 }

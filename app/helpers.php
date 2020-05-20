@@ -5,6 +5,9 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Auth;
 use Railgun\Models\User;
 
+// phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
+// phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.NotCamelCaps
+
 if (!function_exists('hasScope')) { // @codeCoverageIgnore
 
     /**
@@ -90,8 +93,6 @@ if (!function_exists('is_serialized')) { // @codeCoverageIgnore
      * @return bool If the data was serialized using PHP version of {@see serialize()}.
      *
      * @codeCoverageIgnore
-     * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
-     * phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.NotCamelCaps
      */
     function is_serialized($data, bool $strict = true): bool
     {
@@ -156,5 +157,26 @@ if (!function_exists('is_serialized')) { // @codeCoverageIgnore
         }
 
         return false;
+    }
+}
+
+if (!function_exists('is_json')) { // @codeCoverageIgnore
+
+    /**
+     * Check if a string is a valid JSON.
+     *
+     * @param string $string The string to check.
+     *
+     * @return bool true if the string is a valid json, false otherwise.
+     */
+    function is_json(string $string): bool
+    {
+        try {
+            json_decode($string, true, 512, JSON_THROW_ON_ERROR);
+
+            return true;
+        } catch (JsonException $exception) {
+            return false;
+        }
     }
 }

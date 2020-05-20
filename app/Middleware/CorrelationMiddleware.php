@@ -47,4 +47,12 @@ class CorrelationMiddleware
 
         return $response;
     }
+
+    /**
+     * Drop the correlation id.
+     */
+    public function terminate(): void
+    {
+        Container::getInstance()->forgetInstance(self::ABSTRACT);
+    }
 }
