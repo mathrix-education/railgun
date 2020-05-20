@@ -18,9 +18,9 @@ use Railgun\Console\Kernel;
 use Railgun\Handlers\ExceptionPipeline;
 use Railgun\Handlers\Handler;
 use Railgun\Middleware\CorrelationMiddleware;
-use Railgun\Middleware\HttpLoggingMiddleware;
 use Railgun\Middleware\ImpersonateMiddleware;
 use Railgun\Middleware\LanguageMiddleware;
+use Railgun\Middleware\TeardownMiddleware;
 use Railgun\Models\Course;
 use Railgun\Models\Exam;
 use Railgun\Models\Exercise;
@@ -35,6 +35,7 @@ use Railgun\Models\Traits\Labelable;
 use Railgun\Models\Traits\Notable;
 use Railgun\Models\User;
 use Railgun\Support\PHPPMStatus;
+use function array_map;
 use function in_array;
 
 /**
@@ -61,9 +62,20 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $middleware = [
+            TeardownMiddleware::class,
+            LanguageMiddleware::class,
+            CorrelationMiddleware::class,
+            PrometheusMiddleware::class,
+            ImpersonateMiddleware::class,
+        ];
+
+        array_map(fn($m) => $this->app->singleton($m), $middleware);
+        $this->app->middleware($middleware);
+
         // Headers
         $this->app->middleware([
-            HttpLoggingMiddleware::class,
+            TeardownMiddleware::class,
             LanguageMiddleware::class,
             CorrelationMiddleware::class,
             PrometheusMiddleware::class,

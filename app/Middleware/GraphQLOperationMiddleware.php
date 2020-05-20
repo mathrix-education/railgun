@@ -21,6 +21,7 @@ use function microtime;
 class GraphQLOperationMiddleware
 {
     private GraphQLCollector $collector;
+    private float            $latency;
 
     public function __construct(GraphQLCollector $collector)
     {
@@ -32,9 +33,6 @@ class GraphQLOperationMiddleware
      * @param Closure $next    The next middleware.
      *
      * @return Response The final response.
-     *
-     * @throws MetricNotFoundException
-     * @throws MetricsRegistrationException
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -42,23 +40,38 @@ class GraphQLOperationMiddleware
             return $next($request);
         }
 
-        $start    = microtime(true);
-        $response = $next($request);
-        $latency  = microtime(true) - $start;
+        $start         = microtime(true);
+        $response      = $next($request);
+        $this->latency = microtime(true) - $start;
+
+        return $response;
+    }
+
+    /**
+     * @param Request $request The Illuminate HTTP request.
+     *
+     * @throws MetricNotFoundException
+     * @throws MetricsRegistrationException
+     */
+    public function terminate(Request $request): void
+    {
+        if (!$request->has('operationName')) {
+            return;
+        }
 
         $operation = $request->json('operationName');
 
         try {
             $this->collector
-                ->counter(GraphQLCollector::GRAPHQL_OPERATIONS_TOTAL)->inc([$operation]);
+                ->counter(GraphQLCollector::GRAPHQL_OPERATIONS_TOTAL)
+                ->inc([$operation]);
             $this->collector
                 ->histogram(GraphQLCollector::GRAPHQL_OPERATIONS_LATENCY_SECONDS)
-                ->observe($latency, [$operation]);
+                ->observe($this->latency, [$operation]);
         } catch (StorageException | RedisException $exception) {
             // Silently log the exception but don't throw as the response was already built
             Log::error($exception->getMessage(), ['exception' => $exception]);
         }
 
-        return $response;
     }
 }
