@@ -42,6 +42,6 @@ class GraphQLTransformer implements TransformsExceptions
             );
         }
 
-        return $next($original); // @codeCoverageIgnore // this should never happen
+        return $next($original); // @codeCoverageIgnore
     }
 }

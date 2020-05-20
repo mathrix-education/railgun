@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Functional\Logging;
 
 use DateTimeImmutable;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -47,9 +48,9 @@ class GoogleCloudJsonFormatterTest extends ApplicationTestCase
      * @testdox formats a single record.
      * @covers ::format
      * @covers ::toGoogleCloudLogging
-     * @covers ::getHttpRequest
      *
      * @throws JsonException
+     * @throws BindingResolutionException
      */
     public function testFormat(): void
     {
@@ -68,9 +69,6 @@ class GoogleCloudJsonFormatterTest extends ApplicationTestCase
      * @testdox formats multiple records.
      * @covers ::formatBatchJson
      * @covers ::toGoogleCloudLogging
-     * @covers ::getHttpRequest
-     *
-     * @throws JsonException
      */
     public function testFormatBatchJson(): void
     {
@@ -78,6 +76,7 @@ class GoogleCloudJsonFormatterTest extends ApplicationTestCase
         $this->app->instance('request', Request::create('/', 'POST'));
         $this->app->instance('response', Response::create());
         $records = array_map(fn() => $this->generateMonologRecord(), range(0, 2));
+
         $records[2]['context']['exception'] = new HttpResponseException(Response::create());
 
         $result = $instance->formatBatch($records);

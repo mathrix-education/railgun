@@ -32,9 +32,11 @@ class PHPPMStatus implements Arrayable
     private array $data;
 
     /**
-     * @return mixed[] Get the PHP-PM status data.
+     * @return string The raw PHP-PM status data string.
+     *
+     * @codeCoverageIgnore
      */
-    public function getData(): array
+    public function getRawStatus(): string
     {
         $process = new Process(['./vendor/bin/ppm', 'status']);
         $buffer  = '';
@@ -45,9 +47,19 @@ class PHPPMStatus implements Arrayable
             }
         });
 
+        return $buffer;
+    }
+
+    /**
+     * @return mixed[] The parsed PHP-PM status.
+     */
+    public function getStatus(): array
+    {
+        $raw = $this->getRawStatus();
+
         return with(
-            Str::of($buffer)
-                ->substr(strpos($buffer, 'status'))
+            Str::of($raw)
+                ->substr(strpos($raw, 'status'))
                 ->trim()
                 ->replace("\t", '  '), // replace tab indentation by two spaces
             static fn(Stringable $string) => Yaml::parse((string)$string),
@@ -63,7 +75,7 @@ class PHPPMStatus implements Arrayable
             return;
         }
 
-        $this->data = $this->getData();
+        $this->data = $this->getStatus();
         $this->time = time();
     }
 
@@ -88,16 +100,14 @@ class PHPPMStatus implements Arrayable
     {
         $this->reload();
 
-        if (!isset($this->{$name})) {
-            return null;
-        }
-
         return $this->data[$name];
     }
 
     /**
      * @param string $name  The property name.
      * @param mixed  $value The property value.
+     *
+     * @codeCoverageIgnore
      */
     public function __set(string $name, $value): void
     {

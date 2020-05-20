@@ -160,7 +160,8 @@ if (!function_exists('is_serialized')) { // @codeCoverageIgnore
     }
 }
 
-if (!function_exists('is_json')) {
+if (!function_exists('is_json')) { // @codeCoverageIgnore
+
     /**
      * Check if a string is a valid JSON.
      *
