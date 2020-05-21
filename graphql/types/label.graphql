@@ -4,4 +4,8 @@ type Label {
     color: Color!
     created_at: DateTime!
     updated_at: DateTime!
+    courses: [Course!]! @morphMany
+    exercises: [Exercise!]! @morphMany
+    flashcards: [Flashcard!]! @morphMany
+    exams: [Exam!]! @morphMany
 }

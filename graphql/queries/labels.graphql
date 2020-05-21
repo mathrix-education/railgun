@@ -1,5 +1,5 @@
 extend type Query {
-    listLabels: [Label!]! @all
+    listLabels: [Label!]! @permission(scope: "labels:read") @all
 
-    readLabel(id: ID! @eq): Label @find
+    readLabel(id: ID! @eq): Label @permission(scope: "labels:read") @find
 }
