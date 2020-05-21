@@ -90,8 +90,7 @@ class EntrypointCommand extends Command
                     '--port=' . env('PHPPM_PORT', 8080),
                     '--workers=' . env('PHPPM_WORKERS', 8),
                     '--logging=0',
-                    '--max-execution-time=10',
-                    '--bootstrap=laravel',
+                    '--max-execution-time=' . env('PHPPM_MAX_EXECUTION_TIME', 0),
                 ]);
             case 'status':
                 /** @var PHPPMStatus $status */
