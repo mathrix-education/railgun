@@ -117,6 +117,7 @@ class GoogleCloudJsonFormatter extends JsonFormatter
                 'line'      => $exception->getLine(),
                 'trace'     => collect($exception->getTrace())
                     ->map(static fn($trace) => Arr::except($trace, ['args']))
+                    ->take(20) // Limit tp 20 traces
                     ->all(),
             ]);
 

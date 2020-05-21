@@ -6,6 +6,7 @@
   "debug": 0,
   "logging": 0,
   "static": true,
+  "static-directory": "public",
   "bootstrap": "laravel",
   "max-requests": 1000,
   "concurrent-requests": true
