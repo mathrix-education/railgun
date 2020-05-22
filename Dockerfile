@@ -52,4 +52,4 @@ RUN composer global require hirak/prestissimo && \
     rm -rf /usr/bin/composer /root/.composer /var/www/docker
 
 ENTRYPOINT ["railgun"]
-CMD ["ppm", "start"]
+CMD ["server"]
