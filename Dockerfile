@@ -7,6 +7,7 @@ ARG RELEASE="no-release"
 ARG EXT_REDIS_VERSION="5.2.1"
 
 ENV APP_RELEASE=$RELEASE
+ENV PATH="/var/www/vendor/bin:${PATH}"
 
 WORKDIR /var/www
 
@@ -34,20 +35,21 @@ RUN mkdir -p /usr/src/php/ext && \
 COPY docker/etc/. /usr/local/etc/
 
 # Copy source code
-COPY --chown=www-data . /var/www/
+COPY . /var/www/
 
 # Install dependencies with composer, set release
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 RUN composer global require hirak/prestissimo && \
     composer install --no-suggest --prefer-dist --no-dev --optimize-autoloader && \
     composer clear-cache && \
-    rm -rf /usr/bin/composer /root/.composer && \
+    # Hardcode release
     sed -i "s/RELEASE_ALIAS/$RELEASE/g" /var/www/config/app.php /var/www/config/sentry.php && \
-    mkdir -p /run && \
-    # Make sure files/folders needed by the processes are accessible when they run under the www-data user
-    chown -R www-data.www-data /run && \
-    chown -R www-data.www-data /var/www
+    # Move binaries
+    mv /var/www/docker/bin/entrypoint.sh /usr/bin/railgun && \
+    mv /var/www/docker/bin/artisan.php /var/www/vendor/bin/artisan && \
+    mv /var/www/docker/bin/gcloud-logs.php /var/www/vendor/bin/gcloud-logs && \
+    # Cleanup
+    rm -rf /usr/bin/composer /root/.composer /var/www/docker
 
-USER www-data
-
-ENTRYPOINT ["/var/www/artisan", "entrypoint"]
+ENTRYPOINT ["railgun"]
+CMD ["ppm", "start"]
