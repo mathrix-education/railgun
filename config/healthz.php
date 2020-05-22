@@ -5,7 +5,6 @@ declare(strict_types=1);
 use Mathrix\Healthz\Checks\DatabaseCheck;
 use Mathrix\Healthz\Checks\RedisCheck;
 use Mathrix\Healthz\Checks\StorageCheck;
-use Railgun\Checks\BraintreeCheck;
 use Railgun\Checks\MailjetCheck;
 use Railgun\Checks\StripeCheck;
 
@@ -29,10 +28,6 @@ return [
         ],
         [
             'class'   => StripeCheck::class,
-            'details' => false,
-        ],
-        [
-            'class'   => BraintreeCheck::class,
             'details' => false,
         ],
     ],

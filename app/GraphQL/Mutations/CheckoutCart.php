@@ -129,7 +129,7 @@ class CheckoutCart
 
         return Invoice::create([
             'customer'               => $cart->user->stripe_id,
-            'description'            => 'Achat formation BOBO', // TODO: change this
+            'description'            => 'Achat de formations (mathrix.fr)',
             'metadata'               => [
                 'type'    => Cart::IDENTIFIER,
                 'user_id' => $cart->user->id,

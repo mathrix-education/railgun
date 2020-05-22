@@ -1,7 +1,7 @@
 {
   "name": "mathrix-education/railgun",
   "description": "The Mathrix Education Lumen API.",
-  "version": "7.0.0-dev",
+  "version": "7.0.1",
   "type": "project",
   "keywords": [
     "education",
@@ -53,7 +53,6 @@
     "ext-redis": "*",
     "ext-simplexml": "*",
     "ext-zip": "*",
-    "braintree/braintree_php": "^5.0",
     "doctrine/dbal": "^2.10",
     "facebook/graph-sdk": "^5.7",
     "google/apiclient": "^2.4",

@@ -18,9 +18,7 @@ use MLL\GraphQLPlayground\GraphQLPlaygroundServiceProvider;
 use Nuwave\Lighthouse\LighthouseServiceProvider;
 use Nuwave\Lighthouse\Tracing\TracingServiceProvider;
 use Railgun\Actions\SitemapAction;
-use Railgun\Buster\BusterServiceProvider;
 use Railgun\Providers\AppServiceProvider;
-use Railgun\Providers\BraintreeServiceProvider;
 use Railgun\Providers\CryptoServiceProvider;
 use Railgun\Providers\FacebookServiceProvider;
 use Railgun\Providers\GoogleServiceProvider;
@@ -83,7 +81,6 @@ $app->register(GoogleCloudStorageServiceProvider::class);
 
 // Billing
 $app->register(StripeServiceProvider::class);
-$app->register(BraintreeServiceProvider::class);
 
 // Sentry
 if ($app->environment(['stable', 'edge']) && !$app->runningUnitTests()) {
@@ -99,9 +96,6 @@ $app->register(HealthzServiceProvider::class);
 $app->configure('healthz');
 
 // Debug
-if ($app->runningInConsole()) {
-    $app->register(BusterServiceProvider::class);
-}
 if ($app->runningInConsole() && class_exists(TinkerServiceProvider::class)) {
     $app->register(TinkerServiceProvider::class);
 }
