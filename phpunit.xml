@@ -18,7 +18,6 @@
       <directory suffix=".php">./app</directory>
       <exclude>
         <file>./app/Console/SandboxCommand.php</file>
-        <directory>./app/Buster</directory>
       </exclude>
     </whitelist>
   </filter>
