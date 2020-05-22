@@ -41,12 +41,14 @@ return [
     'security'                => [
         'max_query_complexity'  => QueryComplexity::DISABLED,
         'max_query_depth'       => QueryDepth::DISABLED,
-        'disable_introspection' => env('APP_ENV') === 'master'
+        'disable_introspection' => env('APP_ENV') === 'production'
             ? DisableIntrospection::ENABLED
             : DisableIntrospection::DISABLED,
     ],
     'paginate_max_count'      => 100,
-    'debug'                   => Debug::INCLUDE_DEBUG_MESSAGE | Debug::INCLUDE_TRACE,
+    'debug'                   => env('APP_ENV') === 'production'
+        ? Debug::INCLUDE_DEBUG_MESSAGE
+        : Debug::INCLUDE_DEBUG_MESSAGE | Debug::INCLUDE_TRACE,
     'error_handlers'          => [
         GraphQLHandler::class,
         ExtensionErrorHandler::class,
