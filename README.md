@@ -31,7 +31,7 @@ As a GraphQL API, Railgun follows the [GraphQL specification](https://spec.graph
 2018).
 
 ### Code
-This repository follows the [Matrix Coding Standard][code-standard]. The code is linted by
+This repository follows the [Mathrix Coding Standard][code-standard]. The code is linted by
 [PHP_CodeSniffer][codesniffer].
 
 [code-standard]: https://github.com/mathrix-education/coding-standard

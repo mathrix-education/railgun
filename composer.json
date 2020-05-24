@@ -1,7 +1,7 @@
 {
   "name": "mathrix-education/railgun",
   "description": "The Mathrix Education Lumen API.",
-  "version": "7.0.1",
+  "version": "7.1.0",
   "type": "project",
   "keywords": [
     "education",
@@ -9,7 +9,7 @@
     "php",
     "lumen"
   ],
-  "homepage": "https://graphql.mathrix.fr",
+  "homepage": "https://github.com/mathrix-education/education-api",
   "license": "proprietary",
   "authors": [
     {
@@ -29,7 +29,7 @@
     "email": "mathieu@mathrix.fr",
     "issues": "https://github.com/mathrix-education/education-api/issues",
     "source": "https://github.com/mathrix-education/education-api",
-    "docs": "https://api.mathrix.fr"
+    "docs": "https://github.com/mathrix-education/education-api"
   },
   "repositories": [
     {

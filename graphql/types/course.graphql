@@ -8,6 +8,10 @@ type Course {
     If the flashcard is premium-locked.
     """
     premium: Boolean!
+    """
+    If the course is frozen. Requires the "courses:freeze" to override.
+    """
+    frozen_until: DateTime!
     visible: Boolean!
     seo_index: Boolean!
     seo_title: String

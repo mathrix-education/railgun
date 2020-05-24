@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Mutations;
 
+use Carbon\Carbon;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Course;
 use Railgun\Models\Label;
@@ -61,5 +62,26 @@ class UpdateCourseIntegrationTest extends GraphQLIntegrationTestCase
             'labelable_type' => 'course',
             'label_id'       => $label->id,
         ]);
+    }
+
+    /**
+     * @testdox forbid update for users without courses:freeze scope
+     */
+    public function testUpdateFrozenCourse(): void
+    {
+        $course = factory(Course::class)->create([
+            'frozen_until' => Carbon::now()->addMonth(),
+            'visible'      => true,
+        ]);
+
+        $this->actingAsNewUser(['scopes' => ['labels:read', 'courses:update']]);
+
+        $this->executeUpdateCourse([
+            'id'   => $course->id,
+            'name' => 'Hello world',
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertErrorCode('MISSING_SCOPE');
     }
 }

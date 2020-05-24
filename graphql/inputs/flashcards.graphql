@@ -6,6 +6,7 @@ input CreateFlashcard {
     backs: [Silicate!]!
     order: Int!
     premium: Boolean!
+    frozen_until: DateTime @permission(scope: "flashcards:freeze")
     visible: Boolean!
     chapter_id: ID!
     labels: BelongsToMany
@@ -20,6 +21,7 @@ input UpdateFlashcard {
     backs: [Silicate!]
     order: Int
     premium: Boolean
+    frozen_until: DateTime @permission(scope: "flashcards:freeze")
     visible: Boolean
     chapter_id: ID
     labels: BelongsToMany
