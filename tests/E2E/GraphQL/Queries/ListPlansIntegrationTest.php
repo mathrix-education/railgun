@@ -9,7 +9,7 @@ use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 /**
  * @testdox Query listPlans
  */
-class ListPlanIntegrationTest extends GraphQLIntegrationTestCase
+class ListPlansIntegrationTest extends GraphQLIntegrationTestCase
 {
     /**
      * @testdox lists the available plans.
