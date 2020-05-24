@@ -9,6 +9,10 @@ type Flashcard {
     If the flashcard is premium-locked.
     """
     premium: Boolean!
+    """
+    If the flashcard is frozen. Requires the "flashcards:freeze" to override.
+    """
+    frozen_until: DateTime!
     visible: Boolean!
     created_at: DateTime!
     updated_at: DateTime!

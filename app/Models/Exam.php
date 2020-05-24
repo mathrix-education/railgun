@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Traits\Commentable;
 use Railgun\Models\Traits\Content;
+use Railgun\Models\Traits\Freezable;
 use Railgun\Models\Traits\Interactable;
 use Railgun\Models\Traits\Labelable;
 use Railgun\Models\Traits\Lockable;
@@ -35,6 +36,7 @@ use Railgun\Models\Traits\Sluggable;
 class Exam extends Model implements Content
 {
     use Commentable;
+    use Freezable;
     use Interactable;
     use Labelable;
     use Lockable;

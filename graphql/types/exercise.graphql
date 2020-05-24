@@ -11,9 +11,13 @@ type Exercise {
     explanations: [[Silicate!]!]!
     order: Int!
     """
-    If the flashcard is premium-locked.
+    If the exercise is premium-locked.
     """
     premium: Boolean!
+    """
+    If the exercise is frozen. Requires the "exercises:freeze" to override.
+    """
+    frozen_until: DateTime!
     visible: Boolean!
     created_at: DateTime!
     updated_at: DateTime!

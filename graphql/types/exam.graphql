@@ -6,9 +6,13 @@ type Exam {
     content: Silicate
     order: Int!
     """
-    If the flashcard is premium-locked.
+    If the exam is premium-locked.
     """
     premium: Boolean!
+    """
+    If the exam is frozen. Requires the "exams:freeze" to override.
+    """
+    frozen_until: DateTime!
     visible: Boolean!
     created_at: DateTime!
     updated_at: DateTime!

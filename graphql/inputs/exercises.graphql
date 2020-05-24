@@ -5,6 +5,7 @@ input CreateExercise {
     solutions: [[Int!]!]!
     explanations: [Silicate!]!
     order: Int
+    frozen_until: DateTime @permission(scope: "exercises:freeze")
     visible: Boolean!
     subject_id: ID!
     labels: BelongsToMany
@@ -18,6 +19,7 @@ input UpdateExercise {
     solutions: [[Int!]!]
     explanations: [[Silicate!]!]
     order: Int
+    frozen_until: DateTime @permission(scope: "exercises:freeze")
     visible: Boolean
     subject_id: ID
     labels: BelongsToMany
