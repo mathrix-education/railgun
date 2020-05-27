@@ -4,6 +4,7 @@ input CreateExam {
     duration: Int
     content: Silicate!
     order: Int
+    premium: Boolean!
     frozen_at: DateTime @permission(scope: "exams:freeze")
     visible: Boolean!
     chapter_id: ID!
@@ -17,6 +18,7 @@ input UpdateExam {
     duration: Int
     content: Silicate
     order: Int
+    premium: Boolean
     frozen_at: DateTime @permission(scope: "exams:freeze")
     visible: Boolean
     chapter_id: ID
