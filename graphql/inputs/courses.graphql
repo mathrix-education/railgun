@@ -4,7 +4,7 @@ input CreateCourse {
     content: Silicate!
     order: Int
     premium: Boolean!
-    frozen_until: DateTime @permission(scope: "courses:freeze")
+    frozen_at: DateTime @permission(scope: "courses:freeze")
     visible: Boolean!
     seo_index: Boolean
     seo_title: String
@@ -21,7 +21,7 @@ input UpdateCourse {
     content: Silicate
     order: Int
     premium: Boolean
-    frozen_until: DateTime @permission(scope: "courses:freeze")
+    frozen_at: DateTime @permission(scope: "courses:freeze")
     visible: Boolean
     seo_index: Boolean
     seo_title: String

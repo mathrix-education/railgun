@@ -4,7 +4,7 @@ input CreateExam {
     duration: Int
     content: Silicate!
     order: Int
-    frozen_until: DateTime @permission(scope: "exams:freeze")
+    frozen_at: DateTime @permission(scope: "exams:freeze")
     visible: Boolean!
     chapter_id: ID!
     labels: BelongsToMany
@@ -17,7 +17,7 @@ input UpdateExam {
     duration: Int
     content: Silicate
     order: Int
-    frozen_until: DateTime @permission(scope: "exams:freeze")
+    frozen_at: DateTime @permission(scope: "exams:freeze")
     visible: Boolean
     chapter_id: ID
     labels: BelongsToMany

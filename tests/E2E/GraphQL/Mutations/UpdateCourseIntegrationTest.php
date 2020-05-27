@@ -70,8 +70,8 @@ class UpdateCourseIntegrationTest extends GraphQLIntegrationTestCase
     public function testUpdateFrozenCourse(): void
     {
         $course = factory(Course::class)->create([
-            'frozen_until' => Carbon::now()->addMonth(),
-            'visible'      => true,
+            'frozen_at' => Carbon::now()->addMonth(),
+            'visible'   => true,
         ]);
 
         $this->actingAsNewUser(['scopes' => ['labels:read', 'courses:update']]);
