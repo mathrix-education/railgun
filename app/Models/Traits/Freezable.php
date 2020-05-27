@@ -9,11 +9,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Railgun\Exceptions\MissingScopeException;
 use function class_basename;
-use function property_exists;
+use function constant;
+use function defined;
 use function scope;
 
 /**
- * @property Carbon $frozen_until
+ * @property Carbon $frozen_at The date/time when the model was frozen.
  * @mixin Model
  */
 trait Freezable
@@ -22,9 +23,9 @@ trait Freezable
     {
         self::saving(static function (Model $model): void {
             /** @var Freezable $model */
-            $scope = (string)Str::of(class_basename($model))->plural()->lower()->append(':freeze');
 
-            // frozen_until write is handled by the GraphQL permission directive
+            // frozen_at write is handled by the GraphQL permission directive
+            $scope = $model->getFrozenScope();
 
             if ($model->isFrozen() && !scope($scope)) {
                 throw new MissingScopeException([$scope]);
@@ -33,23 +34,23 @@ trait Freezable
     }
 
     /**
-     * Add frozen_until to fillable properties.
+     * Add frozen_at to fillable properties.
      */
     public function initializeFreezable(): void
     {
-        $this->fillable[] = $this->getFrozenUntilColumn();
+        $this->fillable[] = $this->getFrozenAtColumn();
 
-        $this->casts[$this->getFrozenUntilColumn()] = 'datetime';
+        $this->casts[$this->getFrozenAtColumn()] = 'datetime';
     }
 
     /**
-     * @return string The "frozen_until" column name.
+     * @return string The "frozen_at" column name.
      */
-    public function getFrozenUntilColumn(): string
+    public function getFrozenAtColumn(): string
     {
-        return property_exists($this, 'frozenUntilColumn')
-            ? $this->frozenUntilColumn
-            : 'frozen_until';
+        $static = static::class;
+
+        return defined("$static::FROZEN_AT") ? constant("$static::FROZEN_AT") : 'frozen_at';
     }
 
     /**
@@ -61,12 +62,10 @@ trait Freezable
     }
 
     /**
-     * @return bool If the model is frozen.
+     * @return bool If the model is frozen (frozen_at is not null).
      */
     public function isFrozen(): bool
     {
-        $original = $this->getOriginal($this->getFrozenUntilColumn());
-
-        return $original instanceof Carbon && $original->isFuture();
+        return $this->getOriginal($this->getFrozenAtColumn()) instanceof Carbon;
     }
 }

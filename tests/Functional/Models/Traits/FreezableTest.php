@@ -49,24 +49,24 @@ class FreezableTest extends ApplicationTestCase
         $instance = new class extends Model {
             use Freezable;
         };
-        $this->assertContains('frozen_until', $instance->getFillable());
+        $this->assertContains('frozen_at', $instance->getFillable());
     }
 
     /**
-     * @covers ::getFrozenUntilColumn
+     * @covers ::getFrozenAtColumn
      */
-    public function testGetFrozenUntilColumn(): void
+    public function testGetFrozenAtColumn(): void
     {
         /** @var Model|Freezable|MockInterface $instance */
         $instance = Mockery::mock(Model::class, Freezable::class);
-        $this->assertEquals('frozen_until', $instance->getFrozenUntilColumn());
+        $this->assertEquals('frozen_at', $instance->getFrozenAtColumn());
 
         $instance = new class extends Model {
             use Freezable;
 
-            protected string $frozenUntilColumn = 'foobar';
+            public const FROZEN_AT = 'foobar';
         };
-        $this->assertEquals('foobar', $instance->getFrozenUntilColumn());
+        $this->assertEquals('foobar', $instance->getFrozenAtColumn());
     }
 
     /**
@@ -87,19 +87,19 @@ class FreezableTest extends ApplicationTestCase
         /** @var Model|Freezable|MockInterface $instance */
         $instance = Mockery::mock(Model::class, Freezable::class)->makePartial();
 
-        $instance->frozen_until = Carbon::now()->addMonth();
+        $instance->frozen_at = Carbon::now()->addMonth();
         $instance->syncOriginal();
         $this->assertTrue($instance->isFrozen());
 
-        $instance->frozen_until = Carbon::now()->subMonth();
+        $instance->frozen_at = Carbon::now()->subMonth();
+        $instance->syncOriginal();
+        $this->assertTrue($instance->isFrozen());
+
+        $instance->frozen_at = null;
         $instance->syncOriginal();
         $this->assertFalse($instance->isFrozen());
 
-        $instance->frozen_until = null;
-        $instance->syncOriginal();
-        $this->assertFalse($instance->isFrozen());
-
-        $instance->frozen_until = 'invalid string';
+        $instance->frozen_at = 'invalid string';
         $instance->syncOriginal();
         $this->assertFalse($instance->isFrozen());
     }

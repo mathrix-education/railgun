@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddFrozenUntilOnContentTables extends Migration
+class AddFrozenAtOnContentTables extends Migration
 {
     private const TABLES = ['courses', 'exercises', 'flashcards', 'exams'];
 
@@ -17,7 +17,7 @@ class AddFrozenUntilOnContentTables extends Migration
     {
         foreach (self::TABLES as $tableName) {
             Schema::table($tableName, static function (Blueprint $table): void {
-                $table->timestamp('frozen_until')->nullable()->after('premium');
+                $table->timestamp('frozen_at')->nullable()->after('premium');
             });
         }
     }
@@ -29,7 +29,7 @@ class AddFrozenUntilOnContentTables extends Migration
     {
         foreach (array_reverse(self::TABLES) as $tableName) {
             Schema::table($tableName, static function (Blueprint $table): void {
-                $table->dropColumn('frozen_until');
+                $table->dropColumn('frozen_at');
             });
         }
     }
