@@ -44,6 +44,7 @@ class Exercise extends Model implements Content
     use Randomizable;
     use Reorderable;
 
+    protected       $attributes = ['visible' => false];
     protected       $fillable   = [
         'type',
         'questions',

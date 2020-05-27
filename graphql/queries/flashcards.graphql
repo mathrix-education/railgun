@@ -1,4 +1,6 @@
 extend type Query {
-    "Read an existing flashcard."
+    """
+    Read an existing flashcard.
+    """
     readFlashcard(id: ID @eq): Flashcard @find
 }

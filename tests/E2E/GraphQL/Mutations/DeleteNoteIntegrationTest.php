@@ -28,7 +28,7 @@ class DeleteNoteIntegrationTest extends GraphQLIntegrationTestCase
             'deleted_at'   => null,
         ]);
 
-        $this->actingAsNewUser(['scopes' => ['notes:delete']]);
+        $this->withPermissions('notes:delete');
 
         $this->graphQL(
             <<<'GRAPHQL'

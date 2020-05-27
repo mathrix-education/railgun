@@ -2,15 +2,15 @@ extend type Mutation {
     "Create a new notion."
     createNotion(
         input: CreateNotion! @spread
-    ): Notion! @permission(scope: "notions:create") @create
+    ): Notion! @permission(name: "notions:write") @create
 
     "Update an existing notion."
     updateNotion(
         input: UpdateNotion! @spread
-    ): Notion @permission(scope: "notions:update") @update
+    ): Notion @permission(name: "notions:write") @update
 
     "Delete an existing notion."
     deleteNotion(
         id: ID!
-    ): Notion @permission(scope: "notions:delete") @delete
+    ): Notion @permission(name: "notions:delete") @delete
 }

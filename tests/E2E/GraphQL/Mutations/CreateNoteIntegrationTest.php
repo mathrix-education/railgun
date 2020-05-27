@@ -21,7 +21,7 @@ class CreateNoteIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testNoteIsCreated(): void
     {
-        $user   = $this->actingAsNewUser(['scopes' => ['notes:create']]);
+        $user   = $this->withPermissions('notes:write');
         $course = Course::random();
 
         $this->graphQL(

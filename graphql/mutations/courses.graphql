@@ -2,13 +2,13 @@ extend type Mutation {
     "Create a new course."
     createCourse(
         input: CreateCourse! @spread
-    ): Course @permission(scope: "courses:create") @create
+    ): Course @permission(name: "courses:write") @create
 
     "Update an existing course."
     updateCourse(
         input: UpdateCourse! @spread
-    ): Course @permission(scope: "courses:update") @update
+    ): Course @permission(name: "courses:write") @update
 
     "Delete an existing course."
-    deleteCourse(id: ID!): Course @permission(scope: "courses:delete") @delete
+    deleteCourse(id: ID!): Course @permission(name: "courses:delete") @delete
 }

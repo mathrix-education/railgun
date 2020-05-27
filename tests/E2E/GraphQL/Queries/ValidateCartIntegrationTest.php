@@ -182,7 +182,7 @@ class ValidateCartIntegrationTest extends GraphQLIntegrationTestCase
         ?array $expectedError = null
     ): void
     {
-        $this->actingAsNewUser();
+        $this->withPermissions();
 
         $this->executeValidateCart($packIds, $trainingIds, $premium, $coupon);
 

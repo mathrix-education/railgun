@@ -1,17 +1,28 @@
-"""
-Create a new label.
-"""
 input CreateLabel {
-    name: String!
+    """
+    The label human readable name.
+    Maximum 150 caracters.
+    """
+    name: String! @rules(apply: ["string", "max:150"])
+    """
+    The label hexadecimal color code, with the hash.
+    """
     color: Color!
 }
 
-"""
-Update an existing label.
-"""
 input UpdateLabel {
+    """
+    The target label ID.
+    """
     id: ID!
-    name: String
+    """
+    The label human readable name.
+    Maximum 150 caracters.
+    """
+    name: String @rules(apply: ["string", "max:150"])
+    """
+    The label hexadecimal color code, with the hash.
+    """
     color: Color
 }
 

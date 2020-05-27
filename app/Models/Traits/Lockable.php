@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Railgun\Models\Traits;
 
 use Illuminate\Database\Eloquent\Concerns\HasAttributes;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
+use Railgun\Support\PermissionGate;
 use function class_basename;
 use function isPremium;
 use function property_exists;
-use function scope;
 
 /**
  * Allow models to be locked.
@@ -39,7 +40,9 @@ trait Lockable
      */
     protected function isLocked(): bool
     {
-        if (scope(Str::snake(class_basename($this)) . ':read')) {
+        $permission = (string)Str::of(class_basename($this))->plural()->lower()->append(':read');
+
+        if (Gate::allows(PermissionGate::NAME, $permission)) {
             return false;
         }
 

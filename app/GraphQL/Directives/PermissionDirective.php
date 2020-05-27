@@ -6,7 +6,7 @@ namespace Railgun\GraphQL\Directives;
 
 use Closure;
 use GraphQL\Type\Definition\ResolveInfo;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Nuwave\Lighthouse\Schema\Directives\BaseDirective;
 use Nuwave\Lighthouse\Schema\Values\FieldValue;
 use Nuwave\Lighthouse\Support\Contracts\ArgTransformerDirective;
@@ -14,9 +14,7 @@ use Nuwave\Lighthouse\Support\Contracts\DefinedDirective;
 use Nuwave\Lighthouse\Support\Contracts\FieldMiddleware;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Railgun\Exceptions\MissingScopeException;
-use Railgun\Models\User;
 use RuntimeException;
-use function in_array;
 
 /**
  * Check that the user has the required scope.
@@ -39,7 +37,7 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
             """
             The scope to check.
             """
-            scope: String!
+            name: String!
         ) on FIELD_DEFINITION | OBJECT
         SDL;
     }
@@ -62,19 +60,9 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
      */
     private function checkScope(): void
     {
-        $scope = $this->directiveArgValue('scope');
+        $scope = $this->directiveArgValue('name');
 
-        /** @var User $user */
-        $user = Auth::user();
-
-        if ($user === null) {
-            throw new MissingScopeException([$scope]);
-        }
-
-        if (
-            !in_array('*', $user->scopes, true) // Users with scope '*' may bypass this verification.
-            && !in_array($scope, $user->scopes, true)
-        ) {
+        if (Gate::denies('permission', [$scope])) {
             throw new MissingScopeException([$scope]);
         }
     }

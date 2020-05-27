@@ -28,7 +28,7 @@ class ReadCourseIntegrationTest extends GraphQLIntegrationTestCase
         Queue::fake();
 
         // Create an interaction
-        $user        = $this->actingAsNewUser();
+        $user        = $this->actingAsGetUser();
         $course      = Course::random();
         $interaction = new Interaction([
             'user_id'           => $user->id,

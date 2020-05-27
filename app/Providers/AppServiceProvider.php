@@ -33,10 +33,9 @@ use Railgun\Models\Traits\Acquerable;
 use Railgun\Models\Traits\Commentable;
 use Railgun\Models\Traits\Labelable;
 use Railgun\Models\Traits\Notable;
-use Railgun\Models\User;
+use Railgun\Support\PermissionGate;
 use Railgun\Support\PHPPMStatus;
 use function array_map;
-use function in_array;
 
 /**
  * Register all application service providers.
@@ -73,18 +72,7 @@ class AppServiceProvider extends ServiceProvider
         array_map(fn($m) => $this->app->singleton($m), $middleware);
         $this->app->middleware($middleware);
 
-        // Headers
-        $this->app->middleware([
-            TeardownMiddleware::class,
-            LanguageMiddleware::class,
-            CorrelationMiddleware::class,
-            PrometheusMiddleware::class,
-            ImpersonateMiddleware::class,
-        ]);
-
-        Gate::define('scope', static function (?User $user, string $scope) {
-            return $user !== null && in_array($scope, $user->scopes, true);
-        });
+        Gate::define(PermissionGate::NAME, PermissionGate::class);
 
         // MorphMap
         $this->setMorphMap();

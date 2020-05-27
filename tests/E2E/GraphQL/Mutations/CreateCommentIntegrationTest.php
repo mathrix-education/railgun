@@ -36,7 +36,7 @@ class CreateCommentIntegrationTest extends GraphQLIntegrationTestCase
     {
         Queue::fake();
 
-        $user    = $this->actingAsNewUser();
+        $user    = $this->withPermissions();
         $course  = Course::random();
         $content = $this->faker->text;
 
@@ -69,7 +69,7 @@ class CreateCommentIntegrationTest extends GraphQLIntegrationTestCase
     {
         Queue::fake();
 
-        $user            = $this->actingAsNewUser();
+        $user            = $this->withPermissions();
         $parent          = Comment::random();
         $content         = $this->faker->text;
         $commentableType = strtoupper($parent->commentable_type);

@@ -26,7 +26,7 @@ class DeleteTrainingIntegrationTest extends GraphQLIntegrationTestCase
         $training = factory(Training::class)->create();
         factory(Section::class)->create(['training_id' => $training->id]);
 
-        $this->actingAsNewUser('trainings:delete');
+        $this->withPermissions('trainings:delete');
 
         $this->graphQL(
             <<<'GRAPHQL'

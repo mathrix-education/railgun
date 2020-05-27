@@ -40,7 +40,7 @@ class CreateCourseIntegrationTest extends GraphQLIntegrationTestCase
 
         $payload['labels'] = ['add' => $labelIds];
 
-        $this->actingAsNewUser('*');
+        $this->withPermissions('*');
         $this->graphQL(
             <<<'GRAPHQL'
             mutation($input: CreateCourse!) {

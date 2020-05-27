@@ -2,15 +2,15 @@ extend type Mutation {
     "Create a new note."
     createNote(
         input: CreateNote! @spread
-    ): Note @permission(scope: "notes:create") @create @inject(context: "user.id", name: "user_id")
+    ): Note @permission(name: "notes:write") @create @inject(context: "user.id", name: "user_id")
 
     "Update an existing note."
     updateNote(
         input: UpdateNote @spread
-    ): Note!  @permission(scope: "notes:create") @update @inject(context: "user.id", name: "user_id")
+    ): Note!  @permission(name: "notes:write") @update @inject(context: "user.id", name: "user_id")
 
     "Delete an existing note."
     deleteNote(
         id: ID!
-    ): Note! @permission(scope: "notes:delete") @delete
+    ): Note! @permission(name: "notes:delete") @delete
 }

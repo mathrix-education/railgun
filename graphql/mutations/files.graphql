@@ -6,7 +6,7 @@ extend type Mutation {
     createFile(
         file: Upload!
         path: String!
-    ): File! @permission(scope: "files:create")
+    ): File! @permission(name: "files:write")
 
     """
     Move a file to another name or location.
@@ -18,10 +18,10 @@ extend type Mutation {
         Override the destination if exists.
         """
         override: Boolean = false
-    ): File! @permission(scope: "files:move")
+    ): File! @permission(name: "files:move")
 
     """
     Delete a file. **Once a file has been deleetd, it cannot be restored.**
     """
-    deleteFile(path: String!): File! @permission(scope: "files:delete")
+    deleteFile(path: String!): File! @permission(name: "files:delete")
 }

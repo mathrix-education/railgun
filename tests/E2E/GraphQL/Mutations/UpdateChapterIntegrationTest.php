@@ -52,7 +52,7 @@ class UpdateChapterIntegrationTest extends GraphQLIntegrationTestCase
             'grade_id'      => factory(Grade::class)->create()->getKey(),
         ]);
 
-        $this->actingAsNewUser('chapters:update');
+        $this->withPermissions('chapters:write');
         $this->executeUpdateChapter([
             'id'   => $chapter->id,
             'slug' => $reference->slug,
@@ -72,7 +72,7 @@ class UpdateChapterIntegrationTest extends GraphQLIntegrationTestCase
             'grade_id'      => factory(Grade::class)->create()->getKey(),
         ]);
 
-        $this->actingAsNewUser('chapters:update');
+        $this->withPermissions('chapters:write');
         $this->executeUpdateChapter([
             'id'   => $chapter->id,
             'slug' => $reference->slug,

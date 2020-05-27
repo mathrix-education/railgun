@@ -61,7 +61,7 @@ class UpdateExerciseIntegrationTest extends GraphQLIntegrationTestCase
             'subject_id' => $subject->id,
         ]);
 
-        $this->actingAsNewUser('exercises:update');
+        $this->withPermissions(['exercises:write', 'exercises:write:visible']);
         $this->executeUpdateExercise([
             'input' => Arr::except($variables, ['premium', 'created_at', 'updated_at']),
         ]);

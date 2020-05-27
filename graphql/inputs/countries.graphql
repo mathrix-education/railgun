@@ -1,10 +1,29 @@
 input CreateCountry {
-    name: String!
-    slug: String!
+    """
+    The country name.
+    Maximum 150 caracters.
+    """
+    name: String! @rules(apply: ["string", "max:150"])
+    """
+    The contry slug, which will be used in the URL generation.
+    Maximum 150 caracters.
+    """
+    slug: String! @rules(apply: ["string", "max:150"])
 }
 
 input UpdateCountry {
+    """
+    The targeted country ID.
+    """
     id: ID!
-    name: String
-    slug: String
+    """
+    The country new name.
+    Maximum 150 caracters.
+    """
+    name: String @rules(apply: ["string", "max:150"])
+    """
+    The country new slug, which will be used in the URL generation.
+    Maximum 150 caracters.
+    """
+    slug: String @rules(apply: ["string", "max:150"])
 }

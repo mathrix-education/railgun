@@ -21,10 +21,10 @@ type Exam {
     """
     The exam administrative labels. Requires the "labels:read" scope.
     """
-    labels: [Label!] @morphMany @permission(scope: "labels:read")
+    labels: [Label!] @morphMany @permission(name: "labels:read")
     """
     The exam administrative notes. Requires the "notes:read" scope.
     """
-    notes: [Note!] @morphMany @permission(scope: "notes:read")
+    notes: [Note!] @morphMany @permission(name: "notes:read")
     interaction: Interaction @belongsTo
 }

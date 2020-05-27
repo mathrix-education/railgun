@@ -1,4 +1,6 @@
 extend type Query {
-    "Read an existing exercise."
+    """
+    Read an existing exercise.
+    """
     readExercise(id: ID @eq): Exercise @find
 }

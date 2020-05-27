@@ -1,8 +1,12 @@
 extend type Query {
-    "List all disciplines."
+    """
+    List all disciplines.
+    """
     listDisciplines: [Discipline!]! @all
 
-    "Read an existing discipline."
+    """
+    Read an existing discipline.
+    """
     readDiscipline(
         id: ID @eq
         slug: String @eq

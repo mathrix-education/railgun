@@ -2,15 +2,15 @@ extend type Mutation {
     "Create new a pack."
     createPack(
         input: CreatePack! @spread
-    ): Pack @permission(scope: "packs:create") @create
+    ): Pack @permission(name: "packs:write") @create
 
     "Update an existing pack."
     updatePack(
         input: UpdatePack! @spread
-    ): Pack @permission(scope: "packs:update") @update
+    ): Pack @permission(name: "packs:write") @update
 
     "Delete an existing pack."
     deletePack(
         id: ID!
-    ): Pack @permission(scope: "packs:delete") @delete
+    ): Pack @permission(name: "packs:delete") @delete
 }

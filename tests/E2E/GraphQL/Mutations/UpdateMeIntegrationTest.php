@@ -91,7 +91,8 @@ class UpdateMeIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testUserPasswordNull(): void
     {
-        $this->actingAsNewUser();
+        $this->actingAs();
+
         $this->graphQL(
             <<<'GRAPHQL'
             mutation($input: UpdateMe!) {
@@ -115,7 +116,7 @@ class UpdateMeIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testChangeGrade(): void
     {
-        $user  = $this->actingAsNewUser();
+        $user  = $this->actingAsGetUser();
         $grade = Grade::query()->whereKeyNot($user->grade_id)->inRandomOrder()->firstOrFail();
 
         $this->graphQL(

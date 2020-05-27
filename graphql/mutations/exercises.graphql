@@ -2,15 +2,15 @@ extend type Mutation {
     "Create a new exercise."
     createExercise(
         input: CreateExercise! @spread
-    ): Exercise @permission(scope: "exercises:create") @create
+    ): Exercise @permission(name: "exercises:write") @create
 
     "Update an existing exercise."
     updateExercise(
         input: UpdateExercise! @spread
-    ): Exercise @permission(scope: "exercises:update") @update
+    ): Exercise @permission(name: "exercises:write") @update
 
     "Delete an existing exercise."
     deleteExercise(
         id: ID!
-    ): Exercise @permission(scope: "exercises:delete") @delete
+    ): Exercise @permission(name: "exercises:delete") @delete
 }

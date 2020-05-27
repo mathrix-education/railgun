@@ -1,5 +1,11 @@
 extend type Query {
-    listLabels: [Label!]! @permission(scope: "labels:read") @all
+    """
+    List the available labels.
+    """
+    listLabels: [Label!]! @permission(name: "labels:read") @all
 
-    readLabel(id: ID! @eq): Label @permission(scope: "labels:read") @find
+    """
+    Read an existing label.
+    """
+    readLabel(id: ID! @eq): Label @permission(name: "labels:read") @find
 }

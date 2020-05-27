@@ -27,7 +27,7 @@ class ReadLabelIntegrationTest extends GraphQLIntegrationTestCase
         $label = factory(Label::class)->create();
         $course->labels()->sync([$label->id]);
 
-        $this->actingAsNewUser('labels:read');
+        $this->withPermissions('labels:read');
 
         $this->graphQL(
             <<<'GRAPHQL'

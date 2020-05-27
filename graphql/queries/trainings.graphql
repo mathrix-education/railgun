@@ -1,7 +1,11 @@
 extend type Query {
-    "List all trainings."
+    """
+    List all trainings.
+    """
     listTrainings: [Training!]! @all
 
-    "Read an existing training."
+    """
+    Read an existing training.
+    """
     readTraining(id: ID @eq): Training @find
 }

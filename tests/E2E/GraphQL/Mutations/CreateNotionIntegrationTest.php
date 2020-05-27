@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Mutations;
 
+use Illuminate\Support\Str;
 use Railgun\Models\Chapter;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 
@@ -19,7 +20,7 @@ class CreateNotionIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testCreateNotionSummary(): void
     {
-        $this->actingAsNewUser('notions:create');
+        $this->withPermissions(['notions:write', 'notions:write:visible']);
 
         $this->graphQL(
             <<<'GRAPHQL'
@@ -36,6 +37,7 @@ class CreateNotionIntegrationTest extends GraphQLIntegrationTestCase
             [
                 'input' => [
                     'name'       => $this->faker->userName,
+                    'slug'       => Str::slug($this->faker->userName),
                     'visible'    => true,
                     'chapter_id' => Chapter::random()->id,
                     'order'      => 0,

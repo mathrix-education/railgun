@@ -52,7 +52,7 @@ class CreateTrainingIntegrationTest extends GraphQLIntegrationTestCase
             ['grades' => ['replace' => [$grade->id]]],
         );
 
-        $this->actingAsNewUser('trainings:create');
+        $this->withPermissions('trainings:write');
         $this->executeCreateTraining($input);
 
         $this->assertResponseOk();

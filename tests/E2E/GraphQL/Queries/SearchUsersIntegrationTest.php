@@ -26,7 +26,7 @@ class SearchUsersIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testSearch(): void
     {
-        $this->actingAsNewUser('users:read');
+        $this->withPermissions('users:read');
 
         $username = User::query()->whereNotNull('username')->firstOrFail()->username;
         $query    = mb_strtolower(substr($username, random_int(0, strlen($username) - 4), 3));

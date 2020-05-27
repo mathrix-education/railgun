@@ -8,8 +8,10 @@ use Carbon\Carbon;
 use Exception;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Subscription;
+use Railgun\Models\User;
 use stdClass;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
+use function factory;
 use function in_array;
 use function strtolower;
 use function trans;
@@ -91,7 +93,7 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
         string $expectedStatus
     ): void
     {
-        $this->actingAsNewUser();
+        $this->withPermissions();
         $this->executeCreateSubscription($planId, $paymentMethodId);
 
         /** @var stdClass|Subscription $subscription The response data has the Subscription type */
@@ -153,7 +155,7 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
         string $expectedMessage
     ): void
     {
-        $user = $this->actingAsNewUser();
+        $user = $this->withPermissions();
         $this->executeCreateSubscription('MONTHLY', $paymentMethodId);
 
         $this->assertEquals($expectedMessage, $this->getContent('errors.0.message'));
@@ -165,7 +167,9 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testFailsAlreadyPremium(): void
     {
-        $user = $this->actingAsNewUser(['premium_bypass' => true]);
+        /** @var User $user */
+        $user = factory(User::class)->create(['premium_bypass' => true]);
+        $this->actingAs($user);
         $this->assertTrue($user->premium);
 
         $this->executeCreateSubscription('MONTHLY', 'pm_card_fr');

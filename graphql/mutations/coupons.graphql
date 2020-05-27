@@ -2,15 +2,15 @@ extend type Mutation {
     "Create a new coupon"
     createCoupon(
         input: CreateCoupon! @spread
-    ): Coupon @permission(scope: "coupons:create") @create
+    ): Coupon @permission(name: "coupons:write") @create
 
     "Update an existing coupon"
     updateCoupon(
         input: UpdateCoupon! @spread
-    ): Coupon @permission(scope: "coupons:update") @update
+    ): Coupon @permission(name: "coupons:write") @update
 
     "Delete an existing coupon"
     deleteCoupon(
         id: ID!
-    ): Coupon @permission(scope: "coupons:delete") @delete
+    ): Coupon @permission(name: "coupons:delete") @delete
 }

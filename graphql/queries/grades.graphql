@@ -1,8 +1,12 @@
 extend type Query {
-    "List all existing grades."
+    """
+    List all the existing grades.
+    """
     listGrades: [Grade!]! @all
 
-    "Read an existing grade."
+    """
+    Read an existing grade.
+    """
     readGrade(
         id: ID @eq
         slug: String @eq

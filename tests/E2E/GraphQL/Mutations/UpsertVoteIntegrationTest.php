@@ -50,7 +50,7 @@ class UpsertVoteIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testInsertVote(): void
     {
-        $user = $this->actingAsNewUser();
+        $user = $this->withPermissions();
         /** @var Comment $comment */
         $comment = factory(Comment::class)->create();
 
@@ -76,7 +76,7 @@ class UpsertVoteIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testUpdateVote(): void
     {
-        $user = $this->actingAsNewUser();
+        $user = $this->withPermissions();
         /** @var Comment $comment */
         $comment = factory(Comment::class)->create();
         $vote    = new Vote(['user_id' => $user->id, 'comment_id' => $comment->id, 'value' => 1]);

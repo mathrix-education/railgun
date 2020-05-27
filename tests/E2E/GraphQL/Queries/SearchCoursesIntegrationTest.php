@@ -22,7 +22,7 @@ class SearchCoursesIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testSearch(): void
     {
-        $this->actingAsNewUser(['premium_bypass' => true]);
+        $this->actingAs(['premium_bypass' => true]);
 
         /** @var Course $reference */
         $reference = Course::query()

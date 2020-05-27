@@ -1,3 +1,6 @@
 extend type Query {
+    """
+    List all the available scubrciption plans.
+    """
     listPlans: [Plan!]!
 }

@@ -1,26 +1,102 @@
 input CreateExam {
-    name: String!
-    slug: String!
-    duration: Int
+    """
+    The exam human-readable name.
+    Maximum 150 caracters.
+    """
+    name: String! @rules(apply: ["string", "max:150"])
+    """
+    The exam slug, which will be used in the URL generation.
+    Maximum 150 caracters.
+    """
+    slug: String! @rules(apply: ["string", "max:150"])
+    """
+    The exam duration in minutes. If set, must be greater than 0.
+    """
+    duration: Int @rules(apply: ["nullable", "min:0"])
+    """
+    The exam content.
+    """
     content: Silicate!
-    order: Int
+    """
+    The exam order. If not set, the chapter will be placed in the last position of the group [chapter].
+    Must be positive (i.e. >=0).
+    """
+    order: Int @rules(apply: ["nullable", "integer", "min:0"])
+    """
+    If the exam is only accessible for premium users.
+    """
     premium: Boolean!
-    frozen_at: DateTime @permission(scope: "exams:freeze")
-    visible: Boolean!
-    chapter_id: ID!
+    """
+    The exam frozen date. If set, only the users with the permission `exams:freeze` will be allowed to edit the exam.
+    Set to `null` to disable.
+    Requires the permission `exams:freeze`.
+    """
+    frozen_at: DateTime @permission(name: "exams:freeze")
+    """
+    If the exam should be displayed to the end users.
+    Requires the permission `exams:write:visible`.
+    """
+    visible: Boolean @permission(name: "exams:write:visible")
+    """
+    The exam related chapter ID.
+    """
+    chapter_id: ID! @rules(apply: ["integer", "exists:chapters,id"])
+    """
+    The exam associated labels.
+    """
     labels: BelongsToMany
 }
 
 input UpdateExam {
-    id: ID!
-    name: String
-    slug: String
-    duration: Int
-    content: Silicate
-    order: Int
-    premium: Boolean
-    frozen_at: DateTime @permission(scope: "exams:freeze")
-    visible: Boolean
-    chapter_id: ID
+    """
+    The targeted exam ID.
+    """
+    id: ID! @rules(apply: ["integer"])
+    """
+    The exam new human-readable name.
+    Maximum 150 caracters.
+    """
+    name: String @rules(apply: ["string", "max:150"])
+    """
+    The exam new slug, which will be used in the URL generation.
+    Requires the permission `exams:write:slug`.
+    Maximum 150 caracters.
+    """
+    slug: String @permission(name: "exams:write:slug") @rules(apply: ["string", "max:150"])
+    """
+    The exam new duration in minutes. If set, must be greater than 0.
+    """
+    duration: Int @rules(apply: ["nullable", "min:0"])
+    """
+    The exam new content.
+    """
+    content: Silicate @rules(apply: ["array"])
+    """
+    The exam new order.
+    Must be positive (i.e. >=0).
+    """
+    order: Int @rules(apply: ["nullable", "integer", "min:0"])
+    """
+    If the exam is only accessible for premium users.
+    """
+    premium: Boolean @rules(apply: ["boolean"])
+    """
+    The exam frozen date. If set, only the users with the permission `exams:freeze` will be allowed to edit the exam.
+    Set to `null` to disable.
+    Requires the permission `exams:freeze`.
+    """
+    frozen_at: DateTime @permission(name: "exams:freeze")
+    """
+    If the exam should be displayed to the end users.
+    Requires the permission `exams:write:visible`.
+    """
+    visible: Boolean @permission(name: "exams:write:visible")
+    """
+    The exam new related chapter ID.
+    """
+    chapter_id: ID @rules(apply: ["integer", "exists:chapters,id"])
+    """
+    The exam associated labels.
+    """
     labels: BelongsToMany
 }

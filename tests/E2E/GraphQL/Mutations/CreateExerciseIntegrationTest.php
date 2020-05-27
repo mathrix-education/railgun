@@ -55,7 +55,7 @@ class CreateExerciseIntegrationTest extends GraphQLIntegrationTestCase
             factory(Exercise::class)->raw(['type' => 'MCQ', 'subject_id' => $subject->id]),
             ['id', 'premium', 'created_at', 'updated_at'],
         );
-        $this->actingAsNewUser('exercises:create');
+        $this->withPermissions(['exercises:write', 'exercises:write:visible']);
 
         $this->executeCreateExercise(['input' => $variables]);
 

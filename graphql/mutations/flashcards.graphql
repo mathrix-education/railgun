@@ -2,15 +2,15 @@ extend type Mutation {
     "Create a new flashcard."
     createFlashcard (
         input: CreateFlashcard! @spread
-    ): Flashcard @permission(scope: "flashcards:create") @create
+    ): Flashcard @permission(name: "flashcards:write") @create
 
     "Update an existing flashcard."
     updateFlashcard (
         input: UpdateFlashcard! @spread
-    ): Flashcard @permission(scope: "flashcards:update") @update
+    ): Flashcard @permission(name: "flashcards:write") @update
 
     "Delete an existing flashcard."
     deleteFlashcard(
         id: ID!
-    ): Flashcard  @permission(scope: "flashcards:delete") @delete
+    ): Flashcard  @permission(name: "flashcards:delete") @delete
 }

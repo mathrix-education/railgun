@@ -44,7 +44,7 @@ class UpdateCourseIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testConnectCourse(): void
     {
-        $this->actingAsNewUser(['scopes' => ['labels:read', 'courses:update']]);
+        $this->withPermissions(['labels:read', 'courses:write']);
         /** @var Course $course */
         $course = factory(Course::class)->create();
         /** @var Label $label */
@@ -74,7 +74,7 @@ class UpdateCourseIntegrationTest extends GraphQLIntegrationTestCase
             'visible'   => true,
         ]);
 
-        $this->actingAsNewUser(['scopes' => ['labels:read', 'courses:update']]);
+        $this->withPermissions(['labels:read', 'courses:write']);
 
         $this->executeUpdateCourse([
             'id'   => $course->id,

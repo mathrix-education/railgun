@@ -63,7 +63,7 @@ class MeIntegrationTest extends GraphQLIntegrationTestCase
     public function testMeSession(): void
     {
         $chapter = Chapter::random();
-        $user    = $this->actingAsNewUser(['grade_id' => $chapter->grade_id]);
+        $user    = $this->actingAsGetUser(['grade_id' => $chapter->grade_id]);
         $session = new Session([
             'user_id'       => $user->id,
             'discipline_id' => $chapter->discipline_id,
@@ -97,7 +97,7 @@ class MeIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testMeStatistics(): void
     {
-        $user = $this->actingAsNewUser();
+        $user = $this->actingAsGetUser();
 
         /** @var Collection|Interaction[] $interactions */
         $interactions = factory(Course::class, 3)
@@ -141,7 +141,7 @@ class MeIntegrationTest extends GraphQLIntegrationTestCase
     {
         $expectedCount = 5;
 
-        $user = $this->actingAsNewUser();
+        $user = $this->actingAsGetUser();
 
         for ($i = 0; $i < $expectedCount; $i++) {
             $user->notifyNow(new CommentReplyNotification(Comment::random(), Comment::random()));
@@ -190,7 +190,7 @@ class MeIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testReadSubscriptionCards(): void
     {
-        $user            = $this->actingAsNewUser();
+        $user            = $this->actingAsGetUser();
         $paymentMethodId = 'pm_card_fr';
         $customer        = $user->createCustomer($paymentMethodId);
         $user->refresh();

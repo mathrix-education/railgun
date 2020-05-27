@@ -1,7 +1,11 @@
 extend type Query {
-    "List all countries."
+    """
+    List all countries.
+    """
     listCountries: [Country!]! @all
 
-    "Read an existing country."
+    """
+    Read an existing country.
+    """
     readCountry(id: ID! @eq): Country @find
 }

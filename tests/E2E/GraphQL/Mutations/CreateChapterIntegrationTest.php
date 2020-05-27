@@ -42,7 +42,7 @@ class CreateChapterIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testNonExistingSlug(): void
     {
-        $this->actingAsNewUser('chapters:create');
+        $this->withPermissions(['chapters:write', 'chapters:write:visible']);
         $this->executeCreateChapter(Arr::only(
             factory(Chapter::class)->raw(),
             ['name', 'order', 'visible', 'slug', 'grade_id', 'discipline_id'],
@@ -64,7 +64,7 @@ class CreateChapterIntegrationTest extends GraphQLIntegrationTestCase
             Arr::only($reference->toArray(), ['slug', 'grade_id', 'discipline_id']),
         );
 
-        $this->actingAsNewUser('chapters:create');
+        $this->withPermissions(['chapters:write', 'chapters:write:visible']);
         $this->executeCreateChapter($input);
 
         $this->assertResponseOk();

@@ -1,4 +1,6 @@
 extend type Query {
-    "Read an existing exam."
+    """
+    Read an existing exam.
+    """
     readExam(id: ID @eq): Exam @find
 }
