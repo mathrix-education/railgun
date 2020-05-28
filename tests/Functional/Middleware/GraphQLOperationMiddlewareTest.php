@@ -18,7 +18,7 @@ use Tests\ApplicationTestCase;
 class GraphQLOperationMiddlewareTest extends ApplicationTestCase
 {
     /**
-     * @testdox does not the Prometheus metrics whe operationName is not provided.
+     * @testdox does not the Prometheus metrics whe operationName is not provided
      * @covers ::handle
      * @covers ::terminate
      */
@@ -38,7 +38,7 @@ class GraphQLOperationMiddlewareTest extends ApplicationTestCase
     }
 
     /**
-     * @testdox update the Prometheus metrics whe operationName is provided.
+     * @testdox update the Prometheus metrics whe operationName is provided
      * @covers ::handle
      * @covers ::terminate
      */

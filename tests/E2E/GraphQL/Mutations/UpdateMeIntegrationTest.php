@@ -19,7 +19,7 @@ class UpdateMeIntegrationTest extends GraphQLIntegrationTestCase
     use DatabaseTransactions;
 
     /**
-     * @testdox triggers the CleanUserSession job on grade change.
+     * @testdox triggers the CleanUserSession job on grade change
      */
     public function testTriggersCleanUserSessionOnGradeChange(): void
     {
@@ -53,7 +53,7 @@ class UpdateMeIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox does not trigger the CleanUserSession job on username change.
+     * @testdox does not trigger the CleanUserSession job on username change
      */
     public function testDoesNotTriggerCleanUserSessionOnUsernameChange(): void
     {
@@ -85,7 +85,7 @@ class UpdateMeIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox fails with validation error when providing a null password.
+     * @testdox fails with validation error when providing a null password
      *
      * @ticket #253
      */
@@ -110,7 +110,7 @@ class UpdateMeIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox changes the user grade id.
+     * @testdox changes the user grade id
      *
      * @ticket #254
      */

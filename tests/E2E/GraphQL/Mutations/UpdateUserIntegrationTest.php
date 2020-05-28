@@ -36,13 +36,13 @@ class UpdateUserIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox changes the user grade id.
+     * @testdox changes the user grade id
      *
      * @ticket #254
      */
     public function testChangeGrade(): void
     {
-        $this->withPermissions('users:write');
+        $this->withPermissions(['users:read', 'users:write']);
 
         /** @var User $user */
         $user  = factory(User::class)->create();
@@ -60,7 +60,7 @@ class UpdateUserIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox allows the scopes update for star users.
+     * @testdox allows the scopes update for star users
      */
     public function testStarCanUpdateScopes(): void
     {
@@ -78,7 +78,7 @@ class UpdateUserIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox denies the scopes update for non-star users.
+     * @testdox denies the scopes update for non-star users
      */
     public function testNonStarCannotUpdateScopes(): void
     {

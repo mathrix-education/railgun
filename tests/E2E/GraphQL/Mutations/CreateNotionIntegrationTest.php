@@ -14,7 +14,7 @@ use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 class CreateNotionIntegrationTest extends GraphQLIntegrationTestCase
 {
     /**
-     * @testdox create a summary notion.
+     * @testdox create a summary notion
      *
      * @ticket #312
      */

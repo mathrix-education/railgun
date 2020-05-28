@@ -13,7 +13,7 @@ use function trans;
 class WebhooksControllerTest extends WebhookTestCase
 {
     /**
-     * @testdox fails to handle the event when signature is invalid.
+     * @testdox fails to handle the event when signature is invalid
      */
     public function testInvalidSignature(): void
     {
@@ -23,7 +23,7 @@ class WebhooksControllerTest extends WebhookTestCase
     }
 
     /**
-     * @testdox fails to handle an unsupported event.
+     * @testdox fails to handle an unsupported event
      */
     public function testUnsupportedEvent(): void
     {

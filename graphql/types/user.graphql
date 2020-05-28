@@ -1,27 +1,26 @@
 type User {
     id: ID!
     username: String
-    firstname: String
-    lastname: String
-    password: String!
-    email: String!
-    scopes: [String!]!
+    firstname: String @policy(ability: "read")
+    lastname: String @policy(ability: "read")
+    email: String!  @policy(ability: "read")
+    scopes: [String!]! @policy(ability: "read")
     """
     If the user has access to premium content.
     Notice: **may cause an additional delay**.
     """
-    premium: Boolean!
-    premium_bypass: Boolean!
-    premium_bypass_expires_at: DateTime
+    premium: Boolean! @policy(ability: "read")
+    premium_bypass: Boolean! @policy(ability: "read")
+    premium_bypass_expires_at: DateTime @policy(ability: "read")
     stripe_id: String @permission(name: "users:read")
     braintree_id: String @permission(name: "users:read")
     created_at: DateTime!
     updated_at: DateTime!
     grade: Grade @belongsTo
-    notifications: [Notification!]! @morphMany(type: "paginator")
-    packs: [Pack!]! @morphMany
-    trainings: [Training!]! @morphMany
-    sessions: [Session!]! @hasMany
-    statistics: UserStatistics!
-    subscriptions: [Subscription_!]! @hasMany
+    notifications: [Notification!]! @policy(ability: "read") @morphMany(type: "paginator")
+    packs: [Pack!]! @policy(ability: "read") @morphMany
+    trainings: [Training!]! @policy(ability: "read") @morphMany
+    sessions: [Session!]! @policy(ability: "read") @hasMany
+    statistics: UserStatistics! @policy(ability: "read")
+    subscriptions: [Subscription_!]! @policy(ability: "read") @hasMany
 }

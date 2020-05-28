@@ -43,7 +43,7 @@ class UpdateExerciseIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox updates an existing exercise.
+     * @testdox updates an existing exercise
      *
      * @link    https://github.com/nuwave/lighthouse/issues/1264
      *

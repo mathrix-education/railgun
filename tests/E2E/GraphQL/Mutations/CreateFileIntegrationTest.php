@@ -62,7 +62,7 @@ class CreateFileIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox creates a new file.
+     * @testdox creates a new file
      *
      * @throws JsonException
      */
@@ -81,7 +81,7 @@ class CreateFileIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox overrides an existing file.
+     * @testdox overrides an existing file
      *
      * @throws JsonException
      */

@@ -10,13 +10,9 @@ use Illuminate\Contracts\Cache\Repository as CacheContract;
 use Illuminate\Contracts\Console\Kernel as KernelContract;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application;
 use Mathrix\Prometheus\Middleware\PrometheusMiddleware;
-use Railgun\Auth\PermissionGate;
-use Railgun\Auth\PremiumGate;
-use Railgun\Auth\ProductGate;
 use Railgun\Console\Kernel;
 use Railgun\Handlers\ExceptionPipeline;
 use Railgun\Handlers\Handler;
@@ -63,6 +59,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Middleware
         $middleware = [
             TeardownMiddleware::class,
             LanguageMiddleware::class,
@@ -73,11 +70,6 @@ class AppServiceProvider extends ServiceProvider
 
         array_map(fn($m) => $this->app->singleton($m), $middleware);
         $this->app->middleware($middleware);
-
-        // Gates
-        Gate::define(PermissionGate::NAME, PermissionGate::class);
-        Gate::define(PremiumGate::NAME, PremiumGate::class);
-        Gate::define(ProductGate::NAME, ProductGate::class);
 
         // MorphMap
         $this->setMorphMap();

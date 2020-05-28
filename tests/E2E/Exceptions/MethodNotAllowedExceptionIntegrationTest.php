@@ -12,7 +12,7 @@ use Tests\E2E\HttpIntegrationTestCase;
 class MethodNotAllowedExceptionIntegrationTest extends HttpIntegrationTestCase
 {
     /**
-     * @testdox throws a method now allowed exception.
+     * @testdox throws a method now allowed exception
      */
     public function testMethodNotAllowed(): void
     {

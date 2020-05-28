@@ -6,6 +6,7 @@ namespace Tests\E2E\GraphQL\Queries;
 
 use Illuminate\Support\Facades\Queue;
 use Laravel\Lumen\Testing\DatabaseTransactions;
+use Railgun\Models\Comment;
 use Railgun\Models\Course;
 use Railgun\Models\Interaction;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
@@ -108,5 +109,71 @@ class ReadCourseIntegrationTest extends GraphQLIntegrationTestCase
         $this->assertNoErrors();
         $this->assertEquals($course->id, $this->getData('id'));
         $this->assertEmpty($this->getData('content'));
+    }
+
+    /**
+     * @testdox prevent users data leaks
+     */
+    public function testNoUserDataLeak(): void
+    {
+        /** @var Comment $comment */
+        $comment = Comment::query()
+            ->inRandomOrder()
+            ->where('commentable_type', '=', 'course')
+            ->whereNull('parent_id')
+            ->firstOrFail();
+        $course  = $comment->commentable;
+
+        $this->graphQL(
+            <<<'GRAPHQL'
+            query($id: ID!) {
+                readCourse(id: $id) {
+                    comments {
+                        user {
+                            email
+                        }
+                    }
+                }
+            }
+            GRAPHQL,
+            ['id' => $course->id],
+        );
+
+        $this->assertResponseOk();
+        $this->assertErrorCode('POLICY_VIOLATION');
+    }
+
+    /**
+     * @testdox prevent users data leaks
+     */
+    public function testAllowUserDataForAuthorizedUsers(): void
+    {
+        /** @var Comment $comment */
+        $comment = Comment::query()
+            ->inRandomOrder()
+            ->where('commentable_type', '=', 'course')
+            ->whereNull('parent_id')
+            ->firstOrFail();
+        $course  = $comment->commentable;
+
+        $this->withPermissions('users:read');
+
+        $this->graphQL(
+            <<<'GRAPHQL'
+            query($id: ID!) {
+                readCourse(id: $id) {
+                    comments {
+                        user {
+                            email
+                        }
+                    }
+                }
+            }
+            GRAPHQL,
+            ['id' => $course->id],
+        );
+
+        $this->assertResponseOk();
+        $this->assertNoErrors();
     }
 }

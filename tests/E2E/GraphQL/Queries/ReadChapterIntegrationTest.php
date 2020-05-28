@@ -49,7 +49,7 @@ class ReadChapterIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox reads a chapter using its id.
+     * @testdox reads a chapter using its id
      */
     public function testWithId(): void
     {
@@ -63,7 +63,7 @@ class ReadChapterIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox reads a chapter using its slug, grade slug and discipline slug.
+     * @testdox reads a chapter using its slug, grade slug and discipline slug
      */
     public function testWithSlugs(): void
     {

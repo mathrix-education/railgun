@@ -18,7 +18,7 @@ class DeleteTrainingIntegrationTest extends GraphQLIntegrationTestCase
     use DatabaseTransactions;
 
     /**
-     * @testdox fails to delete a training when it is not empty.
+     * @testdox fails to delete a training when it is not empty
      */
     public function testDeleteNonEmpty(): void
     {

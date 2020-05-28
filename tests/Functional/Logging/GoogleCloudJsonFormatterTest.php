@@ -45,7 +45,7 @@ class GoogleCloudJsonFormatterTest extends ApplicationTestCase
     }
 
     /**
-     * @testdox formats a single record.
+     * @testdox formats a single record
      * @covers ::format
      * @covers ::toGoogleCloudLogging
      *
@@ -66,7 +66,7 @@ class GoogleCloudJsonFormatterTest extends ApplicationTestCase
     }
 
     /**
-     * @testdox formats multiple records.
+     * @testdox formats multiple records
      * @covers ::formatBatchJson
      * @covers ::toGoogleCloudLogging
      */

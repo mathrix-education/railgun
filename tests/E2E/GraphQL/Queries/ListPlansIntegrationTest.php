@@ -12,7 +12,7 @@ use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 class ListPlansIntegrationTest extends GraphQLIntegrationTestCase
 {
     /**
-     * @testdox lists the available plans.
+     * @testdox lists the available plans
      */
     public function testList(): void
     {

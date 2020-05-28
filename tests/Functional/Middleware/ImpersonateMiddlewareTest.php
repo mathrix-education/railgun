@@ -17,7 +17,7 @@ use function factory;
 class ImpersonateMiddlewareTest extends ApplicationTestCase
 {
     /**
-     * @testdox swaps the current authenticated user.
+     * @testdox swaps the current authenticated user
      */
     public function testHandle(): void
     {

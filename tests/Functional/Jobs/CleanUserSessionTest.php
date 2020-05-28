@@ -23,7 +23,7 @@ use function factory;
 class CleanUserSessionTest extends ApplicationTestCase
 {
     /**
-     * @testdox deletes the previous user session on grade change.
+     * @testdox deletes the previous user session on grade change
      */
     public function testHandle(): void
     {

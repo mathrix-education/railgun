@@ -46,7 +46,7 @@ class ReadFileIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox returns the file metadata of and existing file.
+     * @testdox returns the file metadata of and existing file
      */
     public function testReadExistingFile(): void
     {
@@ -61,7 +61,7 @@ class ReadFileIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox fails when trying to read a non-existing file.
+     * @testdox fails when trying to read a non-existing file
      */
     public function testReadNonExistingFile(): void
     {
@@ -79,7 +79,7 @@ class ReadFileIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox fails when trying to read a directory.
+     * @testdox fails when trying to read a directory
      */
     public function testReadDirectory(): void
     {

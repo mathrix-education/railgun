@@ -62,7 +62,7 @@ class LoginWithGoogleTest extends GraphQLFunctionalTestCase
     }
 
     /**
-     * @testdox creates a new user when there is no associated Google id.
+     * @testdox creates a new user when there is no associated Google id
      * @covers ::__construct
      * @covers ::__invoke
      *
@@ -89,7 +89,7 @@ class LoginWithGoogleTest extends GraphQLFunctionalTestCase
     }
 
     /**
-     * @testdox login an existing user when there is associated Google id.
+     * @testdox login an existing user when there is associated Google id
      * @covers ::__construct
      * @covers ::__invoke
      */
@@ -114,7 +114,7 @@ class LoginWithGoogleTest extends GraphQLFunctionalTestCase
     }
 
     /**
-     * @testdox throws an error when providing an invalid Google token.
+     * @testdox throws an error when providing an invalid Google token
      * @covers ::__construct
      * @covers ::__invoke
      */

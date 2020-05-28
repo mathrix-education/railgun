@@ -40,7 +40,7 @@ class UpdateCourseIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox connects a label to an existing course.
+     * @testdox connects a label to an existing course
      */
     public function testConnectCourse(): void
     {

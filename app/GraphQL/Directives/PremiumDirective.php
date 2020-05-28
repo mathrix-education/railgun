@@ -57,20 +57,17 @@ class PremiumDirective extends BaseDirective implements FieldMiddleware, Defined
 
         $resolver = function ($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo) use ($previous) {
             if (
-                $root instanceof Model
-                && (
-                    ($root->getAttribute('premium') && Gate::allows(PremiumGate::NAME))
-                    || !$root->getAttribute('premium')
-                )
+                !$root instanceof Model
+                || ($root->getAttribute('premium') && Gate::denies(PremiumGate::NAME))
             ) {
-                return $previous($root, $args, $context, $resolveInfo);
+                $stripped = $this->directiveArgValue('stripped');
+
+                return is_json($stripped)
+                    ? json_decode($stripped, true, 512, JSON_THROW_ON_ERROR)
+                    : $stripped;
             }
 
-            $stripped = $this->directiveArgValue('stripped');
-
-            return is_json($stripped)
-                ? json_decode($stripped, true, 512, JSON_THROW_ON_ERROR)
-                : $stripped;
+            return $previous($root, $args, $context, $resolveInfo);
         };
 
         return $next($fieldValue->setResolver($resolver));

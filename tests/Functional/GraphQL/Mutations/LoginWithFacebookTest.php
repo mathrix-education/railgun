@@ -64,7 +64,7 @@ class LoginWithFacebookTest extends GraphQLFunctionalTestCase
     }
 
     /**
-     * @testdox creates a new user when there is no associated Facebook id.
+     * @testdox creates a new user when there is no associated Facebook id
      * @covers ::__construct
      * @covers ::__invoke
      *
@@ -98,7 +98,7 @@ class LoginWithFacebookTest extends GraphQLFunctionalTestCase
     }
 
     /**
-     * @testdox login an existing user when there is associated Facebook id.
+     * @testdox login an existing user when there is associated Facebook id
      * @covers ::__construct
      * @covers ::__invoke
      */
@@ -128,7 +128,7 @@ class LoginWithFacebookTest extends GraphQLFunctionalTestCase
     }
 
     /**
-     * @testdox throws an error when providing an invalid Facebook token.
+     * @testdox throws an error when providing an invalid Facebook token
      * @covers ::__construct
      * @covers ::__invoke
      * @uses    \Railgun\Exceptions\InvalidAuthTokenException

@@ -19,6 +19,7 @@ use Nuwave\Lighthouse\LighthouseServiceProvider;
 use Nuwave\Lighthouse\Tracing\TracingServiceProvider;
 use Railgun\Actions\SitemapAction;
 use Railgun\Providers\AppServiceProvider;
+use Railgun\Providers\AuthServiceProvider;
 use Railgun\Providers\CryptoServiceProvider;
 use Railgun\Providers\FacebookServiceProvider;
 use Railgun\Providers\GoogleServiceProvider;
@@ -51,6 +52,7 @@ $app->configure('urls');
 
 // System
 $app->register(AppServiceProvider::class);
+$app->register(AuthServiceProvider::class);
 $app->register(FilesystemServiceProvider::class);
 $app->register(RedisServiceProvider::class);
 $app->register(NotificationServiceProvider::class);

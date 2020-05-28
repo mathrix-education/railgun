@@ -19,7 +19,7 @@ class SubjectTest extends ModelTestCase
     use DatabaseTransactions;
 
     /**
-     * @testdox syncs has its premium attribute sync with its exercises.
+     * @testdox syncs has its premium attribute sync with its exercises
      * @covers ::booting
      */
     public function testExercisesPremiumSync(): void

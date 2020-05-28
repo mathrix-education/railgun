@@ -15,7 +15,7 @@ use Tests\ApplicationTestCase;
 class StripeSubscriptionBridgeTest extends ApplicationTestCase
 {
     /**
-     * @testdox converts a subscription where the customer is not embedded.
+     * @testdox converts a subscription where the customer is not embedded
      * @covers ::toEloquent
      *
      * @throws ApiErrorException
@@ -32,7 +32,7 @@ class StripeSubscriptionBridgeTest extends ApplicationTestCase
     }
 
     /**
-     * @testdox converts a subscription where the customer is not embedded.
+     * @testdox converts a subscription where the customer is not embedded
      * @covers ::toEloquent
      *
      * @throws ApiErrorException
@@ -49,7 +49,7 @@ class StripeSubscriptionBridgeTest extends ApplicationTestCase
     }
 
     /**
-     * @testdox converts a canceled subscription.
+     * @testdox converts a canceled subscription
      * @covers ::toEloquent
      *
      * @throws ApiErrorException

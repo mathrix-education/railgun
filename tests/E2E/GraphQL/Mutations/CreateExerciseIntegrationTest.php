@@ -43,7 +43,7 @@ class CreateExerciseIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox creates a new exercise.
+     * @testdox creates a new exercise
      *
      * @ticket #243
      */

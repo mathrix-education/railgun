@@ -22,7 +22,7 @@ class SluggableTest extends ApplicationTestCase
     }
 
     /**
-     * @testdox generates a slug using the standard configuration (name => slug).
+     * @testdox generates a slug using the standard configuration (name => slug)
      */
     public function testSlugIsGenerated(): void
     {
@@ -41,7 +41,7 @@ class SluggableTest extends ApplicationTestCase
     }
 
     /**
-     * @testdox generates a slug using a custom configuration (foo => bar).
+     * @testdox generates a slug using a custom configuration (foo => bar)
      */
     public function testSlugCustomParams(): void
     {
@@ -68,7 +68,7 @@ class SluggableTest extends ApplicationTestCase
     }
 
     /**
-     * @testdox fails to create a slug when there is no valid source provided.
+     * @testdox fails to create a slug when there is no valid source provided
      */
     public function testNoSlugSource(): void
     {

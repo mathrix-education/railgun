@@ -44,7 +44,7 @@ class UpsertVoteIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox inserts a new up vote.
+     * @testdox inserts a new up vote
      *
      * @ticket #262
      */
@@ -70,7 +70,7 @@ class UpsertVoteIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox replaces an existing up vote by a down vote.
+     * @testdox replaces an existing up vote by a down vote
      *
      * @ticket #262
      */
