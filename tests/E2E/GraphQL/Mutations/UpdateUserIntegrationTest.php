@@ -42,7 +42,7 @@ class UpdateUserIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testChangeGrade(): void
     {
-        $this->withPermissions('users:write');
+        $this->withPermissions(['users:read', 'users:write']);
 
         /** @var User $user */
         $user  = factory(User::class)->create();

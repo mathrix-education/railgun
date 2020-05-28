@@ -9,8 +9,8 @@ use Railgun\Models\User;
 
 class UserPolicy
 {
-    public function read(User $user, User $target): bool
+    public function read(?User $user, User $target): bool
     {
-        return $user->is($target) || $user->can(PermissionGate::NAME, 'users:read');
+        return $user !== null && ($user->is($target) || $user->can(PermissionGate::NAME, 'users:read'));
     }
 }
