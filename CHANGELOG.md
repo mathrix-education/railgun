@@ -1,6 +1,22 @@
 # Changelog
 
 ## 7.1.0
+- feat(auth): add policy directive and users policy on `User` type. The following fields are now protected:
+    - `firstname`
+    - `lastname`
+    - `email`
+    - `scopes` (`users:read` permission)
+    - `premium`
+    - `premium_bypass`
+    - `premium_bypass_expires_at`
+    - `stripe_id`
+    - `braintree_id`
+    - `notifications`
+    - `packs`
+    - `trainings`
+    - `sessions`
+    - `statistics`
+    - `subscriptions`
 - feat(datetime): override the `DateTime` Lighthouse scalar by our own implementation which always uses the ISO 8601
   "Zulu" date format (fixes #385)
 - feat(freeze): `frozen_at` field on Course, Exercise, Flashcard and Exam type
