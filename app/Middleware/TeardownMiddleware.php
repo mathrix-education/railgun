@@ -7,6 +7,7 @@ namespace Railgun\Middleware;
 use Closure;
 use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Railgun\Logging\GoogleCloudJsonFormatter;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,11 +38,15 @@ class TeardownMiddleware
     }
 
     /**
-     * Logout the user from the application.
+     * Shutdown the application container gracefully.
      */
     public function terminate(): void
     {
+        // Logout the user from the application.
         $this->auth->guard()->logout();
+
+        // Clear the in-memory cache
+        Cache::store('request')->clear();
 
         // Log the request
         Log::info(GoogleCloudJsonFormatter::NO_MESSAGE);

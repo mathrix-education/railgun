@@ -25,8 +25,7 @@ trait Cacheable
      */
     public function cache(string $key, Closure $callback)
     {
-        return Cache::store('array')
-            ->rememberForever($this->getCacheKey($key), $callback);
+        return Cache::store('request')->rememberForever($this->getCacheKey($key), $callback);
     }
 
     /**
