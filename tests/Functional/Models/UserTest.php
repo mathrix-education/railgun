@@ -68,7 +68,7 @@ class UserTest extends ModelTestCase
     }
 
     /**
-     * @testdox returns the user statistics.
+     * @testdox returns the user statistics
      * @covers ::getStatisticsAttribute
      */
     public function testGetStatisticsAttribute(): void

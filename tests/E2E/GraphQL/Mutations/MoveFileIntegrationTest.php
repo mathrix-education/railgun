@@ -72,7 +72,7 @@ class MoveFileIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox moves a file.
+     * @testdox moves a file
      */
     public function testMoveFile(): void
     {
@@ -89,7 +89,7 @@ class MoveFileIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox overrides an existing file.
+     * @testdox overrides an existing file
      */
     public function testMoveFileOverride(): void
     {
@@ -107,7 +107,7 @@ class MoveFileIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox do not override an existing file.
+     * @testdox do not override an existing file
      */
     public function testMoveFileConflict(): void
     {
@@ -126,7 +126,7 @@ class MoveFileIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox fails to move a directory.
+     * @testdox fails to move a directory
      */
     public function testMoveDirectory(): void
     {
@@ -145,7 +145,7 @@ class MoveFileIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox moves a file to a directory.
+     * @testdox moves a file to a directory
      */
     public function testMoveFileToDirectory(): void
     {

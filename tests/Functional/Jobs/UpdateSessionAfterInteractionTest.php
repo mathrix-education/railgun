@@ -21,7 +21,7 @@ use function factory;
 class UpdateSessionAfterInteractionTest extends ApplicationTestCase
 {
     /**
-     * @testdox replaces an existing session [user_id, discipline_id].
+     * @testdox replaces an existing session [user_id, discipline_id]
      *
      * @ticket #207
      */

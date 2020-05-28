@@ -40,7 +40,7 @@ class DeleteFileIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox deletes an existing file.
+     * @testdox deletes an existing file
      */
     public function testDeleteExistingFile(): void
     {
@@ -54,7 +54,7 @@ class DeleteFileIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox fails to delete an non-existing files.
+     * @testdox fails to delete an non-existing files
      */
     public function testDeleteNonExistingFile(): void
     {
@@ -71,7 +71,7 @@ class DeleteFileIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox fails to delete a directory.
+     * @testdox fails to delete a directory
      */
     public function testDeleteDirectory(): void
     {

@@ -63,7 +63,7 @@ class ResetPasswordIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox resets the password of the targeted user in debug mode.
+     * @testdox resets the password of the targeted user in debug mode
      */
     public function testValidTokenDebugMode(): void
     {

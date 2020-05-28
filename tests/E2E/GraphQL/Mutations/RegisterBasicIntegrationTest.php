@@ -21,7 +21,7 @@ class RegisterBasicIntegrationTest extends GraphQLIntegrationTestCase
     use DatabaseTransactions;
 
     /**
-     * @testdox registers a new user.
+     * @testdox registers a new user
      *
      * @throws JsonException
      */

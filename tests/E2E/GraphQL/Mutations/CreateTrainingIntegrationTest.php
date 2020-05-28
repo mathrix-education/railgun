@@ -42,7 +42,7 @@ class CreateTrainingIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox create a new training with an attached grade.
+     * @testdox create a new training with an attached grade
      */
     public function testCreateWithGrade(): void
     {

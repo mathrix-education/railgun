@@ -161,7 +161,7 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
 
     /**
      * @dataProvider createCheckoutSuccessDataset
-     * @testdox      creates invoice using the token $paymentMethodId.
+     * @testdox      creates invoice using the token $paymentMethodId
      *
      * @param string $paymentMethodId             The payment method id to use.
      * @param string $expectedInvoiceStatus       The expected {@see Invoice} status.
@@ -253,7 +253,7 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox creates invoice when the user is already a Stripe customer.
+     * @testdox creates invoice when the user is already a Stripe customer
      *
      * @throws ApiErrorException
      *

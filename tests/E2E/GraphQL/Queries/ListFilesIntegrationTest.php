@@ -54,7 +54,7 @@ class ListFilesIntegrationTest extends GraphQLIntegrationTestCase
     /**
      * @testWith ["/"]
      *           [""]
-     * @testdox returns the content of the root directory.
+     * @testdox returns the content of the root directory
      *
      * @param string $path,
      */
@@ -68,7 +68,7 @@ class ListFilesIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox returns the content of an existing directory.
+     * @testdox returns the content of an existing directory
      */
     public function testReadExistingDirectory(): void
     {
@@ -86,7 +86,7 @@ class ListFilesIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox fails when trying to list a non-existing directory.
+     * @testdox fails when trying to list a non-existing directory
      */
     public function testReadNonExistingDirectory(): void
     {

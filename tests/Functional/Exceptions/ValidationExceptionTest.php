@@ -15,7 +15,7 @@ use Throwable;
 class ValidationExceptionTest extends ExceptionTestCase
 {
     /**
-     * @testdox convert exceptions from Illuminate Validator.
+     * @testdox convert exceptions from Illuminate Validator
      *
      * @throws Throwable
      */

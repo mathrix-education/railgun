@@ -12,7 +12,7 @@ use Tests\E2E\HttpIntegrationTestCase;
 class NotFoundActionTest extends HttpIntegrationTestCase
 {
     /**
-     * @testdox returns an HTTP 404 status code.
+     * @testdox returns an HTTP 404 status code
      */
     public function testNotFound(): void
     {

@@ -15,7 +15,7 @@ use Throwable;
 class MethodNotAllowedExceptionTest extends ExceptionTestCase
 {
     /**
-     * @testdox converts \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException.
+     * @testdox converts \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
      *
      * @throws Throwable
      */
@@ -29,7 +29,7 @@ class MethodNotAllowedExceptionTest extends ExceptionTestCase
     }
 
     /**
-     * @testdox converts \Symfony\Component\Routing\Exception\MethodNotAllowedException.
+     * @testdox converts \Symfony\Component\Routing\Exception\MethodNotAllowedException
      *
      * @throws Throwable
      */

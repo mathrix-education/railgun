@@ -20,7 +20,7 @@ use function factory;
 class InvoicePaymentSucceededWebhookTest extends WebhookTestCase
 {
     /**
-     * @testdox handles asynchronous cart checkout.
+     * @testdox handles asynchronous cart checkout
      */
     public function testHandleAsyncCartCheckout(): void
     {
@@ -47,7 +47,7 @@ class InvoicePaymentSucceededWebhookTest extends WebhookTestCase
     }
 
     /**
-     * @testdox handles asynchronous subscription creation.
+     * @testdox handles asynchronous subscription creation
      */
     public function testHandleAsyncSubscriptionCreation(): void
     {

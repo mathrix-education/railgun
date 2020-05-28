@@ -23,7 +23,7 @@ use function range;
 class OrderableTest extends ApplicationTestCase
 {
     /**
-     * @testdox orders models (notions) during creation.
+     * @testdox orders models (notions) during creation
      */
     public function testCreateModels(): void
     {
@@ -83,7 +83,7 @@ class OrderableTest extends ApplicationTestCase
     }
 
     /**
-     * @testdox orders related models (courses and subjects) during creation.
+     * @testdox orders related models (courses and subjects) during creation
      */
     public function testCreateRelatedModels(): void
     {

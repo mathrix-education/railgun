@@ -39,7 +39,7 @@ class UpdateChapterIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox allow to change the slug when there is already another slug in another discipline_id/grade_id space.
+     * @testdox allow to change the slug when there is already another slug in another discipline_id/grade_id space
      */
     public function testChangeToExistingSlugNoConflict(): void
     {
@@ -63,7 +63,7 @@ class UpdateChapterIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox fails to update the slug when there is already another slug in the same discipline_id/grade_id space.
+     * @testdox fails to update the slug when there is already another slug in the same discipline_id/grade_id space
      */
     public function testChangeSlugToExistingSlug(): void
     {

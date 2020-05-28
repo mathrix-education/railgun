@@ -16,7 +16,7 @@ class CategoryTest extends ModelTestCase
     use DatabaseTransactions;
 
     /**
-     * @testdox has a valid relations with posts.
+     * @testdox has a valid relations with posts
      * @covers ::posts
      */
     public function testPosts(): void

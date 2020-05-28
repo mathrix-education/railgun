@@ -22,7 +22,7 @@ use function factory;
 class DeliverProductsTest extends ApplicationTestCase
 {
     /**
-     * @testdox ignores the invoice if the metadata type is {@see Cart::IDENTIFIER}.
+     * @testdox ignores the invoice if the metadata type is {@see Cart::IDENTIFIER}
      * @covers ::__construct
      * @covers ::handle
      */
@@ -41,7 +41,7 @@ class DeliverProductsTest extends ApplicationTestCase
     }
 
     /**
-     * @testdox throws an exception if the invoice is not paid.
+     * @testdox throws an exception if the invoice is not paid
      * @covers ::__construct
      * @covers ::handle
      */
@@ -62,7 +62,7 @@ class DeliverProductsTest extends ApplicationTestCase
     }
 
     /**
-     * @testdox Do not report any exception on sandbox environment.
+     * @testdox Do not report any exception on sandbox environment
      * @covers ::__construct
      * @covers ::handle
      */
@@ -78,7 +78,7 @@ class DeliverProductsTest extends ApplicationTestCase
     }
 
     /**
-     * @testdox Reports an exception on non-existing user in production environment.
+     * @testdox Reports an exception on non-existing user in production environment
      * @covers ::__construct
      * @covers ::handle
      */

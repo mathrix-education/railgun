@@ -58,7 +58,7 @@ class MeIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox returns the current user session.
+     * @testdox returns the current user session
      */
     public function testMeSession(): void
     {
@@ -93,7 +93,7 @@ class MeIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox returns the user statistics.
+     * @testdox returns the user statistics
      */
     public function testMeStatistics(): void
     {
@@ -135,7 +135,7 @@ class MeIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox returns the user notifications.
+     * @testdox returns the user notifications
      */
     public function testMeNotifications(): void
     {
@@ -184,7 +184,7 @@ class MeIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox returns the user subscriptions details.
+     * @testdox returns the user subscriptions details
      *
      * @throws ApiErrorException
      */

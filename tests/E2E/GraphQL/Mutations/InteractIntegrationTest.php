@@ -112,7 +112,7 @@ class InteractIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox reset the comprehension level to null.
+     * @testdox reset the comprehension level to null
      */
     public function testInteractSetNull(): void
     {

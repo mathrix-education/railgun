@@ -15,7 +15,7 @@ use function factory;
 class CreateUserIntegrationTest extends GraphQLIntegrationTestCase
 {
     /**
-     * @testdox fails when using a duplicate email.
+     * @testdox fails when using a duplicate email
      */
     public function testExistingEmail(): void
     {

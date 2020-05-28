@@ -53,7 +53,7 @@ class ListChaptersIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox lists chapters using grade and discipline ids.
+     * @testdox lists chapters using grade and discipline ids
      */
     public function testWithIds(): void
     {
@@ -81,7 +81,7 @@ class ListChaptersIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox lists chapters using grade and discipline slugs.
+     * @testdox lists chapters using grade and discipline slugs
      */
     public function testWithSlugs(): void
     {

@@ -38,7 +38,7 @@ class CreateChapterIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox creates a new chapter.
+     * @testdox creates a new chapter
      */
     public function testNonExistingSlug(): void
     {
@@ -54,7 +54,7 @@ class CreateChapterIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox fails to create a chapter with an existing slug/grade_id/discipline_id.
+     * @testdox fails to create a chapter with an existing slug/grade_id/discipline_id
      */
     public function testExistingSlug(): void
     {

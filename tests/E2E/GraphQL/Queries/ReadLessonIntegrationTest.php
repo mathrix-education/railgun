@@ -29,7 +29,7 @@ class ReadLessonIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox strips the content field when the user does not own the parent training.
+     * @testdox strips the content field when the user does not own the parent training
      */
     public function testLessonTrainingNotOwned(): void
     {
@@ -41,7 +41,7 @@ class ReadLessonIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox does not strip the content field when the user owns the parent training.
+     * @testdox does not strip the content field when the user owns the parent training
      */
     public function testLessonTrainingOwned(): void
     {

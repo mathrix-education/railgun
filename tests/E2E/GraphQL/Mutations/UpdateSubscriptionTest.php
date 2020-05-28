@@ -19,7 +19,7 @@ use function factory;
 class UpdateSubscriptionTest extends GraphQLIntegrationTestCase
 {
     /**
-     * @testdox changes the payment method of a subscription.
+     * @testdox changes the payment method of a subscription
      *
      * @throws ApiErrorException
      */
@@ -75,7 +75,7 @@ class UpdateSubscriptionTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox denies the access to a subscription if the user does not own it.
+     * @testdox denies the access to a subscription if the user does not own it
      *
      * @throws ApiErrorException
      */

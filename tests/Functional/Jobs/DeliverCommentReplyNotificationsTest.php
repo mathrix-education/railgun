@@ -19,7 +19,7 @@ use function factory;
 class DeliverCommentReplyNotificationsTest extends ApplicationTestCase
 {
     /**
-     * @testdox delivers the notifications on comment reply.
+     * @testdox delivers the notifications on comment reply
      * @covers ::__construct
      * @covers ::handle
      */

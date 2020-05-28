@@ -79,7 +79,7 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
 
     /**
      * @dataProvider createSuccessDataset
-     * @testdox      creates a subscription using plan $planId and token $paymentMethodId.
+     * @testdox      creates a subscription using plan $planId and token $paymentMethodId
      *
      * @param string $planId          The plan id to use ({@see Plan}).
      * @param string $paymentMethodId The payment method.
@@ -145,7 +145,7 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
 
     /**
      * @dataProvider createSubscriptionFailsDataset
-     * @testdox      fails to create a subscription using token $paymentMethodId with message "$expectedMessage".
+     * @testdox      fails to create a subscription using token $paymentMethodId with message "$expectedMessage"
      *
      * @param string $paymentMethodId The payment method.
      * @param string $expectedMessage The expected error message.
@@ -163,7 +163,7 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox fails to create a subscription because the user is already premium.
+     * @testdox fails to create a subscription because the user is already premium
      */
     public function testFailsAlreadyPremium(): void
     {
