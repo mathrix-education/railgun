@@ -63,6 +63,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Middleware
         $middleware = [
             TeardownMiddleware::class,
             LanguageMiddleware::class,
@@ -73,11 +74,6 @@ class AppServiceProvider extends ServiceProvider
 
         array_map(fn($m) => $this->app->singleton($m), $middleware);
         $this->app->middleware($middleware);
-
-        // Gates
-        Gate::define(PermissionGate::NAME, PermissionGate::class);
-        Gate::define(PremiumGate::NAME, PremiumGate::class);
-        Gate::define(ProductGate::NAME, ProductGate::class);
 
         // MorphMap
         $this->setMorphMap();
