@@ -4,7 +4,7 @@ type Training {
     slug: String!
     duration: Int!
     content: Silicate!
-    image: String!
+    image: String
     available: Boolean!
     price: Int!
     order: Int!
