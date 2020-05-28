@@ -53,15 +53,15 @@ class ProductDirective extends BaseDirective implements FieldMiddleware, Defined
         $previous = $fieldValue->getResolver();
 
         $resolver = function ($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo) use ($previous) {
-            if (Gate::allows(ProductGate::NAME, $root)) {
-                return $previous($root, $args, $context, $resolveInfo);
+            if (Gate::denies(ProductGate::NAME, $root)) {
+                $stripped = $this->directiveArgValue('stripped');
+
+                return is_json($stripped)
+                    ? json_decode($stripped, true, 512, JSON_THROW_ON_ERROR)
+                    : $stripped;
             }
 
-            $stripped = $this->directiveArgValue('stripped');
-
-            return is_json($stripped)
-                ? json_decode($stripped, true, 512, JSON_THROW_ON_ERROR)
-                : $stripped;
+            return $previous($root, $args, $context, $resolveInfo);
         };
 
         return $next($fieldValue->setResolver($resolver));
