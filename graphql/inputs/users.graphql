@@ -1,29 +1,114 @@
 input CreateUser {
-    username: String! @rules(apply: ["unique:users,username"])
-    email: String! @rules(apply: ["email", "max:120", "unique:users,email"])
+    """
+    The user username.
+    Must be unique.
+    Maximum 60 caracters.
+    """
+    username: String! @rules(apply: ["string", "max:60", "unique:users,username"])
+    """
+    The user email.
+    Must be unique.
+    Must be a valid email address.
+    Maximum 150 caracters.
+    """
+    email: String! @rules(apply: ["string", "email", "max:150", "unique:users,email"])
+    """
+    The user first name.
+    Maximum 60 caracters.
+    """
     firstname: String @rules(apply: ["string", "max:60"])
+    """
+    The user last name.
+    Maximum 60 caracters.
+    """
     lastname: String @rules(apply: ["string", "max:60"])
-    password: String!
-    scopes: [String] @permission(scope: "*")
-    grade_id: ID @rules(apply: ["exists:grades,id"])
+    """
+    The user password.
+    """
+    password: String! @rules(apply: ["string"])
+    """
+    The user permissions.
+    Requires the permission `*`.
+    """
+    scopes: [String!] @permission(name: "*")
+    """
+    The user related grade ID.
+    """
+    grade_id: ID @rules(apply: ["integer", "exists:grades,id"])
 }
 
 input UpdateUser {
+    """
+    The targeted user iD.
+    """
     id: ID!
-    username: String @rules(apply: ["unique:users,username", "max:60"])
-    email: String @rules(apply: ["email", "max:120"])
-    firstname: String @rules(apply: ["max:60"])
-    lastname: String @rules(apply: ["max:60"])
+    """
+    The user new username.
+    Must be unique.
+    Maximum 60 caracters.
+    """
+    username: String @rules(apply: ["string", "max:60", "unique:users,username"])
+    """
+    The user new email.
+    Must be unique.
+    Must be a valid email address.
+    Maximum 150 caracters.
+    """
+    email: String @rules(apply: ["string", "email", "max:150", "unique:users,email"])
+    """
+    The user new first name.
+    Maximum 60 caracters.
+    """
+    firstname: String @rules(apply: ["string", "max:60"])
+    """
+    The user new last name.
+    Maximum 60 caracters.
+    """
+    lastname: String @rules(apply: ["string", "max:60"])
+    """
+    The user new password.
+    """
     password: String @rules(apply: ["sometimes", "required"])
-    scopes: [String] @permission(scope: "*")
+    """
+    The user new permissions.
+    Requires the permission `*`.
+    """
+    scopes: [String] @permission(name: "*")
+    """
+    The user new related grade ID.
+    """
     grade_id: ID @rules(apply: ["exists:grades,id"])
 }
 
 input UpdateMe {
-    username: String @rules(apply: ["unique:users,username", "max:60"])
-    email: String @rules(apply: ["email", "max:120"])
-    firstname: String @rules(apply: ["max:60"])
-    lastname: String @rules(apply: ["max:60"])
-    password: String @rules(apply: ["sometimes", "required"])
-    grade_id: ID @rules(apply: ["exists:grades,id"])
+    """
+    The user new username.
+    Must be unique.
+    Maximum 60 caracters.
+    """
+    username: String @rules(apply: ["string", "max:60", "unique:users,username"])
+    """
+    The user new email.
+    Must be a valid email address.
+    Maximum 150 caracters.
+    """
+    email: String @rules(apply: ["string", "email", "max:150", "unique:users,email"])
+    """
+    The user new first name.
+    Maximum 60 caracters.
+    """
+    firstname: String @rules(apply: ["string", "max:60"])
+    """
+    The user new last name.
+    Maximum 60 caracters.
+    """
+    lastname: String @rules(apply: ["string", "max:60"])
+    """
+    The user new password.
+    """
+    password: String @rules(apply: ["string"])
+    """
+    The user new related grade ID.
+    """
+    grade_id: ID @rules(apply: ["integer", "exists:grades,id"])
 }

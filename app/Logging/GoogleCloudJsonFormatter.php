@@ -7,7 +7,6 @@ namespace Railgun\Logging;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Arr;
 use JsonException;
 use Monolog\DateTimeImmutable;
 use Monolog\Formatter\JsonFormatter;
@@ -17,7 +16,6 @@ use Throwable;
 use function array_key_exists;
 use function array_map;
 use function array_merge;
-use function collect;
 use function get_class;
 use function json_encode;
 use const JSON_THROW_ON_ERROR;
@@ -115,10 +113,7 @@ class GoogleCloudJsonFormatter extends JsonFormatter
                 'exception' => get_class($exception),
                 'file'      => $exception->getFile(),
                 'line'      => $exception->getLine(),
-                'trace'     => collect($exception->getTrace())
-                    ->map(static fn($trace) => Arr::except($trace, ['args']))
-                    ->take(20) // Limit tp 20 traces
-                    ->all(),
+                'trace'     => ExceptionTrace::dump($exception),
             ]);
 
             // Inject the status code

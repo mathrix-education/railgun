@@ -175,7 +175,7 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
         bool $expectProductDelivered
     ): void
     {
-        $user      = $this->actingAsNewUser();
+        $user      = $this->withPermissions();
         $variables = $this->getVariables($paymentMethodId);
 
         $this->graphQL(self::QUERY, $variables);
@@ -239,7 +239,7 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testCheckoutFails(string $paymentMethodId, string $expectedError): void
     {
-        $user      = $this->actingAsNewUser();
+        $user      = $this->actingAsGetUser();
         $variables = $this->getVariables($paymentMethodId);
 
         $this->graphQL(self::QUERY, $variables);
@@ -261,7 +261,7 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testCheckoutAlreadyStripeCustomer(): void
     {
-        $user = $this->actingAsNewUser();
+        $user = $this->actingAsGetUser();
         $user->createCustomer();
 
         /** @var Training $training */

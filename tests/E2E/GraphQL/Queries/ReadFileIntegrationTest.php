@@ -53,7 +53,7 @@ class ReadFileIntegrationTest extends GraphQLIntegrationTestCase
         $file = 'test.txt';
         $this->seedTestDirectory($file);
 
-        $this->actingAsNewUser('files:read');
+        $this->withPermissions('files:read');
         $this->executeReadFile($file);
 
         $this->assertResponseOk();
@@ -69,7 +69,7 @@ class ReadFileIntegrationTest extends GraphQLIntegrationTestCase
         $path = $this->getTestPath($file);
         Storage::delete($path);
 
-        $this->actingAsNewUser('files:read');
+        $this->withPermissions('files:read');
         $this->executeReadFile($file);
 
         $this->assertResponseOk();
@@ -87,7 +87,7 @@ class ReadFileIntegrationTest extends GraphQLIntegrationTestCase
         $path = $this->getTestPath($dir);
         $this->seedTestDirectory(['foo/test.txt']);
 
-        $this->actingAsNewUser('files:read');
+        $this->withPermissions('files:read');
         $this->executeReadFile($dir);
 
         $this->assertResponseOk();

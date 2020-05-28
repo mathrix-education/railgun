@@ -1,15 +1,23 @@
 extend type Query {
-    "Paginate the users."
-    paginateUsers: [User!]! @permission(scope: "users:read") @paginate(defaultCount: 10)
+    """
+    Paginate the users.
+    """
+    paginateUsers: [User!]! @permission(name: "users:read") @paginate(defaultCount: 10)
 
-    "Search for chapters."
-    searchUsers(query: String!): [User!]! @permission(scope: "users:read") @paginate(
+    """
+    Read an existing user.
+    """
+    readUser(id: ID @eq): User @permission(name: "users:read") @find
+
+    """
+    Read the current authenticated user.
+    """
+    me: User @guard @auth
+
+    """
+    Search for users.
+    """
+    searchUsers(query: String!): [User!]! @permission(name: "users:read") @paginate(
         builder: "\\Railgun\\GraphQL\\Queries\\SearchUsers"
     )
-
-    "Read an existing user."
-    readUser(id: ID @eq): User @permission(scope: "users:read") @find
-
-    "Read the current authenticated user."
-    me: User @guard @auth
 }

@@ -40,7 +40,7 @@ class CreateCourseIntegrationTest extends GraphQLIntegrationTestCase
 
         $payload['labels'] = ['add' => $labelIds];
 
-        $this->actingAsNewUser('*');
+        $this->withPermissions('*');
         $this->graphQL(
             <<<'GRAPHQL'
             mutation($input: CreateCourse!) {
@@ -56,7 +56,7 @@ class CreateCourseIntegrationTest extends GraphQLIntegrationTestCase
             ['input' => $payload],
         );
 
-        $actualLabelIds = collect($this->getData('createCourse.labels'))->map(static fn($l) => $l->id)->toArray();
+        $actualLabelIds = collect($this->getData('createCourse.labels'))->map(static fn($l) => $l['id'])->toArray();
 
         $this->assertResponseOk();
         $this->assertNoErrors();

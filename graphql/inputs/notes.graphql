@@ -1,10 +1,25 @@
 input CreateNote {
+    """
+    The note content.
+    """
     content: Silicate!
+    """
+    The note related model type.
+    """
     notable_type: NotableType!
+    """
+    The note related model id.
+    """
     notable_id: ID!
 }
 
 input UpdateNote {
-    id: ID!
+    """
+    The targeted note ID.
+    """
+    id: ID! @rules(apply: ["integer", "exists:notes,id"])
+    """
+    The note new content.
+    """
     content: Silicate
 }

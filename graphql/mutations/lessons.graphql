@@ -2,15 +2,15 @@ extend type Mutation {
     "Create a new lesson."
     createLesson(
         input: CreateLesson! @spread
-    ): Lesson! @permission(scope: "lessons:create") @create
+    ): Lesson! @permission(name: "lessons:write") @create
 
     "Update an existing lesson."
     updateLesson(
         input: UpdateLesson! @spread
-    ): Lesson! @permission(scope: "lessons:update") @update
+    ): Lesson! @permission(name: "lessons:write") @update
 
     "Delete an existing lesson."
     deleteLesson(
         id: ID!
-    ): Lesson @permission(scope: "lessons:delete") @delete
+    ): Lesson @permission(name: "lessons:delete") @delete
 }

@@ -1,12 +1,32 @@
 input CreateComment {
-    content: String!
-    "The comment parent id, may be provided only if the comment is an answer to another comment."
-    parent_id: ID
-    commentable_type: CommentableType!
-    commentable_id: ID!
+    """
+    The comment content text.
+    Maxiumum 40000 caracters.
+    """
+    content: String! @rules(apply: ["string", "max:40000"])
+    """
+    The comment parent ID. May only be provided if the comment is an answer to another comment.
+    Must be a valid comment ID.
+    """
+    parent_id: ID @rules(apply: ["exists:comments,id"])
+    """
+    The related model type.
+    """
+    commentable_type: CommentableType! @rules(apply: ["string"])
+    """
+    The related model ID.
+    """
+    commentable_id: ID! @rules(apply: ["integer"])
 }
 
 input UpdateComment {
-    id: ID!
-    content: String
+    """
+    The targeted comment ID.
+    """
+    id: ID! @rules(apply: ["exists:comments,id"])
+    """
+    The comment new content text.
+    Maxiumum 40000 caracters.
+    """
+    content: String! @rules(apply: ["string", "max:40000"])
 }

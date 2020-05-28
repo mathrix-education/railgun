@@ -69,12 +69,12 @@ class ListChaptersIntegrationTest extends GraphQLIntegrationTestCase
         $chapters = $this->getData('listChapters');
         $this->assertGreaterThan(0, count($chapters));
         foreach ($chapters as $chapterData) {
-            $this->assertEquals($chapter->grade_id, $chapterData->grade->id);
-            $this->assertEquals($chapter->discipline_id, $chapterData->discipline->id);
+            $this->assertEquals($chapter->grade_id, $chapterData['grade']['id']);
+            $this->assertEquals($chapter->discipline_id, $chapterData['discipline']['id']);
         }
 
         // Assert chapters ordered
-        $actualOrder   = array_map(static fn($c) => $c->order, $chapters);
+        $actualOrder   = array_map(static fn($c) => $c['order'], $chapters);
         $expectedOrder = $actualOrder;
         sort($expectedOrder);
         $this->assertEquals($expectedOrder, $actualOrder);
@@ -97,8 +97,8 @@ class ListChaptersIntegrationTest extends GraphQLIntegrationTestCase
         $chapters = $this->getData('listChapters');
         $this->assertGreaterThan(0, count($chapters));
         foreach ($chapters as $chapterData) {
-            $this->assertEquals($chapter->grade->slug, $chapterData->grade->slug);
-            $this->assertEquals($chapter->discipline->slug, $chapterData->discipline->slug);
+            $this->assertEquals($chapter->grade->slug, $chapterData['grade']['slug']);
+            $this->assertEquals($chapter->discipline->slug, $chapterData['discipline']['slug']);
         }
     }
 }

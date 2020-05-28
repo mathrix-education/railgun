@@ -8,8 +8,10 @@ use Carbon\Carbon;
 use Exception;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Subscription;
+use Railgun\Models\User;
 use stdClass;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
+use function factory;
 use function in_array;
 use function strtolower;
 use function trans;
@@ -91,18 +93,18 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
         string $expectedStatus
     ): void
     {
-        $this->actingAsNewUser();
+        $this->withPermissions();
         $this->executeCreateSubscription($planId, $paymentMethodId);
 
         /** @var stdClass|Subscription $subscription The response data has the Subscription type */
         $subscription = $this->getData('createSubscription');
 
         // Check that the status
-        $this->assertEquals($expectedStatus, $subscription->status);
+        $this->assertEquals($expectedStatus, $subscription['status']);
 
         if (in_array($planId, ['ANNUALLY', 'BIANNUALLY'], true)) {
             // For annually and biannually plans, check that the anchor is set to the 31st July
-            $currentPeriodEnd = new Carbon($subscription->current_period_end);
+            $currentPeriodEnd = new Carbon($subscription['current_period_end']);
             $this->assertTrue($currentPeriodEnd->isFuture());
             $this->assertEquals(7, $currentPeriodEnd->month);
             $this->assertEquals(31, $currentPeriodEnd->day);
@@ -110,7 +112,7 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
 
         // Check that the subscription has been saved to the database
         $this->seeInDatabase('subscriptions', [
-            'id'     => $subscription->id,
+            'id'     => $subscription['id'],
             'status' => $expectedStatus,
         ]);
     }
@@ -153,7 +155,7 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
         string $expectedMessage
     ): void
     {
-        $user = $this->actingAsNewUser();
+        $user = $this->withPermissions();
         $this->executeCreateSubscription('MONTHLY', $paymentMethodId);
 
         $this->assertEquals($expectedMessage, $this->getContent('errors.0.message'));
@@ -165,7 +167,9 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testFailsAlreadyPremium(): void
     {
-        $user = $this->actingAsNewUser(['premium_bypass' => true]);
+        /** @var User $user */
+        $user = factory(User::class)->create(['premium_bypass' => true]);
+        $this->actingAs($user);
         $this->assertTrue($user->premium);
 
         $this->executeCreateSubscription('MONTHLY', 'pm_card_fr');

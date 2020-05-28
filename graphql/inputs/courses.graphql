@@ -1,32 +1,136 @@
 input CreateCourse {
-    name: String!
-    slug: String!
-    content: Silicate!
-    order: Int
-    premium: Boolean!
-    frozen_at: DateTime @permission(scope: "courses:freeze")
-    visible: Boolean!
-    seo_index: Boolean
-    seo_title: String
-    seo_keywords: String
-    seo_description: String
-    notion_id: ID!
+    """
+    The course human-readable name.
+    Maximum 150 caracters.
+    """
+    name: String! @rules(apply: ["string", "max:150"])
+    """
+    The course slug, which will be used in the URL generation.
+    Maximum 150 caracters.
+    """
+    slug: String! @rules(apply: ["string", "max:150"])
+    """
+    The course content.
+    """
+    content: Silicate! @rules(apply: ["array"])
+    """
+    The course order. If not set, the chapter will be placed in the last position of the group [notion].
+    Must be positive (i.e. >=0).
+    """
+    order: Int @rules(apply: ["nullable", "integer", "min:0"])
+    """
+    If the course is only accessible for premium users.
+    """
+    premium: Boolean! @rules(apply: ["boolean"])
+    """
+    The course frozen date. If set, only the users with the permission `course:freeze` will be allowed to edit the
+    course. Set to `null` to disable.
+    Requires the permission `courses:freeze`.
+    """
+    frozen_at: DateTime @permission(name: "courses:freeze")
+    """
+    If the course should be displayed to the end users.
+    Requires the permission `courses:write:visible`.
+    """
+    visible: Boolean @permission(name: "courses:write:visible")
+    """
+    If the course should be included in the sitemap.
+    Requires the permission `courses:write:seo_index`.
+    """
+    seo_index: Boolean @permission(name: "courses:write:seo_index")
+    """
+    The course title for SEO.
+    Requires the permission `courses:write:seo_title`.
+    """
+    seo_title: String @permission(name: "courses:write:seo_title")
+    """
+    The course keywords for SEO.
+    Requires the permission `courses:write:seo_keywords`.
+    """
+    seo_keywords: String @permission(name: "courses:write:seo_keywords")
+    """
+    The course description for SEO.
+    Requires the permission `courses:write:seo_description`.
+    """
+    seo_description: String @permission(name: "courses:write:seo_description")
+    """
+    The course related notion ID.
+    Must be a valid notion ID.
+    """
+    notion_id: ID! @rules(apply: ["integer", "exists:notions,id"])
+    """
+    The course associated labels.
+    """
     labels: BelongsToMany
 }
 
 input UpdateCourse {
-    id: ID!
-    name: String
-    slug: String
-    content: Silicate
-    order: Int
-    premium: Boolean
-    frozen_at: DateTime @permission(scope: "courses:freeze")
-    visible: Boolean
-    seo_index: Boolean
-    seo_title: String
-    seo_keywords: String
-    seo_description: String
-    notion_id: ID
+    """
+    The targeted course ID.
+    """
+    id: ID! @rules(apply: ["integer", "exists:courses,id"])
+    """
+    The course new human-readable name.
+    Maximum 150 caracters.
+    """
+    name: String @rules(apply: ["string", "max:150"])
+    """
+    The new course slug, which will be used in the URL generation.
+    Requires the permission `courses:write:slug`.
+    Maximum 150 caracters.
+    """
+    slug: String @permission(name: "courses:write:slug") @rules(apply: ["string", "max:150"])
+    """
+    The course new content.
+    """
+    content: Silicate @rules(apply: ["array"])
+    """
+    The course order. If not set, the chapter will be placed in the last position of the group [notion].
+    Must be positive (i.e. >=0).
+    """
+    order: Int @rules(apply: ["nullable", "integer", "min:0"])
+    """
+    If the course is only accessible for premium users.
+    """
+    premium: Boolean @rules(apply: ["boolean"])
+    """
+    The course frozen date. If set, only the users with the permission `course:freeze` will be allowed to edit the
+    course. Set to `null` to disable.
+    Requires the permission `courses:freeze`.
+    """
+    frozen_at: DateTime @permission(name: "courses:freeze")
+    """
+    If the course should be displayed to the end users.
+    Requires the permission `courses:write:visible`.
+    """
+    visible: Boolean @permission(name: "courses:write:visible")
+    """
+    If the course should be included in the sitemap.
+    Requires the permission `courses:write:seo_index`.
+    """
+    seo_index: Boolean @permission(name: "courses:write:seo_index")
+    """
+    The course title for SEO.
+    Requires the permission `courses:write:seo_title`.
+    """
+    seo_title: String @permission(name: "courses:write:seo_title")
+    """
+    The course keywords for SEO.
+    Requires the permission `courses:write:seo_keywords`.
+    """
+    seo_keywords: String @permission(name: "courses:write:seo_keywords")
+    """
+    The course description for SEO.
+    Requires the permission `courses:write:seo_description`.
+    """
+    seo_description: String @permission(name: "courses:write:seo_description")
+    """
+    The course new related notion ID.
+    Must be a valid notion ID.
+    """
+    notion_id: ID @rules(apply: ["integer", "exists:notions,id"])
+    """
+    The course associated labels.
+    """
     labels: BelongsToMany
 }

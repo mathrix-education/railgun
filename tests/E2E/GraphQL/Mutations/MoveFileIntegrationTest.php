@@ -79,7 +79,7 @@ class MoveFileIntegrationTest extends GraphQLIntegrationTestCase
         [$source, $destination] = $this->getFiles();
         Storage::put($source, 'hello');
 
-        $this->actingAsNewUser('files:move');
+        $this->withPermissions('files:move');
         $this->executeMoveFile($source, $destination);
 
         $this->assertResponseOk();
@@ -97,7 +97,7 @@ class MoveFileIntegrationTest extends GraphQLIntegrationTestCase
         Storage::put($source, 'hello');
         Storage::put($destination, 'hello');
 
-        $this->actingAsNewUser('files:move');
+        $this->withPermissions('files:move');
         $this->executeMoveFile($source, $destination, true);
 
         $this->assertResponseOk();
@@ -115,7 +115,7 @@ class MoveFileIntegrationTest extends GraphQLIntegrationTestCase
         Storage::put($source, 'hello');
         Storage::put($destination, 'hello');
 
-        $this->actingAsNewUser('files:move');
+        $this->withPermissions('files:move');
         $this->executeMoveFile($source, $destination, false);
 
         $this->assertResponseOk();
@@ -134,7 +134,7 @@ class MoveFileIntegrationTest extends GraphQLIntegrationTestCase
         $source      = $this->getTestPath('foo');
         $destination = $this->getTestPath('baz');
 
-        $this->actingAsNewUser('files:move');
+        $this->withPermissions('files:move');
         $this->executeMoveFile($source, $destination, false);
 
         $this->assertResponseOk();
@@ -153,7 +153,7 @@ class MoveFileIntegrationTest extends GraphQLIntegrationTestCase
         $source      = $this->getTestPath('foo/bar.txt');
         $destination = $this->getTestPath('baz');
 
-        $this->actingAsNewUser('files:move');
+        $this->withPermissions('files:move');
         $this->executeMoveFile($source, $destination, false);
 
         $this->assertResponseOk();

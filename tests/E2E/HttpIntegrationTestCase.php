@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\E2E;
 
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Support\Arr;
 use JsonException;
 use Railgun\Models\User;
 use stdClass;
 use Tests\ApplicationTestCase;
-use function data_get;
+use function array_merge;
+use function array_unique;
 use function dump;
 use function factory;
-use function is_string;
+use function is_array;
 use function json_decode;
 use const JSON_THROW_ON_ERROR;
 
@@ -21,23 +24,58 @@ class HttpIntegrationTestCase extends ApplicationTestCase
     private $contentCache;
 
     /**
-     * Shortcut to create a new pristine user from the User factory.
+     * @param Authenticatable|User|mixed[] $user  The user or the user attributes.
+     * @param string|null                  $guard The guard to use, use the default one if null is provided.
      *
-     * @param mixed[]|string $attributes The overridden attributes (array) or the permission to use (string).
+     * @return $this
      *
-     * @return User The new user.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
-    protected function actingAsNewUser($attributes = []): User
+    public function actingAs($user = [], $guard = null): self
     {
-        if (is_string($attributes)) {
-            $attributes = ['scopes' => [$attributes]];
+        if (is_array($user)) {
+            $user = factory(User::class)->create($user);
         }
 
-        /** @var User $user */
-        $user = factory(User::class)->create($attributes);
-        $this->actingAs($user);
+        return parent::actingAs($user);
+    }
 
-        return $user;
+    /**
+     * Set the currently logged user and returns it.
+     *
+     * @param Authenticatable|User|mixed[] $user  The user or the user attributes.
+     * @param string|null                  $guard The guard to use, use the default one if null is provided.
+     *
+     * @return User The currently logged user.
+     */
+    public function actingAsGetUser($user = [], ?string $guard = null): User
+    {
+        $this->actingAs($user, $guard);
+
+        return $this->app->make('auth')->guard($guard)->user();
+    }
+
+    /**
+     * @param string|string[]|null $permissions The permissions to grant to the user.
+     * @param string|null          $guard       The guard to use, use the default one if null is provided.
+     *
+     * @return User The application user.
+     */
+    protected function withPermissions($permissions = null, ?string $guard = null): User
+    {
+        if ($permissions === null) {
+            $permissions = [];
+        } elseif (!is_array($permissions)) {
+            $permissions = [$permissions];
+        }
+
+        /** @var User $user The currently logged user. */
+        $user = $this->app->make('auth')->guard($guard)->user() ?? factory(User::class)->create();
+
+        $user->scopes = array_unique(array_merge($user->scopes, $permissions));
+        $user->save();
+
+        return $this->actingAsGetUser($user);
     }
 
     /**
@@ -52,13 +90,13 @@ class HttpIntegrationTestCase extends ApplicationTestCase
     {
         if (!isset($this->contentCache)) {
             try {
-                $this->contentCache = json_decode($this->response->getContent(), false, 512, JSON_THROW_ON_ERROR);
+                $this->contentCache = json_decode($this->response->getContent(), true, 512, JSON_THROW_ON_ERROR);
             } catch (JsonException $exception) {
                 return $default;
             }
         }
 
-        return data_get($this->contentCache, $path, $default);
+        return Arr::get($this->contentCache, $path, $default);
     }
 
     /**

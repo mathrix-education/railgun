@@ -1,15 +1,56 @@
 input CreateCoupon {
-    id: ID!
-    type: CouponType!
-    value: Int!
-    counter: Int!
+    """
+    The coupon ID, which must be unique. The ID is the code which has to be provided to the end customer.
+    Maximum 60 caracters.
+    """
+    id: ID! @rules(apply: ["string", "max:60", "unique:coupons,id"])
+    """
+    The coupon type. Absolute coupons are a flat discount on a total price, while percentage applies a propertional
+    discount.
+    """
+    type: CouponType! @rules(apply: ["string"])
+    """
+    The coupon value.
+    - absolute coupons: the flat discount expressed in **cents**
+    - percentage coupons; the discount expressed in percent [0-100]
+    In all cases, must be strictly positive (i.e. >=1).
+    """
+    value: Int! @rules(apply: ["integer", "min:1"])
+    """
+    The coupon counter. The coupons is considered as *exhausted* when the counter reaches zero.
+    Unlimited use coupons requires the counter to be set to -1.
+    """
+    counter: Int! @rules(apply: ["integer"])
+    """
+    The coupon expiration date. Set to null to disable expiration.
+    """
     expires_at: DateTime
 }
 
 input UpdateCoupon {
-    id: ID!
-    type: CouponType
-    value: Int
-    counter: Int
+    """
+    The targeted coupon ID.
+    """
+    id: ID! @rules(apply: ["string", "max:60", "unique:coupons,id"])
+    """
+    The coupon new type. Absolute coupons are a flat discount on a total price, while percentage applies a propertional
+    discount.
+    """
+    type: CouponType @rules(apply: ["string"])
+    """
+    The coupon new value.
+    - absolute coupons: the flat discount expressed in **cents**
+    - percentage coupons; the discount expressed in percent [0-100]
+    In all cases, must be strictly positive.
+    """
+    value: Int @rules(apply: ["integer", "min:1"])
+    """
+    The coupon new counter. The coupons is considered as *exhausted* when the counter reaches zero.
+    Unlimited use coupons requires the counter to be set to -1.
+    """
+    counter: Int @rules(apply: ["integer"])
+    """
+    The coupon new expiration date. Set to null to disable expiration.
+    """
     expires_at: DateTime
 }

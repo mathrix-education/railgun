@@ -1,4 +1,0 @@
-"""
-A valid URL.
-"""
-scalar URL @scalar(class: "Railgun\\GraphQL\\Scalars\\URL")

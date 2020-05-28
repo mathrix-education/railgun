@@ -27,7 +27,9 @@ extend type Query {
         gradeSlug: String @rules(apply: ["required_with:chapterSlug,disciplineSlug", "required_without:id"])
     ): Chapter
 
-    "Search for chapters."
+    """
+    Search for chapters.
+    """
     searchChapters(query: String!, grade_id: ID!): [Chapter!]! @paginate(
         builder: "\\Railgun\\GraphQL\\Queries\\SearchChapters"
     )

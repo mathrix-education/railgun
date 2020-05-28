@@ -2,8 +2,8 @@ type Flashcard {
     id: ID!
     name: String!
     slug: String!
-    fronts: [Silicate!]!
-    backs: [Silicate!]!
+    fronts: [Silicate!]! @premium(stripped: "[]")
+    backs: [Silicate!]! @premium(stripped: "[]")
     order: Int!
     """
     If the flashcard is premium-locked.
@@ -21,10 +21,10 @@ type Flashcard {
     """
     The flashcard administrative labels. Requires the "labels:read" scope.
     """
-    labels: [Label!] @morphMany @permission(scope: "labels:read")
+    labels: [Label!] @morphMany @permission(name: "labels:read")
     """
     The flashcard administrative notes. Requires the "notes:read" scope.
     """
-    notes: [Note!] @morphMany @permission(scope: "notes:read")
+    notes: [Note!] @morphMany @permission(name: "notes:read")
     interaction: Interaction @belongsTo
 }

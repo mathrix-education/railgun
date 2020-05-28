@@ -1,18 +1,63 @@
 input CreatePost {
-    title: String!
-    slug: String!
+    """
+    The post human-readable name.
+    Maximum 150 caracters.
+    """
+    title: String! @rules(apply: ["string", "max:150"])
+    """
+    The post slug, which will be used in the URL generation.
+    Maximum 150 caracters.
+    """
+    slug: String! @rules(apply: ["string", "max:150"])
+    """
+    The post content.
+    """
     content: Silicate!
-    order: Int
-    visible: Boolean!
-    category_id: ID
+    """
+    The post order. If not set, the chapter will be placed in the last position of the group [category].
+    Must be positive (i.e. >=0).
+    """
+    order: Int @rules(apply: ["nullable", "integer", "min:0"])
+    """
+    If the post should be displayed to the end users.
+    """
+    visible: Boolean! @rules(apply: ["boolean"])
+    """
+    The post related category ID.
+    """
+    category_id: ID @rules(apply: ["integer", "exists:categories,id"])
 }
 
 input UpdatePost {
+    """
+    The target post ID.
+    """
     id: ID!
-    title: String
-    slug: String
+    """
+    The post new human-readable name.
+    Maximum 150 caracters.
+    """
+    title: String @rules(apply: ["string", "max:150"])
+    """
+    The post new slug, which will be used in the URL generation.
+    Maximum 150 caracters.
+    """
+    slug: String @rules(apply: ["string", "max:150"])
+    """
+    The post new content.
+    """
     content: Silicate
-    order: Int
-    visible: Boolean
-    category_id: ID
+    """
+    The post order. If not set, the chapter will be placed in the last position of the group [category].
+    Must be positive (i.e. >=0).
+    """
+    order: Int @rules(apply: ["nullable", "integer", "min:0"])
+    """
+    If the post should be displayed to the end users.
+    """
+    visible: Boolean @rules(apply: ["boolean"])
+    """
+    The post new related category ID.
+    """
+    category_id: ID @rules(apply: ["integer", "exists:categories,id"])
 }

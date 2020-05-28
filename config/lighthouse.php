@@ -46,7 +46,7 @@ return [
             : DisableIntrospection::DISABLED,
     ],
     'paginate_max_count'      => 100,
-    'debug'                   => env('APP_ENV') === 'production'
+    'debug'                   => in_array(env('APP_ENV'), ['production', 'testing'], true)
         ? Debug::INCLUDE_DEBUG_MESSAGE
         : Debug::INCLUDE_DEBUG_MESSAGE | Debug::INCLUDE_TRACE,
     'error_handlers'          => [

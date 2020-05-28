@@ -1,4 +1,6 @@
 extend type Query {
-    "Read an existing report."
-    readReport(id: ID @eq): Report @permission(scope: "reports:read") @find
+    """
+    Read an existing report.
+    """
+    readReport(id: ID @eq): Report @permission(name: "reports:read") @find
 }

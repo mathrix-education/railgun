@@ -1,7 +1,11 @@
 extend type Query {
-    "List all packs."
+    """
+    List all packs.
+    """
     listPacks: [Pack!]! @all
 
-    "Read an existing pack."
+    """
+    Read an existing pack.
+    """
     readPack(id: ID @eq): Pack @find
 }

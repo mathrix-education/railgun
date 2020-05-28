@@ -25,7 +25,7 @@ class UpdateSubscriptionTest extends GraphQLIntegrationTestCase
      */
     public function testPaymentMethodReplacement(): void
     {
-        $user            = $this->actingAsNewUser();
+        $user            = $this->withPermissions();
         $paymentMethodId = 'pm_card_fr';
         $customer        = $user->createCustomer($paymentMethodId);
         $user->refresh();
@@ -100,7 +100,7 @@ class UpdateSubscriptionTest extends GraphQLIntegrationTestCase
 
         dispatch_now(new UpsertSubscription($subscription));
 
-        $this->actingAsNewUser();
+        $this->withPermissions();
 
         $this->graphql(
             <<<'GRAPHQL'

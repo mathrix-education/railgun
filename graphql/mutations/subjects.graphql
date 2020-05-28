@@ -2,15 +2,15 @@ extend type Mutation {
     "Create a new subject."
     createSubject(
         input: CreateSubject! @spread
-    ): Subject! @permission(scope: "subjects:create") @create
+    ): Subject! @permission(name: "subjects:write") @create
 
     "Update an existing subject."
     updateSubject(
         input: UpdateSubject! @spread
-    ): Subject @permission(scope: "subjects:update") @update
+    ): Subject @permission(name: "subjects:write") @update
 
     "Delete an existing subject."
     deleteSubject(
         id: ID!
-    ): Subject @permission(scope: "subjects:delete") @delete
+    ): Subject @permission(name: "subjects:delete") @delete
 }

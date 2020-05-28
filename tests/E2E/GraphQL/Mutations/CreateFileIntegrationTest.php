@@ -70,7 +70,7 @@ class CreateFileIntegrationTest extends GraphQLIntegrationTestCase
     {
         $path = 'foo/bar/test.jpg';
         Storage::delete($path);
-        $this->actingAsNewUser('files:create');
+        $this->withPermissions('files:write');
 
         $this->executeCreateFile($path);
 
@@ -89,7 +89,7 @@ class CreateFileIntegrationTest extends GraphQLIntegrationTestCase
     {
         $path = 'foo/bar/override.jpg';
         Storage::put($path, 'hello world');
-        $this->actingAsNewUser('files:create');
+        $this->withPermissions('files:write');
 
         $this->executeCreateFile($path);
 

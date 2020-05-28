@@ -1,4 +1,6 @@
 extend type Query {
-    "Read an existing lesson."
+    """
+    Read an existing lesson.
+    """
     readLesson(id: ID @eq): Lesson @find
 }

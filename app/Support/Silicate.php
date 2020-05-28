@@ -56,6 +56,7 @@ class Silicate
      */
     public static function video(): array
     {
+        // @codeCoverageIgnoreStart
         if (!self::$youtubeIds) {
             self::$youtubeIds = json_decode(
                 file_get_contents(storage_path('raws/youtube.json')),
@@ -64,6 +65,7 @@ class Silicate
                 JSON_THROW_ON_ERROR,
             );
         }
+        // @codeCoverageIgnoreEnd
 
         return [
             'uuid'    => self::faker()->uuid,

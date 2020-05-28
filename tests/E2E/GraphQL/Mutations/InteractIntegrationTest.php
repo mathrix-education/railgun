@@ -75,7 +75,7 @@ class InteractIntegrationTest extends GraphQLIntegrationTestCase
     ): void
     {
         Queue::fake();
-        $user = $this->actingAsNewUser();
+        $user = $this->withPermissions();
         /** @var Interactable|Model $model */
         $model = forward_static_call_array([$class, 'random'], []);
 
@@ -116,7 +116,7 @@ class InteractIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testInteractSetNull(): void
     {
-        $user = $this->actingAsNewUser();
+        $user = $this->withPermissions();
         /** @var Interaction $interaction */
         $interaction = factory(Interaction::class)->create([
             'interactable_id'   => Course::random()->id,

@@ -45,7 +45,7 @@ class DeleteFileIntegrationTest extends GraphQLIntegrationTestCase
     public function testDeleteExistingFile(): void
     {
         $this->seedTestDirectory(['foo.txt']);
-        $this->actingAsNewUser('files:delete');
+        $this->withPermissions('files:delete');
 
         $this->executeDeleteBlob('foo.txt');
 
@@ -60,7 +60,7 @@ class DeleteFileIntegrationTest extends GraphQLIntegrationTestCase
     {
         $path = $this->getTestPath('foo.txt');
         Storage::delete($path);
-        $this->actingAsNewUser('files:delete');
+        $this->withPermissions('files:delete');
 
         $this->executeDeleteBlob($path);
 
@@ -77,7 +77,7 @@ class DeleteFileIntegrationTest extends GraphQLIntegrationTestCase
     {
         $path = $this->getTestPath('foo');
         $this->seedTestDirectory(['foo/bar.txt']);
-        $this->actingAsNewUser('files:delete');
+        $this->withPermissions('files:delete');
 
         $this->executeDeleteBlob($path);
 

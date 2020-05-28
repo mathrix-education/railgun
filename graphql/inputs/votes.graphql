@@ -1,4 +1,10 @@
 input CreateVote {
-    comment_id: ID!
+    """
+    The vote related comment ID.
+    """
+    comment_id: ID! @rules(apply: ["exists:comments,id"])
+    """
+    The vote value.
+    """
     value: VoteValue!
 }

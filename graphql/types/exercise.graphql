@@ -5,10 +5,10 @@ enum ExerciseType {
 type Exercise {
     id: ID!
     type: ExerciseType!
-    questions: [Silicate!]!
-    choices: [[Silicate!]!]!
-    solutions: [[Int!]!]!
-    explanations: [[Silicate!]!]!
+    questions: [Silicate!]! @premium(stripped: "[]")
+    choices: [[Silicate!]!]! @premium(stripped: "[]")
+    solutions: [[Int!]!]! @premium(stripped: "[]")
+    explanations: [[Silicate!]!]! @premium(stripped: "[]")
     order: Int!
     """
     If the exercise is premium-locked.
@@ -26,10 +26,10 @@ type Exercise {
     """
     The exercise administrative labels. Requires the "labels:read" scope.
     """
-    labels: [Label!] @morphMany @permission(scope: "labels:read")
+    labels: [Label!] @morphMany @permission(name: "labels:read")
     """
     The exercise administrative notes. Requires the "notes:read" scope.
     """
-    notes: [Note!] @morphMany @permission(scope: "notes:read")
+    notes: [Note!] @morphMany @permission(name: "notes:read")
     interaction: Interaction @belongsTo
 }

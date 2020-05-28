@@ -1,4 +1,6 @@
 extend type Query {
-    "Read an existing post."
+    """
+    Read an existing post.
+    """
     readPost(id: ID @eq): Post @find
 }

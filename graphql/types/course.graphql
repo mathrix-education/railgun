@@ -2,7 +2,7 @@ type Course {
     id: ID!
     name: String!
     slug: String!
-    content: Silicate!
+    content: Silicate! @premium(stripped: "[]")
     order: Int!
     """
     If the flashcard is premium-locked.
@@ -24,10 +24,10 @@ type Course {
     """
     The course administrative labels. Requires the "labels:read" scope.
     """
-    labels: [Label!] @morphMany @permission(scope: "labels:read")
+    labels: [Label!] @morphMany @permission(name: "labels:read")
     """
     The course administrative notes. Requires the "notes:read" scope.
     """
-    notes: [Note!] @morphMany @permission(scope: "notes:read")
+    notes: [Note!] @morphMany @permission(name: "notes:read")
     interaction: Interaction @belongsTo
 }

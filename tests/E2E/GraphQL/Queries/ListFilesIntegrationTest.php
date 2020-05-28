@@ -60,7 +60,7 @@ class ListFilesIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testReadRootDirectory(string $path): void
     {
-        $this->actingAsNewUser('files:read');
+        $this->withPermissions('files:read');
         $this->executeListFiles($path);
 
         $this->assertNoErrors();
@@ -78,7 +78,7 @@ class ListFilesIntegrationTest extends GraphQLIntegrationTestCase
             Storage::put($this->getTestDirectory() . '/' . $file, 'hello');
         });
 
-        $this->actingAsNewUser('files:read');
+        $this->withPermissions('files:read');
         $this->executeListFiles($this->getTestDirectory());
 
         $this->assertNoErrors();
@@ -91,7 +91,7 @@ class ListFilesIntegrationTest extends GraphQLIntegrationTestCase
     public function testReadNonExistingDirectory(): void
     {
         $directory = $this->getTestPath('idontexists');
-        $this->actingAsNewUser('files:read');
+        $this->withPermissions('files:read');
         $this->executeListFiles($directory);
 
         $this->assertResponseOk();

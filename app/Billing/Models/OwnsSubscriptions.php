@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Railgun\Models\Subscription;
 use Railgun\Models\User;
 use Stripe\Subscription as StripeSubscription;
+use function count;
 
 /**
  * @property-read Collection|Subscription[] $subscriptions
@@ -34,6 +35,11 @@ trait OwnsSubscriptions
      */
     public function getPremiumAttribute(): bool
     {
+        if (count($this->scopes) > 0) {
+            // If the user has at least one scope, he is considered as premium
+            return true;
+        }
+
         if ($this->premium_bypass) {
             // Permanent premium bypass
             return true;

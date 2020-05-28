@@ -2,15 +2,15 @@ extend type Mutation {
     "Create a new exam."
     createExam(
         input: CreateExam! @spread
-    ): Exam @permission(scope: "exams:create") @create
+    ): Exam @permission(name: "exams:write") @create
 
     "Update an existing exam."
     updateExam(
         input: UpdateExam! @spread
-    ): Exam @permission(scope: "exams:update") @update
+    ): Exam @permission(name: "exams:write") @update
 
     "Delete an existing exam."
     deleteExam(
         id: ID!
-    ): Exam  @permission(scope: "exams:delete") @delete
+    ): Exam  @permission(name: "exams:delete") @delete
 }

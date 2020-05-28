@@ -1,11 +1,11 @@
 extend type Mutation {
     createUser(
         input: CreateUser! @spread
-    ): User @permission(scope: "users:create") @create
+    ): User @permission(name: "users:write") @create
 
     updateUser(
         input: UpdateUser! @spread
-    ): User @permission(scope: "users:update") @update
+    ): User @permission(name: "users:write") @update
 
     """
     Update the current user.

@@ -2,15 +2,15 @@ extend type Mutation {
     "Create a new posts."
     createPost(
         input: CreatePost! @spread
-    ): Post @permission(scope: "posts:create") @create
+    ): Post @permission(name: "posts:write") @create
 
     "Update an existing post."
     updatePost(
         input: UpdatePost! @spread
-    ): Post @permission(scope: "posts:update") @update
+    ): Post @permission(name: "posts:write") @update
 
     "Delete an existing post."
     deletePost(
         id: ID!
-    ): Post @permission(scope: "posts:delete") @delete
+    ): Post @permission(name: "posts:delete") @delete
 }

@@ -7,10 +7,10 @@ extend type Mutation {
     "Update an existing report."
     updateReport(
         input: UpdateReport! @spread
-    ): Report @permission(scope: "reports:update")  @update
+    ): Report @permission(name: "reports:write")  @update
 
     "Delete an existing report."
     deleteReport(
         id: ID!
-    ): Report @permission(scope: "reports:delete")  @delete
+    ): Report @permission(name: "reports:delete")  @delete
 }

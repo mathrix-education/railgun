@@ -7,9 +7,10 @@ namespace Railgun\Middleware;
 use Closure;
 use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Railgun\Auth\PermissionGate;
 use Railgun\Models\User;
 use Symfony\Component\HttpFoundation\Response;
-use function scope;
 
 /**
  * Allow administrators to impersonate other users.
@@ -33,7 +34,7 @@ class ImpersonateMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->hasHeader(self::HEADER) && scope('users:impersonate')) {
+        if ($request->hasHeader(self::HEADER) && Gate::allows(PermissionGate::NAME, 'users:impersonate')) {
             $targetId = $request->header(self::HEADER);
 
             /** @var User $target */

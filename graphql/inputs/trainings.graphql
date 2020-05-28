@@ -1,26 +1,99 @@
 input CreateTraining {
-    name: String!
-    slug: String!
-    duration: Int!
+    """
+    The training human-readable name.
+    Maximum 150 caracters.
+    """
+    name: String! @rules(apply: ["string", "max:150"])
+    """
+    The training slug, which will be used in the URL generation.
+    Maximum 150 caracters.
+    """
+    slug: String! @rules(apply: ["string", "max:150"])
+    """
+    The training duration in minutes.
+    Must be strictly positive (i.e. >0).
+    """
+    duration: Int! @rules(apply: ["integer", "min:1"])
+    """
+    The training description.
+    """
     content: Silicate!
-    image: URL
-    available: Boolean!
-    price: Int!
-    order: Int
-    visible: Boolean!
+    """
+    The training image.
+    """
+    image: String @rules(apply: ["string"])
+    """
+    If the training is avalaible for sale.
+    """
+    available: Boolean! @rules(apply: ["boolean"])
+    """
+    The training price in cents.
+    Must be strictly positive (i.e. >0).
+    """
+    price: Int! @rules(apply: ["integer", "min:1"])
+    """
+    The training order. If not set, the section will be placed in the last position.
+    Must be positive (i.e. >=0).
+    """
+    order: Int @rules(apply: ["nullable", "integer", "min:0"])
+    """
+    If the training should be displayed to the end users.
+    """
+    visible: Boolean! @rules(apply: ["boolean"])
+    """
+    The training associated labels.
+    """
     grades: BelongsToMany
 }
 
 input UpdateTraining {
-    id: ID!
-    name: String
-    slug: String
-    duration: Int
+    """
+    The targeted training ID.
+    """
+    id: ID! @rules(apply: ["integer", "exists:trainings,id"])
+    """
+    The training new human-readable name.
+    Maximum 150 caracters.
+    """
+    name: String! @rules(apply: ["string", "max:150"])
+    """
+    The training new slug, which will be used in the URL generation.
+    Maximum 150 caracters.
+    """
+    slug: String! @rules(apply: ["string", "max:150"])
+    """
+    The training duration in minutes.
+    Must be strictly positive (i.e. >0).
+    """
+    duration: Int @rules(apply: ["integer", "min:1"])
+    """
+    The training description.
+    """
     content: Silicate
-    image: URL
+    """
+    The training image.
+    """
+    image: String @rules(apply: ["string"])
+    """
+    If the training is avalaible for sale.
+    """
     available: Boolean
-    price: Int
-    order: Int
-    visible: Boolean
+    """
+    The training price in cents.
+    Must be strictly positive (i.e. >0).
+    """
+    price: Int @rules(apply: ["integer", "min:1"])
+    """
+    The training order. If not set, the section will be placed in the last position.
+    Must be positive (i.e. >=0).
+    """
+    order: Int @rules(apply: ["nullable", "integer", "min:0"])
+    """
+    If the training should be displayed to the end users.
+    """
+    visible: Boolean @rules(apply: ["boolean"])
+    """
+    The training associated labels.
+    """
     grades: BelongsToMany
 }

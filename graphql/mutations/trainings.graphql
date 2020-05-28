@@ -2,13 +2,13 @@ extend type Mutation {
     "Create a new training."
     createTraining(
         input: CreateTraining! @spread
-    ): Training @permission(scope: "trainings:create") @create
+    ): Training @permission(name: "trainings:write") @create
 
     "Update an existing training."
     updateTraining(
         input: UpdateTraining! @spread
-    ): Training @permission(scope: "trainings:update") @update
+    ): Training @permission(name: "trainings:write") @update
 
     "Delete an existing traiting."
-    deleteTraining(id: ID!): Training @permission(scope: "trainings:delete") @delete
+    deleteTraining(id: ID!): Training @permission(name: "trainings:delete") @delete
 }

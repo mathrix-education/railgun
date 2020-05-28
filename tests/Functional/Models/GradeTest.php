@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Models;
 
+use Illuminate\Support\Arr;
 use Laravel\Lumen\Testing\DatabaseTransactions;
+use Railgun\Models\Chapter;
 use Railgun\Models\Grade;
+use function factory;
 
 /**
  * @testdox Model Grade
@@ -45,6 +48,20 @@ class GradeTest extends ModelTestCase
     public function testChapters(): void
     {
         $this->assertHasMany(Grade::class, 'chapters');
+    }
+
+    /**
+     * @covers ::disciplines
+     */
+    public function testDisciplines(): void
+    {
+        $this->assertBelongsToMany(
+            Grade::class,
+            'disciplines',
+            [],
+            [],
+            Arr::except(factory(Chapter::class)->raw(), ['grade_id', 'discipline_id']),
+        );
     }
 
     /**

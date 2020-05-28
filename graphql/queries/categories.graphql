@@ -1,7 +1,11 @@
 extend type Query {
-    "List all categories."
+    """
+    List all categories.
+    """
     listCategories: [Category!]! @all
 
-    "Read a category."
+    """
+    Read a category.
+    """
     readCategory(id: ID! @eq): Category @find
 }

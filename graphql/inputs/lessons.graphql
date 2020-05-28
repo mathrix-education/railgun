@@ -1,20 +1,71 @@
 input CreateLesson {
-    name: String!
-    slug: String!
+    """
+    The lesson human-readable name.
+    Maximum 150 caracters.
+    """
+    name: String! @rules(apply: ["string", "max:150"])
+    """
+    The lesson slug, which will be used in the URL generation.
+    Maximum 150 caracters.
+    """
+    slug: String! @rules(apply: ["string", "max:150"])
+    """
+    The lesson content.
+    """
     content: Silicate!
-    order: Int
-    visible: Boolean!
-    section_id: ID
+    """
+    The lesson order. If not set, the chapter will be placed in the last position of the group [section].
+    Must be positive (i.e. >=0).
+    """
+    order: Int @rules(apply: ["nullable", "integer", "min:0"])
+    """
+    If the lesson should be displayed to the end users.
+    """
+    visible: Boolean! @rules(apply: ["boolean"])
+    """
+    The lesson related section ID.
+    """
+    section_id: ID @rules(apply: ["integer", "exists:sections,id"])
+    """
+    The flashcard associated labels.
+    """
     labels: BelongsToMany
 }
 
 input UpdateLesson {
-    id: ID!
-    name: String
-    slug: String
+    """
+    The targeted lesson ID.
+    """
+    id: ID! @rules(apply: ["integer", "exists:lessons,id"])
+    """
+    The lesson new human-readable name.
+    Maximum 150 caracters.
+    """
+    name: String @rules(apply: ["string", "max:150"])
+    """
+    The lesson new slug, which will be used in the URL generation.
+    Maximum 150 caracters.
+    """
+    slug: String @rules(apply: ["string", "max:150"])
+    """
+    The lesson new content.
+    """
     content: Silicate
-    order: Int
-    visible: Boolean
-    section_id: ID
+    """
+    The lesson new order. If not set, the chapter will be placed in the last position of the group [section].
+    Must be positive (i.e. >=0).
+    """
+    order: Int @rules(apply: ["nullable", "integer", "min:0"])
+    """
+    If the lesson should be displayed to the end users.
+    """
+    visible: Boolean @rules(apply: ["boolean"])
+    """
+    The lesson related section ID.
+    """
+    section_id: ID @rules(apply: ["integer", "exists:sections,id"])
+    """
+    The flashcard associated labels.
+    """
     labels: BelongsToMany
 }

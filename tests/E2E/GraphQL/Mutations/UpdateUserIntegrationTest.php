@@ -42,7 +42,7 @@ class UpdateUserIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testChangeGrade(): void
     {
-        $this->actingAsNewUser('users:update');
+        $this->withPermissions('users:write');
 
         /** @var User $user */
         $user  = factory(User::class)->create();
@@ -64,7 +64,7 @@ class UpdateUserIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testStarCanUpdateScopes(): void
     {
-        $this->actingAsNewUser('*');
+        $this->withPermissions('*');
 
         /** @var User $user */
         $user   = factory(User::class)->create();
@@ -82,7 +82,7 @@ class UpdateUserIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testNonStarCannotUpdateScopes(): void
     {
-        $this->actingAsNewUser('users:update');
+        $this->withPermissions('users:write');
 
         /** @var User $user */
         $user = factory(User::class)->create();

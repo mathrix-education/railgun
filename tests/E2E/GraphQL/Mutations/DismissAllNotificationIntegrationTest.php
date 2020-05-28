@@ -36,7 +36,7 @@ class DismissAllNotificationIntegrationTest extends GraphQLIntegrationTestCase
         $readNotificationsCount = 2;
 
         // Setup the existing environment
-        $user = $this->actingAsNewUser();
+        $user = $this->withPermissions();
 
         collect(range(1, $notificationCount))->each(static function () use ($user): void {
             $user->notifyNow(new CommentReplyNotification(Comment::random(), Comment::random()));
@@ -55,7 +55,7 @@ class DismissAllNotificationIntegrationTest extends GraphQLIntegrationTestCase
         $notifications = collect($this->getData('dismissAllNotifications.data'));
 
         $this->assertCount($notificationCount, $notifications);
-        $notifications->each(fn($n) => $this->assertNotNull($n->read_at));
+        $notifications->each(fn($n) => $this->assertNotNull($n['read_at']));
 
         $user->refresh();
 

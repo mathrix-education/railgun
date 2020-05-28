@@ -13,8 +13,8 @@ type User {
     premium: Boolean!
     premium_bypass: Boolean!
     premium_bypass_expires_at: DateTime
-    stripe_id: String
-    braintree_id: String
+    stripe_id: String @permission(name: "users:read")
+    braintree_id: String @permission(name: "users:read")
     created_at: DateTime!
     updated_at: DateTime!
     grade: Grade @belongsTo

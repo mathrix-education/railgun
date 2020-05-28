@@ -6,12 +6,13 @@ namespace Railgun\Models\Traits;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
+use Railgun\Auth\PermissionGate;
 use Railgun\Exceptions\MissingScopeException;
 use function class_basename;
 use function constant;
 use function defined;
-use function scope;
 
 /**
  * @property Carbon $frozen_at The date/time when the model was frozen.
@@ -27,7 +28,7 @@ trait Freezable
             // frozen_at write is handled by the GraphQL permission directive
             $scope = $model->getFrozenScope();
 
-            if ($model->isFrozen() && !scope($scope)) {
+            if ($model->isFrozen() && Gate::denies(PermissionGate::NAME, $scope)) {
                 throw new MissingScopeException([$scope]);
             }
         });

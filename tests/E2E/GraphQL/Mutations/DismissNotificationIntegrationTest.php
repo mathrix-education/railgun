@@ -29,7 +29,7 @@ class DismissNotificationIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testDismissNotification(): void
     {
-        $user = $this->actingAsNewUser();
+        $user = $this->withPermissions();
         $user->notifyNow(new CommentReplyNotification(Comment::random(), Comment::random()));
 
         $this->assertCount(1, $user->notifications);
