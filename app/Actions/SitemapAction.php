@@ -74,11 +74,13 @@ class SitemapAction extends Controller
                 $url->setLastMod(new Carbon($data->updated_at));
                 $url->setPriority('1');
 
+                // @codeCoverageIgnoreStart
                 try {
                     $wall = json_decode($data->content, true, 512, JSON_THROW_ON_ERROR);
                 } catch (JsonException $exception) {
-                    return; // @codeCoverageIgnore
+                    return;
                 }
+                // @codeCoverageIgnoreEnd
 
                 // Search for video bricks
                 collect($wall)

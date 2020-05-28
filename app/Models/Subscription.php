@@ -89,7 +89,7 @@ class Subscription extends Model
     {
         return $this->cache('latest_invoice', function () {
             if ($this->processor === self::PROCESSOR_BRAINTREE) {
-                return null;
+                return null; // @codeCoverageIgnore
             }
 
             $subscription = StripeSubscription::retrieve([
@@ -110,7 +110,7 @@ class Subscription extends Model
     {
         return $this->cache('payment_method', function () {
             if ($this->processor === self::PROCESSOR_BRAINTREE) {
-                return null;
+                return null; // @codeCoverageIgnore
             }
 
             $subscription = StripeSubscription::retrieve([
@@ -121,7 +121,7 @@ class Subscription extends Model
             $paymentMethod = $subscription->default_payment_method;
 
             if ($paymentMethod->type !== 'card') {
-                return null;
+                return null; // @codeCoverageIgnore
             }
 
             return [
