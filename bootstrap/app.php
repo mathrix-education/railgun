@@ -58,7 +58,9 @@ $app->register(CacheFallbackServiceProvider::class);
 
 // GraphQL
 $app->register(LighthouseServiceProvider::class);
-$app->register(TracingServiceProvider::class);
+if ($app->environment(['stage', 'edge']) && !$app->runningUnitTests()) {
+    $app->register(TracingServiceProvider::class);
+}
 $app->register(GraphQLPlaygroundServiceProvider::class);
 
 // Authentication

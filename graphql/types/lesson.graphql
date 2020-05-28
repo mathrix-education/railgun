@@ -2,7 +2,7 @@ type Lesson {
     id: ID!
     name: String!
     slug: String!
-    content: Silicate!
+    content: Silicate! @product(stripped: "[]")
     order: Int!
     visible: Boolean!
     created_at: DateTime!

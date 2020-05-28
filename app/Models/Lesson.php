@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Traits\Commentable;
 use Railgun\Models\Traits\Labelable;
-use Railgun\Models\Traits\Lockable;
 use Railgun\Models\Traits\Notable;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
@@ -32,13 +31,12 @@ class Lesson extends Model
 {
     use Commentable;
     use Labelable;
-    use Lockable;
     use Notable;
     use Randomizable;
     use Reorderable;
     use Sluggable;
 
-    protected       $fillable   = [
+    protected        $fillable   = [
         'name',
         'slug',
         'content',
@@ -46,11 +44,11 @@ class Lesson extends Model
         'visible',
         'section_id',
     ];
-    protected       $casts      = [
+    protected        $casts      = [
         'content' => 'array',
         'visible' => 'boolean',
     ];
-    protected array $orderGroup = ['section_id'];
+    protected array  $orderGroup = ['section_id'];
 
     /**
      * @return BelongsTo<Section>

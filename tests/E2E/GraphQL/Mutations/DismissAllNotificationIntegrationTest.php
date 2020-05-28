@@ -55,7 +55,7 @@ class DismissAllNotificationIntegrationTest extends GraphQLIntegrationTestCase
         $notifications = collect($this->getData('dismissAllNotifications.data'));
 
         $this->assertCount($notificationCount, $notifications);
-        $notifications->each(fn($n) => $this->assertNotNull($n->read_at));
+        $notifications->each(fn($n) => $this->assertNotNull($n['read_at']));
 
         $user->refresh();
 

@@ -3,7 +3,7 @@ type Exam {
     name: String!
     slug: String!
     duration: Int
-    content: Silicate
+    content: Silicate @premium(stripped: "[]")
     order: Int!
     """
     If the exam is premium-locked.

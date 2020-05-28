@@ -2,7 +2,7 @@ type Course {
     id: ID!
     name: String!
     slug: String!
-    content: Silicate!
+    content: Silicate! @premium(stripped: "[]")
     order: Int!
     """
     If the flashcard is premium-locked.

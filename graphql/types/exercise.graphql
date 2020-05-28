@@ -5,10 +5,10 @@ enum ExerciseType {
 type Exercise {
     id: ID!
     type: ExerciseType!
-    questions: [Silicate!]!
-    choices: [[Silicate!]!]!
-    solutions: [[Int!]!]!
-    explanations: [[Silicate!]!]!
+    questions: [Silicate!]! @premium(stripped: "[]")
+    choices: [[Silicate!]!]! @premium(stripped: "[]")
+    solutions: [[Int!]!]! @premium(stripped: "[]")
+    explanations: [[Silicate!]!]! @premium(stripped: "[]")
     order: Int!
     """
     If the exercise is premium-locked.

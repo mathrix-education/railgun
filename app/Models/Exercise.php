@@ -12,7 +12,6 @@ use Railgun\Models\Traits\Content;
 use Railgun\Models\Traits\Freezable;
 use Railgun\Models\Traits\Interactable;
 use Railgun\Models\Traits\Labelable;
-use Railgun\Models\Traits\Lockable;
 use Railgun\Models\Traits\Notable;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
@@ -39,7 +38,6 @@ class Exercise extends Model implements Content
     use Freezable;
     use Interactable;
     use Labelable;
-    use Lockable;
     use Notable;
     use Randomizable;
     use Reorderable;
@@ -82,38 +80,6 @@ class Exercise extends Model implements Content
     public function subject(): BelongsTo
     {
         return $this->belongsTo(Subject::class);
-    }
-
-    /**
-     * @return mixed[] The potentially locked "questions" field.
-     */
-    public function getQuestionsAttribute(): array
-    {
-        return $this->lock('questions', []);
-    }
-
-    /**
-     * @return mixed[] The potentially locked "choices" field.
-     */
-    public function getChoicesAttribute(): array
-    {
-        return $this->lock('choices', []);
-    }
-
-    /**
-     * @return mixed[] The potentially locked "solutions" field.
-     */
-    public function getSolutionsAttribute(): array
-    {
-        return $this->lock('solutions', []);
-    }
-
-    /**
-     * @return mixed[] The potentially locked "explanations" field.
-     */
-    public function getExplanationsAttribute(): array
-    {
-        return $this->lock('explanations', []);
     }
 
     /**

@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Tests\E2E;
 
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Support\Arr;
 use JsonException;
 use Railgun\Models\User;
 use stdClass;
 use Tests\ApplicationTestCase;
 use function array_merge;
 use function array_unique;
-use function data_get;
 use function dump;
 use function factory;
 use function is_array;
@@ -90,13 +90,13 @@ class HttpIntegrationTestCase extends ApplicationTestCase
     {
         if (!isset($this->contentCache)) {
             try {
-                $this->contentCache = json_decode($this->response->getContent(), false, 512, JSON_THROW_ON_ERROR);
+                $this->contentCache = json_decode($this->response->getContent(), true, 512, JSON_THROW_ON_ERROR);
             } catch (JsonException $exception) {
                 return $default;
             }
         }
 
-        return data_get($this->contentCache, $path, $default);
+        return Arr::get($this->contentCache, $path, $default);
     }
 
     /**

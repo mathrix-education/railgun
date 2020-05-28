@@ -100,11 +100,11 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
         $subscription = $this->getData('createSubscription');
 
         // Check that the status
-        $this->assertEquals($expectedStatus, $subscription->status);
+        $this->assertEquals($expectedStatus, $subscription['status']);
 
         if (in_array($planId, ['ANNUALLY', 'BIANNUALLY'], true)) {
             // For annually and biannually plans, check that the anchor is set to the 31st July
-            $currentPeriodEnd = new Carbon($subscription->current_period_end);
+            $currentPeriodEnd = new Carbon($subscription['current_period_end']);
             $this->assertTrue($currentPeriodEnd->isFuture());
             $this->assertEquals(7, $currentPeriodEnd->month);
             $this->assertEquals(31, $currentPeriodEnd->day);
@@ -112,7 +112,7 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
 
         // Check that the subscription has been saved to the database
         $this->seeInDatabase('subscriptions', [
-            'id'     => $subscription->id,
+            'id'     => $subscription['id'],
             'status' => $expectedStatus,
         ]);
     }

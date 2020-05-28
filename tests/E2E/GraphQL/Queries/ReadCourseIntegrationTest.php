@@ -97,6 +97,7 @@ class ReadCourseIntegrationTest extends GraphQLIntegrationTestCase
                 readCourse(id: $id) {
                     id
                     content
+                    premium
                 }
             }
             GRAPHQL,
@@ -105,7 +106,7 @@ class ReadCourseIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->assertResponseOk();
         $this->assertNoErrors();
-        $this->assertEquals($course->id, $this->getData('readCourse.id'));
-        $this->assertEmpty($this->getData('readCourse.content'));
+        $this->assertEquals($course->id, $this->getData('id'));
+        $this->assertEmpty($this->getData('content'));
     }
 }

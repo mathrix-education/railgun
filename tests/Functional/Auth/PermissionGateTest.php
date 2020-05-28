@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Support;
+namespace Tests\Functional\Auth;
 
 use Illuminate\Support\Facades\Gate;
+use Railgun\Auth\PermissionGate;
 use Railgun\Models\User;
-use Railgun\Support\PermissionGate;
 use Tests\ApplicationTestCase;
 use function factory;
 
 /**
- * @coversDefaultClass \Railgun\Support\PermissionGate
+ * @coversDefaultClass \Railgun\Auth\PermissionGate
  */
 class PermissionGateTest extends ApplicationTestCase
 {

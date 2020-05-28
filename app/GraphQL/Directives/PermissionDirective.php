@@ -43,16 +43,6 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
     }
 
     /**
-     * @return string The directive name.
-     *
-     * @codeCoverageIgnore
-     */
-    public function name(): string
-    {
-        return 'permission';
-    }
-
-    /**
      * Check that the current user has the required scope.
      *
      * @throws RuntimeException

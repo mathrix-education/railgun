@@ -2,8 +2,8 @@ type Flashcard {
     id: ID!
     name: String!
     slug: String!
-    fronts: [Silicate!]!
-    backs: [Silicate!]!
+    fronts: [Silicate!]! @premium(stripped: "[]")
+    backs: [Silicate!]! @premium(stripped: "[]")
     order: Int!
     """
     If the flashcard is premium-locked.

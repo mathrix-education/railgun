@@ -12,7 +12,6 @@ use Railgun\Models\Traits\Content;
 use Railgun\Models\Traits\Freezable;
 use Railgun\Models\Traits\Interactable;
 use Railgun\Models\Traits\Labelable;
-use Railgun\Models\Traits\Lockable;
 use Railgun\Models\Traits\Notable;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
@@ -41,7 +40,6 @@ class Course extends Model implements Content
     use Freezable;
     use Interactable;
     use Labelable;
-    use Lockable;
     use Notable;
     use Randomizable;
     use Reorderable;
@@ -62,6 +60,7 @@ class Course extends Model implements Content
     ];
     protected       $casts          = [
         'content'   => 'array',
+        'premium'   => 'boolean',
         'visible'   => 'boolean',
         'seo_index' => 'boolean',
     ];
@@ -74,14 +73,6 @@ class Course extends Model implements Content
     public function notion(): BelongsTo
     {
         return $this->belongsTo(Notion::class);
-    }
-
-    /**
-     * @return mixed[] The content Silicate wall.
-     */
-    public function getContentAttribute(): array
-    {
-        return $this->lock('content', []);
     }
 
     /**

@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application;
 use Mathrix\Prometheus\Middleware\PrometheusMiddleware;
+use Railgun\Auth\PermissionGate;
+use Railgun\Auth\PremiumGate;
+use Railgun\Auth\ProductGate;
 use Railgun\Console\Kernel;
 use Railgun\Handlers\ExceptionPipeline;
 use Railgun\Handlers\Handler;
@@ -33,7 +36,6 @@ use Railgun\Models\Traits\Acquerable;
 use Railgun\Models\Traits\Commentable;
 use Railgun\Models\Traits\Labelable;
 use Railgun\Models\Traits\Notable;
-use Railgun\Support\PermissionGate;
 use Railgun\Support\PHPPMStatus;
 use function array_map;
 
@@ -72,7 +74,10 @@ class AppServiceProvider extends ServiceProvider
         array_map(fn($m) => $this->app->singleton($m), $middleware);
         $this->app->middleware($middleware);
 
+        // Gates
         Gate::define(PermissionGate::NAME, PermissionGate::class);
+        Gate::define(PremiumGate::NAME, PremiumGate::class);
+        Gate::define(ProductGate::NAME, ProductGate::class);
 
         // MorphMap
         $this->setMorphMap();
