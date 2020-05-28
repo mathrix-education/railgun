@@ -45,7 +45,7 @@ trait OwnsSubscriptions
         }
 
         // Cache for the current request
-        return Cache::store('array')->rememberForever('user.' . $this->id . '.premium', function (): bool {
+        return Cache::store('request')->rememberForever('user.' . $this->id . '.premium', function (): bool {
             $customerIds = [];
 
             if ($this->stripe_id !== null) {

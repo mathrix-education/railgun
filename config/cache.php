@@ -5,16 +5,17 @@ declare(strict_types=1);
 return [
     'default' => env('CACHE_DRIVER', 'file'),
     'stores'  => [
-        'array' => ['driver' => 'array'],
-        'file'  => [
+        'array'   => ['driver' => 'array'],
+        'request' => ['driver' => 'array'],
+        'file'    => [
             'driver'   => 'file',
             'path'     => storage_path('framework/cache/data'),
-            'fallback' => 'array',
+            'fallback' => 'request',
         ],
-        'redis' => [
+        'redis'   => [
             'driver'     => 'redis',
             'connection' => env('CACHE_REDIS_CONNECTION', 'cache'),
-            'fallback'   => 'file',
+            'fallback'   => 'request',
         ],
     ],
     'prefix'  => env('CACHE_PREFIX', ''),
