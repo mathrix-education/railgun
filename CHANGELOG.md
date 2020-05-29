@@ -47,6 +47,7 @@
 - fix(cache): empty request cache after each request
 - fix(plans): use IS8601 date format for `proration_anchor` field (fixes #385)
 - docs(graphql): finish schema documentation
+- chore(prometheus): drop unused UserCollector
 
 ## 7.0.1
 - security(graphql): disable tracing and playground in production (#379)
