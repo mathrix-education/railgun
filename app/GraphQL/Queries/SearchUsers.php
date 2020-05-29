@@ -28,7 +28,7 @@ class SearchUsers
             ->orWhere('email', 'LIKE', $query)
             ->orWhere('firstname', 'LIKE', $query)
             ->orWhere('lastname', 'LIKE', $query)
-            ->orWhere('scopes', 'LIKE', $query)
+            ->orWhere('permissions', 'LIKE', $query)
             ->orWhere('braintree_id', 'LIKE', $query)
             ->orWhere('stripe_id', 'LIKE', $query);
     }

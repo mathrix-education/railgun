@@ -28,34 +28,34 @@ use function uuid_create;
 use function uuid_is_valid;
 
 /**
- * @property-read int                       $id
- * @property      string                    $uuid
- * @property      string|null               $username
- * @property      string                    $email
- * @property      string|null               $firstname
- * @property      string|null               $lastname
- * @property      string                    $password
- * @property      string[]                  $scopes
- * @property      bool                      $premium_bypass
- * @property      Carbon                    $premium_bypass_expires_at
- * @property      int|null                  $grade_id
- * @property      string|null               $stripe_id
- * @property      string|null               $braintree_id
- * @property      array                     $settings
- * @property      array                     $metadata
- * @property-read Carbon                    $created_at
- * @property-read Carbon                    $updated_at
+ * @property-read int                      $id
+ * @property      string                   $uuid
+ * @property      string|null              $username
+ * @property      string                   $email
+ * @property      string|null              $firstname
+ * @property      string|null              $lastname
+ * @property      string                   $password
+ * @property      string[]                 $permissions
+ * @property      bool                     $premium_bypass
+ * @property      Carbon                   $premium_bypass_expires_at
+ * @property      int|null                 $grade_id
+ * @property      string|null              $stripe_id
+ * @property      string|null              $braintree_id
+ * @property      array                    $settings
+ * @property      array                    $metadata
+ * @property-read Carbon                   $created_at
+ * @property-read Carbon                   $updated_at
  * ---
- * @property-read string                    $full_name
- * @property-read bool                      $premium If the user is premium
- * @property-read string                    $provider
- * @property-read LazyStdClass              $statistics
+ * @property-read string                   $full_name
+ * @property-read bool                     $premium If the user is premium
+ * @property-read string                   $provider
+ * @property-read LazyStdClass             $statistics
  * ---
- * @property-read Grade                     $grade
- * @property-read Collection|Comment[]      $comments
- * @property-read Collection|Vote[]         $votes
- * @property-read Collection|Interaction[]  $interactions
- * @property-read Collection|Session[]      $sessions
+ * @property-read Grade                    $grade
+ * @property-read Collection|Comment[]     $comments
+ * @property-read Collection|Vote[]        $votes
+ * @property-read Collection|Interaction[] $interactions
+ * @property-read Collection|Session[]     $sessions
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
@@ -75,7 +75,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'firstname',
         'lastname',
         'password',
-        'scopes',
+        'permissions',
         'grade_id',
     ];
     protected $hidden     = [
@@ -90,13 +90,13 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'username'                  => null,
         'firstname'                 => null,
         'lastname'                  => null,
-        'scopes'                    => '[]',
+        'permissions'               => '[]',
         'premium_bypass'            => false,
         'premium_bypass_expires_at' => null,
         'settings'                  => '[]',
     ];
     protected $casts      = [
-        'scopes'                    => 'array',
+        'permissions'               => 'array',
         'premium_bypass'            => 'boolean',
         'premium_bypass_expires_at' => 'datetime',
         'settings'                  => 'array',

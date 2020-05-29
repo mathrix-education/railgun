@@ -10,7 +10,6 @@ use Railgun\Models\Comment;
 use Railgun\Models\Course;
 use Railgun\Models\Interaction;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
-use function trans;
 
 /**
  * @testdox Query readCourse
@@ -63,7 +62,7 @@ class ReadCourseIntegrationTest extends GraphQLIntegrationTestCase
     /**
      * @testdox fails to read the course notes
      */
-    public function testReadNotesMissingScope(): void
+    public function testReadNotesMissingPermission(): void
     {
         $this->graphQL(
             <<<'GRAPHQL'
@@ -79,9 +78,8 @@ class ReadCourseIntegrationTest extends GraphQLIntegrationTestCase
         );
 
         $this->assertResponseOk();
-        $this->assertErrorCode('MISSING_SCOPE');
+        $this->assertErrorCode('MISSING_PERMISSION');
         $this->assertErrorCategory('authorization');
-        $this->assertErrorMessage(trans('auth.missing_scope', ['scope' => 'notes:read']));
     }
 
     /**

@@ -22,11 +22,11 @@ type Course {
     notion: Notion! @belongsTo
     comments: [Comment!] @morphMany
     """
-    The course administrative labels. Requires the "labels:read" scope.
+    The course administrative labels. Requires the "labels:read" permission.
     """
     labels: [Label!] @morphMany @permission(name: "labels:read")
     """
-    The course administrative notes. Requires the "notes:read" scope.
+    The course administrative notes. Requires the "notes:read" permission.
     """
     notes: [Note!] @morphMany @permission(name: "notes:read")
     interaction: Interaction @belongsTo

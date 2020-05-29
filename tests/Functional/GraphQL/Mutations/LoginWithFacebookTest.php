@@ -117,7 +117,7 @@ class LoginWithFacebookTest extends GraphQLFunctionalTestCase
         $user = Mockery::mock('overload:' . User::class, Authenticatable::class);
         $user->expects('query->where->orWhere->first')->withNoArgs()->andReturns($user);
         $user->expects('getKey')->withNoArgs()->andReturns($this->userId);
-        $user->scopes = ['a', 'b'];
+        $user->permissions = ['a', 'b'];
 
         // Call the mutation
         $data = $this->invoke(LoginWithFacebook::class, [

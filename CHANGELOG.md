@@ -5,7 +5,7 @@
     - `firstname`
     - `lastname`
     - `email`
-    - `scopes` (`users:read` permission)
+    - `permissions` (`users:read` permission)
     - `premium`
     - `premium_bypass`
     - `premium_bypass_expires_at`
@@ -26,6 +26,8 @@
 - feat(graphql): CreateNotion `slug` field is now required
 - feat(graphql): CreateFlashcard `slug` field is now required
 - feat(graphql): CreateSubject `slug` field is now required
+- feat(graphql): `scopes` on type `User`, `CreateUser` and `UpdateUser` are now deprecated and will be removed in version
+  8. Use `permissions` instead.
 - feat(permissions): added permissions (fixes #390):
     - `chapters:write:visible`
     - `chapters:write:slug`

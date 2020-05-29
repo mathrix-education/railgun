@@ -35,7 +35,7 @@ class LoginBasic
         return [
             'token' => Guardian::sign([
                 'sub' => (string)$user->getKey(),
-                'scp' => $user->scopes,
+                'scp' => $user->permissions,
             ]),
         ];
     }

@@ -10,11 +10,11 @@ type Lesson {
     section: Section! @belongsTo
     comments: [Comment!] @morphMany
     """
-    The lesson administrative labels. Requires the "labels:read" scope.
+    The lesson administrative labels. Requires the "labels:read" permission.
     """
     labels: [Label!] @morphMany @permission(name: "labels:read")
     """
-    The lesson administrative notes. Requires the "notes:read" scope.
+    The lesson administrative notes. Requires the "notes:read" permission.
     """
     notes: [Note!] @morphMany @permission(name: "notes:read")
 }

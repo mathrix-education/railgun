@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Railgun\Auth\PermissionGate;
-use Railgun\Exceptions\MissingScopeException;
+use Railgun\Exceptions\MissingPermissionException;
 use function class_basename;
 use function constant;
 use function defined;
@@ -26,10 +26,10 @@ trait Freezable
             /** @var Freezable $model */
 
             // frozen_at write is handled by the GraphQL permission directive
-            $scope = $model->getFrozenScope();
+            $permission = $model->getFreezePermission();
 
-            if ($model->isFrozen() && Gate::denies(PermissionGate::NAME, $scope)) {
-                throw new MissingScopeException([$scope]);
+            if ($model->isFrozen() && Gate::denies(PermissionGate::NAME, $permission)) {
+                throw new MissingPermissionException([$permission]);
             }
         });
     }
@@ -55,9 +55,9 @@ trait Freezable
     }
 
     /**
-     * @return string The associated frozen scope.
+     * @return string The associated freeze permission.
      */
-    public function getFrozenScope(): string
+    public function getFreezePermission(): string
     {
         return (string)Str::of(class_basename($this))->plural()->lower()->append(':freeze');
     }

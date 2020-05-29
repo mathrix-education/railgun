@@ -13,11 +13,11 @@ use Nuwave\Lighthouse\Support\Contracts\ArgTransformerDirective;
 use Nuwave\Lighthouse\Support\Contracts\DefinedDirective;
 use Nuwave\Lighthouse\Support\Contracts\FieldMiddleware;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use Railgun\Exceptions\MissingScopeException;
+use Railgun\Exceptions\MissingPermissionException;
 use RuntimeException;
 
 /**
- * Check that the user has the required scope.
+ * Check that the user has the required permission.
  * Applies to fields and arguments.
  */
 class PermissionDirective extends BaseDirective implements ArgTransformerDirective, FieldMiddleware, DefinedDirective
@@ -31,11 +31,11 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
     {
         return /** @lang GraphQL */ <<<'SDL'
         """
-        Check that the current user has the required scope.
+        Check that the current user has the required permission.
         """
         directive @permission(
             """
-            The scope to check.
+            The permission to check.
             """
             name: String!
         ) on FIELD_DEFINITION | OBJECT
@@ -43,22 +43,22 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
     }
 
     /**
-     * Check that the current user has the required scope.
+     * Check that the current user has the required permission.
      *
      * @throws RuntimeException
-     * @throws MissingScopeException
+     * @throws MissingPermissionException
      */
-    private function checkScope(): void
+    private function checkPermission(): void
     {
-        $scope = $this->directiveArgValue('name');
+        $permission = $this->directiveArgValue('name');
 
-        if (Gate::denies('permission', [$scope])) {
-            throw new MissingScopeException([$scope]);
+        if (Gate::denies('permission', [$permission])) {
+            throw new MissingPermissionException([$permission]);
         }
     }
 
     /**
-     * Handle scope check when the user provides an argument.
+     * Handle permission check when the user provides an argument.
      *
      * @param mixed $argumentValue The provided argument value.
      *
@@ -66,13 +66,13 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
      */
     public function transform($argumentValue)
     {
-        $this->checkScope();
+        $this->checkPermission();
 
         return $argumentValue;
     }
 
     /**
-     * Handle scope check during field resolution.
+     * Handle permission check during field resolution.
      *
      * @param FieldValue $fieldValue The current field value.
      * @param Closure    $next       The next field middleware.
@@ -84,7 +84,7 @@ class PermissionDirective extends BaseDirective implements ArgTransformerDirecti
         $previous = $fieldValue->getResolver();
 
         $resolver = function ($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo) use ($previous) {
-            $this->checkScope();
+            $this->checkPermission();
 
             return $previous($root, $args, $context, $resolveInfo);
         };

@@ -65,7 +65,7 @@ class UpdateCourseIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox forbid update for users without courses:freeze scope
+     * @testdox forbid update for users without courses:freeze permission
      */
     public function testUpdateFrozenCourse(): void
     {
@@ -82,6 +82,6 @@ class UpdateCourseIntegrationTest extends GraphQLIntegrationTestCase
         ]);
 
         $this->assertResponseOk();
-        $this->assertErrorCode('MISSING_SCOPE');
+        $this->assertErrorCode('MISSING_PERMISSION');
     }
 }

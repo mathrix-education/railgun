@@ -21,8 +21,8 @@ class PermissionGateTest extends ApplicationTestCase
     public function testInvoke(): void
     {
         /** @var User $user */
-        $user         = factory(User::class)->create();
-        $user->scopes = ['a', 'b', 'd'];
+        $user              = factory(User::class)->create();
+        $user->permissions = ['a', 'b', 'd'];
         $user->save();
 
         $gate = Gate::forUser($user);

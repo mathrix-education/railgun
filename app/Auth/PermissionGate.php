@@ -23,10 +23,10 @@ class PermissionGate
             return false;
         }
 
-        if (in_array('*', $user->scopes, true)) {
+        if (in_array('*', $user->permissions, true)) {
             return true;
         }
 
-        return in_array($permission, $user->scopes, true);
+        return in_array($permission, $user->permissions, true);
     }
 }

@@ -35,8 +35,8 @@ trait OwnsSubscriptions
      */
     public function getPremiumAttribute(): bool
     {
-        if (count($this->scopes) > 0) {
-            // If the user has at least one scope, he is considered as premium
+        if (count($this->permissions) > 0) {
+            // If the user has at least one permission, he is considered as premium
             return true;
         }
 

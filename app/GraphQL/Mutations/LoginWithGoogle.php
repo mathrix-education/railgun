@@ -45,19 +45,19 @@ class LoginWithGoogle
             ->first();
 
         if ($user === null) {
-            $user            = new User();
-            $user->email     = $payload['email'];
-            $user->username  = $payload['name'];
-            $user->firstname = $payload['given_name'];
-            $user->lastname  = $payload['family_name'];
-            $user->scopes    = [];
+            $user              = new User();
+            $user->email       = $payload['email'];
+            $user->username    = $payload['name'];
+            $user->firstname   = $payload['given_name'];
+            $user->lastname    = $payload['family_name'];
+            $user->permissions = [];
             $user->save();
         }
 
         return [
             'token' => Guardian::sign([
                 'sub' => (string)$user->getKey(),
-                'scp' => $user->scopes,
+                'scp' => $user->permissions,
             ]),
         ];
     }
