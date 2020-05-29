@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "44954f99926b9265dbf8a9a635119c0a",
+    "content-hash": "e5598341bead6594a756350d82b6dd9b",
     "packages": [
         {
             "name": "brick/math",
@@ -3615,6 +3615,64 @@
             "time": "2020-05-09T15:03:06+00:00"
         },
         {
+            "name": "mathieu-bour/laravel-mailjet",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mathieu-bour/laravel-mailjet.git",
+                "reference": "2d664c837af0ebd3f5c90e4e1c902b1bf1a31d2f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mathieu-bour/laravel-mailjet/zipball/2d664c837af0ebd3f5c90e4e1c902b1bf1a31d2f",
+                "reference": "2d664c837af0ebd3f5c90e4e1c902b1bf1a31d2f",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/mail": "^6.0 || ^7.0",
+                "mailjet/mailjet-apiv3-php": "^1.2",
+                "mailjet/mailjet-swiftmailer": "^2.0",
+                "php": "^7.2"
+            },
+            "require-dev": {
+                "mathrix-education/coding-standard": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Windy\\Mailjet\\MailjetServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Windy\\Mailjet\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mathieu Bour",
+                    "email": "mathieu.tin.bour@gmail.com",
+                    "homepage": "https://www.linkedin.com/in/mathieu-bour",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Mailjet Integration for Laravel and Lumen frameworks",
+            "homepage": "https://github.com/mathieu-bour/laravel-mailjet",
+            "keywords": [
+                "Mailjet",
+                "email",
+                "laravel",
+                "lumen"
+            ],
+            "time": "2020-05-29T07:43:01+00:00"
+        },
+        {
             "name": "mathrix-education/lumen-healthz",
             "version": "0.1.0",
             "dist": {
@@ -3652,50 +3710,6 @@
                 "email": "mathieu@mathrix.fr",
                 "issues": "https://github.com/mathrix-education/lumen-prometheus-exporter/issues",
                 "source": "https://github.com/mathrix-education/lumen-prometheus-exporter",
-                "docs": "https://github.com/mathrix-education"
-            }
-        },
-        {
-            "name": "mathrix-education/lumen-mailjet",
-            "version": "0.1.0",
-            "dist": {
-                "type": "path",
-                "url": "packages/lumen-mailjet",
-                "reference": "6870de56d85c28aa1dcf291495b0ae62416fb4d1"
-            },
-            "require": {
-                "illuminate/mail": "^6.0 || ^7.0",
-                "mailjet/mailjet-apiv3-php": "^1.2",
-                "mailjet/mailjet-swiftmailer": "^2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Mathrix\\Mailjet\\": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Mathieu Bour",
-                    "email": "mathieu@mathrix.fr",
-                    "homepage": "https://www.linkedin.com/in/mathieu-bour",
-                    "role": "Maintainer"
-                }
-            ],
-            "description": "Mailjet Integration for lumen and Lumen frameworks",
-            "homepage": "https://github.com/mathrix-education/lumen-mailjet",
-            "keywords": [
-                "email",
-                "lumen",
-                "mailjet"
-            ],
-            "support": {
-                "email": "mathieu@mathrix.fr",
-                "issues": "https://github.com/mathrix-education/lumen-mailjet/issues",
-                "source": "https://github.com/mathrix-education/lumen-mailjet",
                 "docs": "https://github.com/mathrix-education"
             }
         },
@@ -6470,16 +6484,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v7.36.0",
+            "version": "v7.36.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "b0f4e9afe20285297fc48b06b28adcf88ac79e0d"
+                "reference": "80979c8959dff86bf7b0610e44599a67132ebcd3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/b0f4e9afe20285297fc48b06b28adcf88ac79e0d",
-                "reference": "b0f4e9afe20285297fc48b06b28adcf88ac79e0d",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/80979c8959dff86bf7b0610e44599a67132ebcd3",
+                "reference": "80979c8959dff86bf7b0610e44599a67132ebcd3",
                 "shasum": ""
             },
             "require": {
@@ -6523,7 +6537,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2020-05-22T02:18:11+00:00"
+            "time": "2020-05-28T18:11:30+00:00"
         },
         {
             "name": "superbalist/flysystem-google-storage",

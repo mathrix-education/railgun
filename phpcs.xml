@@ -22,7 +22,6 @@
   <file>config</file>
   <file>database</file>
   <file>packages/lumen-healthz</file>
-  <file>packages/lumen-mailjet</file>
   <file>packages/lumen-prometheus-exporter</file>
   <file>tests</file>
 
