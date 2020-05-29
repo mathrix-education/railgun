@@ -29,6 +29,6 @@ class DateTime extends DateScalar
      */
     protected function parse($value): Carbon
     {
-        return Carbon::createFromFormat(Carbon::DEFAULT_TO_STRING_FORMAT, $value);
+        return Carbon::createFromFormat(Carbon::ATOM, $value);
     }
 }
