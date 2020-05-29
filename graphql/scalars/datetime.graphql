@@ -1,2 +1,4 @@
-"A datetime string with format `Y-m-d H:i:s`, e.g. `2018-01-01 13:00:00`."
+"""
+An ISO 8601 "Zulu" date time string.
+"""
 scalar DateTime @scalar(class: "Railgun\\GraphQL\\Scalars\\DateTime")
