@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Mockery;
 use Mockery\MockInterface;
-use Railgun\Exceptions\MissingScopeException;
+use Railgun\Exceptions\MissingPermissionException;
 use Railgun\Models\Traits\Freezable;
 use Tests\ApplicationTestCase;
 
@@ -37,7 +37,7 @@ class FreezableTest extends ApplicationTestCase
             }
         };
 
-        $this->expectException(MissingScopeException::class);
+        $this->expectException(MissingPermissionException::class);
         $instance->fireSavingEvent();
     }
 
@@ -70,13 +70,13 @@ class FreezableTest extends ApplicationTestCase
     }
 
     /**
-     * @covers ::getFrozenScope
+     * @covers ::getFreezePermission
      */
-    public function testGetFrozenScope(): void
+    public function testGetFreezePermission(): void
     {
         /** @var Freezable|MockInterface $instance */
         $instance = Mockery::namedMock('Railgun\\Models\\Cherry', Freezable::class);
-        $this->assertEquals('cherries:freeze', $instance->getFrozenScope());
+        $this->assertEquals('cherries:freeze', $instance->getFreezePermission());
     }
 
     /**

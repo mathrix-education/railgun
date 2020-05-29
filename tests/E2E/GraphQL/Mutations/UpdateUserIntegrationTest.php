@@ -24,7 +24,7 @@ class UpdateUserIntegrationTest extends GraphQLIntegrationTestCase
             mutation($input: UpdateUser!) {
                 updateUser(input: $input) {
                     id
-                    scopes
+                    permissions
                     grade {
                         id
                     }
@@ -60,37 +60,37 @@ class UpdateUserIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox allows the scopes update for star users
+     * @testdox allows the permissions update for star users
      */
-    public function testStarCanUpdateScopes(): void
+    public function testStarCanUpdatePermissions(): void
     {
         $this->withPermissions('*');
 
         /** @var User $user */
-        $user   = factory(User::class)->create();
-        $scopes = ['foo', 'bar'];
+        $user        = factory(User::class)->create();
+        $permissions = ['foo', 'bar'];
 
-        $this->executeUpdateUser(['id' => $user->id, 'scopes' => $scopes]);
+        $this->executeUpdateUser(['id' => $user->id, 'permissions' => $permissions]);
 
         $this->assertResponseOk();
         $this->assertNoErrors();
-        $this->assertEquals($scopes, $user->refresh()->scopes);
+        $this->assertEquals($permissions, $user->refresh()->permissions);
     }
 
     /**
-     * @testdox denies the scopes update for non-star users
+     * @testdox denies the permissions update for non-star users
      */
-    public function testNonStarCannotUpdateScopes(): void
+    public function testNonStarCannotUpdatePermissions(): void
     {
         $this->withPermissions('users:write');
 
         /** @var User $user */
         $user = factory(User::class)->create();
 
-        $this->executeUpdateUser(['id' => $user->id, 'scopes' => ['foo', 'bar']]);
+        $this->executeUpdateUser(['id' => $user->id, 'permissions' => ['foo', 'bar']]);
 
         $this->assertResponseOk();
-        $this->assertErrorCode('MISSING_SCOPE');
-        $this->assertEquals([], $user->refresh()->scopes);
+        $this->assertErrorCode('MISSING_PERMISSION');
+        $this->assertEquals([], $user->refresh()->permissions);
     }
 }

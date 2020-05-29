@@ -8,23 +8,21 @@ use Illuminate\Http\Request;
 use Railgun\Middleware\ImpersonateMiddleware;
 use Railgun\Models\User;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\ApplicationTestCase;
-use function factory;
+use Tests\E2E\HttpIntegrationTestCase;
 
 /**
  * @testdox Impersonate middleware
  */
-class ImpersonateMiddlewareTest extends ApplicationTestCase
+class ImpersonateMiddlewareTest extends HttpIntegrationTestCase
 {
     /**
      * @testdox swaps the current authenticated user
      */
     public function testHandle(): void
     {
-        $user  = User::random();
-        $admin = factory(User::class)->create(['scopes' => ['users:impersonate']]);
+        $user = User::random();
 
-        $this->actingAs($admin);
+        $this->withPermissions('users:impersonate');
 
         /** @var ImpersonateMiddleware $instance */
         $instance = $this->app->make(ImpersonateMiddleware::class);

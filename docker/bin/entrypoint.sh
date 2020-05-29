@@ -11,6 +11,8 @@ shift
 
 case $mode in
 server)
+    artisan lighthouse:clear-cache
+    artisan migrate
     cmd="ppm start ${*} | gcloud-logs &"
     ;;
 worker)

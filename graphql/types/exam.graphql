@@ -19,11 +19,11 @@ type Exam {
     chapter: Chapter! @belongsTo
     comments: [Comment!] @morphMany
     """
-    The exam administrative labels. Requires the "labels:read" scope.
+    The exam administrative labels. Requires the "labels:read" permission.
     """
     labels: [Label!] @morphMany @permission(name: "labels:read")
     """
-    The exam administrative notes. Requires the "notes:read" scope.
+    The exam administrative notes. Requires the "notes:read" permission.
     """
     notes: [Note!] @morphMany @permission(name: "notes:read")
     interaction: Interaction @belongsTo

@@ -19,11 +19,11 @@ type Flashcard {
     chapter: Chapter! @belongsTo
     comments: [Comment!] @morphMany
     """
-    The flashcard administrative labels. Requires the "labels:read" scope.
+    The flashcard administrative labels. Requires the "labels:read" permission.
     """
     labels: [Label!] @morphMany @permission(name: "labels:read")
     """
-    The flashcard administrative notes. Requires the "notes:read" scope.
+    The flashcard administrative notes. Requires the "notes:read" permission.
     """
     notes: [Note!] @morphMany @permission(name: "notes:read")
     interaction: Interaction @belongsTo

@@ -57,12 +57,12 @@ class LoginWithFacebook
 
         if ($user === null) {
             // User does not exists, this is a registration
-            $user            = new User();
-            $user->firstname = $graphUser->getFirstName();
-            $user->lastname  = $graphUser->getLastName();
-            $user->email     = $graphUser->getEmail();
-            $user->scopes    = [];
-            $user->metadata  = array_merge_recursive($user->metadata ?? [], [
+            $user              = new User();
+            $user->firstname   = $graphUser->getFirstName();
+            $user->lastname    = $graphUser->getLastName();
+            $user->email       = $graphUser->getEmail();
+            $user->permissions = [];
+            $user->metadata    = array_merge_recursive($user->metadata ?? [], [
                 'facebook' => [
                     'id' => $graphUser->getId(),
                 ],
@@ -74,7 +74,7 @@ class LoginWithFacebook
         return [
             'token' => Guardian::sign([
                 'sub' => (string)$user->getKey(),
-                'scp' => $user->scopes,
+                'scp' => $user->permissions,
             ]),
         ];
     }

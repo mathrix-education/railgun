@@ -40,7 +40,7 @@ class SearchUsersIntegrationTest extends GraphQLIntegrationTestCase
                         email
                         firstname
                         lastname
-                        scopes
+                        permissions
                         braintree_id
                         stripe_id
                     }

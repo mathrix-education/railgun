@@ -15,7 +15,7 @@ class UsersSeeder extends AdvancedSeeder
 
         DB::update(/** @lang MySQL */ <<<'MySQL'
         update `users`
-        set `email` = concat('admin-', `id`, '@mathrix.fr'), `scopes` = '["*"]'
+        set `email` = concat('admin-', `id`, '@mathrix.fr'), `permissions` = '["*"]'
         where id between 1 and 10
         MySQL,
         );

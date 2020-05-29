@@ -4,7 +4,15 @@ type User {
     firstname: String @policy(ability: "read")
     lastname: String @policy(ability: "read")
     email: String!  @policy(ability: "read")
-    scopes: [String!]! @policy(ability: "read")
+
+    """
+    **Deprecated: use `permissions` instead. Will be removed in version 8.0.0.**
+    """
+    scopes: [String!]! @deprecated(reason: "Use `permissions` instead. Will be removed in version 8.0.0.")
+    @rename(attribute: "permissions")
+    @policy(ability: "read")
+
+    permissions: [String!]! @policy(ability: "read")
     """
     If the user has access to premium content.
     Notice: **may cause an additional delay**.

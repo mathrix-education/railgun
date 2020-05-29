@@ -72,7 +72,7 @@ class HttpIntegrationTestCase extends ApplicationTestCase
         /** @var User $user The currently logged user. */
         $user = $this->app->make('auth')->guard($guard)->user() ?? factory(User::class)->create();
 
-        $user->scopes = array_unique(array_merge($user->scopes, $permissions));
+        $user->permissions = array_unique(array_merge($user->permissions, $permissions));
         $user->save();
 
         return $this->actingAsGetUser($user);

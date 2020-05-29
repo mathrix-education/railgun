@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use JsonException;
 use Psr\Log\LogLevel;
-use Railgun\Exceptions\MissingScopeException;
+use Railgun\Exceptions\MissingPermissionException;
 use Railgun\Logging\GoogleCloudJsonFormatter;
 use Railgun\Middleware\CorrelationMiddleware;
 use Tests\ApplicationTestCase;
@@ -31,7 +31,7 @@ class GoogleCloudJsonFormatterTest extends ApplicationTestCase
      */
     private function generateMonologRecord(): array
     {
-        $exception = new MissingScopeException(['test']);
+        $exception = new MissingPermissionException(['test']);
 
         return [
             'datetime'   => new DateTimeImmutable(),
