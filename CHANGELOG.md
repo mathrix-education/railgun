@@ -29,24 +29,29 @@
 - feat(permissions): added permissions (fixes #390):
     - `chapters:write:visible`
     - `chapters:write:slug`
+    - `courses:write:premium`
     - `courses:write:slug`
     - `courses:write:visible`
     - `courses:write:seo_index`
     - `courses:write:seo_title`
     - `courses:write:seo_keywords`
     - `courses:write:seo_description`
+    - `exams:write:premium`
     - `exams:write:visible`
     - `exams:write:slug`
     - `exercises:write:visible`
+    - `flashcards:write:premium`
     - `flashcards:write:slug`
     - `flashcards:write:visible`
     - `notions:write:slug`
     - `notions:write:visible`
+    - `subjects:write:premium`
     - `subjects:write:visible`
 - feat(permissions): implement premium and product directives
 - fix(cache): empty request cache after each request
 - fix(plans): use IS8601 date format for `proration_anchor` field (fixes #385)
-- docs(graphql): finish schema documentation
+- docs(graphql): finish schema documentation**
+- chore(mailjet): export laravel-mailjet to [mathieu-bour/laravel-mailjet](https://github.com/mathieu-bour/laravel-mailjet)
 - chore(prometheus): drop unused UserCollector
 
 ## 7.0.1

@@ -25,20 +25,21 @@ input CreateFlashcard {
     """
     order: Int! @rules(apply: ["nullable", "min:0"])
     """
-    If the flashcard is only accessible for premium users.
+    If the flashcard is only accessible for premium users. Default value is `false`.
+    Requires the permission `flashcards:write:premium`.
     """
-    premium: Boolean! @rules(apply: ["boolean"])
+    premium: Boolean! @permission(name: "flashcards:write:premium") @rules(apply: ["boolean"])
     """
     The flashcard frozen date. If set, only the users with the permission `flashcards:freeze` will be allowed to edit
     the flashcard. Set to `null` to disable.
-    Requires the permission `exercises:freeze`.
+    Requires the permission `flashcards:freeze`.
     """
     frozen_at: DateTime @permission(name: "flashcards:freeze")
     """
-    If the flashcard should be displayed to the end users.
+    If the flashcard should be displayed to the end users. Default value is `false`.
     Requires the permission `flashcards:write:visible`.
     """
-    visible: Boolean @permission(name: "flashcards:write:visible")
+    visible: Boolean @permission(name: "flashcards:write:visible") @rules(apply: ["boolean"])
     """
     The flashcard related chapter ID.
     """
@@ -82,8 +83,9 @@ input UpdateFlashcard {
     order: Int @rules(apply: ["nullable", "integer", "min:0"])
     """
     If the flashcard is only accessible for premium users.
+    Requires the permission `flashcards:write:premium`.
     """
-    premium: Boolean @rules(apply: ["boolean"])
+    premium: Boolean @permission(name: "flashcards:write:premium") @rules(apply: ["boolean"])
     """
     The flashcard frozen date. If set, only the users with the permission `flashcards:freeze` will be allowed to edit
     the flashcard. Set to `null` to disable.

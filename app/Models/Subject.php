@@ -36,6 +36,10 @@ class Subject extends Model implements Content
     use Reorderable;
     use Sluggable;
 
+    protected       $attributes     = [
+        'premium' => false,
+        'visible' => false,
+    ];
     protected       $fillable       = [
         'name',
         'slug',

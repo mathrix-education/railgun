@@ -19,9 +19,10 @@ input CreateCourse {
     """
     order: Int @rules(apply: ["nullable", "integer", "min:0"])
     """
-    If the course is only accessible for premium users.
+    If the course is only accessible for premium users. Default value is `null`.
+    Requires the permission `courses:write:premium`.
     """
-    premium: Boolean! @rules(apply: ["boolean"])
+    premium: Boolean @permission(name: "courses:write:premium") @rules(apply: ["boolean"])
     """
     The course frozen date. If set, only the users with the permission `course:freeze` will be allowed to edit the
     course. Set to `null` to disable.
@@ -29,27 +30,27 @@ input CreateCourse {
     """
     frozen_at: DateTime @permission(name: "courses:freeze")
     """
-    If the course should be displayed to the end users.
+    If the course should be displayed to the end users. Default value is `false`.
     Requires the permission `courses:write:visible`.
     """
     visible: Boolean @permission(name: "courses:write:visible")
     """
-    If the course should be included in the sitemap.
+    If the course should be included in the sitemap. Default value is `false`.
     Requires the permission `courses:write:seo_index`.
     """
     seo_index: Boolean @permission(name: "courses:write:seo_index")
     """
-    The course title for SEO.
+    The course title for SEO. Default value is `null`.
     Requires the permission `courses:write:seo_title`.
     """
     seo_title: String @permission(name: "courses:write:seo_title")
     """
-    The course keywords for SEO.
+    The course keywords for SEO. Default value is `null`.
     Requires the permission `courses:write:seo_keywords`.
     """
     seo_keywords: String @permission(name: "courses:write:seo_keywords")
     """
-    The course description for SEO.
+    The course description for SEO. Default value is `null`.
     Requires the permission `courses:write:seo_description`.
     """
     seo_description: String @permission(name: "courses:write:seo_description")
@@ -91,8 +92,9 @@ input UpdateCourse {
     order: Int @rules(apply: ["nullable", "integer", "min:0"])
     """
     If the course is only accessible for premium users.
+    Requires the permission `courses:write:premium`.
     """
-    premium: Boolean @rules(apply: ["boolean"])
+    premium: Boolean @permission(name: "courses:write:premium") @rules(apply: ["boolean"])
     """
     The course frozen date. If set, only the users with the permission `course:freeze` will be allowed to edit the
     course. Set to `null` to disable.

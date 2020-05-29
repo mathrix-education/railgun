@@ -23,9 +23,10 @@ input CreateExam {
     """
     order: Int @rules(apply: ["nullable", "integer", "min:0"])
     """
-    If the exam is only accessible for premium users.
+    If the exam is only accessible for premium users. Default value is `false`.
+    Requires the permission `exams:write:premium`.
     """
-    premium: Boolean!
+    premium: Boolean @permission(name: "exams:write:premium") @rules(apply: ["boolean"])
     """
     The exam frozen date. If set, only the users with the permission `exams:freeze` will be allowed to edit the exam.
     Set to `null` to disable.
@@ -78,8 +79,9 @@ input UpdateExam {
     order: Int @rules(apply: ["nullable", "integer", "min:0"])
     """
     If the exam is only accessible for premium users.
+    Requires the permission `exams:write:premium`.
     """
-    premium: Boolean @rules(apply: ["boolean"])
+    premium: Boolean @permission(name: "exams:write:premium") @rules(apply: ["boolean"])
     """
     The exam frozen date. If set, only the users with the permission `exams:freeze` will be allowed to edit the exam.
     Set to `null` to disable.

@@ -15,11 +15,12 @@ input CreateSubject {
     """
     order: Int @rules(apply: ["nullable", "integer", "min:0"])
     """
-    If the subject is only accessible for premium users.
+    If the subject is only accessible for premium users. Default value is `false`.
+    Requires the permission `subjects:write:premium`.
     """
-    premium: Boolean! @rules(apply: ["boolean"])
+    premium: Boolean! @permission(name: "subjects:write:premium") @rules(apply: ["boolean"])
     """
-    If the subject should be displayed to the end users.
+    If the subject should be displayed to the end users. Default value is `false`.
     Requires the permission `subjects:write:visible`.
     """
     visible: Boolean! @permission(name: "subjects:write:visible") @rules(apply: ["boolean"])
@@ -51,8 +52,9 @@ input UpdateSubject {
     order: Int @rules(apply: ["nullable", "integer", "min:0"])
     """
     If the subject is only accessible for premium users.
+    Requires the permission `subjects:write:premium`.
     """
-    premium: Boolean @rules(apply: ["boolean"])
+    premium: Boolean @permission(name: "subjects:write:premium") @rules(apply: ["boolean"])
     """
     If the subject should be displayed to the end users.
     Requires the permission `subjects:write:visible`.
