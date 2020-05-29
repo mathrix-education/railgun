@@ -11,7 +11,7 @@ type Course {
     """
     If the course is frozen. Requires the "courses:freeze" to override.
     """
-    frozen_at: DateTime!
+    frozen_at: DateTime
     visible: Boolean!
     seo_index: Boolean!
     seo_title: String

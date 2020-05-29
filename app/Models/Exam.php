@@ -43,7 +43,10 @@ class Exam extends Model implements Content
     use Reorderable;
     use Sluggable;
 
-    protected       $attributes = ['visible' => false];
+    protected       $attributes = [
+        'premium' => false,
+        'visible' => false,
+    ];
     protected       $fillable   = [
         'name',
         'slug',

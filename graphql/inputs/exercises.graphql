@@ -35,7 +35,7 @@ input CreateExercise {
     """
     frozen_at: DateTime @permission(name: "exercises:freeze")
     """
-    If the exercise should be displayed to the end users.
+    If the exercise should be displayed to the end users. Default value is `false`.
     Requires the permission `exercises:write:visible`.
     """
     visible: Boolean @permission(name: "exercises:write:visible")

@@ -12,7 +12,7 @@ type Flashcard {
     """
     If the flashcard is frozen. Requires the "flashcards:freeze" to override.
     """
-    frozen_at: DateTime!
+    frozen_at: DateTime
     visible: Boolean!
     created_at: DateTime!
     updated_at: DateTime!

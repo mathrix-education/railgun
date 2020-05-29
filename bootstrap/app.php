@@ -12,7 +12,6 @@ use Laravel\Lumen\Application;
 use Laravel\Lumen\Bootstrap\LoadEnvironmentVariables;
 use Laravel\Tinker\TinkerServiceProvider;
 use Mathrix\Healthz\HealthzServiceProvider;
-use Mathrix\Mailjet\MailjetServiceProvider;
 use Mathrix\Prometheus\PrometheusServiceProvider;
 use MLL\GraphQLPlayground\GraphQLPlaygroundServiceProvider;
 use Nuwave\Lighthouse\LighthouseServiceProvider;
@@ -28,6 +27,7 @@ use Sentry\Laravel\ServiceProvider as SentryServiceProvider;
 use Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider;
 use Windy\Guardian\GuardianServiceProvider;
 use Windy\LaravelCacheFallback\CacheFallbackServiceProvider;
+use Windy\Mailjet\MailjetServiceProvider;
 
 (new LoadEnvironmentVariables(dirname(__DIR__)))->bootstrap();
 
