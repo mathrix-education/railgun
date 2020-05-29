@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Railgun\Mails;
 
-use Mathrix\Mailjet\MailjetTemplateMailable;
 use Railgun\Crypto\PasswordResetCrypto;
 use Railgun\Models\User;
+use Windy\Mailjet\MailjetTemplateMailable;
 use function app;
 use function config;
 use function sprintf;
@@ -16,8 +16,11 @@ use function sprintf;
  */
 class PasswordForgottenMail extends MailjetTemplateMailable
 {
-    /** @var int The Mailjet Template ID. */
-    protected int $templateId = 1185614;
+    /**
+     * @var int The Mailjet Template ID.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
+    protected     $templateId = 1185614;
     public string $firstName;
     public string $resetLink;
 
