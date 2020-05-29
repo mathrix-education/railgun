@@ -1,4 +1,4 @@
 """
-An ISO 8601 "Zulu" date time string.
+An RFC3339 date/time string.
 """
 scalar DateTime @scalar(class: "Railgun\\GraphQL\\Scalars\\DateTime")

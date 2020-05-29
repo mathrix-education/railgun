@@ -17,8 +17,8 @@
     - `sessions`
     - `statistics`
     - `subscriptions`
-- feat(datetime): override the `DateTime` Lighthouse scalar by our own implementation which always uses the ISO 8601
-  "Zulu" date format (fixes #385)
+- feat(datetime): override the `DateTime` Lighthouse scalar by our own implementation which always uses the RFC3339 date
+  format (fixes #385)
 - feat(freeze): `frozen_at` field on Course, Exercise, Flashcard and Exam type
   `frozen_at` allows freezing models to their current state and requires the `{models}:freeze` permission to be set
   or bypassed (fixes #384 and #389, PR #386 and #391)
@@ -49,7 +49,7 @@
     - `subjects:write:visible`
 - feat(permissions): implement premium and product directives
 - fix(cache): empty request cache after each request
-- fix(plans): use IS8601 date format for `proration_anchor` field (fixes #385)
+- fix(plans): use RFC3339 date format for `proration_anchor` field (fixes #385)
 - docs(graphql): finish schema documentation**
 - chore(mailjet): export laravel-mailjet to [mathieu-bour/laravel-mailjet](https://github.com/mathieu-bour/laravel-mailjet)
 - chore(prometheus): drop unused UserCollector
