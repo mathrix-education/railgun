@@ -18,12 +18,12 @@ input CreateSubject {
     If the subject is only accessible for premium users. Default value is `false`.
     Requires the permission `subjects:write:premium`.
     """
-    premium: Boolean! @permission(name: "subjects:write:premium") @rules(apply: ["boolean"])
+    premium: Boolean @permission(name: "subjects:write:premium") @rules(apply: ["boolean"])
     """
     If the subject should be displayed to the end users. Default value is `false`.
     Requires the permission `subjects:write:visible`.
     """
-    visible: Boolean! @permission(name: "subjects:write:visible") @rules(apply: ["boolean"])
+    visible: Boolean @permission(name: "subjects:write:visible") @rules(apply: ["boolean"])
     """
     The subject related notion ID.
     """
