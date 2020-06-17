@@ -30,13 +30,13 @@ class GraphQLOperationMiddleware
 
     /**
      * @param Request $request The Illuminate HTTP request.
-     * @param Closure $next    The next middleware.
+     * @param Closure $next The next middleware.
      *
      * @return Response The final response.
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$request->has('operationName')) {
+        if (!$request->input('operationName')) {
             return $next($request);
         }
 
@@ -55,11 +55,11 @@ class GraphQLOperationMiddleware
      */
     public function terminate(Request $request): void
     {
-        if (!$request->has('operationName')) {
+        if (!$request->input('operationName')) {
             return;
         }
 
-        $operation = $request->json('operationName');
+        $operation = $request->input('operationName');
 
         try {
             $this->collector
