@@ -12,6 +12,7 @@
 /storage/code-coverage/
 /.phpunit.result.cache
 /_lighthouse_ide_helper.php
+/programmatic-types.graphql
 /schema-directives.graphql
 
 # Secrets

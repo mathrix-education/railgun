@@ -1,4 +1,7 @@
 # Changelog
+## 7.2.0
+- feat(exercise): add exercise `proof` type
+- fix(prometheus): GraphQL collectors
 
 ## 7.1.1
 - feat(braintree): implement Braintree subscription webhooks

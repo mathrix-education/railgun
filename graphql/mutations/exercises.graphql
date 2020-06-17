@@ -1,13 +1,23 @@
 extend type Mutation {
-    "Create a new exercise."
-    createExercise(
-        input: CreateExercise! @spread
-    ): Exercise @permission(name: "exercises:write") @create
+    "Create a new MCQ exercise."
+    createMCQExercise(
+        input: CreateMCQExercise! @spread
+    ): MCQExercise @permission(name: "exercises:write") @field(resolver: "Railgun\\GraphQL\\Mutations\\CreateExercise")
 
-    "Update an existing exercise."
-    updateExercise(
-        input: UpdateExercise! @spread
-    ): Exercise @permission(name: "exercises:write") @update
+    "Update an existing MCQ exercise."
+    updateMCQExercise(
+        input: UpdateMCQExercise! @spread
+    ): MCQExercise @permission(name: "exercises:write") @field(resolver: "Railgun\\GraphQL\\Mutations\\UpdateExercise")
+
+    "Create a new proof exercise."
+    createProofExercise(
+        input: CreateProofExercise! @spread
+    ): ProofExercise @permission(name: "exercises:write") @field(resolver: "Railgun\\GraphQL\\Mutations\\CreateExercise")
+
+    "Update an existing proof exercise."
+    updateProofExercise(
+        input: UpdateProofExercise! @spread
+    ): ProofExercise @permission(name: "exercises:write") @field(resolver: "Railgun\\GraphQL\\Mutations\\UpdateExercise")
 
     "Delete an existing exercise."
     deleteExercise(
