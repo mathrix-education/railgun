@@ -1,4 +1,7 @@
 # Changelog
+## 7.2.0
+- feat(exercise): add exercise `proof` type
+- fix(prometheus): GraphQL collectors
 
 ## 7.1.0
 - feat(auth): add policy directive and users policy on `User` type. The following fields are now protected:
