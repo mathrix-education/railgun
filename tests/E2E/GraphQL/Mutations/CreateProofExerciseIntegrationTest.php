@@ -13,9 +13,9 @@ use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function factory;
 
 /**
- * @testdox Mutation createExercise
+ * @testdox Mutation createProofExercise
  */
-class CreateExerciseIntegrationTest extends GraphQLIntegrationTestCase
+class CreateProofExerciseIntegrationTest extends GraphQLIntegrationTestCase
 {
     use DatabaseTransactions;
 
@@ -26,13 +26,11 @@ class CreateExerciseIntegrationTest extends GraphQLIntegrationTestCase
     {
         $this->graphQL(
             <<<'GRAPHQL'
-            mutation($input: CreateExercise!) {
-                createExercise(input: $input) {
+            mutation($input: CreateProofExercise!) {
+                createProofExercise(input: $input) {
                     id
                     questions
-                    solutions
                     explanations
-                    choices
                     premium
                     updated_at
                 }
@@ -53,7 +51,7 @@ class CreateExerciseIntegrationTest extends GraphQLIntegrationTestCase
         $subject   = factory(Subject::class)->create(['premium' => false]);
         $variables = Arr::except(
             factory(Exercise::class)->raw(['type' => 'MCQ', 'subject_id' => $subject->id]),
-            ['id', 'premium', 'created_at', 'updated_at'],
+            ['id', 'type', 'choices', 'solutions', 'premium', 'created_at', 'updated_at'],
         );
         $this->withPermissions(['exercises:write', 'exercises:write:visible']);
 
