@@ -76,7 +76,9 @@ class OrderableTest extends ApplicationTestCase
 
         // -> 0, 1, 3, 2
 
-        $ordered  = $notions->map(static fn($n) => $n->refresh()->order)->toArray();
+        $ordered  = $notions
+            ->map(static fn($n) => $n->refresh()->refresh()->order) // double refresh to stabilize the test
+            ->toArray();
         $expected = [0, 1, 3, 2];
 
         $this->assertEquals($expected, $ordered);
