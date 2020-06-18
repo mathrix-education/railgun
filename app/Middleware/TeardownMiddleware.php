@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Railgun\Middleware;
 
 use Closure;
+use Illuminate\Container\Container;
 use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Railgun\Logging\GoogleCloudJsonFormatter;
 use Symfony\Component\HttpFoundation\Response;
+use function app;
 
 /**
  * Execute teardown process at the end of all request to preserve a clean the application state.
@@ -39,8 +41,11 @@ class TeardownMiddleware
 
     /**
      * Shutdown the application container gracefully.
+     *
+     * @param Request  $request  The Illuminate HTTP request.
+     * @param Response $response The Illuminate HTTP response.
      */
-    public function terminate(): void
+    public function terminate(Request $request, Response $response): void
     {
         // Logout the user from the application.
         $this->auth->guard()->logout();
@@ -50,5 +55,13 @@ class TeardownMiddleware
 
         // Log the request
         Log::info(GoogleCloudJsonFormatter::NO_MESSAGE);
+
+        if ((int)($response->getStatusCode() / 100) !== 5) {
+            return;
+        }
+
+        // HTTP 5XX: reset Lighthouse GraphQL
+        app()->flush();
+        Container::setInstance(require app()->basePath('bootstrap/app.php'));
     }
 }
