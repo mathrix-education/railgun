@@ -49,6 +49,7 @@
     "ext-redis": "*",
     "ext-simplexml": "*",
     "ext-zip": "*",
+    "braintree/braintree_php": "^5.2",
     "doctrine/dbal": "^2.10",
     "facebook/graph-sdk": "^5.7",
     "google/apiclient": "^2.4",
