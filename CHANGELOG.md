@@ -1,5 +1,10 @@
 # Changelog
 
+## 7.1.2
+- fix(braintree): ensure that the message is always defined
+- fix(http): flush container properly
+- chore(deps): upgrade dependencies
+
 ## 7.1.1
 - feat(braintree): implement Braintree subscription webhooks
 - fix(graphql): flush container on HTTP 500

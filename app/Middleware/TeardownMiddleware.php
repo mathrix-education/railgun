@@ -62,6 +62,6 @@ class TeardownMiddleware
 
         // HTTP 5XX: reset Lighthouse GraphQL
         app()->flush();
-        Container::setInstance(require app()->basePath('bootstrap/app.php'));
+        Container::setInstance(require __DIR__ . '/../../bootstrap/app.php');
     }
 }

@@ -2,12 +2,6 @@
     <img src="public/img/logo.png" alt="">
 </p>
 
-<p align="center">
-    <a href="https://codecov.io/gh/mathrix-education/education-api">
-        <img src="https://img.shields.io/codecov/c/github/mathrix-education/education-api/v7?style=for-the-badge&token=cf56194c6ae94a0893cb670d902c105f" alt="codecov-badge">
-    </a>
-</p>
-
 Railgun-fast paced GraphQL API for Mathrix Education.
 Proudly maintained by Mathieu Bour <mathieu@mathrix.fr>, Lead Tech at Edutech Media.
 
