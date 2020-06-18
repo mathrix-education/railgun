@@ -45,11 +45,11 @@ class BraintreeWebhooksController extends Controller
                 ->where('id', '=', $subscription->id)
                 ->update($data);
 
-            $message = 'Wehbook handled';
+            $message = 'Webhook handled';
         }
 
         return new JsonResponse([
-            'message' => $message,
+            'message' => $message ?? 'Webhook ignored',
             'event'   => $event->jsonSerialize(),
         ]);
     }
