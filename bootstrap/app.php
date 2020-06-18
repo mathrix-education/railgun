@@ -19,6 +19,7 @@ use Nuwave\Lighthouse\Tracing\TracingServiceProvider;
 use Railgun\Actions\SitemapAction;
 use Railgun\Providers\AppServiceProvider;
 use Railgun\Providers\AuthServiceProvider;
+use Railgun\Providers\BraintreeServiceProvider;
 use Railgun\Providers\CryptoServiceProvider;
 use Railgun\Providers\FacebookServiceProvider;
 use Railgun\Providers\GoogleServiceProvider;
@@ -85,6 +86,7 @@ $app->register(GoogleCloudStorageServiceProvider::class);
 
 // Billing
 $app->register(StripeServiceProvider::class);
+$app->register(BraintreeServiceProvider::class);
 
 // Sentry
 if ($app->environment(['stable', 'edge']) && !$app->runningUnitTests()) {
