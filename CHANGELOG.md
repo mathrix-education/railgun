@@ -1,5 +1,10 @@
 # Changelog
 
+## 7.1.1
+- feat(braintree): implement Braintree subscription webhooks
+- fix(graphql): flush container on HTTP 500
+- fix(migration): force migration run even in production environment (fixes #411)
+
 ## 7.1.0
 - feat(auth): add policy directive and users policy on `User` type. The following fields are now protected:
     - `firstname`
