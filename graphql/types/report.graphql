@@ -1,4 +1,4 @@
-union Reportable = Course | Exercise | Flashcard | Exam
+union Reportable = Course | MCQExercise | ProofExercise | Flashcard | Exam
 
 enum ReportType {
     COURSE @enum(value: "course")

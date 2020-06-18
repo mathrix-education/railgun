@@ -1,4 +1,4 @@
-union Notable = Course | Exam | Exercise | Flashcard
+union Notable = Course | Exam | MCQExercise | ProofExercise | Flashcard
 
 enum NotableType {
     COURSE @enum(value: "course")

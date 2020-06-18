@@ -13,26 +13,24 @@ use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function factory;
 
 /**
- * @testdox Mutation updateExercise
+ * @testdox Mutation createProofExercise
  */
-class UpdateExerciseIntegrationTest extends GraphQLIntegrationTestCase
+class CreateProofExerciseIntegrationTest extends GraphQLIntegrationTestCase
 {
     use DatabaseTransactions;
 
     /**
-     * @param mixed[] $variables The updateExercise variables.
+     * @param mixed[] $variables The createExercise variables.
      */
-    private function executeUpdateExercise(array $variables = []): void
+    private function executeCreateExercise(array $variables = []): void
     {
         $this->graphQL(
             <<<'GRAPHQL'
-            mutation($input: UpdateExercise!) {
-                updateExercise(input: $input) {
+            mutation($input: CreateProofExercise!) {
+                createProofExercise(input: $input) {
                     id
                     questions
-                    solutions
                     explanations
-                    choices
                     premium
                     updated_at
                 }
@@ -43,28 +41,21 @@ class UpdateExerciseIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox updates an existing exercise
-     *
-     * @link    https://github.com/nuwave/lighthouse/issues/1264
+     * @testdox creates a new exercise
      *
      * @ticket #243
      */
-    public function testUpdateExercise(): void
+    public function testCreate(): void
     {
         /** @var Subject $subject */
-        $subject = factory(Subject::class)->create(['premium' => false]);
-        /** @var Exercise $exercise */
-        $exercise  = factory(Exercise::class)->create(['subject_id' => $subject->id]);
-        $variables = factory(Exercise::class)->raw([
-            'id'         => $exercise->id,
-            'type'       => 'MCQ',
-            'subject_id' => $subject->id,
-        ]);
-
+        $subject   = factory(Subject::class)->create(['premium' => false]);
+        $variables = Arr::except(
+            factory(Exercise::class)->raw(['type' => 'MCQ', 'subject_id' => $subject->id]),
+            ['id', 'type', 'choices', 'solutions', 'premium', 'created_at', 'updated_at'],
+        );
         $this->withPermissions(['exercises:write', 'exercises:write:visible']);
-        $this->executeUpdateExercise([
-            'input' => Arr::except($variables, ['premium', 'created_at', 'updated_at']),
-        ]);
+
+        $this->executeCreateExercise(['input' => $variables]);
 
         $this->assertResponseOk();
         $this->assertNoErrors();
