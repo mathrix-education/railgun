@@ -2,25 +2,8 @@
 
 declare(strict_types=1);
 
-use Illuminate\Support\Facades\Auth;
-use Railgun\Models\User;
-
 // phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
 // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.NotCamelCaps
-
-if (!function_exists('isPremium')) { // @codeCoverageIgnore
-
-    /**
-     * @return bool Check if the current user is premium.
-     */
-    function isPremium(): bool
-    {
-        /** @var User $user */
-        $user = Auth::user();
-
-        return $user instanceof User && $user->premium;
-    }
-}
 
 if (!function_exists('prefix')) { // @codeCoverageIgnore
 

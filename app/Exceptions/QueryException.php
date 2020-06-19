@@ -18,7 +18,7 @@ class QueryException extends HttpException
     public function __construct(?string $message, Throwable $previous)
     {
         if ($previous instanceof IlluminateQueryException) {
-            parent::__construct($message ?? $previous->errorInfo[2], $previous);
+            parent::__construct($message ?? $previous->errorInfo[2] ?? $previous->getMessage(), $previous);
         } else {
             parent::__construct($message ?? $previous->getMessage(), $previous);
         }
