@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Railgun\Jobs;
 
-use Railgun\Billing\Bridges\StripeSubscriptionBridge;
 use Railgun\Models\Subscription;
 use Railgun\Models\User;
 use Stripe\Subscription as StripeSubscription;
@@ -37,9 +36,9 @@ class UpsertSubscription extends Job
 
         assert($this->stripeSubscription instanceof StripeSubscription);
 
-        $converted = StripeSubscriptionBridge::toEloquent($this->stripeSubscription);
+        $converted = Subscription::fromStripe($this->stripeSubscription);
 
-        if (config('services.stripe.sandbox') && !User::query()->where('stripe_id')->exists()) {
+        if (config('stripe.sandbox') && !User::query()->where('stripe_id')->exists()) {
             return new Subscription();
         }
 

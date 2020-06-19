@@ -10,10 +10,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Railgun\Billing\Contracts\Sellable as SellableContract;
 use Railgun\Models\Traits\Content;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
+use Railgun\Models\Traits\SaveWithoutEvents;
 use Railgun\Models\Traits\Sluggable;
+use Railgun\Billing\Models\Sellable;
 
 /**
  * A chapter is the base wrapper of all the Mathrix Education content.
@@ -33,10 +36,12 @@ use Railgun\Models\Traits\Sluggable;
  * @property-read Collection|Exam[]      $exams
  * @property-read Collection|Session[]   $sessions
  */
-class Chapter extends Model implements Content
+class Chapter extends Model implements Content, SellableContract
 {
     use Randomizable;
     use Reorderable;
+    use SaveWithoutEvents;
+    use Sellable;
     use Sluggable;
 
     protected       $fillable   = [

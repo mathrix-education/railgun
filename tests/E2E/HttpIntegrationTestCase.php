@@ -20,8 +20,24 @@ use const JSON_THROW_ON_ERROR;
 
 class HttpIntegrationTestCase extends ApplicationTestCase
 {
+    /** @var User $user The logged user which is running the tests. */
+    protected User $user;
     /** @var stdClass|mixed[] $contentCache The JSON-decoded content. */
-    private $contentCache;
+    protected $contentCache;
+
+    /**
+     * Set the currently logged in user for the application.
+     *
+     * @param Authenticatable|User $user  The user.
+     * @param string|null          $guard The guard to use, use the default one if null is provided.
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     */
+    public function be(Authenticatable $user, $guard = null): void
+    {
+        $this->app['auth']->guard($guard)->setUser($user);
+        $this->user = $user;
+    }
 
     /**
      * @param Authenticatable|User|mixed[] $user  The user or the user attributes.
@@ -41,6 +57,17 @@ class HttpIntegrationTestCase extends ApplicationTestCase
     }
 
     /**
+     * Get the currently logged user.
+     *
+     * @return User|null The currently logged user.
+     */
+    protected function getUser(): ?User
+    {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return $this->user ?? $this->app->make('auth')->guard()->user();
+    }
+
+    /**
      * Set the currently logged user and returns it.
      *
      * @param Authenticatable|User|mixed[] $user  The user or the user attributes.
@@ -52,7 +79,7 @@ class HttpIntegrationTestCase extends ApplicationTestCase
     {
         $this->actingAs($user, $guard);
 
-        return $this->app->make('auth')->guard($guard)->user();
+        return $this->getUser();
     }
 
     /**

@@ -20,6 +20,7 @@ use Railgun\Middleware\CorrelationMiddleware;
 use Railgun\Middleware\ImpersonateMiddleware;
 use Railgun\Middleware\LanguageMiddleware;
 use Railgun\Middleware\TeardownMiddleware;
+use Railgun\Models\Chapter;
 use Railgun\Models\Course;
 use Railgun\Models\Exam;
 use Railgun\Models\Exercise;
@@ -88,6 +89,7 @@ class AppServiceProvider extends ServiceProvider
              * @see Notable
              * @see Reportable
              */
+            'chapter'   => Chapter::class,
             'subject'   => Subject::class,
             'course'    => Course::class,
             'exercise'  => Exercise::class,

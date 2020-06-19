@@ -9,15 +9,6 @@ return [
         'call'    => env('MAILJET_CALL', true),
         'options' => ['version' => 'v3.1'],
     ],
-    'stripe'    => [
-        'key'     => env('STRIPE_KEY'),
-        'secret'  => env('STRIPE_SECRET'),
-        'webhook' => [
-            'route'     => env('STRIPE_WEBOOKS_ROUTE', '/webhooks/stripe'),
-            'secret'    => env('STRIPE_WEBHOOKS_SECRET'),
-            'tolerance' => env('STRIPE_WEBHOOKS_TOLERANCE', 300),
-        ],
-    ],
     'braintree' => [
         'environment' => env('BRAINTREE_ENVIRONMENT', 'sandbox'),
         'merchantId'  => env('BRAINTREE_MERCHANT_ID'),

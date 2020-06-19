@@ -27,17 +27,20 @@ class TrainingsSeeder extends AdvancedSeeder
 
     public function run(): void
     {
-        // Packs
-        $this->seedFactory(Pack::class, ['seed' => false, 'count' => self::PACK_COUNT])
-            ->map(static fn($pack, int $order) => ['order' => $order] + $pack)
-            ->tap(fn() => $this->writeFactoryMessage(Pack::class))
-            ->tap(fn(Collection $packs) => $this->seedCollection($packs, 'packs'));
-
-        // Trainings
-        $this->seedFactory(Training::class, self::TRAINING_COUNT);
-
-        // Link packs <=> trainings
-        $this->link(Pack::class, Training::class, ['callback' => 'order']);
+        $this->seedFile('packs.json');
+        $this->seedFile('trainings.json');
+        $this->seedFile('pack_training.json');
+//        // Packs
+//        $this->seedFactory(Pack::class, ['seed' => false, 'count' => self::PACK_COUNT])
+//            ->map(static fn($pack, int $order) => ['order' => $order] + $pack)
+//            ->tap(fn() => $this->writeFactoryMessage(Pack::class))
+//            ->tap(fn(Collection $packs) => $this->seedCollection($packs, 'packs'));
+//
+//        // Trainings
+//        $this->seedFactory(Training::class, self::TRAINING_COUNT);
+//
+//        // Link packs <=> trainings
+//        $this->link(Pack::class, Training::class, ['callback' => 'order']);
 
         // Sections
         DB::table('trainings')

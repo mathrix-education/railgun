@@ -25,6 +25,9 @@ class Coupon extends Model
 {
     use Randomizable;
 
+    public const TYPE_ABSOLUTE = 'absolute';
+    public const TYPE_PERCENT  = 'percent';
+
     protected $keyType      = 'string';
     public    $incrementing = false;
     protected $fillable     = ['id', 'type', 'value', 'counter', 'expires_at'];

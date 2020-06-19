@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Functional\Billing\Cart;
 
 use Illuminate\Database\Eloquent\Collection;
-use Railgun\Billing\Cart\Cart;
 use Railgun\Billing\Exceptions\AlreadyBoughtException;
 use Railgun\Billing\Exceptions\AlreadyPremiumException;
 use Railgun\Billing\Exceptions\DuplicateProductsException;

@@ -5,13 +5,17 @@ declare(strict_types=1);
 namespace Tests\E2E\GraphQL\Mutations;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Laravel\Lumen\Testing\DatabaseTransactions;
+use Railgun\Models\Chapter;
 use Railgun\Models\Pack;
 use Railgun\Models\Training;
-use Railgun\Models\User;
 use Stripe\Exception\ApiErrorException;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function array_intersect;
+use function array_key_exists;
+use function array_merge;
+use function array_unique;
 use function trans;
 
 /**
@@ -22,11 +26,21 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
     use DatabaseTransactions;
 
     private const QUERY = <<<'GRAPHQL'
-    mutation($packIds: [ID!], $trainingIds: [ID!], $premium: Boolean, $coupon: ID, $paymentMethodId: String!) {
+    mutation(
+        $chapters: [ID!]
+        $packs: [ID!]
+        $trainings: [ID!]
+        $plans: [ID!]
+        $premium: Boolean
+        $coupon: ID
+        $paymentMethodId: String!
+    ) {
         checkoutCart(
             cart: {
-                packIds: $packIds
-                trainingIds: $trainingIds
+                chapters: $chapters
+                packs: $packs
+                trainings: $trainings
+                plans: $plans
                 premium: $premium
                 coupon: $coupon
             }
@@ -55,6 +69,14 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
      */
     private function getVariables(string $paymentMethodId): array
     {
+        $chapterIds = Chapter::query()
+            ->inRandomOrder()
+            ->whereNotNull('stripe_price_id')
+            ->limit(2)
+            ->get(['id'])
+            ->pluck('id')
+            ->toArray();
+
         /** @var Pack $pack */
         $pack    = Pack::query()
             ->inRandomOrder()
@@ -74,68 +96,76 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
             ->toArray();
 
         return [
-            'packIds'         => $packIds,
-            'trainingIds'     => $trainingIds,
-            'premium'         => true,
+            'chapters'        => $chapterIds,
+            'packs'           => $packIds,
+            'trainings'       => $trainingIds,
             'paymentMethodId' => $paymentMethodId,
+            'premium'         => true,
         ];
     }
 
     /**
-     * Assert that the given product ids were successfully delivered to a user.
+     * Assert that the submitted products when delivered to the current user.
      *
-     * @param User  $user        The targeted user.
-     * @param int[] $packIds     The pack ids to check.
-     * @param int[] $trainingIds The training ids to check.
-     * @param bool  $negate      Negate the assertion
+     * @param mixed[] $cartInput The CartInput GraphQL Input.
+     * @param bool    $negate    If the assertion should be negated.
      */
-    private function assertProductsDelivered(
-        User $user,
-        array $packIds,
-        array $trainingIds,
-        bool $negate = false
-    ): void
+    private function assertProductsDelivered(array $cartInput, bool $negate = false): void
     {
-        // Check packs ownership
-        $expectedPackIds = $packIds;
-        $userPackIds     = $user->packs()->pluck('packs.id')->toArray();
+        $expectedChapterIds  = $cartInput['chapters'] ?? [];
+        $expectedPackIds     = $cartInput['packs'] ?? [];
+        $expectedTrainingIds = $cartInput['trainings'] ?? [];
 
-        if (!$negate) {
-            $this->assertEqualsCanonicalizing($expectedPackIds, $userPackIds);
-        } else {
-            $this->assertEmpty(array_intersect($expectedPackIds, $userPackIds));
+        if (array_key_exists('packs', $cartInput)) {
+            $trainingsFromPacks = Training::query()
+                ->whereHas('packs', static fn(Builder $builder) => $builder->whereIn('packs.id', $expectedPackIds))
+                ->pluck('trainings.id')
+                ->unique()
+                ->toArray();
+
+            $expectedTrainingIds = array_unique(array_merge($expectedTrainingIds, $trainingsFromPacks));
         }
 
-        // Check trainings ownership
-        $expectedTrainingsIds = Training::query()
-            ->whereHas('packs', static fn(Builder $builder) => $builder->whereIn('packs.id', $packIds))
-            ->pluck('trainings.id')
-            ->unique()
-            ->toArray();
-        $expectedTrainingsIds = [...$expectedTrainingsIds, ...$trainingIds];
-        $userTrainingIds      = $user->trainings()->pluck('trainings.id')->toArray();
-
-        if (!$negate) {
-            $this->assertEqualsCanonicalizing($expectedTrainingsIds, $userTrainingIds);
-        } else {
-            $this->assertEmpty(array_intersect($expectedTrainingsIds, $userTrainingIds));
-        }
+        // Run assertions
+        $this->assertUserOwnProducts('chapters', $expectedChapterIds, $negate);
+        $this->assertUserOwnProducts('packs', $expectedPackIds, $negate);
+        $this->assertUserOwnProducts('trainings', $expectedTrainingIds, $negate);
     }
 
     /**
-     * Assert that the given product ids were not delivered to a user.
+     * Assert that the current user owns the given product ids.
      *
-     * @param User  $user        The targeted user.
-     * @param int[] $packIds     The pack ids to check.
-     * @param int[] $trainingIds The training ids to check.
+     * @param string $relation    The relation to test.
+     * @param int[]  $expectedIds The product ids.
+     * @param bool   $negate      If the assertion should be negated.
      */
-    private function assertProductsNotDelivered(
-        User $user,
-        array $packIds,
-        array $trainingIds
+    private function assertUserOwnProducts(
+        string $relation,
+        array $expectedIds,
+        bool $negate = false
     ): void
     {
-        $this->assertProductsDelivered($user, $packIds, $trainingIds, true);
+        /** @var Collection $models */
+        $models = $this->getUser()->refresh()->{$relation};
+
+        if (!$negate) {
+            $this->assertEqualsCanonicalizing(
+                array_intersect(
+                    $models->pluck('id')->toArray(),
+                    $expectedIds,
+                ),
+                $expectedIds,
+                "User {$this->getUser()->id} does not own all the passed {$relation} ids",
+            );
+        } else {
+            $this->assertEmpty(
+                array_intersect(
+                    $models->pluck('id')->toArray(),
+                    $expectedIds,
+                ),
+                "User {$this->getUser()->id} owns all the passed {$relation} ids",
+            );
+        }
     }
 
     /**
@@ -175,7 +205,7 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
         bool $expectProductDelivered
     ): void
     {
-        $user      = $this->withPermissions();
+        $user      = $this->actingAsGetUser();
         $variables = $this->getVariables($paymentMethodId);
 
         $this->graphQL(self::QUERY, $variables);
@@ -189,10 +219,10 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
         $this->assertTrue($user->isStripeCustomer());
 
         if ($expectProductDelivered) {
-            $this->assertProductsDelivered($user, $variables['packIds'], $variables['trainingIds']);
+            $this->assertProductsDelivered($variables);
             $this->assertEquals($user->premium, $variables['premium']);
         } else {
-            $this->assertProductsNotDelivered($user, $variables['packIds'], $variables['trainingIds']);
+            $this->assertProductsDelivered($variables, true);
             $this->assertFalse($user->premium);
         }
     }
@@ -249,7 +279,7 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
         $user->refresh();
         $this->assertFalse($user->isStripeCustomer());
         $this->assertFalse($user->premium);
-        $this->assertProductsNotDelivered($user, $variables['packIds'], $variables['trainingIds']);
+        $this->assertProductsDelivered($variables['packs'], true);
     }
 
     /**
@@ -278,13 +308,13 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
             }
             GRAPHQL,
             [
-                'cart'            => ['trainingIds' => [$training->id]],
+                'cart'            => ['trainings' => [$training->id]],
                 'paymentMethodId' => 'pm_card_fr',
             ],
         );
 
         $this->assertResponseOk();
         $this->assertNoErrors();
-        $this->assertProductsDelivered($user, [], [$training->id]);
+        $this->assertProductsDelivered(['trainings' => [$training->id]]);
     }
 }

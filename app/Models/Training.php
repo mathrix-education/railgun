@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace Railgun\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Railgun\Billing\Contracts\Sellable as SellableContract;
 use Railgun\Models\Traits\Acquerable;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
+use Railgun\Models\Traits\SaveWithoutEvents;
 use Railgun\Models\Traits\Sluggable;
+use Railgun\Billing\Models\Sellable;
 
 /**
  * @property-read int                  $id
@@ -22,18 +26,22 @@ use Railgun\Models\Traits\Sluggable;
  * @property      int                  $price
  * @property      int                  $order
  * @property      bool                 $visible
- * @property-read string               $created_at
- * @property-read string               $updated_at
+ * @property      string|null          $stripe_product_id
+ * @property      string|null          $stripe_price_id
+ * @property-read Carbon               $created_at
+ * @property-read Carbon               $updated_at
  * ---
  * @property-read Collection|Pack[]    $packs
  * @property-read Collection|Section[] $sections
  * @property-read Collection|Grade[]   $grades
  */
-class Training extends Model
+class Training extends Model implements SellableContract
 {
     use Acquerable;
     use Reorderable;
     use Randomizable;
+    use SaveWithoutEvents;
+    use Sellable;
     use Sluggable;
 
     protected $fillable = [

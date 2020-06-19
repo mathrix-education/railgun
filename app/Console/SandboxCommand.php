@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Railgun\Console;
 
 use Illuminate\Console\Command;
+use Stripe\StripeClient;
 
 /**
  * Dummy Command which is only used to test behavioral code.
@@ -19,8 +20,8 @@ class SandboxCommand extends Command
      */
     protected $signature = 'sandbox';
 
-    public function handle(): void
+    public function handle(StripeClient $stripe): void
     {
-        // Implement sandbox command
+        dd($stripe);
     }
 }

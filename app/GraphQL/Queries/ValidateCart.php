@@ -4,14 +4,8 @@ declare(strict_types=1);
 
 namespace Railgun\GraphQL\Queries;
 
-use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use Railgun\Billing\Cart\Cart;
-use Railgun\Models\User;
+use Railgun\Billing\Checkout\Cart;
 
-/**
- * Query validateCart.
- * Validate a cart content.
- */
 class ValidateCart
 {
     /**
@@ -23,11 +17,6 @@ class ValidateCart
      */
     public function __invoke($_, array $args, GraphQLContext $context): array
     {
-        /** @var User $user */
-        $user = $context->user();
-
-        $cart = new Cart($args['cart'], $user);
-
-        return $cart->validate()->toGraphQL();
+        return new Cart($args['cart']);
     }
 }

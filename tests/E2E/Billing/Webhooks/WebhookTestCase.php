@@ -54,7 +54,7 @@ abstract class WebhookTestCase extends GraphQLIntegrationTestCase
     {
         $this->call(
             'post',
-            config('services.stripe.webhook.route'),
+            config('stripe.webhook.route'),
             [],
             [],
             [],
@@ -105,7 +105,7 @@ abstract class WebhookTestCase extends GraphQLIntegrationTestCase
         $signature = hash_hmac(
             'sha256',
             "{$timestamp}.{$payload}",
-            (string)config('services.stripe.webhook.secret'),
+            (string)config('stripe.webhook.secret'),
         );
 
         return "t={$timestamp},{$scheme}={$signature}";

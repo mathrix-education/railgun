@@ -99,7 +99,7 @@ class SubscriptionTest extends ModelTestCase
             'status' => StripeSubscription::STATUS_ACTIVE,
         ])->data[0];
 
-        $subscription = StripeSubscriptionBridge::toEloquent($stripeSubscription);
+        $subscription = Subscription::fromStripe($stripeSubscription);
         $subscription->save();
 
         $this->assertInstanceOf(Invoice::class, $subscription->latest_invoice);

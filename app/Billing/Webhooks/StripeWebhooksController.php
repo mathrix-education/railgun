@@ -7,7 +7,7 @@ namespace Railgun\Billing\Webhooks;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
-use Railgun\Billing\Cart\Cart;
+use Railgun\Billing\Checkout\Cart;
 use Railgun\Billing\Exceptions\UnsupportedEventException;
 use Railgun\Jobs\DeliverProducts;
 use Railgun\Jobs\UpsertSubscription;
@@ -69,12 +69,19 @@ class StripeWebhooksController extends Controller
     {
         $signature = $request->header('Stripe-Signature');
         $payload   = $request->getContent();
+        $profile   = $request->query('profile', 'primary');
+        $secret    = $profile === 'primary'
+            ? config('stripe.primary.webhooks_secret')
+            : config('stripe.secondary.webhooks_secret');
+        $tolerance = $profile === 'primary'
+            ? config('stripe.primary.tolerance')
+            : config('stripe.secondary.tolerance');
 
         $event = Webhook::constructEvent(
             $payload,
             $signature,
-            (string)config('services.stripe.webhook.secret'),
-            config('services.stripe.webhook.tolerance'),
+            $secret,
+            $tolerance,
         );
 
         $handler = $this->getHandler($event->type);

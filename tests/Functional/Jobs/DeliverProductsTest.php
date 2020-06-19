@@ -6,7 +6,7 @@ namespace Tests\Functional\Jobs;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
-use Railgun\Billing\Cart\Cart;
+use Railgun\Billing\Checkout\Cart;
 use Railgun\Jobs\DeliverProducts;
 use Railgun\Models\User;
 use RuntimeException;
@@ -22,7 +22,7 @@ use function factory;
 class DeliverProductsTest extends ApplicationTestCase
 {
     /**
-     * @testdox ignores the invoice if the metadata type is {@see Cart::IDENTIFIER}
+     * @testdox ignores the invoice if the metadata type is {@see ValidateCart::IDENTIFIER}
      * @covers ::__construct
      * @covers ::handle
      */
@@ -37,7 +37,7 @@ class DeliverProductsTest extends ApplicationTestCase
             ],
         ]);
 
-        $this->assertNull(dispatch_now(new DeliverProducts($invoice)));
+        $this->assertNull(dispatch_now(new DeliverProducts($invoice))array);
     }
 
     /**
@@ -68,7 +68,7 @@ class DeliverProductsTest extends ApplicationTestCase
      */
     public function testDeliverSandboxNonExistingUser(): void
     {
-        $this->app['config']->set('services.stripe.sandbox', true);
+        $this->app['config']->set('stripe.sandbox', true);
 
         $expected = DB::table('acquisitions')->count();
         $invoice  = Invoice::constructFrom(['customer' => 'idontexist']);
@@ -84,7 +84,7 @@ class DeliverProductsTest extends ApplicationTestCase
      */
     public function testDeliverProductionNonExistingUser(): void
     {
-        $this->app['config']->set('services.stripe.sandbox', false);
+        $this->app['config']->set('stripe.sandbox', false);
 
         $invoice = Invoice::constructFrom([
             'customer' => 'idontexist',

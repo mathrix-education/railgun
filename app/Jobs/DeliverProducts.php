@@ -8,13 +8,14 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
-use Railgun\Billing\Cart\Cart;
+use Railgun\Billing\Checkout\Cart;
 use Railgun\Models\Acquisition;
 use Railgun\Models\Training;
 use Railgun\Models\User;
 use RuntimeException;
 use Stripe\Invoice;
-use Stripe\StripeObject;
+use Stripe\InvoiceLineItem;
+use Stripe\LineItem;
 use function collect;
 use function config;
 
@@ -43,7 +44,7 @@ class DeliverProducts extends Job
             /** @var User $user */
             $user = User::query()->where('stripe_id', '=', $this->invoice->customer)->firstOrFail();
         } catch (ModelNotFoundException $exception) {
-            if (config('services.stripe.sandbox')) {
+            if (config('stripe.sandbox')) {
                 // Allow user to not exists in test mode since we are using them for integration tests
                 return;
             }
@@ -63,13 +64,19 @@ class DeliverProducts extends Job
         }
 
         $items = collect($this->invoice->lines->data)
-            ->pluck('metadata')
-            ->map(static fn(StripeObject $item) => $item->toArray());
+            ->map(static function (InvoiceLineItem $item) {
+                $data = $item->metadata->toArray();
+
+                if ($data['product_type'] === 'premium') {
+                    $data['end_date'] = $item->period->end;
+                }
+
+                return $data;
+            });
 
         $validator = Validator::make($items->toArray(), [
             '*.user_id'      => 'required|exists:users,id',
-            '*.product_type' => 'required|in:pack,training,premium',
-            '*.product_id'   => 'required',
+            '*.product_type' => 'required|in:chapter,pack,training,premium',
         ]);
 
         if ($validator->fails()) {
@@ -79,6 +86,9 @@ class DeliverProducts extends Job
 
         $items->each(function ($item): void {
             switch ($item['product_type']) {
+                case 'chapter':
+                    $this->deliverChapter((int)$item['product_id']);
+                    break;
                 case 'pack':
                     $this->deliverPack((int)$item['product_id']);
                     break;
@@ -90,6 +100,25 @@ class DeliverProducts extends Job
                     break;
             }
         });
+    }
+
+    /**
+     * Deliver a chapter by creating a new {@see Acquisition}.
+     *
+     * @param int $chapterId The chapter ID.
+     */
+    public function deliverChapter(int $chapterId): void
+    {
+        Acquisition::query()->updateOrCreate(
+            [
+                'user_id'      => $this->user->id,
+                'product_type' => 'chapter',
+                'product_id'   => $chapterId,
+            ],
+            [
+                'transaction_id' => $this->invoice->id,
+            ],
+        );
     }
 
     /**

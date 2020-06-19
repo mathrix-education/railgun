@@ -13,7 +13,7 @@ use Railgun\Support\Timestamps;
  * @var Factory $factory
  */
 $factory->define(Chapter::class, static function (Faker $faker) {
-    $name       = ucfirst($faker->words(3, true));
+    $name       = (string)Str::of($faker->words(3, true))->lower()->ucfirst();
     $timestamps = Timestamps::factory();
 
     return [

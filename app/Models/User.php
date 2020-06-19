@@ -102,7 +102,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'settings'                  => 'array',
         'metadata'                  => 'array',
     ];
-    protected $appends    = ['provider'];
 
     public static function boot(): void
     {

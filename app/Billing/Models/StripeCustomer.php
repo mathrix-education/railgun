@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Railgun\Billing\Models;
 
 use Illuminate\Support\Collection;
+use Stripe\Card;
 use Stripe\Customer;
 use Stripe\Exception\ApiErrorException;
 use Stripe\PaymentMethod;
-use Stripe\Subscription as StripeSubscriptions;
 use function collect;
+use function stripe;
 
 trait StripeCustomer
 {
@@ -44,7 +45,7 @@ trait StripeCustomer
         }
 
         try {
-            return Customer::retrieve($this->stripe_id);
+            return stripe()->customers->retrieve($this->stripe_id);
         } catch (ApiErrorException $exception) {
             $this->stripe_id = null;
             $this->save();
@@ -66,6 +67,7 @@ trait StripeCustomer
     {
         if ($this->isStripeCustomer()) {
             $paymentMethodId = $this->attachPaymentMethod($paymentMethodId)->id;
+
             return $this->asStripeCustomer();
         }
 
@@ -84,7 +86,7 @@ trait StripeCustomer
             ];
         }
 
-        $customer = Customer::create($payload);
+        $customer = stripe()->customers->create($payload);
 
         $this->stripe_id = $customer->id;
         $this->save();
@@ -95,36 +97,13 @@ trait StripeCustomer
     }
 
     /**
-     * Get the user's Stripe subscriptions.
-     *
-     * @return Collection|StripeSubscriptions[]
-     *
-     * @throws ApiErrorException
-     */
-    public function getStripeSubscriptions(): Collection
-    {
-        if (!$this->isStripeCustomer()) {
-            return new Collection();
-        }
-
-        return collect(StripeSubscriptions::all([
-            'customer' => $this->stripe_id,
-            'expand'   => [
-                'data.default_source',
-                'data.latest_invoice.payment_intent',
-                'data.pending_setup_intent',
-            ],
-        ]));
-    }
-
-    /**
      * @return Collection|PaymentMethod[]
      *
      * @throws ApiErrorException
      */
     public function getPaymentMethods(): Collection
     {
-        return collect(PaymentMethod::all([
+        return collect(stripe()->paymentMethods->all([
             'customer' => $this->stripe_id,
             'type'     => 'card',
         ])->data);
@@ -141,21 +120,34 @@ trait StripeCustomer
      */
     public function attachPaymentMethod(string $paymentMethodId): PaymentMethod
     {
-        $paymentMethod  = PaymentMethod::retrieve($paymentMethodId);
+        $paymentMethod = stripe()->paymentMethods->retrieve($paymentMethodId);
+        if (!isset($paymentMethod->card)) {
+            // This is not a card, attach immediately
+            stripe()->paymentMethods->attach($paymentMethodId, ['customer' => $this->stripe_id]);
+        }
+
+        // This a card, we need to check the
+        /** @var Card $card */
+        $card           = $paymentMethod->card;
         $paymentMethods = $this->getPaymentMethods();
 
         // Compare the embedded card fingerprints to avoid attach the same card twice.
-        $existing = $paymentMethods->first(static function (PaymentMethod $thePaymentMethod) use ($paymentMethod) {
-            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-            return isset($thePaymentMethod->card->fingerprint)
-                && $paymentMethod->card->fingerprint === $thePaymentMethod->card->fingerprint;
+        $existing = $paymentMethods->first(static function (PaymentMethod $paymentMethod) use ($card) {
+            if (!isset($paymentMethod->card)) {
+                return false;
+            }
+
+            /** @var Card $theCard */
+            $theCard = $paymentMethod->card;
+
+            return $theCard->fingerprint === $card->fingerprint;
         });
 
         if ($existing !== null) {
             return $existing;
         }
 
-        $paymentMethod->attach(['customer' => $this->stripe_id]);
+        stripe()->paymentMethods->attach($paymentMethodId, ['customer' => $this->stripe_id]);
 
         return $paymentMethod;
     }

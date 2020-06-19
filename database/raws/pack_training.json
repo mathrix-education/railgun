@@ -1,0 +1,32 @@
+[
+  {
+    "pack_id": 1,
+    "training_id": 7,
+    "order": 1
+  },
+  {
+    "pack_id": 1,
+    "training_id": 8,
+    "order": 2
+  },
+  {
+    "pack_id": 1,
+    "training_id": 9,
+    "order": 3
+  },
+  {
+    "pack_id": 2,
+    "training_id": 7,
+    "order": 1
+  },
+  {
+    "pack_id": 2,
+    "training_id": 8,
+    "order": 2
+  },
+  {
+    "pack_id": 2,
+    "training_id": 10,
+    "order": 3
+  }
+]

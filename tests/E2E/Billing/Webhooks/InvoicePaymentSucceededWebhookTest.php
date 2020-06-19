@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\E2E\Billing\Webhooks;
 
 use Illuminate\Support\Facades\Bus;
-use Railgun\Billing\Cart\Cart;
 use Railgun\Jobs\DeliverProducts;
 use Railgun\Jobs\UpsertSubscription;
 use Railgun\Models\User;

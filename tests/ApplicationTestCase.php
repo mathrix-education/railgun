@@ -11,6 +11,7 @@ use Laravel\Lumen\Application;
 use Laravel\Lumen\Testing\TestCase;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Railgun\Models\User;
 
 /**
  * Base test class for all application tests.

@@ -8,10 +8,13 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Traits\Cacheable;
+use Stripe\Customer;
 use Stripe\Invoice;
 use Stripe\Subscription as StripeSubscription;
+use function is_string;
 use function preg_match;
 use function str_pad;
+use function stripe;
 use const STR_PAD_LEFT;
 
 /**
@@ -56,6 +59,38 @@ class Subscription extends Model
         'canceled_at'          => 'datetime',
     ];
 
+    public static function fromStripe(StripeSubscription $stripe): self
+    {
+        $subscription     = new self();
+        $subscription->id = $stripe->id;
+
+        if (self::query()->where('id', '=', $stripe)->exists()) {
+            /** @noinspection PhpIncompatibleReturnTypeInspection */
+            return self::query()->findOrFail($stripe->id);
+        }
+
+        $subscription->plan = $stripe->plan->id;
+
+        if (is_string($stripe->customer)) {
+            $subscription->customer_id = $stripe->customer;
+        } elseif ($stripe->customer instanceof Customer) {
+            $subscription->customer_id = $stripe->customer->id;
+        }
+
+        $subscription->status               = $stripe->status;
+        $subscription->current_period_start = Carbon::createFromTimestamp($stripe->current_period_start);
+        $subscription->current_period_end   = Carbon::createFromTimestamp($stripe->current_period_end);
+        $subscription->created_at           = Carbon::createFromTimestamp($stripe->created);
+        $subscription->updated_at           = Carbon::createFromTimestamp($stripe->created);
+
+        $canceledAt = $stripe->canceled_at ?? $stripe->cancel_at;
+        if ($canceledAt !== null) {
+            $subscription->canceled_at = Carbon::createFromTimestamp($canceledAt);
+        }
+
+        return $subscription;
+    }
+
     /**
      * @return BelongsTo<User>
      */
@@ -92,8 +127,7 @@ class Subscription extends Model
                 return null; // @codeCoverageIgnore
             }
 
-            $subscription = StripeSubscription::retrieve([
-                'id'     => $this->id,
+            $subscription = stripe()->subscriptions->retrieve($this->id, [
                 'expand' => ['latest_invoice.payment_intent'],
             ]);
 
@@ -113,8 +147,7 @@ class Subscription extends Model
                 return null; // @codeCoverageIgnore
             }
 
-            $subscription = StripeSubscription::retrieve([
-                'id'     => $this->id,
+            $subscription = stripe()->subscriptions->retrieve($this->id, [
                 'expand' => ['default_payment_method'],
             ]);
 

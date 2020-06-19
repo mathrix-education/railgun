@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Collection;
 use Railgun\Models\Acquisition;
+use Railgun\Models\Chapter;
 use Railgun\Models\Lesson;
 use Railgun\Models\Pack;
 use Railgun\Models\Section;
@@ -28,6 +29,15 @@ trait OwnsProducts
     public function acquisitions(): HasMany
     {
         return $this->hasMany(Acquisition::class);
+    }
+
+    /**
+     * @return MorphToMany<Chapter>
+     */
+    public function chapters(): MorphToMany
+    {
+        return $this->morphedByMany(Chapter::class, 'product', 'acquisitions')
+            ->as(Acquisition::class);
     }
 
     /**

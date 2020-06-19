@@ -1,0 +1,8 @@
+input CartInput {
+    packs: [ID!] @rules(apply: ["required_without_all:trainings,chapters,plans"])
+    trainings: [ID!] @rules(apply: ["required_without_all:packs,chapters,plans"])
+    chapters: [ID!] @rules(apply: ["required_without_all:packs,trainings,plans"])
+    plans: [ID!] @rules(apply: ["required_without_all:packs,trainings,chapters"])
+    premium: Boolean
+    coupon: ID
+}

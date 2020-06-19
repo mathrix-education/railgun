@@ -5,6 +5,10 @@ declare(strict_types=1);
 // phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
 // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.NotCamelCaps
 
+use Railgun\Billing\Stripe\StripeClientManager;
+use Railgun\Billing\StripeManager;
+use Stripe\StripeClient;
+
 if (!function_exists('prefix')) { // @codeCoverageIgnore
 
     /**
@@ -17,7 +21,7 @@ if (!function_exists('prefix')) { // @codeCoverageIgnore
      */
     function prefix(?string $path = null, bool $colon = false): string
     {
-        $prefix  = env('APP_NAME', 'app') . ':' . env('APP_RELEASE', 'stable') . '';
+        $prefix = env('APP_NAME', 'app') . ':' . env('APP_RELEASE', 'stable') . '';
         $prefix .= $path ? ":$path" : '';
         $prefix .= $colon && $prefix[strlen($prefix) - 1] !== ':' ? ':' : '';
 
@@ -123,5 +127,12 @@ if (!function_exists('is_json')) { // @codeCoverageIgnore
         } catch (JsonException $exception) {
             return false;
         }
+    }
+}
+
+if (!function_exists('stripe')) {
+    function stripe(?string $name = null): StripeClient
+    {
+        return app()->make(StripeClientManager::class)->client($name);
     }
 }
