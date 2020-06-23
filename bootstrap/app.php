@@ -38,6 +38,7 @@ $app->withEloquent();
 
 $app->configure('app');
 $app->configure('auth');
+$app->configure('braintree');
 $app->configure('cache');
 $app->configure('database');
 $app->configure('filesystems');

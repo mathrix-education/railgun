@@ -7,7 +7,7 @@ namespace Railgun\Providers;
 use Facebook\Facebook;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
-use function env;
+use function config;
 
 /**
  * Register the {@see Facebook SDK}, used for Facebook authentication.
@@ -18,8 +18,8 @@ class FacebookServiceProvider extends ServiceProvider implements DeferrableProvi
     {
         $this->app->singleton(Facebook::class, static function () {
             return new Facebook([
-                'app_id'     => env('FACEBOOK_APP_ID'), // todo: use config instead
-                'app_secret' => env('FACEBOOK_APP_SECRET'),
+                'app_id'     => config('social.facebook.app_id'),
+                'app_secret' => config('social.facebook.app_secret'),
             ]);
         });
     }

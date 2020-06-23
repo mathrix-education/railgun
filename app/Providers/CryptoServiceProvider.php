@@ -6,6 +6,7 @@ namespace Railgun\Providers;
 
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
+use Railgun\Crypto\AppleSigninCrypto;
 use Railgun\Crypto\PasswordResetCrypto;
 
 class CryptoServiceProvider extends ServiceProvider implements DeferrableProvider
@@ -13,6 +14,7 @@ class CryptoServiceProvider extends ServiceProvider implements DeferrableProvide
     public function register(): void
     {
         $this->app->singleton(PasswordResetCrypto::class);
+        $this->app->singleton(AppleSigninCrypto::class);
     }
 
     /**
@@ -22,6 +24,6 @@ class CryptoServiceProvider extends ServiceProvider implements DeferrableProvide
      */
     public function provides(): array
     {
-        return [PasswordResetCrypto::class];
+        return [PasswordResetCrypto::class, AppleSigninCrypto::class];
     }
 }

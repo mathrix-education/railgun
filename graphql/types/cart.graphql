@@ -12,3 +12,10 @@ input CartInput {
     premium: Boolean
     coupon: ID
 }
+
+input Checkout {
+    packs: [ID!]
+    trainings: [ID!]
+    plans: [ID!]
+    coupon: ID
+}

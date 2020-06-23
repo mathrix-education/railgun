@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 return [
     'environment' => env('BRAINTREE_ENVIRONMENT', 'sandbox'),
-    'merchantId'  => env('BRAINTREE_MERCHANT_ID'),
-    'publicKey'   => env('BRAINTREE_PUBLIC_KEY'),
-    'privateKey'  => env('BRAINTREE_PRIVATE_KEY'),
+    'merchant_id' => env('BRAINTREE_MERCHANT_ID'),
+    'public_key'  => env('BRAINTREE_PUBLIC_KEY'),
+    'private_key' => env('BRAINTREE_PRIVATE_KEY'),
 ];
