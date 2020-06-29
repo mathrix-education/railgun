@@ -43,6 +43,7 @@ class SearchChapters
             ->where(static function (Builder $query) use ($like): void {
                 $query->orWhere('chapters.name', 'LIKE', $like)
                     ->orWhere('chapters.slug', 'LIKE', $like);
-            });
+            })
+            ->where('chapters.visible', '=', true);
     }
 }

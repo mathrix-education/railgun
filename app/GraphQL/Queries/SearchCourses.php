@@ -49,6 +49,8 @@ class SearchCourses
                     ->orWhere('courses.seo_keywords', 'LIKE', $like)
                     ->orWhere('courses.seo_description', 'LIKE', $like)
                     ->orWhere('courses.content', 'LIKE', $like);
-            });
+            })
+            ->where('chapters.visible', '=', true)
+            ->where('courses.visible', '=', true);
     }
 }
