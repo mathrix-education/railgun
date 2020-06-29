@@ -7,7 +7,7 @@ extend type Mutation {
     "Update an existing comment"
     updateComment(
         input: UpdateComment! @spread
-    ): Comment @permission(name: "comments:write") @update @inject(context: "user.id", name: "user_id")
+    ): Comment @inject(context: "user.id", name: "user_id")
 
     "Delete an existing comment"
     deleteComment(
