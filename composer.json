@@ -1,7 +1,7 @@
 {
   "name": "mathrix-education/railgun",
   "description": "The Mathrix Education Lumen API.",
-  "version": "7.1.2",
+  "version": "7.2.1",
   "type": "project",
   "keywords": [
     "education",
