@@ -1,4 +1,8 @@
 # Changelog
+## 7.2.1
+- feat(comments): allow users to edit their comments
+- fix(search): hide invisible objects from results
+
 ## 7.2.0
 - feat(exercise): add exercise `proof` type
 - fix(prometheus): GraphQL collectors
