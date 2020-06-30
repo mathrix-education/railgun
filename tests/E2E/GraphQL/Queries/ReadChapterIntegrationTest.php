@@ -33,13 +33,15 @@ class ReadChapterIntegrationTest extends GraphQLIntegrationTestCase
                 ) {
                     id
                     slug
-                    discipline {
-                        id
-                        slug
-                    }
-                    grade {
-                        id
-                        slug
+                    theme {
+                        discipline {
+                            id
+                            slug
+                        }
+                        grade {
+                            id
+                            slug
+                        }
                     }
                 }
             }
@@ -71,15 +73,15 @@ class ReadChapterIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->executeReadChapter([
             'chapterSlug'    => $chapter->slug,
-            'gradeSlug'      => $chapter->grade->slug,
-            'disciplineSlug' => $chapter->discipline->slug,
+            'gradeSlug'      => $chapter->theme->grade->slug,
+            'disciplineSlug' => $chapter->theme->discipline->slug,
         ]);
 
         $this->assertResponseOk();
         $this->assertNoErrors();
         $this->assertEquals($chapter->id, $this->getData('id'));
         $this->assertEquals($chapter->slug, $this->getData('slug'));
-        $this->assertEquals($chapter->grade->slug, $this->getData('grade.slug'));
-        $this->assertEquals($chapter->discipline->slug, $this->getData('discipline.slug'));
+        $this->assertEquals($chapter->theme->grade->slug, $this->getData('theme.grade.slug'));
+        $this->assertEquals($chapter->theme->discipline->slug, $this->getData('theme.discipline.slug'));
     }
 }

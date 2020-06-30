@@ -47,7 +47,7 @@ class SubjectTest extends ModelTestCase
      */
     public function testNotion(): void
     {
-        $this->assertBelongsTo(Subject::class, 'notion');
+        $this->assertBelongsTo('notion');
     }
 
     /**
@@ -55,7 +55,7 @@ class SubjectTest extends ModelTestCase
      */
     public function testExercises(): void
     {
-        $this->assertHasMany(Subject::class, 'exercises');
+        $this->assertHasMany('exercises');
     }
 
     /**

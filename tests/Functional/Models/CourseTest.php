@@ -21,7 +21,7 @@ class CourseTest extends ModelTestCase
      */
     public function testNotion(): void
     {
-        $this->assertBelongsTo(Course::class, 'notion');
+        $this->assertBelongsTo('notion');
     }
 
     /**

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Models;
 
-use Railgun\Models\Pack;
-
 /**
  * @testdox Pack Model
  * @coversDefaultClass \Railgun\Models\Pack
@@ -17,6 +15,6 @@ class PackTest extends ModelTestCase
      */
     public function testTrainings(): void
     {
-        $this->assertBelongsToMany(Pack::class, 'trainings', [], [], ['order' => 99]);
+        $this->assertBelongsToMany('trainings', [], [], ['order' => 99]);
     }
 }

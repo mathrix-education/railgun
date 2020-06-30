@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Functional\Models;
 
 use Laravel\Lumen\Testing\DatabaseTransactions;
-use Railgun\Models\Comment;
 use Railgun\Models\User;
 use function factory;
 
@@ -22,7 +21,7 @@ class CommentTest extends ModelTestCase
      */
     public function testParent(): void
     {
-        $this->assertBelongsTo(Comment::class, 'parent');
+        $this->assertBelongsTo('parent');
     }
 
     /**
@@ -30,7 +29,7 @@ class CommentTest extends ModelTestCase
      */
     public function testChildren(): void
     {
-        $this->assertHasMany(Comment::class, 'children');
+        $this->assertHasMany('children');
     }
 
     /**
@@ -38,7 +37,7 @@ class CommentTest extends ModelTestCase
      */
     public function testUser(): void
     {
-        $this->assertBelongsTo(Comment::class, 'user');
+        $this->assertBelongsTo('user');
     }
 
     /**
@@ -49,7 +48,7 @@ class CommentTest extends ModelTestCase
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $this->assertHasOne(Comment::class, 'vote', [], ['user_id' => $user->getKey()]);
+        $this->assertHasOne('vote', [], ['user_id' => $user->getKey()]);
     }
 
     /**
@@ -57,6 +56,6 @@ class CommentTest extends ModelTestCase
      */
     public function testVotes(): void
     {
-        $this->assertHasMany(Comment::class, 'votes');
+        $this->assertHasMany('votes');
     }
 }

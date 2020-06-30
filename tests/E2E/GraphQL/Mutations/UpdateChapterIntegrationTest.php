@@ -6,8 +6,7 @@ namespace Tests\E2E\GraphQL\Mutations;
 
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Chapter;
-use Railgun\Models\Discipline;
-use Railgun\Models\Grade;
+use Railgun\Models\Theme;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function factory;
 
@@ -43,14 +42,17 @@ class UpdateChapterIntegrationTest extends GraphQLIntegrationTestCase
      */
     public function testChangeToExistingSlugNoConflict(): void
     {
-        $reference = factory(Chapter::class)->create([
-            'discipline_id' => factory(Discipline::class)->create()->getKey(),
-            'grade_id'      => factory(Grade::class)->create()->getKey(),
-        ]);
-        $chapter   = factory(Chapter::class)->create([
-            'discipline_id' => factory(Discipline::class)->create()->getKey(),
-            'grade_id'      => factory(Grade::class)->create()->getKey(),
-        ]);
+        $theme1 = Theme::random();
+        /** @var Chapter $reference */
+        $reference = $theme1->chapters()->inRandomOrder()->firstOrFail();
+
+        /** @var Theme $theme2 */
+        $theme2  = Theme::query()
+            ->inRandomOrder()
+            ->where('grade_id', '!=', $theme1->grade_id)
+            ->where('discipline_id', '!=', $theme1->discipline_id)
+            ->firstOrFail();
+        $chapter = factory(Chapter::class)->create(['theme_id' => $theme2->id]);
 
         $this->withPermissions('chapters:write');
         $this->executeUpdateChapter([
@@ -68,8 +70,7 @@ class UpdateChapterIntegrationTest extends GraphQLIntegrationTestCase
     public function testChangeSlugToExistingSlug(): void
     {
         [$reference, $chapter] = factory(Chapter::class, 2)->create([
-            'discipline_id' => factory(Discipline::class)->create()->getKey(),
-            'grade_id'      => factory(Grade::class)->create()->getKey(),
+            'theme_id' => factory(Theme::class)->create()->getKey(),
         ]);
 
         $this->withPermissions('chapters:write');

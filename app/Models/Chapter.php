@@ -23,13 +23,11 @@ use Railgun\Models\Traits\Sluggable;
  * @property      string                 $slug
  * @property      int                    $order
  * @property      bool                   $visible
- * @property      int                    $discipline_id
- * @property      int                    $grade_id
+ * @property      int                    $theme_id
  * @property-read Carbon                 $created_at
  * @property-read Carbon                 $updated_at
  * ---
- * @property-read Grade                  $grade
- * @property-read Discipline             $discipline
+ * @property-read Theme                  $theme
  * @property-read Collection|Notion[]    $notions
  * @property-read Collection|Flashcard[] $flashcards
  * @property-read Collection|Exam[]      $exams
@@ -46,26 +44,17 @@ class Chapter extends Model implements Content
         'slug',
         'order',
         'visible',
-        'grade_id',
-        'discipline_id',
+        'theme_id',
     ];
     protected       $casts      = ['visible' => 'boolean'];
-    protected array $orderGroup = ['discipline_id', 'grade_id'];
+    protected array $orderGroup = ['theme_id'];
 
     /**
-     * @return BelongsTo<Discipline>
+     * @return BelongsTo<Theme>
      */
-    public function discipline(): BelongsTo
+    public function theme(): BelongsTo
     {
-        return $this->belongsTo(Discipline::class);
-    }
-
-    /**
-     * @return BelongsTo<Grade>
-     */
-    public function grade(): BelongsTo
-    {
-        return $this->belongsTo(Grade::class);
+        return $this->belongsTo(Theme::class);
     }
 
     /**
@@ -74,7 +63,7 @@ class Chapter extends Model implements Content
     public function notions(): HasMany
     {
         return $this->hasMany(Notion::class)
-            ->where('type', '=', 'standard')
+            ->where('type', '=', Notion::TYPE_STANDARD)
             ->orderBy('order');
     }
 

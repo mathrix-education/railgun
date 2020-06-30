@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Models;
 
-use Railgun\Models\Training;
-
 /**
  * @testdox Model Training
  * @coversDefaultClass \Railgun\Models\Training
@@ -17,7 +15,7 @@ class TrainingTest extends ModelTestCase
      */
     public function testPacks(): void
     {
-        $this->assertBelongsToMany(Training::class, 'packs', [], [], ['order' => 99]);
+        $this->assertBelongsToMany('packs', [], [], ['order' => 99]);
     }
 
     /**
@@ -25,7 +23,7 @@ class TrainingTest extends ModelTestCase
      */
     public function testSections(): void
     {
-        $this->assertHasMany(Training::class, 'sections');
+        $this->assertHasMany('sections');
     }
 
     /**
@@ -33,6 +31,6 @@ class TrainingTest extends ModelTestCase
      */
     public function testGrades(): void
     {
-        $this->assertBelongsToMany(Training::class, 'grades');
+        $this->assertBelongsToMany('grades');
     }
 }

@@ -1,20 +1,6 @@
 extend type Query {
     """
-    List chapters matching a given criteria.
-    The available options (mutually exclusive) are:
-
-    - `gradeId` AND `disciplineId`
-    - `gradeSlug` AND `disciplineSlug`
-    """
-    listChapters(
-        gradeId: ID @rules(apply: ["required_with:disciplineId", "required_without:gradeSlug,disciplineSlug"])
-        disciplineId: ID @rules(apply: ["required_with:gradeId", "required_without:gradeSlug,disciplineSlug"])
-        gradeSlug: String @rules(apply: ["required_with:disciplineSlug", "required_without:gradeId,disciplineId"])
-        disciplineSlug: String @rules(apply: ["required_with:gradeSlug", "required_without:gradeId,disciplineId"])
-    ): [Chapter!]!
-
-    """
-    List chapters matching a given criteria.
+    Read chapter matching a given criteria.
     The available options (mutually exclusive) are:
 
     - `id`

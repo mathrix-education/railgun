@@ -1,0 +1,12 @@
+type Theme {
+    id: ID!
+    name: String!
+    slug: String!
+    order: Int!
+    visible: Boolean!
+    created_at: DateTime!
+    updated_at: DateTime!
+    discipline: Discipline @belongsTo
+    grade: Grade! @belongsTo
+    chapters: [Chapter!]! @hasMany
+}

@@ -6,8 +6,7 @@ namespace Tests\Functional\Models;
 
 use Illuminate\Support\Arr;
 use Laravel\Lumen\Testing\DatabaseTransactions;
-use Railgun\Models\Chapter;
-use Railgun\Models\Discipline;
+use Railgun\Models\Theme;
 use function factory;
 
 /**
@@ -24,20 +23,19 @@ class DisciplineTest extends ModelTestCase
     public function testGrades(): void
     {
         $this->assertBelongsToMany(
-            Discipline::class,
             'grades',
             [],
             [],
-            Arr::except(factory(Chapter::class)->raw(), ['grade_id', 'discipline_id']),
+            Arr::except(factory(Theme::class)->raw(), ['grade_id', 'discipline_id']),
         );
     }
 
     /**
-     * @covers ::chapters
+     * @covers ::themes
      */
-    public function testChapters(): void
+    public function testThemes(): void
     {
-        $this->assertHasMany(Discipline::class, 'chapters');
+        $this->assertHasMany('themes');
     }
 
     /**
@@ -45,6 +43,6 @@ class DisciplineTest extends ModelTestCase
      */
     public function testSession(): void
     {
-        $this->assertHasMany(Discipline::class, 'sessions');
+        $this->assertHasMany('sessions');
     }
 }

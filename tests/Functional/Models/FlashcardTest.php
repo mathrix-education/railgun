@@ -21,7 +21,7 @@ class FlashcardTest extends ModelTestCase
      */
     public function testChapter(): void
     {
-        $this->assertBelongsTo(Flashcard::class, 'chapter');
+        $this->assertBelongsTo('chapter');
     }
 
     /**

@@ -1,0 +1,69 @@
+input CreateTheme {
+    """
+    The theme human-readable name.
+    Maximum 150 caracters.
+    """
+    name: String!@rules(apply: ["string", "max:150"])
+    """
+    The theme slug, which will be used in the URL generation.
+    Maximum 150 caracters.
+    """
+    slug: String!@rules(apply: ["string", "max:150"])
+    """
+    The theme order. If not set, the theme will be placed in the last position of the group [grade/discipline].
+    Must be positive (i.e. >=0).
+    """
+    order: Int @rules(apply: ["nullable", "integer", "min:0"])
+    """
+    If the theme should be displayed to the end users.
+    Requires the permission `themes:write:visible`.
+    """
+    visible: Boolean! @permission(name: "themes:write:visible") @rules(apply: ["boolean"])
+    """
+    The theme related discipline ID.
+    Must be a valid discipline ID.
+    """
+    discipline_id: ID! @rules(apply: ["integer", "exists:disciplines,id"])
+    """
+    The theme related grade ID.
+    Must be a valid grade ID.
+    """
+    grade_id: ID! @rules(apply: ["integer", "exists:grades,id"])
+}
+
+input UpdateTheme {
+    """
+    The targeted theme ID.
+    """
+    id: ID! @rules(apply: ["integer", "exists:themes,id"])
+    """
+    The theme new human-readable name.
+    Maximum 150 caracters.
+    """
+    name: String@rules(apply: ["string", "max:150"])
+    """
+    The theme new slug, which will be used in the URL generation.
+    Maximum 150 caracters.
+    """
+    slug: String@rules(apply: ["string", "max:150"])
+    """
+    The theme new order. Status quo if not set.
+    Must be positive (i.e. >=0).
+    """
+    order: Int @rules(apply: ["nullable", "integer", "min:0"])
+    """
+    If the theme should be displayed to the end users.
+    Requires the permission `themes:write:visible`.
+    """
+    visible: Boolean @permission(name: "themes:write:visible") @rules(apply: ["boolean"])
+    """
+    The theme new related discipline ID.
+    Must be a valid discipline ID.
+    """
+    discipline_id: ID @rules(apply: ["integer", "exists:disciplines,id"])
+    """
+    The theme new related grade ID.
+    Must be a valid grade ID.
+    """
+    grade_id: ID @rules(apply: ["integer", "exists:grades,id"])
+}

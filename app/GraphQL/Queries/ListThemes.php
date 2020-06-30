@@ -7,9 +7,10 @@ namespace Railgun\GraphQL\Queries;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Railgun\Models\Chapter;
+use Railgun\Models\Theme;
 use function array_key_exists;
 
-class ListChapters
+class ListThemes
 {
     /**
      * Return a value for the field.
@@ -21,7 +22,7 @@ class ListChapters
      */
     public function __invoke($rootValue, array $args): Collection
     {
-        $query = Chapter::query()->orderBy('order');
+        $query = Theme::query()->orderBy('order');
 
         if (array_key_exists('gradeId', $args)) {
             $query->where('grade_id', '=', $args['gradeId']);
