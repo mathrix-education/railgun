@@ -18,7 +18,7 @@ class CleanUserSession extends Job implements ShouldQueue
 
     public function __construct(User $user)
     {
-        $this->user = $user;
+        $this->user = $user->refresh();
     }
 
     public function handle(): void

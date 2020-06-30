@@ -6,6 +6,7 @@ namespace Tests\Functional\Jobs;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
+use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Jobs\CleanUserSession;
 use Railgun\Models\Grade;
 use Railgun\Models\Session;
@@ -20,6 +21,8 @@ use function factory;
  */
 class CleanUserSessionTest extends ApplicationTestCase
 {
+    use DatabaseTransactions;
+
     /**
      * @testdox deletes the previous user session on grade change
      */

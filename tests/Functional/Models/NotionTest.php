@@ -42,8 +42,6 @@ class NotionTest extends ModelTestCase
      */
     public function testGetChapter(): void
     {
-        /** @var Notion $instance */
-        $instance = factory(Notion::class)->create();
-        $this->assertNotNull($instance->getChapter());
+        $this->assertNotNull(Notion::random()->getChapter());
     }
 }

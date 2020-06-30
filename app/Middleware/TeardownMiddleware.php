@@ -44,6 +44,8 @@ class TeardownMiddleware
      *
      * @param Request  $request  The Illuminate HTTP request.
      * @param Response $response The Illuminate HTTP response.
+     *
+     * @codeCoverageIgnore
      */
     public function terminate(Request $request, Response $response): void
     {
