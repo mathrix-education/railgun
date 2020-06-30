@@ -82,6 +82,16 @@ class AdvancedSeeder extends Seeder
     }
 
     /**
+     * Write the collection debug message.
+     *
+     * @param string $table The model table.
+     */
+    protected function writeCollectionMessage(string $table = null): void
+    {
+        $this->writeln("Seeding <info>$table</info> from collection");
+    }
+
+    /**
      * Write the factory debug message.
      *
      * @param string      $model The model class.

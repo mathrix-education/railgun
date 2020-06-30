@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Functional\Models;
 
 use Laravel\Lumen\Testing\DatabaseTransactions;
-use Railgun\Models\Note;
 
 /**
  * @testdox Model Note
@@ -20,6 +19,6 @@ class NoteTest extends ModelTestCase
      */
     public function testUser(): void
     {
-        $this->assertBelongsTo(Note::class, 'user');
+        $this->assertBelongsTo('user');
     }
 }

@@ -11,6 +11,7 @@ use Railgun\Models\Exam;
 use Railgun\Models\Flashcard;
 use Railgun\Models\Grade;
 use Railgun\Models\Interaction;
+use Railgun\Models\Theme;
 use Railgun\Models\User;
 use Tests\ApplicationTestCase;
 use function factory;
@@ -31,11 +32,18 @@ class UpdateSessionAfterInteractionTest extends ApplicationTestCase
 
         $grade = Grade::random();
 
+        /** @var Theme $theme */
+        $theme = Theme::query()
+            ->inRandomOrder()
+            ->firstOrFail();
+
+        $grade = $theme->grade;
+
         /**
          * @var Chapter $first
          * @var Chapter $second
          */
-        [$first, $second] = factory(Chapter::class, 2)->create(['grade_id' => $grade->id]);
+        [$first, $second] = factory(Chapter::class, 2)->create(['theme_id' => $theme->id]);
 
         /** @var Flashcard $flashcard */
         $flashcard = factory(Flashcard::class)->create(['chapter_id' => $first->id]);
@@ -64,7 +72,7 @@ class UpdateSessionAfterInteractionTest extends ApplicationTestCase
 
         $this->seeInDatabase('sessions', [
             'user_id'       => $user->id,
-            'discipline_id' => $second->discipline_id,
+            'discipline_id' => $second->theme->discipline_id,
             'chapter_id'    => $second->id,
         ]);
     }

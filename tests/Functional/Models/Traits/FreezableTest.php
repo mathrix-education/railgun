@@ -84,8 +84,9 @@ class FreezableTest extends ApplicationTestCase
      */
     public function testIsFrozen(): void
     {
-        /** @var Model|Freezable|MockInterface $instance */
-        $instance = Mockery::mock(Model::class, Freezable::class)->makePartial();
+        $instance = new class extends Model {
+            use Freezable;
+        };
 
         $instance->frozen_at = Carbon::now()->addMonth();
         $instance->syncOriginal();
@@ -96,10 +97,6 @@ class FreezableTest extends ApplicationTestCase
         $this->assertTrue($instance->isFrozen());
 
         $instance->frozen_at = null;
-        $instance->syncOriginal();
-        $this->assertFalse($instance->isFrozen());
-
-        $instance->frozen_at = 'invalid string';
         $instance->syncOriginal();
         $this->assertFalse($instance->isFrozen());
     }

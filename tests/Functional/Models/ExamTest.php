@@ -21,7 +21,7 @@ class ExamTest extends ModelTestCase
      */
     public function testChapter(): void
     {
-        $this->assertBelongsTo(Exam::class, 'chapter');
+        $this->assertBelongsTo('chapter');
     }
 
     /**

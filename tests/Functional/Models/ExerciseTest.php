@@ -21,7 +21,7 @@ class ExerciseTest extends ModelTestCase
      */
     public function testSubject(): void
     {
-        $this->assertBelongsTo(Exercise::class, 'subject');
+        $this->assertBelongsTo('subject');
     }
 
     /**

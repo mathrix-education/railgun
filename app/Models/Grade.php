@@ -15,22 +15,22 @@ use Railgun\Models\Traits\Reorderable;
 use Railgun\Models\Traits\Sluggable;
 
 /**
- * @property-read int                $id
- * @property      string             $name
- * @property      string             $slug
- * @property      int                $order
- * @property      bool               $visible
- * @property      int|null           $parent_id
- * @property      int                $country_id
- * @property-read Carbon             $created_at
- * @property-read Carbon             $updated_at
+ * @property-read int                     $id
+ * @property      string                  $name
+ * @property      string                  $slug
+ * @property      int                     $order
+ * @property      bool                    $visible
+ * @property      int|null                $parent_id
+ * @property      int                     $country_id
+ * @property-read Carbon                  $created_at
+ * @property-read Carbon                  $updated_at
  * ---
- * @property Country                 $country
- * @property Grade|null              $parent
- * @property Collection|Grade[]      $children
- * @property Collection|Discipline[] $disciplines
- * @property Collection|Chapter[]    $chapters
- * @property Collection|User[]       $users
+ * @property-read Country                 $country
+ * @property-read Grade|null              $parent
+ * @property-read Collection|Grade[]      $children
+ * @property-read Collection|Discipline[] $disciplines
+ * @property-read Collection|Theme[]      $themes
+ * @property-read Collection|User[]       $users
  */
 class Grade extends Model
 {
@@ -78,11 +78,11 @@ class Grade extends Model
     }
 
     /**
-     * @return HasMany<Chapter>
+     * @return HasMany<Theme>
      */
-    public function chapters(): HasMany
+    public function themes(): HasMany
     {
-        return $this->hasMany(Chapter::class);
+        return $this->hasMany(Theme::class);
     }
 
     /**
@@ -90,7 +90,7 @@ class Grade extends Model
      */
     public function disciplines(): BelongsToMany
     {
-        return $this->belongsToMany(Discipline::class, 'chapters')
+        return $this->belongsToMany(Discipline::class, 'themes')
             ->groupBy(['grade_id', 'discipline_id']);
     }
 

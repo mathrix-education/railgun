@@ -21,7 +21,7 @@ use Railgun\Models\Traits\Sluggable;
  * @property-read Carbon               $updated_at
  * ---
  * @property-read Collection|Grade[]   $grades
- * @property-read Collection|Chapter[] $chapters
+ * @property-read Collection|Theme[]   $themes
  * @property-read Collection|Session[] $sessions
  */
 class Discipline extends Model
@@ -44,16 +44,16 @@ class Discipline extends Model
      */
     public function grades(): BelongsToMany
     {
-        return $this->belongsToMany(Grade::class, 'chapters')
+        return $this->belongsToMany(Grade::class, 'themes')
             ->groupBy(['grade_id', 'discipline_id']);
     }
 
     /**
-     * @return HasMany<Chapter>
+     * @return HasMany<Theme>
      */
-    public function chapters(): HasMany
+    public function themes(): HasMany
     {
-        return $this->hasMany(Chapter::class);
+        return $this->hasMany(Theme::class);
     }
 
     /**

@@ -18,7 +18,7 @@ class NotionTest extends ModelTestCase
      */
     public function testChapter(): void
     {
-        $this->assertBelongsTo(Notion::class, 'chapter');
+        $this->assertBelongsTo('chapter');
     }
 
     /**
@@ -26,7 +26,7 @@ class NotionTest extends ModelTestCase
      */
     public function testCourses(): void
     {
-        $this->assertHasMany(Notion::class, 'courses');
+        $this->assertHasMany('courses');
     }
 
     /**
@@ -34,7 +34,7 @@ class NotionTest extends ModelTestCase
      */
     public function testSubjects(): void
     {
-        $this->assertHasMany(Notion::class, 'subjects');
+        $this->assertHasMany('subjects');
     }
 
     /**

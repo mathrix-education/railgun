@@ -45,7 +45,7 @@ class CreateChapterIntegrationTest extends GraphQLIntegrationTestCase
         $this->withPermissions(['chapters:write', 'chapters:write:visible']);
         $this->executeCreateChapter(Arr::only(
             factory(Chapter::class)->raw(),
-            ['name', 'order', 'visible', 'slug', 'grade_id', 'discipline_id'],
+            ['name', 'order', 'visible', 'slug', 'theme_id'],
         ));
 
         $this->assertResponseOk();
@@ -61,7 +61,7 @@ class CreateChapterIntegrationTest extends GraphQLIntegrationTestCase
         $reference = Chapter::random();
         $input     = array_merge(
             Arr::only(factory(Chapter::class)->raw(), ['name', 'order', 'visible']),
-            Arr::only($reference->toArray(), ['slug', 'grade_id', 'discipline_id']),
+            Arr::only($reference->toArray(), ['slug', 'theme_id']),
         );
 
         $this->withPermissions(['chapters:write', 'chapters:write:visible']);

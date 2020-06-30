@@ -24,7 +24,7 @@ class UserTest extends ModelTestCase
      */
     public function testGrade(): void
     {
-        $this->assertBelongsTo(User::class, 'grade');
+        $this->assertBelongsTo('grade');
     }
 
     /**
@@ -32,7 +32,7 @@ class UserTest extends ModelTestCase
      */
     public function testComments(): void
     {
-        $this->assertHasMany(User::class, 'comments');
+        $this->assertHasMany('comments');
     }
 
     /**
@@ -40,7 +40,7 @@ class UserTest extends ModelTestCase
      */
     public function testInteractions(): void
     {
-        $this->assertHasMany(User::class, 'interactions');
+        $this->assertHasMany('interactions');
     }
 
     /**
@@ -48,7 +48,7 @@ class UserTest extends ModelTestCase
      */
     public function testVotes(): void
     {
-        $this->assertHasMany(User::class, 'votes');
+        $this->assertHasMany('votes');
     }
 
     /**

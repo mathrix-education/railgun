@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Functional\Models;
 
 use Laravel\Lumen\Testing\DatabaseTransactions;
-use Railgun\Models\Category;
 
 /**
  * @testdox Model Category
@@ -21,6 +20,6 @@ class CategoryTest extends ModelTestCase
      */
     public function testPosts(): void
     {
-        $this->assertHasMany(Category::class, 'posts');
+        $this->assertHasMany('posts');
     }
 }

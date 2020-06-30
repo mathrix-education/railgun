@@ -6,8 +6,7 @@ use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;
 use Railgun\Models\Chapter;
-use Railgun\Models\Discipline;
-use Railgun\Models\Grade;
+use Railgun\Models\Theme;
 use Railgun\Support\Timestamps;
 
 /**
@@ -18,13 +17,12 @@ $factory->define(Chapter::class, static function (Faker $faker) {
     $timestamps = Timestamps::factory();
 
     return [
-        'name'          => $name,
-        'slug'          => Str::slug($name),
-        'order'         => 99,
-        'visible'       => $faker->boolean(95),
-        'grade_id'      => Grade::random()->id,
-        'discipline_id' => Discipline::random()->id,
-        'created_at'    => $timestamps->createdAt,
-        'updated_at'    => $timestamps->updatedAt,
+        'name'       => $name,
+        'slug'       => Str::slug($name),
+        'order'      => 0,
+        'visible'    => $faker->boolean(95),
+        'theme_id'   => Theme::random()->id,
+        'created_at' => $timestamps->createdAt,
+        'updated_at' => $timestamps->updatedAt,
     ];
 });

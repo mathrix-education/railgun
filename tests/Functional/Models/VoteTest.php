@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Models;
 
-use Railgun\Models\Vote;
-
 /**
  * @testdox Model Vote
  * @coversDefaultClass \Railgun\Models\Vote
@@ -17,7 +15,7 @@ class VoteTest extends ModelTestCase
      */
     public function testUser(): void
     {
-        $this->assertBelongsTo(Vote::class, 'user');
+        $this->assertBelongsTo('user');
     }
 
     /**
@@ -25,6 +23,6 @@ class VoteTest extends ModelTestCase
      */
     public function testComment(): void
     {
-        $this->assertBelongsTo(Vote::class, 'comment');
+        $this->assertBelongsTo('comment');
     }
 }

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Models;
 
-use Railgun\Models\Session;
-
 /**
  * @testdox Model Session
  * @coversDefaultClass \Railgun\Models\Session
@@ -17,7 +15,7 @@ class SessionTest extends ModelTestCase
      */
     public function testUser(): void
     {
-        $this->assertBelongsTo(Session::class, 'user');
+        $this->assertBelongsTo('user');
     }
 
     /**
@@ -25,7 +23,7 @@ class SessionTest extends ModelTestCase
      */
     public function testDiscipline(): void
     {
-        $this->assertBelongsTo(Session::class, 'discipline');
+        $this->assertBelongsTo('discipline');
     }
 
     /**
@@ -33,6 +31,6 @@ class SessionTest extends ModelTestCase
      */
     public function testChapter(): void
     {
-        $this->assertBelongsTo(Session::class, 'chapter');
+        $this->assertBelongsTo('chapter');
     }
 }

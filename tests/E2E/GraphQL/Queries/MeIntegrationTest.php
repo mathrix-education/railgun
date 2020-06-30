@@ -66,7 +66,7 @@ class MeIntegrationTest extends GraphQLIntegrationTestCase
         $user    = $this->actingAsGetUser(['grade_id' => $chapter->grade_id]);
         $session = new Session([
             'user_id'       => $user->id,
-            'discipline_id' => $chapter->discipline_id,
+            'discipline_id' => $chapter->theme->discipline_id,
             'chapter_id'    => $chapter->id,
         ]);
         $session->save();

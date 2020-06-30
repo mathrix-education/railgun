@@ -18,27 +18,11 @@ class ChapterTest extends ModelTestCase
     use DatabaseTransactions;
 
     /**
-     * @covers ::discipline
-     */
-    public function testDiscipline(): void
-    {
-        $this->assertBelongsTo(Chapter::class, 'discipline');
-    }
-
-    /**
-     * @covers ::grade
-     */
-    public function testGrade(): void
-    {
-        $this->assertBelongsTo(Chapter::class, 'grade');
-    }
-
-    /**
      * @covers ::notions
      */
     public function testNotions(): void
     {
-        $this->assertHasMany(Chapter::class, 'notions');
+        $this->assertHasMany('notions');
     }
 
     /**
@@ -46,7 +30,7 @@ class ChapterTest extends ModelTestCase
      */
     public function testSummary(): void
     {
-        $this->assertHasOne(Chapter::class, 'summary', [], ['type' => Notion::TYPE_SUMMARY]);
+        $this->assertHasOne('summary', [], ['type' => Notion::TYPE_SUMMARY]);
     }
 
     /**
@@ -54,7 +38,7 @@ class ChapterTest extends ModelTestCase
      */
     public function testFlashcards(): void
     {
-        $this->assertHasMany(Chapter::class, 'flashcards');
+        $this->assertHasMany('flashcards');
     }
 
     /**
@@ -62,7 +46,7 @@ class ChapterTest extends ModelTestCase
      */
     public function testExams(): void
     {
-        $this->assertHasMany(Chapter::class, 'exams');
+        $this->assertHasMany('exams');
     }
 
     /**
@@ -70,7 +54,7 @@ class ChapterTest extends ModelTestCase
      */
     public function testSessions(): void
     {
-        $this->assertHasMany(Chapter::class, 'sessions');
+        $this->assertHasMany('sessions');
     }
 
     /**
