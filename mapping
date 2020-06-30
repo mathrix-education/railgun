@@ -37,9 +37,13 @@ function branch() {
 function env() {
   if (['stage', 'production'].includes(branch())) {
     return branch();
-  } else {
-    return 'edge';
   }
+
+  if (branch().startsWith('next')) {
+    return 'next';
+  }
+
+  return 'edge';
 }
 
 function sha(length = 7) {
