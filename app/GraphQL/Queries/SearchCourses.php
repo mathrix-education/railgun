@@ -27,21 +27,24 @@ class SearchCourses
         $query    = $args['query'];
         $like     = "%{$query}%";
         $graph    = new GradeWeights();
-        $weights1 = $graph->getSql($args['grade_id'], '`chapters`.`grade_id`');
-        $weights2 = $graph->getSql($args['grade_id'], '`chapters2`.`grade_id`');
+        $weights1 = $graph->getSql($args['grade_id'], '`themes`.`grade_id`');
+        $weights2 = $graph->getSql($args['grade_id'], '`themes_inner`.`grade_id`');
 
         return Course::query()
             ->selectRaw('`courses`.*')
             ->join('notions', 'notions.id', '=', 'courses.notion_id')
             ->join('chapters', 'chapters.id', '=', 'notions.chapter_id')
-            ->leftJoin(DB::raw("`chapters` as chapters2"), static function (JoinClause $join) use (
+            ->join('themes', 'chapters.theme_id', '=', 'themes.id')
+            ->join(DB::raw('`chapters` as chapters_inner'), 'chapters.slug', '=', 'chapters_inner.slug')
+            ->join(DB::raw('`themes` as themes_inner'), 'chapters_inner.theme_id', '=', 'themes_inner.id')
+            ->leftJoin(DB::raw("`chapters` as chapter_compare"), static function (JoinClause $join) use (
                 $weights1,
                 $weights2
             ): void {
-                $join->on('chapters.slug', '=', 'chapters2.slug')
+                $join->on('chapters.slug', '=', 'chapter_compare.slug')
                     ->whereRaw("$weights1 > $weights2");
             })
-            ->whereNull('chapters2.id')
+            ->whereNull('chapter_compare.id')
             ->where(static function (Builder $query) use ($like): void {
                 $query->orWhere('courses.name', 'LIKE', $like)
                     ->orWhere('courses.slug', 'LIKE', $like)

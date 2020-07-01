@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Models;
 
-use Railgun\Models\Section;
-
 /**
  * @testdox Model Section
  * @coversDefaultClass \Railgun\Models\Section
@@ -17,7 +15,7 @@ class SectionTest extends ModelTestCase
      */
     public function testTraining(): void
     {
-        $this->assertBelongsTo(Section::class, 'training');
+        $this->assertBelongsTo('training');
     }
 
     /**
@@ -25,6 +23,6 @@ class SectionTest extends ModelTestCase
      */
     public function testLessons(): void
     {
-        $this->assertHasMany(Section::class, 'lessons');
+        $this->assertHasMany('lessons');
     }
 }

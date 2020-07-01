@@ -1,0 +1,16 @@
+extend type Mutation {
+    "Create a new theme."
+    createTheme(
+        input: CreateTheme! @spread
+    ): Theme! @permission(name: "themes:write") @create
+
+    "Update an existing theme."
+    updateTheme(
+        input: UpdateTheme! @spread
+    ): Theme @permission(name: "themes:write") @update
+
+    "Delete an existing theme."
+    deleteTheme(
+        id: ID!
+    ): Theme @permission(name: "categories:delete") @delete
+}

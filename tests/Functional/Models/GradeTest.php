@@ -6,8 +6,7 @@ namespace Tests\Functional\Models;
 
 use Illuminate\Support\Arr;
 use Laravel\Lumen\Testing\DatabaseTransactions;
-use Railgun\Models\Chapter;
-use Railgun\Models\Grade;
+use Railgun\Models\Theme;
 use function factory;
 
 /**
@@ -23,7 +22,7 @@ class GradeTest extends ModelTestCase
      */
     public function testParent(): void
     {
-        $this->assertBelongsTo(Grade::class, 'parent');
+        $this->assertBelongsTo('parent');
     }
 
     /**
@@ -31,7 +30,7 @@ class GradeTest extends ModelTestCase
      */
     public function testChildren(): void
     {
-        $this->assertHasMany(Grade::class, 'children');
+        $this->assertHasMany('children');
     }
 
     /**
@@ -39,15 +38,15 @@ class GradeTest extends ModelTestCase
      */
     public function testCountry(): void
     {
-        $this->assertBelongsTo(Grade::class, 'country');
+        $this->assertBelongsTo('country');
     }
 
     /**
-     * @covers ::chapters
+     * @covers ::themes
      */
-    public function testChapters(): void
+    public function testThemes(): void
     {
-        $this->assertHasMany(Grade::class, 'chapters');
+        $this->assertHasMany('themes');
     }
 
     /**
@@ -56,11 +55,10 @@ class GradeTest extends ModelTestCase
     public function testDisciplines(): void
     {
         $this->assertBelongsToMany(
-            Grade::class,
             'disciplines',
             [],
             [],
-            Arr::except(factory(Chapter::class)->raw(), ['grade_id', 'discipline_id']),
+            Arr::except(factory(Theme::class)->raw(), ['grade_id', 'discipline_id']),
         );
     }
 
@@ -69,7 +67,7 @@ class GradeTest extends ModelTestCase
      */
     public function testUsers(): void
     {
-        $this->assertHasMany(Grade::class, 'users');
+        $this->assertHasMany('users');
     }
 
     /**
@@ -77,6 +75,6 @@ class GradeTest extends ModelTestCase
      */
     public function testTrainings(): void
     {
-        $this->assertBelongsToMany(Grade::class, 'trainings');
+        $this->assertBelongsToMany('trainings');
     }
 }

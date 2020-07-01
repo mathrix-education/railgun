@@ -44,9 +44,16 @@ class TeardownMiddleware
      *
      * @param Request  $request  The Illuminate HTTP request.
      * @param Response $response The Illuminate HTTP response.
+     *
+     * @codeCoverageIgnore
      */
     public function terminate(Request $request, Response $response): void
     {
+        if (app()->runningUnitTests()) {
+            // We may run assertions against the app
+            return;
+        }
+
         // Logout the user from the application.
         $this->auth->guard()->logout();
 

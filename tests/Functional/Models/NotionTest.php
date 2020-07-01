@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Functional\Models;
 
 use Railgun\Models\Notion;
-use function factory;
 
 /**
  * @testdox Model Notion
@@ -18,7 +17,7 @@ class NotionTest extends ModelTestCase
      */
     public function testChapter(): void
     {
-        $this->assertBelongsTo(Notion::class, 'chapter');
+        $this->assertBelongsTo('chapter');
     }
 
     /**
@@ -26,7 +25,7 @@ class NotionTest extends ModelTestCase
      */
     public function testCourses(): void
     {
-        $this->assertHasMany(Notion::class, 'courses');
+        $this->assertHasMany('courses');
     }
 
     /**
@@ -34,7 +33,7 @@ class NotionTest extends ModelTestCase
      */
     public function testSubjects(): void
     {
-        $this->assertHasMany(Notion::class, 'subjects');
+        $this->assertHasMany('subjects');
     }
 
     /**
@@ -42,8 +41,6 @@ class NotionTest extends ModelTestCase
      */
     public function testGetChapter(): void
     {
-        /** @var Notion $instance */
-        $instance = factory(Notion::class)->create();
-        $this->assertNotNull($instance->getChapter());
+        $this->assertNotNull(Notion::random()->getChapter());
     }
 }

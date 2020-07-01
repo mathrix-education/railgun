@@ -11,29 +11,39 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Tests\ApplicationTestCase;
 use function array_merge;
+use function class_basename;
 use function factory;
 use function get_class;
 use function method_exists;
+use function str_replace;
 
 abstract class ModelTestCase extends ApplicationTestCase
 {
+    /** @var string $modelClass The model class, resolved from the test class name. */
+    protected string $modelClass;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->modelClass = 'Railgun\\Models\\' . str_replace('Test', '', class_basename($this));
+    }
+
     /**
      * Assert that the provided model class has a valid {@see BelongsTo} relationship using the given relation.
      *
-     * @param string  $model             The model class.
      * @param string  $relation          The relation name.
      * @param mixed[] $attributes        The model attributes.
      * @param mixed[] $relatedAttributes The related model attributes.
      */
     public function assertHasOne(
-        string $model,
         string $relation,
         array $attributes = [],
         array $relatedAttributes = []
     ): void
     {
         /** @var Model $instance */
-        $instance = factory($model)->create($attributes);
+        $instance = factory($this->modelClass)->create($attributes);
         $this->assertTrue(method_exists($instance, $relation));
 
         /** @var HasOne $hasMany */
@@ -53,20 +63,18 @@ abstract class ModelTestCase extends ApplicationTestCase
     /**
      * Assert that the provided model class has a valid {@see BelongsTo} relationship using the given relation.
      *
-     * @param string  $model             The model class.
      * @param string  $relation          The relation name.
      * @param mixed[] $attributes        The model attributes.
      * @param mixed[] $relatedAttributes The related model attributes.
      */
     public function assertBelongsTo(
-        string $model,
         string $relation,
         array $attributes = [],
         array $relatedAttributes = []
     ): void
     {
         /** @var Model $instance */
-        $instance = (new $model());
+        $instance = (new $this->modelClass());
         $this->assertTrue(method_exists($instance, $relation));
 
         /** @var BelongsTo $belongsTo */
@@ -74,7 +82,7 @@ abstract class ModelTestCase extends ApplicationTestCase
         $this->assertInstanceOf(BelongsTo::class, $belongsTo);
 
         $class    = get_class($belongsTo->getQuery()->getModel());
-        $instance = factory($model)->create(array_merge(
+        $instance = factory($this->modelClass)->create(array_merge(
             $attributes,
             [$belongsTo->getForeignKeyName() => factory($class)->create($relatedAttributes)->getKey()]),
         );
@@ -85,20 +93,18 @@ abstract class ModelTestCase extends ApplicationTestCase
     /**
      * Assert that the provided model class has a valid {@see HasMany} relationship using the given relation.
      *
-     * @param string  $model             The model class.
      * @param string  $relation          The relation name.
      * @param mixed[] $attributes        The model attributes.
      * @param mixed[] $relatedAttributes The related model attributes.
      */
     public function assertHasMany(
-        string $model,
         string $relation,
         array $attributes = [],
         array $relatedAttributes = []
     ): void
     {
         /** @var Model $instance */
-        $instance = factory($model)->create($attributes);
+        $instance = factory($this->modelClass)->create($attributes);
         $this->assertTrue(method_exists($instance, $relation));
 
         /** @var HasMany $hasMany */
@@ -118,14 +124,12 @@ abstract class ModelTestCase extends ApplicationTestCase
     /**
      * Assert that the provided model class has a valid {@see BelongsToMany} relationship using the given relation.
      *
-     * @param string  $model             The model class.
      * @param string  $relation          The relation name.
      * @param mixed[] $attributes        The model attributes.
      * @param mixed[] $relatedAttributes The related model attributes.
      * @param mixed[] $pivotAttributes   The pivot attributes.
      */
     public function assertBelongsToMany(
-        string $model,
         string $relation,
         array $attributes = [],
         array $relatedAttributes = [],
@@ -133,7 +137,7 @@ abstract class ModelTestCase extends ApplicationTestCase
     ): void
     {
         /** @var Model $instance */
-        $instance = factory($model)->create($attributes);
+        $instance = factory($this->modelClass)->create($attributes);
         $this->assertTrue(method_exists($instance, $relation));
 
         /** @var BelongsToMany $belongsToMany */

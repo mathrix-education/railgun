@@ -38,8 +38,10 @@ class SearchChaptersIntegrationTest extends GraphQLIntegrationTestCase
                         id
                         name
                         slug
-                        grade {
-                            name
+                        theme {
+                            grade {
+                                name
+                            }
                         }
                     }
                 }

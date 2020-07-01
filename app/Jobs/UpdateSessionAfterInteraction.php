@@ -34,7 +34,7 @@ class UpdateSessionAfterInteraction extends Job implements ShouldQueue
             ->updateOrCreate(
                 [
                     'user_id'       => $this->interaction->user_id,
-                    'discipline_id' => $chapter->discipline_id,
+                    'discipline_id' => $chapter->theme->discipline_id,
                 ],
                 [
                     'chapter_id' => $chapter->id,

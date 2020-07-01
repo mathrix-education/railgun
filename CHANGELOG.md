@@ -1,4 +1,27 @@
 # Changelog
+## 8.0.0 (unreleased)
+- feat(themes): implements themes, which now wraps chapters into the grade/discipline tuple
+
+### New features
+- `Theme` type
+- `CreateTheme` and `UpdateTheme` inputs
+- `listThemes` query (replaces `listChapters` query)
+- `readTheme` query:
+- `createTheme` mutation
+- `updateTheme` mutation
+- Chapters default theme is "Défaut (Grade/Discipline)"
+
+### Changed
+- `Chapter` type
+    - added `theme` field
+    - removed `grade` and `discipline` fields (they are now accessible through `theme.grade` and `theme.discipline`)
+- `CreateChapter` and `UpdateChapter` inputs:
+    - added `theme_id` (mandatory on `CreateChapter`)
+    - removed `grade_id` and `discipline_id`
+
+### Removed
+- `listChapters` query (replaced by `listThemes`)
+
 ## 7.2.1
 - feat(comments): allow users to edit their comments
 - fix(search): hide invisible objects from results

@@ -1,8 +1,14 @@
 extend type Query {
     """
     List all disciplines.
+
+    - `gradeSlug` allow to filter disciplines for a given grade.
+    - `withInvisible` allow to include invisible disciplines for the given grade.
     """
-    listDisciplines: [Discipline!]! @all
+    listDisciplines(
+        gradeSlug: String
+        withInvisible: Boolean = false
+    ): [Discipline!]!
 
     """
     Read an existing discipline.

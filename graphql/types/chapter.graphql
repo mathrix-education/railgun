@@ -6,8 +6,7 @@ type Chapter {
     visible: Boolean!
     created_at: DateTime!
     updated_at: DateTime!
-    discipline: Discipline @belongsTo
-    grade: Grade! @belongsTo
+    theme: Theme! @belongsTo
     notions: [Notion!]! @hasMany
     summary: Notion @belongsTo
     flashcards: [Flashcard!]! @hasMany

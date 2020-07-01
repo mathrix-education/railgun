@@ -20,15 +20,10 @@ input CreateChapter {
     """
     visible: Boolean! @permission(name: "chapters:write:visible") @rules(apply: ["boolean"])
     """
-    The chapter related discipline ID.
-    Must be a valid discipline ID.
+    The chapter related theme ID.
+    Must be a valid theme ID.
     """
-    discipline_id: ID! @rules(apply: ["integer", "exists:disciplines,id"])
-    """
-    The chapter related grade ID.
-    Must be a valid grade ID.
-    """
-    grade_id: ID! @rules(apply: ["integer", "exists:grades,id"])
+    theme_id: ID! @rules(apply: ["integer", "exists:themes,id"])
 }
 
 input UpdateChapter {
@@ -57,13 +52,8 @@ input UpdateChapter {
     """
     visible: Boolean @permission(name: "chapters:write:visible") @rules(apply: ["boolean"])
     """
-    The chapter new related discipline ID.
-    Must be a valid discipline ID.
+    The chapter new related theme ID.
+    Must be a valid theme ID.
     """
-    discipline_id: ID @rules(apply: ["integer", "exists:disciplines,id"])
-    """
-    The chapter new related grade ID.
-    Must be a valid grade ID.
-    """
-    grade_id: ID @rules(apply: ["integer", "exists:grades,id"])
+    theme_id: ID @rules(apply: ["integer", "exists:themes,id"])
 }

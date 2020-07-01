@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Functional\Models;
 
 use Laravel\Lumen\Testing\DatabaseTransactions;
-use Railgun\Models\Lesson;
 
 /**
  * @testdox Model Lesson
@@ -20,6 +19,6 @@ class LessonTest extends ModelTestCase
      */
     public function testSection(): void
     {
-        $this->assertBelongsTo(Lesson::class, 'section');
+        $this->assertBelongsTo('section');
     }
 }

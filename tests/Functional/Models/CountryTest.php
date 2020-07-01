@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Functional\Models;
 
 use Laravel\Lumen\Testing\DatabaseTransactions;
-use Railgun\Models\Country;
 
 /**
  * @testdox Model Country
@@ -20,6 +19,6 @@ class CountryTest extends ModelTestCase
      */
     public function testGrades(): void
     {
-        $this->assertHasMany(Country::class, 'grades');
+        $this->assertHasMany('grades');
     }
 }
