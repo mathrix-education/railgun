@@ -10,6 +10,7 @@ use Railgun\Models\Course;
 use Railgun\Models\Label;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function factory;
+use function implode;
 
 /**
  * @testdox Mutation updateCourse
@@ -28,6 +29,7 @@ class UpdateCourseIntegrationTest extends GraphQLIntegrationTestCase
             mutation($input: UpdateCourse!) {
                 updateCourse(input: $input) {
                     id
+                    seo_keywords
                     labels {
                         id
                         name
@@ -83,5 +85,32 @@ class UpdateCourseIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->assertResponseOk();
         $this->assertErrorCode('MISSING_PERMISSION');
+    }
+
+    /**
+     * @testdox seo_keywords can be updated with appropriate permissions
+     *
+     * @ticket #436
+     */
+    public function testUpdateSeoKeywords(): void
+    {
+        $this->withPermissions(['labels:read', 'courses:write', 'courses:write:seo_keywords']);
+
+        /** @var Course $course */
+        $course   = factory(Course::class)->create([
+            'visible'      => true,
+            'seo_keywords' => null,
+        ]);
+        $keywords = implode(',', $this->faker->words(3));
+
+        $this->seeInDatabase('courses', ['id' => $course->id, 'seo_keywords' => null]);
+
+        $this->executeUpdateCourse([
+            'id'           => $course->id,
+            'seo_keywords' => $keywords,
+        ]);
+
+        $this->assertEquals($keywords, $this->getData('seo_keywords'));
+        $this->seeInDatabase('courses', ['id' => $course->id, 'seo_keywords' => $keywords]);
     }
 }

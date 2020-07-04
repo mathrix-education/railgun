@@ -58,6 +58,7 @@ class Course extends Model implements Content
         'visible',
         'seo_index',
         'seo_title',
+        'seo_keywords',
         'seo_description',
         'notion_id',
     ];
