@@ -17,6 +17,8 @@ jobs:
       url: ${{ steps.mappings.outputs.url }}
       semver: ${{ steps.mappings.outputs.semver }}
       image: ${{ steps.mappings.outputs.image }}
+      image_latest: ${{ steps.mappings.outputs.image_latest }}
+      image_version: ${{ steps.mappings.outputs.image_version }}
       image_exists: ${{ steps.mappings.outputs.image_exists }}
       skip_lint: ${{ steps.mappings.outputs.skip_lint }}
       skip_test: ${{ steps.mappings.outputs.skip_test }}
@@ -121,7 +123,7 @@ jobs:
   # ============================================================================
   docker:
     name: Build Docker image
-    needs: [mappings]
+    needs: [mappings, lint, tests]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -143,6 +145,18 @@ jobs:
       - name: Push Docker image to Google Cloud Container Registry
         if: needs.mappings.outputs.skip_build != '1'
         run: docker push ${{ needs.mappings.outputs.image }}
+      - name: Add "latest" tag
+        if: github.event_name == 'push'
+        run: |
+          gcloud container images add-tag \
+            ${{ needs.mappings.outputs.image }} \
+            ${{ needs.mappings.outputs.image_latest }}
+      - name: Add "version" tag
+        if: needs.mappings.outputs.environment == 'production'
+        run: |
+          gcloud container images add-tag \
+            ${{ needs.mappings.outputs.image }} \
+            ${{ needs.mappings.outputs.image_version }}
 
   # ============================================================================
   # Deploy the container to the Google Cloud Kubernetes Cluster.
