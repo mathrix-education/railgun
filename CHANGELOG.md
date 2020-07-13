@@ -1,8 +1,15 @@
 # Changelog
 ## 9.0.0
 ### Continuous integration
-- **actions**: rename master branch to main
-- **repo**: rename repo from education-api to railgun
+- **actions**: rename master branch to main (closes #435)
+- **repo**: rename repo from `education-api` to `railgun` (closes #434)
+
+## Docs
+- **license**: update license to [Mathrix Tech Internal License](https://github.com/mathrix-education/mathrix-tech-license)
+- **readme**: add badges
+
+## Chores
+- **deps**: bump phpredis extension from version 5.2.1 to version 5.3.1
 
 ## 8.1.0
 ### Features

@@ -2,6 +2,12 @@
     <img src="public/img/logo.png" alt="">
 </p>
 
+---
+
+![PHP](https://img.shields.io/badge/php-7.4-%23777BB4?logo=php&style=flat-square)
+![License](https://img.shields.io/badge/license-mathrix--tech--internal-blue?style=flat-square)
+![Codecov](https://img.shields.io/codecov/c/gh/mathrix-education/railgun?style=flat-square&token=UTyYYxlngL&logo=codecov)
+
 Railgun-fast paced GraphQL API for Mathrix Education.
 Proudly maintained by Mathieu Bour <mathieu@mathrix.fr>, Lead Tech at Edutech Media.
 

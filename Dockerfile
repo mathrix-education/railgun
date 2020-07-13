@@ -4,7 +4,7 @@ LABEL Maintainer="Mathieu Bour <mathieu@mathrix.fr>" \
       Description="Mathrix Education API image"
 
 ARG RELEASE="no-release"
-ARG EXT_REDIS_VERSION="5.2.1"
+ARG EXT_REDIS_VERSION="5.3.1"
 
 ENV APP_RELEASE=$RELEASE
 ENV PATH="/var/www/vendor/bin:${PATH}"
