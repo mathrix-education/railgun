@@ -1,9 +1,13 @@
 # Changelog
 ## 9.0.0
+### Features
+- **railgun**: add version action to `/`
+
 ### Breaking changes
 - **notions**: delete `slug` field from `Notion` type and `CreateNotion` and `UpdateNotion` attributes (closes #441)
-- **themes**: delete `slug` field from `Theme` type and `CreateTheme` and `UpdateTheme` attributes (closes #441)
+- **playground**: move playground from `/` to `/playground`
 - **permissions**: delete the `notions:write:slug` permission
+- **themes**: delete `slug` field from `Theme` type and `CreateTheme` and `UpdateTheme` attributes (closes #441)
 
 ### Refactors
 - **graphql**: rename $rootValue to $_ in Lighthouse GraphQL resolvers (closes #455)

@@ -7,7 +7,7 @@ namespace Tests\E2E\Actions;
 use Tests\E2E\HttpIntegrationTestCase;
 
 /**
- * @testdox NotFound action
+ * @testdox NotFound Action
  */
 class NotFoundActionTest extends HttpIntegrationTestCase
 {
