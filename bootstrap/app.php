@@ -16,13 +16,13 @@ use Mathrix\Prometheus\PrometheusServiceProvider;
 use MLL\GraphQLPlayground\GraphQLPlaygroundServiceProvider;
 use Nuwave\Lighthouse\LighthouseServiceProvider;
 use Nuwave\Lighthouse\Tracing\TracingServiceProvider;
-use Railgun\Actions\SitemapAction;
 use Railgun\Providers\AppServiceProvider;
 use Railgun\Providers\AuthServiceProvider;
 use Railgun\Providers\BraintreeServiceProvider;
 use Railgun\Providers\CryptoServiceProvider;
 use Railgun\Providers\FacebookServiceProvider;
 use Railgun\Providers\GoogleServiceProvider;
+use Railgun\Providers\RouterServiceProvider;
 use Railgun\Providers\StripeServiceProvider;
 use Sentry\Laravel\ServiceProvider as SentryServiceProvider;
 use Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider;
@@ -106,7 +106,6 @@ if ($app->runningInConsole() && class_exists(TinkerServiceProvider::class)) {
     $app->register(TinkerServiceProvider::class);
 }
 
-// Routes
-$app->router->get('sitemap', SitemapAction::class);
+$app->register(RouterServiceProvider::class); // Called in last position to override any defined route
 
 return $app;
