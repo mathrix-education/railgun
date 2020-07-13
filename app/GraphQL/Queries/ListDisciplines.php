@@ -16,12 +16,12 @@ use function array_key_exists;
 class ListDisciplines
 {
     /**
-     * @param null    $rootValue The parent value, always null in this case.
-     * @param mixed[] $args      The query arguments (path).
+     * @param null    $_    The parent value, always null in this case.
+     * @param mixed[] $args The query arguments.
      *
      * @return Collection<Discipline>
      */
-    public function __invoke($rootValue, array $args): Collection
+    public function __invoke($_, array $args): Collection
     {
         $query = Discipline::query();
 

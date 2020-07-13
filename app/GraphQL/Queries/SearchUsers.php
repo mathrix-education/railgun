@@ -14,12 +14,12 @@ use Railgun\Models\User;
 class SearchUsers
 {
     /**
-     * @param null    $rootValue The parent value, always null in this case.
-     * @param mixed[] $args      The query arguments (query).
+     * @param null    $_    The parent value, always null in this case.
+     * @param mixed[] $args The query arguments (query).
      *
      * @return Builder<User>
      */
-    public function __invoke($rootValue, array $args): Builder
+    public function __invoke($_, array $args): Builder
     {
         $query = "%{$args['query']}%";
 

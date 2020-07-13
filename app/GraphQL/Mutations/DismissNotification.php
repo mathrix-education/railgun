@@ -15,13 +15,13 @@ use Railgun\Models\User;
 class DismissNotification
 {
     /**
-     * @param null           $rootValue The parent value, always null in this case.
-     * @param mixed[]        $args      The mutation arguments.
-     * @param GraphQLContext $context   The GraphQL context which holds the user.
+     * @param null           $_       The parent value, always null in this case.
+     * @param mixed[]        $args    The mutation arguments.
+     * @param GraphQLContext $context The GraphQL context which holds the user.
      *
      * @return Notification|null The dismissed notification.
      */
-    public function __invoke($rootValue, array $args, GraphQLContext $context): ?Notification
+    public function __invoke($_, array $args, GraphQLContext $context): ?Notification
     {
         /** @var User $user */
         $user = $context->user();

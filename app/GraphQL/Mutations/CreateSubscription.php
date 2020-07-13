@@ -21,15 +21,15 @@ use function dispatch_now;
 class CreateSubscription
 {
     /**
-     * @param null           $rootValue The parent value, always null in this case.
-     * @param mixed[]        $args      The mutation arguments (planId, paymentMethodId).
-     * @param GraphQLContext $context   The GraphQL context which holds the user.
+     * @param null           $_       The parent value, always null in this case.
+     * @param mixed[]        $args    The mutation arguments (planId, paymentMethodId).
+     * @param GraphQLContext $context The GraphQL context which holds the user.
      *
      * @return Subscription The newly created subscription.
      *
      * @throws ApiErrorException
      */
-    public function __invoke($rootValue, array $args, GraphQLContext $context): Subscription
+    public function __invoke($_, array $args, GraphQLContext $context): Subscription
     {
         /** @var User $user */
         $user = $context->user();

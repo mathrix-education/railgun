@@ -15,13 +15,13 @@ use Railgun\Models\User;
 class ValidateCart
 {
     /**
-     * @param null           $rootValue The parent value, always null in this case.
-     * @param mixed[]        $args      The query arguments (cart).
-     * @param GraphQLContext $context   The GraphQL context which holds the user.
+     * @param null           $_       The parent value, always null in this case.
+     * @param mixed[]        $args    The query arguments (cart).
+     * @param GraphQLContext $context The GraphQL context which holds the user.
      *
      * @return mixed[]
      */
-    public function __invoke($rootValue, array $args, GraphQLContext $context): array
+    public function __invoke($_, array $args, GraphQLContext $context): array
     {
         /** @var User $user */
         $user = $context->user();

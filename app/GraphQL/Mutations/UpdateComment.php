@@ -13,13 +13,13 @@ use Railgun\Models\User;
 class UpdateComment
 {
     /**
-     * @param null           $rootValue The parent value, always null in this case.
-     * @param mixed[]        $args      The mutation arguments (input: CommentInput).
-     * @param GraphQLContext $context   The GraphQL context which holds the user.
+     * @param null           $_       The parent value, always null in this case.
+     * @param mixed[]        $args    The mutation arguments (input: CommentInput).
+     * @param GraphQLContext $context The GraphQL context which holds the user.
      *
      * @return Comment The updated comment.
      */
-    public function __invoke($rootValue, array $args, GraphQLContext $context): Comment
+    public function __invoke($_, array $args, GraphQLContext $context): Comment
     {
         /** @var User $user */
         $user = $context->user();

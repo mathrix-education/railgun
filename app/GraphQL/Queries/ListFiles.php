@@ -16,12 +16,12 @@ use function collect;
 class ListFiles
 {
     /**
-     * @param null    $rootValue The parent value, always null in this case.
-     * @param mixed[] $args      The query arguments (path).
+     * @param null    $_    The parent value, always null in this case.
+     * @param mixed[] $args The query arguments (path).
      *
      * @return mixed
      */
-    public function __invoke($rootValue, array $args)
+    public function __invoke($_, array $args)
     {
         $path = Util::normalizePath($args['path']);
         $path = $path === '' ? '/' : $path;

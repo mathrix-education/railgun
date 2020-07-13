@@ -16,14 +16,14 @@ use Railgun\Facades\Storage;
 class ReadFile
 {
     /**
-     * @param null    $rootValue The parent value, always null in this case.
-     * @param mixed[] $args      The query arguments (path).
+     * @param null    $_    The parent value, always null in this case.
+     * @param mixed[] $args The query arguments (path).
      *
      * @return mixed[] The file metadata.
      *
      * @throws LeagueFileNotFoundException
      */
-    public function __invoke($rootValue, array $args): array
+    public function __invoke($_, array $args): array
     {
         $path = '/' . Util::normalizePath($args['path']);
         $disk = Storage::disk();

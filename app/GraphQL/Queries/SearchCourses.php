@@ -17,12 +17,12 @@ use Railgun\Support\GradeWeights;
 class SearchCourses
 {
     /**
-     * @param null    $rootValue The parent value, always null in this case.
-     * @param mixed[] $args      The query arguments (query, grade_id).
+     * @param null    $_    The parent value, always null in this case.
+     * @param mixed[] $args The query arguments (query, grade_id).
      *
      * @return Builder<Course>
      */
-    public function __invoke($rootValue, array $args): Builder
+    public function __invoke($_, array $args): Builder
     {
         $query    = $args['query'];
         $like     = "%{$query}%";

@@ -14,12 +14,12 @@ use Windy\Guardian\Guardian;
 class RegisterBasic
 {
     /**
-     * @param null    $rootValue The parent value, always null in this case.
-     * @param mixed[] $args      The mutation arguments (email, password).
+     * @param null    $_    The parent value, always null in this case.
+     * @param mixed[] $args The mutation arguments (email, password).
      *
      * @return string[] The signed, serialized JWT for the user.
      */
-    public function __invoke($rootValue, array $args): array
+    public function __invoke($_, array $args): array
     {
         $user = new User($args);
         $user->save();

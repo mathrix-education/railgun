@@ -23,14 +23,14 @@ class ResetPassword
     }
 
     /**
-     * @param null    $rootValue The parent value, always null in this case.
-     * @param mixed[] $args      The mutation arguments.
+     * @param null    $_    The parent value, always null in this case.
+     * @param mixed[] $args The mutation arguments.
      *
      * @return mixed
      *
      * @throws BindingResolutionException
      */
-    public function __invoke($rootValue, array $args)
+    public function __invoke($_, array $args)
     {
         $token = $args['token'];
 

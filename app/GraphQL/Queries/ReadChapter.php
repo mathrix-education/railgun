@@ -11,12 +11,12 @@ use function array_key_exists;
 class ReadChapter
 {
     /**
-     * @param null    $rootValue The parent value, always null in this case.
-     * @param mixed[] $args      The query arguments (id, chapterSlug, gradeSlug, disciplineSlug).
+     * @param null    $_    The parent value, always null in this case.
+     * @param mixed[] $args The query arguments (id, chapterSlug, gradeSlug, disciplineSlug).
      *
      * @return Chapter|null The chapter matching the given grade, discipline and chapter slugs if it exists.
      */
-    public function __invoke($rootValue, array $args): ?Chapter
+    public function __invoke($_, array $args): ?Chapter
     {
         $query = Chapter::query();
 
