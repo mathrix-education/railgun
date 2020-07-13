@@ -17,12 +17,12 @@ use Windy\Guardian\Guardian;
 class LoginBasic
 {
     /**
-     * @param null    $rootValue The parent value, always null in this case.
-     * @param mixed[] $args      The mutation arguments.
+     * @param null    $_    The parent value, always null in this case.
+     * @param mixed[] $args The mutation arguments.
      *
      * @return string[] The signed, serialized JWT for the user.
      */
-    public function __invoke($rootValue, array $args): array
+    public function __invoke($_, array $args): array
     {
         if (!Auth::attempt(Arr::only($args, ['email', 'password']))) {
             throw new InvalidCredentialsException();

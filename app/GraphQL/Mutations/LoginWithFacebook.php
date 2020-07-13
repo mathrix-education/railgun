@@ -28,8 +28,8 @@ class LoginWithFacebook
     }
 
     /**
-     * @param null    $rootValue The parent value, always null in this case.
-     * @param mixed[] $args      The mutation arguments.
+     * @param null    $_    The parent value, always null in this case.
+     * @param mixed[] $args The mutation arguments.
      *
      * @return mixed[] The signed, serialized JWT for the user.
      *
@@ -37,7 +37,7 @@ class LoginWithFacebook
      *
      * @noinspection PhpRedundantCatchClauseInspection
      */
-    public function __invoke($rootValue, array $args): array
+    public function __invoke($_, array $args): array
     {
         $accessToken = $args['accessToken'];
 

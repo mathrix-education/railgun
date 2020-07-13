@@ -14,12 +14,12 @@ use Railgun\Models\Vote;
 class UpsertVote
 {
     /**
-     * @param null    $rootValue The parent value, always null in this case.
-     * @param mixed[] $args      The mutation arguments.
+     * @param null    $_    The parent value, always null in this case.
+     * @param mixed[] $args The mutation arguments.
      *
      * @return mixed
      */
-    public function __invoke($rootValue, array $args): Vote
+    public function __invoke($_, array $args): Vote
     {
         $data = Arr::only($args, ['comment_id', 'user_id']);
 

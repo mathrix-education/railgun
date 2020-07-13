@@ -11,7 +11,7 @@ use Railgun\Models\Exercise;
 class UpdateExercise
 {
     /**
-     * @param null           $rootValue   The parent value, always null in this case.
+     * @param null           $_           The parent value, always null in this case.
      * @param mixed[]        $args        The mutation arguments.
      * @param GraphQLContext $context     Arbitrary data that is shared between all fields of a single query.
      * @param ResolveInfo    $resolveInfo Information about the query itself, such as the execution state, the field
@@ -20,7 +20,7 @@ class UpdateExercise
      * @return Exercise The updated Exercise.
      */
     public function __invoke(
-        $rootValue,
+        $_,
         array $args,
         GraphQLContext $context,
         ResolveInfo $resolveInfo

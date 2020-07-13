@@ -1,5 +1,8 @@
 # Changelog
 ## 9.0.0
+### Refactors
+- **graphql**: rename $rootValue to $_ in Lighthouse GraphQL resolvers (closes #455)
+
 ### Continuous integration
 - **actions**: rename master branch to main (closes #435)
 - **repo**: rename repo from `education-api` to `railgun` (closes #434)

@@ -14,12 +14,12 @@ use Railgun\Models\Interaction;
 class Interact
 {
     /**
-     * @param null           $rootValue The parent value, always null in this case.
-     * @param mixed[]        $args      The mutation arguments.
+     * @param null    $_    The parent value, always null in this case.
+     * @param mixed[] $args The mutation arguments.
      *
      * @return mixed
      */
-    public function __invoke($rootValue, array $args): bool
+    public function __invoke($_, array $args): bool
     {
         // Filter args
         switch ($args['interactable_type']) {

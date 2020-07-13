@@ -18,12 +18,12 @@ use function usleep;
 class ForgotPassword
 {
     /**
-     * @param null    $rootValue The parent value, always null in this case.
-     * @param mixed[] $args      The mutation arguments.
+     * @param null    $_    The parent value, always null in this case.
+     * @param mixed[] $args The mutation arguments.
      *
      * @return mixed
      */
-    public function __invoke($rootValue, array $args)
+    public function __invoke($_, array $args)
     {
         $email = $args['email'];
         /** @var User $user */

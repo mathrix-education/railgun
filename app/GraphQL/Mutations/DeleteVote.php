@@ -14,14 +14,14 @@ use Railgun\Models\Vote;
 class DeleteVote
 {
     /**
-     * @param null    $rootValue The parent value, always null in this case.
-     * @param mixed[] $args      The mutation arguments.
+     * @param null    $_    The parent value, always null in this case.
+     * @param mixed[] $args The mutation arguments.
      *
      * @return Vote The deleted vote model.
      *
      * @throws Exception
      */
-    public function __invoke($rootValue, array $args): Vote
+    public function __invoke($_, array $args): Vote
     {
         /** @var Vote $vote */
         $vote = Vote::query()->where($args)->firstOrFail();

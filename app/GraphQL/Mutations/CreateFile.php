@@ -15,14 +15,14 @@ class CreateFile
     /**
      * Return a value for the field.
      *
-     * @param null    $rootValue The parent value, always null in this case.
-     * @param mixed[] $args      The mutation arguments.
+     * @param null    $_    The parent value, always null in this case.
+     * @param mixed[] $args The mutation arguments.
      *
      * @return mixed[] The create file metadata.
      *
      * @throws FileNotFoundException
      */
-    public function __invoke($rootValue, array $args): array
+    public function __invoke($_, array $args): array
     {
         /** @var UploadedFile $file */
         $file = $args['file'];

@@ -29,12 +29,12 @@ class LoginWithGoogle
     /**
      * @link https://developers.google.com/identity/sign-in/web/backend-auth#calling-the-tokeninfo-endpoint
      *
-     * @param null    $rootValue The parent value, always null in this case.
-     * @param mixed[] $args      The mutation arguments.
+     * @param null    $_    The parent value, always null in this case.
+     * @param mixed[] $args The mutation arguments.
      *
      * @return mixed[] The signed, serialized JWT for the user.
      */
-    public function __invoke($rootValue, array $args): array
+    public function __invoke($_, array $args): array
     {
         if (Str::startsWith($args['accessToken'], 'ey')) {
             // This is an id token

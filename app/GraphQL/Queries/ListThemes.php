@@ -15,12 +15,12 @@ class ListThemes
     /**
      * Return a value for the field.
      *
-     * @param null    $rootValue The parent value, always null in this case.
-     * @param mixed[] $args      The query arguments (gradeId, disciplineId, gradeSlug, disciplineSlug).
+     * @param null    $_    The parent value, always null in this case.
+     * @param mixed[] $args The query arguments (gradeId, disciplineId, gradeSlug, disciplineSlug).
      *
      * @return Collection|Chapter[]
      */
-    public function __invoke($rootValue, array $args): Collection
+    public function __invoke($_, array $args): Collection
     {
         $query = Theme::query()->orderBy('order');
 

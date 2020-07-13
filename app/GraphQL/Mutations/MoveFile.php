@@ -14,14 +14,14 @@ use Railgun\Facades\Storage;
 class MoveFile
 {
     /**
-     * @param null    $rootValue The parent value, always null in this case.
-     * @param mixed[] $args      The mutation arguments.
+     * @param null    $_    The parent value, always null in this case.
+     * @param mixed[] $args The mutation arguments.
      *
      * @return mixed[] The moved file metadata.
      *
      * @throws FileNotFoundException
      */
-    public function __invoke($rootValue, array $args): array
+    public function __invoke($_, array $args): array
     {
         $disk        = Storage::disk();
         $source      = $args['source'];
