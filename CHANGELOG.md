@@ -5,7 +5,7 @@
 - **repo**: rename repo from `education-api` to `railgun` (closes #434)
 
 ## Docs
-- **license**: update license to [Mathrix Tech Internal License](https://github.com/mathrix-education/mathrix-tech-license)
+- **license**: update license to [Mathrix Tech Internal License](https://github.com/mathrix-education/mathrix-tech-license) (closes #452)
 - **readme**: add badges
 
 ## Chores
