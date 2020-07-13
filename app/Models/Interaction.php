@@ -16,15 +16,15 @@ use RuntimeException;
 use function get_class;
 
 /**
- * @property      int                                    $user_id
- * @property      string                                 $interactable_type
- * @property      int                                    $interactable_id
- * @property      string                                 $comprehension
- * @property      int                                    $score
- * @property      int                                    $total
- * @property      int                                    $watchtime
- * @property-read Carbon                                 $created_at
- * @property-read Carbon                                 $updated_at
+ * @property      int    $user_id
+ * @property      string $interactable_type
+ * @property      int    $interactable_id
+ * @property      string $comprehension
+ * @property      int    $score
+ * @property      int    $total
+ * @property      int    $watchtime
+ * @property-read Carbon $created_at
+ * @property-read Carbon $updated_at
  * ---
  * @property-read Course|Exercise|Flashcard|Exam|Subject $interactable
  */

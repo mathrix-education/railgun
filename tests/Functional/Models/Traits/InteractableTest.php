@@ -21,6 +21,7 @@ use function factory;
 
 /**
  * @testdox Interactable Model trait
+ * @coversDefaultClass \Railgun\Models\Traits\Interactable
  */
 class InteractableTest extends ApplicationTestCase
 {
@@ -63,6 +64,32 @@ class InteractableTest extends ApplicationTestCase
         $interaction = $interaction->fresh(['interactable']);
 
         $this->assertTrue($interaction->interactable->is($model));
+    }
+
+    /**
+     * @dataProvider createInteractablesDataset
+     * @covers ::interactions
+     *
+     * @param string|Randomizable $class The model class.
+     */
+    public function testInteractionsRelation(string $class): void
+    {
+        /** @var string $alias */
+        $alias = array_search($class, Relation::$morphMap, true);
+        /** @var Interactable|Model $model */
+        $model = $class::random();
+
+        $interaction = new Interaction([
+            'user_id'           => User::random()->id,
+            'interactable_type' => $alias,
+            'interactable_id'   => $model->getKey(),
+        ]);
+        $interaction->save();
+
+        $model->refresh();
+
+        $this->assertNotEmpty($model->interactions);
+        $this->assertContains($interaction->id, $model->interactions->pluck('id')->toArray());
     }
 
     /**
