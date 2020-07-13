@@ -29,7 +29,7 @@ extend type Mutation {
     loginWithFacebook(accessToken: String!): JWT!
 
     """
-    Login a user into the application using its Google access token.
+    Login a user into the application using its Google identity token or auth code.
     A token can be retrieved using the [Google JS SDK](https://developers.google.com/identity/sign-in/web/sign-in).
     """
     loginWithGoogle(accessToken: String!): JWT!

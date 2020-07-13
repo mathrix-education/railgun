@@ -18,7 +18,8 @@ class GoogleServiceProvider extends ServiceProvider implements DeferrableProvide
     {
         $this->app->singleton(Google_Client::class, static function () {
             return new Google_Client([
-                'client_id' => env('GOOGLE_CLIENT_ID'),
+                'client_id'     => env('GOOGLE_CLIENT_ID'),
+                'client_secret' => env('GOOGLE_CLIENT_SECRET'),
             ]);
         });
     }
