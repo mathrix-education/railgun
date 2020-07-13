@@ -18,12 +18,12 @@ $factory->define(Session::class, static function (Faker $faker) {
         $key = [
             'user_id'       => User::random()->id,
             'discipline_id' => $chapter->theme->discipline_id,
-            'chapter_id'    => $chapter->id,
         ];
     } while (Session::query()->where($key)->exists());
 
     return array_merge($key, [
         'id'         => $faker->uuid,
+        'chapter_id' => $chapter->id,
         'updated_at' => $faker->dateTime,
     ]);
 });

@@ -23,14 +23,19 @@ $factory->define(Interaction::class, static function (Faker $faker) {
 
     $timestamps = Timestamps::factory();
 
-    $data = [
-        'id'                => $faker->uuid,
-        'user_id'           => User::random()->id,
-        'interactable_type' => Str::slug(class_basename($class), '_'),
-        'interactable_id'   => $model->id,
-        'created_at'        => $timestamps->createdAt,
-        'updated_at'        => $timestamps->updatedAt,
-    ];
+    do {
+        $key = [
+            'user_id'           => User::random()->id,
+            'interactable_type' => Str::slug(class_basename($class), '_'),
+            'interactable_id'   => $model->id,
+        ];
+    } while (Interaction::query()->where($key)->exists());
+
+    $data = array_merge($key, [
+        'id'         => $faker->uuid,
+        'created_at' => $timestamps->createdAt,
+        'updated_at' => $timestamps->updatedAt,
+    ]);
 
     switch ($class) {
         case Course::class:
