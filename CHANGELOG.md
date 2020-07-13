@@ -1,4 +1,9 @@
 # Changelog
+## 9.0.0
+### Continuous integration
+- **actions**: rename master branch to main
+- **repo**: rename repo from education-api to railgun
+
 ## 8.1.0
 ### Features
 - **google**: implement login with auth code

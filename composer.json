@@ -1,15 +1,17 @@
 {
   "name": "mathrix-education/railgun",
-  "description": "The Mathrix Education Lumen API.",
-  "version": "8.1.0",
+  "description": "Railgun-fast paced GraphQL API for Mathrix Education.",
+  "version": "9.0.0",
   "type": "project",
   "keywords": [
     "education",
     "mathrix",
-    "php",
-    "lumen"
+    "graphql",
+    "laravel",
+    "lumen",
+    "api"
   ],
-  "homepage": "https://github.com/mathrix-education/education-api",
+  "homepage": "https://github.com/mathrix-education/railgun",
   "license": "proprietary",
   "authors": [
     {
@@ -22,14 +24,20 @@
       "name": "Valentin Pollart",
       "email": "valentin@mathrix.fr",
       "homepage": "https://github.com/valentinpollart",
-      "role": "Maintainer"
+      "role": "Contributor"
+    },
+    {
+      "name": "Dimitri Bret",
+      "email": "dimitri@mathrix.fr",
+      "homepage": "https://github.com/dimitri-bret",
+      "role": "Contributor"
     }
   ],
   "support": {
     "email": "mathieu@mathrix.fr",
-    "issues": "https://github.com/mathrix-education/education-api/issues",
-    "source": "https://github.com/mathrix-education/education-api",
-    "docs": "https://github.com/mathrix-education/education-api"
+    "issues": "https://github.com/mathrix-education/railgun/issues",
+    "source": "https://github.com/mathrix-education/railgun",
+    "docs": "https://github.com/mathrix-education/railgun"
   },
   "repositories": [
     {
@@ -112,11 +120,5 @@
     "preferred-install": "dist",
     "sort-packages": true,
     "optimize-autoloader": true
-  },
-  "scripts": {
-    "tests:ci": [
-      "Composer\\Config::disableProcessTimeout",
-      "paratest -f --coverage-clover=storage/artifacts/phpunit-coverage.xml"
-    ]
   }
 }
