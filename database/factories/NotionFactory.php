@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
-use Illuminate\Support\Str;
 use Railgun\Models\Chapter;
 use Railgun\Models\Notion;
 use Railgun\Support\Timestamps;
@@ -15,12 +14,10 @@ use Railgun\Support\Timestamps;
  * @var Factory $factory
  */
 $factory->define(Notion::class, static function (Faker $faker) {
-    $name       = ucfirst($faker->word);
     $timestamps = Timestamps::factory();
 
     return [
-        'name'       => $name,
-        'slug'       => Str::slug($name),
+        'name'       => ucfirst($faker->words(3, true)),
         'visible'    => $faker->boolean(95),
         'order'      => 99,
         'chapter_id' => Chapter::random()->id,

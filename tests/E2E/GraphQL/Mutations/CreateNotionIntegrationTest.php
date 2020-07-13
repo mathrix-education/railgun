@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Mutations;
 
-use Illuminate\Support\Str;
 use Railgun\Models\Chapter;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
+use function ucfirst;
 
 /**
  * @testdox Mutation createNotion
@@ -36,8 +36,7 @@ class CreateNotionIntegrationTest extends GraphQLIntegrationTestCase
             GRAPHQL,
             [
                 'input' => [
-                    'name'       => $this->faker->userName,
-                    'slug'       => Str::slug($this->faker->userName),
+                    'name'       => ucfirst($this->faker->words(3, true)),
                     'visible'    => true,
                     'chapter_id' => Chapter::random()->id,
                     'order'      => 0,

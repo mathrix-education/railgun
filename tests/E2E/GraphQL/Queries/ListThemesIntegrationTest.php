@@ -35,7 +35,6 @@ class ListThemesIntegrationTest extends GraphQLIntegrationTestCase
                     disciplineSlug: $disciplineSlug
                 ) {
                     id
-                    slug
                     order
                     discipline {
                         id

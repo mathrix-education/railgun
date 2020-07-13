@@ -1,5 +1,10 @@
 # Changelog
 ## 9.0.0
+### Breaking changes
+- **notions**: delete `slug` field from `Notion` type and `CreateNotion` and `UpdateNotion` attributes (closes #441)
+- **themes**: delete `slug` field from `Theme` type and `CreateTheme` and `UpdateTheme` attributes (closes #441)
+- **permissions**: delete the `notions:write:slug` permission
+
 ### Refactors
 - **graphql**: rename $rootValue to $_ in Lighthouse GraphQL resolvers (closes #455)
 
