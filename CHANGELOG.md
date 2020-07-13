@@ -16,7 +16,7 @@
 - **google**: implement login with auth code
 
 ### Bug fixes
-- **google**: write google id u=in user metadata
+- **google**: write google id in user metadata
 
 ### Continuous integration
 - **actions**: add images latest and version tags
@@ -67,7 +67,7 @@
 ## 7.1.2
 ### Bug fixes
 - **braintree**: ensure that the message is always defined
-- **http*: flush container properly
+- **http**: flush container properly
 
 ## 7.1.1
 ### New features
