@@ -51,7 +51,7 @@ class SubjectTest extends ModelTestCase
     }
 
     /**
-     * @covers ::notion
+     * @covers ::exercises
      */
     public function testExercises(): void
     {
