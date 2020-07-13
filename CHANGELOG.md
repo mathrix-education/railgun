@@ -1,47 +1,73 @@
 # Changelog
-## 8.0.0 (unreleased)
-- feat(themes): implements themes, which now wraps chapters into the grade/discipline tuple
+## 8.1.0
+### Features
+- **google**: implement login with auth code
 
-### New features
-- `Theme` type
-- `CreateTheme` and `UpdateTheme` inputs
-- `listThemes` query (replaces `listChapters` query)
-- `readTheme` query:
-- `createTheme` mutation
-- `updateTheme` mutation
-- Chapters default theme is "Défaut (Grade/Discipline)"
+### Bug fixes
+- **google**: write google id u=in user metadata
 
-### Changed
-- `Chapter` type
+### Continuous integration
+- **actions**: add images latest and version tags
+
+## 8.0.1
+### Continuous integration
+- **actions**: update workflow
+- **actions**: fix container name
+- **actions**: do not deploy on pull_request
+
+### Chores
+- delete mapping
+
+## 8.0.0
+### Features
+- **themes**: implements themes, which now wraps chapters into the grade/discipline tuple
+    - `Theme` type
+    - `CreateTheme` and `UpdateTheme` inputs
+    - `listThemes` query (replaces `listChapters` query)
+    - `readTheme` query:
+    - `createTheme` mutation
+    - `updateTheme` mutation
+    - Chapters default theme is "Défaut (Grade/Discipline)"
+
+### Breaking changes
+- **chapters**: update `Chapter` type
     - added `theme` field
     - removed `grade` and `discipline` fields (they are now accessible through `theme.grade` and `theme.discipline`)
-- `CreateChapter` and `UpdateChapter` inputs:
+- **chapters**: `CreateChapter` and `UpdateChapter` inputs:
     - added `theme_id` (mandatory on `CreateChapter`)
     - removed `grade_id` and `discipline_id`
-
-### Removed
-- `listChapters` query (replaced by `listThemes`)
+- **chapters**: removed `listChapters` query (replaced by `listThemes`)
 
 ## 7.2.1
-- feat(comments): allow users to edit their comments
-- fix(search): hide invisible objects from results
+### Features
+- **comments**: allow users to edit their comments
+
+### Bug fixes
+- **search**: hide invisible objects from results
 
 ## 7.2.0
-- feat(exercise): add exercise `proof` type
-- fix(prometheus): GraphQL collectors
+### Features
+- **exercise**: add exercise `proof` type
+
+### Bug fixes
+- **prometheus**: GraphQL collectors
 
 ## 7.1.2
-- fix(braintree): ensure that the message is always defined
-- fix(http): flush container properly
-- chore(deps): upgrade dependencies
+### Bug fixes
+- **braintree**: ensure that the message is always defined
+- **http*: flush container properly
 
 ## 7.1.1
-- feat(braintree): implement Braintree subscription webhooks
-- fix(graphql): flush container on HTTP 500
-- fix(migration): force migration run even in production environment (fixes #411)
+### New features
+- **braintree**: implement Braintree subscription webhooks
+
+### Bug fixes
+- **graphql**: flush container on HTTP 500
+- **migration**: force migration run even in production environment (fixes #411)
 
 ## 7.1.0
-- feat(auth): add policy directive and users policy on `User` type. The following fields are now protected:
+### New features
+- **auth**: add policy directive and users policy on `User` type. The following fields are now protected:
     - `firstname`
     - `lastname`
     - `email`
@@ -57,18 +83,18 @@
     - `sessions`
     - `statistics`
     - `subscriptions`
-- feat(datetime): override the `DateTime` Lighthouse scalar by our own implementation which always uses the RFC3339 date
+- **datetime**: override the `DateTime` Lighthouse scalar by our own implementation which always uses the RFC3339 date
   format (fixes #385)
-- feat(freeze): `frozen_at` field on Course, Exercise, Flashcard and Exam type
+- **freeze**: `frozen_at` field on Course, Exercise, Flashcard and Exam type
   `frozen_at` allows freezing models to their current state and requires the `{models}:freeze` permission to be set
   or bypassed (fixes #384 and #389, PR #386 and #391)
-- feat(logging): rewrite exception trace logger
-- feat(graphql): CreateNotion `slug` field is now required
-- feat(graphql): CreateFlashcard `slug` field is now required
-- feat(graphql): CreateSubject `slug` field is now required
-- feat(graphql): `scopes` on type `User`, `CreateUser` and `UpdateUser` are now deprecated and will be removed in version
+- **logging**: rewrite exception trace logger
+- **graphql**: CreateNotion `slug` field is now required
+- **graphql**: CreateFlashcard `slug` field is now required
+- **graphql**: CreateSubject `slug` field is now required
+- **graphql**: `scopes` on type `User`, `CreateUser` and `UpdateUser` are now deprecated and will be removed in version
   8. Use `permissions` instead.
-- feat(permissions): added permissions (fixes #390):
+- **permissions**: added permissions (closes #390):
     - `chapters:write:visible`
     - `chapters:write:slug`
     - `courses:write:premium`
@@ -89,18 +115,28 @@
     - `notions:write:visible`
     - `subjects:write:premium`
     - `subjects:write:visible`
-- feat(permissions): implement premium and product directives
-- fix(cache): empty request cache after each request
-- fix(plans): use RFC3339 date format for `proration_anchor` field (fixes #385)
-- docs(graphql): finish schema documentation**
-- chore(mailjet): export laravel-mailjet to [mathieu-bour/laravel-mailjet](https://github.com/mathieu-bour/laravel-mailjet)
-- chore(prometheus): drop unused UserCollector
+- **permissions**: implement premium and product directives
+
+### Bug fixes
+- **cache**: empty request cache after each request
+- **plans**: use RFC3339 date format for `proration_anchor` field (fixes #385)
+
+### Docs
+- **graphql**: finish schema documentation
+
+## Chores
+- **mailjet**: export laravel-mailjet to [mathieu-bour/laravel-mailjet](https://github.com/mathieu-bour/laravel-mailjet)
+- **prometheus**: drop unused UserCollector
 
 ## 7.0.1
-- security(graphql): disable tracing and playground in production (#379)
-- chore(deps): upgrade dependencies, bump to version 7.0.1
-- chore(housekeeping): delete Buster migrations
-- chore(housekeeping): remove Braintree
+### Security fixes
+- **graphql**: disable tracing and playground in production (#379)
+
+### Chores
+- **deps**: upgrade dependencies, bump to version 7.0.1
+- **housekeeping**: delete Buster migrations
+- **housekeeping**: remove Braintree
 
 ## 7.0.0
+### New features
 - Initial version of Railgun
