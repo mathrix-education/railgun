@@ -2,7 +2,7 @@
 name: GraphQL Bug Report
 about: Report an inconsistency on our GraphQL API
 title: Query|Mutation [name] ...
-labels: 'Environment: v7, Service: GraphQL, Type: Bug'
+labels: 'graphql, bug'
 assignees: mathieu-bour
 
 ---
