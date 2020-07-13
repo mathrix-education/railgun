@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace Railgun\GraphQL\Mutations;
 
 use Google_Client;
+use Illuminate\Support\Str;
 use Railgun\Exceptions\InvalidAuthTokenException;
 use Railgun\Models\User;
+use Throwable;
 use Windy\Guardian\Guardian;
+use function array_key_exists;
+use function array_merge_recursive;
 
 /**
  * Mutation loginWithGoogle.
@@ -32,7 +36,25 @@ class LoginWithGoogle
      */
     public function __invoke($rootValue, array $args): array
     {
-        $payload = $this->client->verifyIdToken($args['accessToken']);
+        if (Str::startsWith($args['accessToken'], 'ey')) {
+            // This is an id token
+            $idToken = $args['accessToken'];
+        } else {
+            // This is an access token
+            $accessToken = $this->client->fetchAccessTokenWithAuthCode($args['accessToken']);
+
+            if (!array_key_exists('id_token', $accessToken)) {
+                throw new InvalidAuthTokenException('Google');
+            }
+
+            $idToken = $accessToken['id_token'];
+        }
+
+        try {
+            $payload = $this->client->verifyIdToken($idToken);
+        } catch (Throwable $exception) {
+            $payload = false;
+        }
 
         if (!$payload) {
             throw new InvalidAuthTokenException('Google');
@@ -51,6 +73,12 @@ class LoginWithGoogle
             $user->firstname   = $payload['given_name'];
             $user->lastname    = $payload['family_name'];
             $user->permissions = [];
+            $user->metadata    = array_merge_recursive($user->metadata ?? [], [
+                'google' => [
+                    'id' => $payload['sub'],
+                ],
+            ]);
+
             $user->save();
         }
 
