@@ -5,11 +5,6 @@ input CreateTheme {
     """
     name: String!@rules(apply: ["string", "max:150"])
     """
-    The theme slug, which will be used in the URL generation.
-    Maximum 150 caracters.
-    """
-    slug: String!@rules(apply: ["string", "max:150"])
-    """
     The theme order. If not set, the theme will be placed in the last position of the group [grade/discipline].
     Must be positive (i.e. >=0).
     """
@@ -41,11 +36,6 @@ input UpdateTheme {
     Maximum 150 caracters.
     """
     name: String@rules(apply: ["string", "max:150"])
-    """
-    The theme new slug, which will be used in the URL generation.
-    Maximum 150 caracters.
-    """
-    slug: String@rules(apply: ["string", "max:150"])
     """
     The theme new order. Status quo if not set.
     Must be positive (i.e. >=0).

@@ -9,11 +9,6 @@ input CreateNotion {
     """
     name: String! @rules(apply: ["string", "max:150"])
     """
-    The notion slug, which will be used in the URL generation.
-    Maximum 150 caracters.
-    """
-    slug: String! @rules(apply: ["string", "max:150"])
-    """
     The notion order. If not set, the chapter will be placed in the last position of the group [chapter].
     Must be positive (i.e. >=0).
     """
@@ -44,12 +39,6 @@ input UpdateNotion {
     Maximum 150 caracters.
     """
     name: String @rules(apply: ["string", "max:150"])
-    """
-    The notion new slug, which will be used in the URL generation.
-    Requires the permission `notions:write:slug`.
-    Maximum 150 caracters.
-    """
-    slug: String @permission(name: "notions:write:slug") @rules(apply: ["string", "max:150"])
     """
     The notion order. If not set, the chapter will be placed in the last position of the group [chapter].
     Must be positive (i.e. >=0).

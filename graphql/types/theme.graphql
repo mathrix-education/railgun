@@ -1,7 +1,6 @@
 type Theme {
     id: ID!
     name: String!
-    slug: String!
     order: Int!
     visible: Boolean!
     created_at: DateTime!

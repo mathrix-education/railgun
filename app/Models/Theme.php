@@ -11,12 +11,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
-use Railgun\Models\Traits\Sluggable;
 
 /**
  * @property-read int                  $id
  * @property      string               $name
- * @property      string               $slug
  * @property      int                  $order
  * @property      bool                 $visible
  * @property      int                  $discipline_id
@@ -32,11 +30,9 @@ class Theme extends Model
 {
     use Randomizable;
     use Reorderable;
-    use Sluggable;
 
     protected       $fillable   = [
         'name',
-        'slug',
         'order',
         'visible',
         'grade_id',

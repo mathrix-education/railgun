@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Railgun\Models\Traits\Content;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
-use Railgun\Models\Traits\Sluggable;
 
 /**
  * @property-read int                  $id
@@ -31,7 +30,6 @@ class Notion extends Model implements Content
 {
     use Randomizable;
     use Reorderable;
-    use Sluggable;
 
     public const TYPE_STANDARD = 'standard';
     public const TYPE_SUMMARY  = 'summary';
@@ -40,7 +38,6 @@ class Notion extends Model implements Content
     protected       $fillable   = [
         'type',
         'name',
-        'slug',
         'visible',
         'order',
         'chapter_id',
