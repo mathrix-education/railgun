@@ -9,6 +9,9 @@
 - **permissions**: delete the `notions:write:slug` permission
 - **themes**: delete `slug` field from `Theme` type and `CreateTheme` and `UpdateTheme` attributes (closes #441)
 
+### Bug fixes
+- **comments**: guard createComment and updateComment mutations (fixes #462)
+
 ### Refactors
 - **graphql**: rename $rootValue to $_ in Lighthouse GraphQL resolvers (closes #455)
 
