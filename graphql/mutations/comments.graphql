@@ -2,12 +2,12 @@ extend type Mutation {
     "Create a new comment"
     createComment(
         input: CreateComment! @spread
-    ): Comment! @create @inject(context: "user.id", name: "user_id")
+    ): Comment! @create @guard @inject(context: "user.id", name: "user_id")
 
     "Update an existing comment"
     updateComment(
         input: UpdateComment! @spread
-    ): Comment @inject(context: "user.id", name: "user_id")
+    ): Comment @guard @inject(context: "user.id", name: "user_id")
 
     "Delete an existing comment"
     deleteComment(
