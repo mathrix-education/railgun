@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Queries;
 
+use Illuminate\Support\Str;
 use Railgun\Models\Course;
 use Railgun\Models\Grade;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
-use function count;
 use function explode;
-use function mb_strtolower;
-use function substr_count;
+use function json_encode;
+use const JSON_PRETTY_PRINT;
+use const JSON_THROW_ON_ERROR;
+use const JSON_UNESCAPED_UNICODE;
 
 /**
  * @testdox Query searchCourses
@@ -51,9 +53,16 @@ class SearchCoursesIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->assertResponseOk();
         $this->assertNoErrors();
-        $this->assertGreaterThanOrEqual(
-            count($this->getData('data')),
-            substr_count(mb_strtolower($this->response->getContent()), $query),
-        );
+
+        foreach ($this->getData('data') as $result) {
+            // Ensure that all returned results contains the query
+            $options = JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE;
+
+            $normalized = (string)Str::of(json_encode($result, $options, 512))
+                ->ascii()
+                ->lower();
+
+            $this->assertStringContainsString($query, $normalized);
+        }
     }
 }
