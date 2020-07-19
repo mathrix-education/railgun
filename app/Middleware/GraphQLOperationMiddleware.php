@@ -72,6 +72,5 @@ class GraphQLOperationMiddleware
             // Silently log the exception but don't throw as the response was already built
             Log::error($exception->getMessage(), ['exception' => $exception]);
         }
-
     }
 }

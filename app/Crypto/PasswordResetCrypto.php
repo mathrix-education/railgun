@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Railgun\Crypto;
 
-use Illuminate\Contracts\Container\BindingResolutionException;
 use JsonException;
 use Railgun\Exceptions\InvalidAuthTokenException;
 use Railgun\Models\User;
@@ -27,8 +26,6 @@ class PasswordResetCrypto
      * @param User $user The user who forgot his password.
      *
      * @return string The serialized JWT.
-     *
-     * @throws BindingResolutionException
      */
     public function get(User $user): string
     {
@@ -44,24 +41,23 @@ class PasswordResetCrypto
      * @param string $token The password reset JWT.
      *
      * @return User The resolved user.
-     *
-     * @throws BindingResolutionException
      */
     public function check(string $token): User
     {
         $authority = Guardian::get('reset');
+
         try {
             $authority->verify($token, true);
             $authority->check($token, true);
             $json    = $authority->unserialize($token)->getPayload();
             $payload = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
         } catch (InvalidSignatureException | InvalidClaimException | JsonException $exception) {
-            // Catch any
             throw new InvalidAuthTokenException();
         }
 
         if (!array_key_exists('hsh', $payload) || !array_key_exists('sub', $payload)) {
-            throw new InvalidAuthTokenException();
+            // This should never happen since we emit that token ourselves
+            throw new InvalidAuthTokenException(); // @codeCoverageIgnore
         }
 
         /** @var User $user */
