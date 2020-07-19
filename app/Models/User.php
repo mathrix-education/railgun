@@ -177,22 +177,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * @return string The login provider.
-     */
-    public function getProviderAttribute(): string
-    {
-        $provider = 'api';
-
-        if (isset($this->metadata['facebook']['id'])) {
-            $provider = 'facebook';
-        } elseif (isset($this->metadata['google']['id'])) {
-            $provider = 'google';
-        }
-
-        return $provider;
-    }
-
-    /**
      * Hash the new password when setting it.
      *
      * @param string $password The new password.

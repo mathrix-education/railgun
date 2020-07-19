@@ -20,3 +20,5 @@ gsutil cp "$OBJECT_SOURCE" - \
     | sed -e "s/$DB_SOURCE/$DB_DESTINATION/g" \
     | pv \
     | mysql -h 127.0.0.1 -u root -p'salome3004'
+
+php artisan migrate
