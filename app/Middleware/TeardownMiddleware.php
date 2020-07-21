@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Railgun\Middleware;
 
 use Closure;
-use Illuminate\Container\Container;
 use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -62,13 +61,5 @@ class TeardownMiddleware
 
         // Log the request
         Log::info(GoogleCloudJsonFormatter::NO_MESSAGE);
-
-        if ((int)($response->getStatusCode() / 100) !== 5) {
-            return;
-        }
-
-        // HTTP 5XX: reset Lighthouse GraphQL
-        app()->flush();
-        Container::setInstance(require __DIR__ . '/../../bootstrap/app.php');
     }
 }
