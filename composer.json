@@ -1,7 +1,7 @@
 {
   "name": "mathrix-education/railgun",
   "description": "Railgun-fast paced GraphQL API for Mathrix Education.",
-  "version": "9.0.1",
+  "version": "9.1.0",
   "type": "project",
   "keywords": [
     "education",
