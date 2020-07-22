@@ -16,7 +16,7 @@ class CreateSlugPrevColumnOnChaptersTable extends Migration
     public function up(): void
     {
         Schema::table('chapters', static function (Blueprint $table): void {
-            $table->string('slug_prev')->nullable()->after('slug');
+            $table->string('slug_prev')->nullable()->default(null)->after('slug');
         });
 
         DB::table('chapters')->get(['id', 'slug'])->each(static function (stdClass $chapter): void {
