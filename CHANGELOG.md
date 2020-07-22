@@ -1,4 +1,11 @@
 # Changelog
+## 9.1.0
+- **chapters**: add `slug_prev` column
+
+## 9.0.1
+### Bug fixes
+- **container**: do not flush containers on HTTP 500 codes
+
 ## 9.0.0
 ### Features
 - **railgun**: add version action to `/`
