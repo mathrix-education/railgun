@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
-class CreateSlugPrevColumnOnChaptersTable extends Migration
+class AddRedirectOnChaptersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -16,7 +16,7 @@ class CreateSlugPrevColumnOnChaptersTable extends Migration
     public function up(): void
     {
         Schema::table('chapters', static function (Blueprint $table): void {
-            $table->string('slug_prev')->nullable()->default(null)->after('slug');
+            $table->string('redirect')->nullable()->default(null)->after('slug');
         });
 
         DB::table('chapters')->get(['id', 'slug'])->each(static function (stdClass $chapter): void {
@@ -29,7 +29,15 @@ class CreateSlugPrevColumnOnChaptersTable extends Migration
                 ->update(['slug' => $newSlug]);
         });
 
-        DB::update('UPDATE `chapters` SET `slug_prev` = `slug`');
+        DB::update(<<<'SQL'
+            update chapters
+                inner join themes on chapters.theme_id = themes.id
+                inner join grades on themes.grade_id = grades.id
+                inner join disciplines on themes.discipline_id = disciplines.id
+            set redirect = concat(grades.slug, '/', disciplines.slug, '/', chapters.slug)
+            where chapters.id > 0
+        SQL,
+        );
     }
 
     /**
