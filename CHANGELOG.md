@@ -1,6 +1,6 @@
 # Changelog
 ## 9.1.0
-- **chapters**: add `slug_prev` column
+- **chapters**: add `redirect` column
 
 ## 9.0.1
 ### Bug fixes
