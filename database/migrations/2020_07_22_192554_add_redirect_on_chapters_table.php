@@ -34,7 +34,7 @@ class AddRedirectOnChaptersTable extends Migration
                 inner join themes on chapters.theme_id = themes.id
                 inner join grades on themes.grade_id = grades.id
                 inner join disciplines on themes.discipline_id = disciplines.id
-            set redirect = concat(grades.slug, '/', disciplines.slug, '/', chapters.slug)
+            set redirect = concat('/', grades.slug, '/', disciplines.slug, '/', chapters.slug)
             where chapters.id > 0
         SQL,
         );
