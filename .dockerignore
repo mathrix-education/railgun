@@ -5,11 +5,9 @@
 /storage/artifacts
 /storage/framework/cache/data
 /storage/framework/testing
-/storage/artifacts
 /storage/buster
 /storage/keychain
 /storage/logs
-/storage/raws
 /tests
 /vendor
 /.env
