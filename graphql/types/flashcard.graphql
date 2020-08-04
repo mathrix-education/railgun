@@ -2,8 +2,7 @@ type Flashcard {
     id: ID!
     name: String!
     slug: String!
-    fronts: [Silicate!]! @premium(stripped: "[]")
-    backs: [Silicate!]! @premium(stripped: "[]")
+    content: [FlashcardContent!]! @premium(stripped: "[]")
     order: Int!
     """
     If the flashcard is premium-locked.
@@ -27,4 +26,9 @@ type Flashcard {
     """
     notes: [Note!] @morphMany @permission(name: "notes:read")
     interaction: Interaction @belongsTo
+}
+
+type FlashcardContent {
+    front: Silicate!
+    back: Silicate!
 }
