@@ -15,14 +15,11 @@ use Railgun\Models\Traits\Labelable;
 use Railgun\Models\Traits\Notable;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
-use Railgun\Models\Traits\Sluggable;
 
 /**
  * @property-read int     $id
  * @property      string  $name
- * @property      string  $slug
- * @property      mixed[] $fronts
- * @property      mixed[] $backs
+ * @property      mixed[] $content
  * @property      int     $order
  * @property      bool    $premium
  * @property      bool    $visible
@@ -41,7 +38,6 @@ class Flashcard extends Model implements Content
     use Labelable;
     use Randomizable;
     use Reorderable;
-    use Sluggable;
 
     protected       $attributes = [
         'premium' => false,
@@ -50,16 +46,14 @@ class Flashcard extends Model implements Content
     protected       $fillable   = [
         'name',
         'slug',
-        'fronts',
-        'backs',
+        'content',
         'order',
         'premium',
         'visible',
         'chapter_id',
     ];
     protected       $casts      = [
-        'fronts'  => 'array',
-        'backs'   => 'array',
+        'content' => 'array',
         'premium' => 'boolean',
         'visible' => 'boolean',
     ];

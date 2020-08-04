@@ -158,7 +158,7 @@ class ContentSeeder extends AdvancedSeeder
             })
             ->flatten(1)
             ->tap(fn() => $this->writeFactoryMessage(Flashcard::class))
-            ->tap(fn(Collection $data) => $this->seedCollection($data, 'flashcards'));
+            ->tap(fn(Collection $data) => $this->seedCollection($data, 'flashcards', 100));
 
         // Exams
         $chapterIds

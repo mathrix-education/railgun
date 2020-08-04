@@ -1,4 +1,16 @@
 # Changelog
+
+## 10.0.0
+### Breaking changes
+- **flashcards**: combine flashcards `fronts` and `backs` into `content` on:
+  - `Flashcard` type
+  - `CreateFlashcardInput` input
+  - `UpdateFlashcardInput` input
+- **flashcards**: drop flashcards `slug` on:
+  - `Flashcard` type
+  - `CreateFlashcardInput` input
+  - `UpdateFlashcardInput` input
+
 ## 9.1.0
 - **chapters**: add `redirect` column
 
