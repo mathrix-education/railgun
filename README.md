@@ -24,6 +24,14 @@ Railgun also uses [Lighthouse][lighthouse] GraphQL engine.
 [laravel]: https://laravel.com
 [lighthouse]: https://lighthouse-php.com
 
+## Running a local instance
+To run a local instance of Railgun with generated data, use [docker-compose][docker-compose] and run:
+```
+docker-compose up
+```
+[docker-compose]: https://docs.docker.com/compose/
+
+This will setup Railgun with a MySQL database and a Redis instance.
 
 ## Conventions
 ### GraphQL

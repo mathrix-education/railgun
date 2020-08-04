@@ -1,6 +1,9 @@
 # Changelog
 
 ## 10.0.0
+### Features
+- **docker**: add docker-compose.yaml file to run a local instance
+
 ### Breaking changes
 - **flashcards**: combine flashcards `fronts` and `backs` into `content` on:
   - `Flashcard` type
