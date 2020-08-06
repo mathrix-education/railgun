@@ -4,55 +4,50 @@ declare(strict_types=1);
 
 namespace Railgun\Billing\Stripe;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Railgun\Exceptions\ConfigurationException;
+use Railgun\Billing\Exceptions\UnsupportedEventException;
+use Railgun\Billing\Stripe\Handlers\CustomerSubscriptionUpdatedHandler;
+use Stripe\Event;
 use Stripe\Exception\SignatureVerificationException;
-use Stripe\Webhook;
-use function config;
+use function app;
 
 class StripeWebhooksController
 {
+    protected const HANDLERS_NAMESPACE = 'Railgun\\Billing\\Stripe\\Handlers';
+    public const    EVENT_MAP          = [
+        Event::CUSTOMER_SUBSCRIPTION_CREATED => CustomerSubscriptionUpdatedHandler::class,
+        Event::CUSTOMER_SUBSCRIPTION_UPDATED => CustomerSubscriptionUpdatedHandler::class,
+        Event::CUSTOMER_SUBSCRIPTION_DELETED => CustomerSubscriptionUpdatedHandler::class,
+    ];
+
     /**
      * Entry point for Stripe webhooks.
      *
+     * @link https://stripe.com/docs/api/events/types
+     *
+     * @param Request               $request  The Illuminate HTTP request.
+     * @param StripeWebhookRegistry $webhooks The Stripe webhook registry.
+     * @param string|null           $account  The Stripe account.
+     *
+     * @return JsonResponse|array<string|int, mixed>
+     *
      * @throws SignatureVerificationException
      */
-    public function __invoke(Request $request, ?string $account = null): void
+    public function __invoke(Request $request, StripeWebhookRegistry $webhooks, ?string $account)
     {
-        $account ??= config('stripe.default');
-        $this->validateConfig($account);
+        $webhook = $webhooks->make($account);
+        $event   = $webhook->parse($request->getContent(), $request->header('Stripe-Signature'));
+        $handler = self::EVENT_MAP[$event->type] ?? null;
 
-        $event = Webhook::constructEvent(
-            $request->getContent(),
-            $request->header('Stripe-Signature'),
-            $this->getSecret($account),
-            $this->getTolerance($account),
-        );
-    }
-
-    protected function validateConfig(string $account): void
-    {
-        if (!config("stripe.accounts.$account.webhooks")) {
-            throw new ConfigurationException("Missing stripe.accounts.$account.webhooks. configuration.");
+        if (!$handler) {
+            throw new UnsupportedEventException($event);
         }
 
-        if (!config("stripe.webhooks.$account.webhooks.secret")) {
-            throw new ConfigurationException("Missing stripe.accounts.$account.webhooks.secret configuration.");
-        }
-    }
-
-    protected function getSecret(string $account): string
-    {
-        return config("stripe.accounts.$account.webhooks.secret");
-    }
-
-    protected function getTolerance(string $account): int
-    {
-        return config("stripe.accounts.$account.webhooks.secret", Webhook::DEFAULT_TOLERANCE);
-    }
-
-    protected function getHandler(string $eventType)
-    {
-
+        /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+        return app()->call($handler, [
+            'event'  => $event,
+            'object' => $event->data->object,
+        ]);
     }
 }

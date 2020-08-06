@@ -5,7 +5,7 @@ declare(strict_types=1);
 // phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
 // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.NotCamelCaps
 
-use Railgun\Billing\Stripe\StripeClientManager;
+use Railgun\Billing\Stripe\StripeClientRegistry;
 use Railgun\Billing\StripeManager;
 use Stripe\StripeClient;
 
@@ -133,6 +133,6 @@ if (!function_exists('is_json')) { // @codeCoverageIgnore
 if (!function_exists('stripe')) {
     function stripe(?string $name = null): StripeClient
     {
-        return app()->make(StripeClientManager::class)->client($name);
+        return app()->make(StripeClientRegistry::class)->client($name);
     }
 }

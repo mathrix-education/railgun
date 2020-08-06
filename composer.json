@@ -120,5 +120,10 @@
     "preferred-install": "dist",
     "sort-packages": true,
     "optimize-autoloader": true
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "rm -rf vendor/squizlabs/php_codesniffer/tests vendor/squizlabs/php_codesniffer/src/Standards/*/Tests"
+    ]
   }
 }

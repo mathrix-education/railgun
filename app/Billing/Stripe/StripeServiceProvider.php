@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Railgun\Billing\Stripe;
 
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application;
 use Psr\Log\LoggerInterface;
+use Railgun\Billing\Stripe\Commands\WebhooksCommand;
 use Stripe\Stripe;
 use Stripe\StripeClient;
 
@@ -17,19 +19,38 @@ class StripeServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->app->singleton(StripeClientManager::class);
-        $this->app->alias(StripeClientManager::class, 'stripe');
+        $this->app->singleton(StripeClientRegistry::class);
 
         $this->app->singleton(StripeClient::class, function () {
-            return $this->app->make(StripeClientManager::class)->client();
+            return $this->app->make(StripeClientRegistry::class)->make();
         });
-        $this->app->alias(StripeClient::class, 'stripe.instance');
+
+        $this->app->singleton(StripeWebhookRegistry::class);
+
+        $this->app->singleton(StripeWebhook::class, function () {
+            return $this->app->make(StripeWebhookRegistry::class)->make();
+        });
     }
 
-    /**
-     */
     public function boot(): void
     {
         Stripe::setLogger($this->app->make(LoggerInterface::class));
+
+        // Register commands
+        $this->commands([
+            WebhooksCommand::class,
+        ]);
+
+        /** @var Repository $config */
+        $config = $this->app->make('config');
+
+        // Register webhooks route
+        $this->app->router->post(
+            $config->get('stripe.webhooks_route.uri'),
+            [
+                'as'   => $config->get('stripe.webhooks_route.name'),
+                'uses' => StripeWebhooksController::class,
+            ],
+        );
     }
 }
