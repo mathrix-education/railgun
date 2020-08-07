@@ -14,6 +14,9 @@
   - `CreateFlashcardInput` input
   - `UpdateFlashcardInput` input
 
+### Continuous integration
+- **actions**: bump `setup-php` to version 2.4.1
+
 ## 9.1.0
 - **chapters**: add `redirect` column
 
