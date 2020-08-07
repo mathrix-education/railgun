@@ -1,7 +1,6 @@
 type Flashcard {
     id: ID!
     name: String!
-    slug: String!
     content: [FlashcardContent!]! @premium(stripped: "[]")
     order: Int!
     """

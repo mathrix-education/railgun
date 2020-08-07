@@ -5,11 +5,6 @@ input CreateFlashcard {
     """
     name: String! @rules(apply: ["string", "max:150"])
     """
-    The flashcard slug, which will be used in the URL generation.
-    Maximum 150 caracters.
-    """
-    slug: String! @rules(apply: ["string", "max:150"])
-    """
     The flashcard content. Cannot be empty.
     """
     content: [FlashcardContentInput!]!
