@@ -30,8 +30,6 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
         $chapters: [ID!]
         $packs: [ID!]
         $trainings: [ID!]
-        $plans: [ID!]
-        $premium: Boolean
         $coupon: ID
         $paymentMethodId: String!
     ) {
@@ -40,8 +38,6 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
                 chapters: $chapters
                 packs: $packs
                 trainings: $trainings
-                plans: $plans
-                premium: $premium
                 coupon: $coupon
             }
             paymentMethodId: $paymentMethodId
@@ -100,7 +96,6 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
             'packs'           => $packIds,
             'trainings'       => $trainingIds,
             'paymentMethodId' => $paymentMethodId,
-            'premium'         => true,
         ];
     }
 
@@ -216,14 +211,12 @@ class CheckoutCartIntegrationTest extends GraphQLIntegrationTestCase
         $this->assertEquals($expectedPaymentIntentStatus, $this->getData('checkoutCart.payment_intent.status'));
 
         $user->refresh();
-        $this->assertTrue($user->isStripeCustomer());
+        $this->assertNotNull($user->stripe_id);
 
         if ($expectProductDelivered) {
             $this->assertProductsDelivered($variables);
-            $this->assertEquals($user->premium, $variables['premium']);
         } else {
             $this->assertProductsDelivered($variables, true);
-            $this->assertFalse($user->premium);
         }
     }
 

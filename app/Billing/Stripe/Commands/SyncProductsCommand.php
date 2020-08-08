@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Railgun\Billing\Stripe\Contracts\StripeProduct;
-use Railgun\Billing\Stripe\Products\ModeMachine;
+use Railgun\Billing\Stripe\Models\ModeMachine;
 use Railgun\Billing\Stripe\StripeClientRegistry;
 use Railgun\Models\Chapter;
 use Railgun\Models\Pack;

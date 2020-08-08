@@ -7,7 +7,7 @@ namespace Railgun\Billing\Webhooks;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Str;
-use Railgun\Billing\Checkout\Cart;
+use Railgun\Billing\Stripe\Checkout\Cart;
 use Railgun\Billing\Exceptions\UnsupportedEventException;
 use Railgun\Jobs\DeliverProducts;
 use Railgun\Jobs\UpsertSubscription;

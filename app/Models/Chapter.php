@@ -10,9 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Railgun\Billing\Models\Sellable;
 use Railgun\Billing\Stripe\Contracts\StripeProduct as StripeProductContract;
-use Railgun\Billing\Stripe\Products\StripeProduct;
+use Railgun\Billing\Stripe\Models\StripeProduct;
 use Railgun\Models\Traits\Content;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
@@ -41,7 +40,6 @@ class Chapter extends Model implements Content, StripeProductContract
 {
     use Randomizable;
     use Reorderable;
-    use SaveWithoutEvents;
     use Sluggable;
     use StripeProduct;
 

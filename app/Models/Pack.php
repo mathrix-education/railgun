@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Railgun\Billing\Stripe\Contracts\StripeProduct as SellableContract;
-use Railgun\Billing\Stripe\Products\StripeProduct;
+use Railgun\Billing\Stripe\Models\StripeProduct;
 use Railgun\Models\Traits\Acquerable;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
@@ -34,7 +34,6 @@ class Pack extends Model implements SellableContract
     use Acquerable;
     use Randomizable;
     use Reorderable;
-    use SaveWithoutEvents;
     use Sluggable;
     use StripeProduct;
 

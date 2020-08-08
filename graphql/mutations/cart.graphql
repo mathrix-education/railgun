@@ -8,7 +8,7 @@ extend type Mutation {
     See the [Payement Intent State Machine](https://stripe.com/docs/payments/intents) for further information.
     """
     checkoutCart(
-        cart: CartInput
+        cart: CartInput!
         paymentMethodId: String!
     ): Invoice! @guard
 }

@@ -35,7 +35,7 @@ class UpdateSubscription
             throw new OwnershipException();
         }
 
-        $newPaymentMethod = $user->attachPaymentMethod($args['paymentMethodId']);
+        $newPaymentMethod = $user->attachStripePaymentMethod($args['paymentMethodId']);
 
         $stripeSubscription = StripeSubscription::update($args['id'], [
             'default_payment_method' => $newPaymentMethod->id,

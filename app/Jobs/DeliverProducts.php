@@ -8,14 +8,13 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
-use Railgun\Billing\Checkout\Cart;
+use Railgun\Billing\Stripe\Checkout\Cart;
 use Railgun\Models\Acquisition;
 use Railgun\Models\Training;
 use Railgun\Models\User;
 use RuntimeException;
 use Stripe\Invoice;
 use Stripe\InvoiceLineItem;
-use Stripe\LineItem;
 use function collect;
 use function config;
 
@@ -95,9 +94,6 @@ class DeliverProducts extends Job
                 case 'training':
                     $this->deliverTraining((int)$item['product_id']);
                     break;
-                case 'premium':
-                    $this->deliverPremium((int)$item['end_date']);
-                    break;
             }
         });
     }
@@ -164,16 +160,5 @@ class DeliverProducts extends Job
                 'transaction_id' => $this->invoice->id,
             ],
         );
-    }
-
-    /**
-     * Deliver the premium product by setting the user premium_bypass_expires_at property.
-     *
-     * @param int $endDateTimestamp The timestamp which represents the end of the premium.
-     */
-    public function deliverPremium(int $endDateTimestamp): void
-    {
-        $this->user->premium_bypass_expires_at = Carbon::createFromTimestamp($endDateTimestamp);
-        $this->user->save();
     }
 }

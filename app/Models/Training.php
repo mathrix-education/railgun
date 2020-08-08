@@ -10,11 +10,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Railgun\Billing\Stripe\Contracts\StripeProduct as StripeProductContract;
-use Railgun\Billing\Stripe\Products\StripeProduct;
+use Railgun\Billing\Stripe\Models\StripeProduct;
 use Railgun\Models\Traits\Acquerable;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
-use Railgun\Models\Traits\SaveWithoutEvents;
 use Railgun\Models\Traits\Sluggable;
 
 /**
@@ -40,7 +39,6 @@ class Training extends Model implements StripeProductContract
     use Acquerable;
     use Reorderable;
     use Randomizable;
-    use SaveWithoutEvents;
     use Sluggable;
     use StripeProduct;
 

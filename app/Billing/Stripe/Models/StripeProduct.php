@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Railgun\Billing\Stripe\Products;
+namespace Railgun\Billing\Stripe\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Railgun\Billing\Stripe\InteractsWithStripe;
 use Railgun\Models\Traits\SaveWithoutEvents;
 use Stripe\ErrorObject;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Price;
 use Stripe\Product;
 use Stripe\StripeClient;
-use function app;
 use function array_combine;
 use function class_basename;
 use function explode;
@@ -29,6 +29,9 @@ use function explode;
  */
 trait StripeProduct
 {
+    use InteractsWithStripe;
+    use SaveWithoutEvents;
+
     protected StripeClient $client;
 
     public static function bootStripeProduct(): void
@@ -39,23 +42,6 @@ trait StripeProduct
                 $model->pushToStripe();
             }
         });
-    }
-
-    public function initializeStripeProduct(): void
-    {
-        $this->client = app()->make(StripeClient::class);
-    }
-
-    /**
-     * Save the model with pushing it to Stripe.
-     *
-     * @param array<string, mixed> $options
-     *
-     * @return bool If the save succeeded.
-     */
-    public function saveWithoutPushing(array $options = []): bool
-    {
-        return static::withoutEvents(fn() => $this->save($options));
     }
 
     public function isSellable(): bool
@@ -102,7 +88,7 @@ trait StripeProduct
                 'metadata' => $this->getProductMetadata(),
             ]);
         } catch (ApiErrorException $exception) {
-            if ($exception->getError()->code === ErrorObject::CODE_RESOURCE_ALREADY_EXISTS) {
+            if ($exception->getStripeCode() === ErrorObject::CODE_RESOURCE_ALREADY_EXISTS) {
                 return $this->retrieveStripeProduct();
             }
 
@@ -122,7 +108,7 @@ trait StripeProduct
         try {
             return $this->client->products->retrieve($this->stripe_product_id);
         } catch (ApiErrorException $exception) {
-            if ($exception->getError()->code === ErrorObject::CODE_RESOURCE_MISSING) {
+            if ($exception->getStripeCode() === ErrorObject::CODE_RESOURCE_MISSING) {
                 return $this->createStripeProduct();
             }
 
@@ -146,7 +132,7 @@ trait StripeProduct
                 'metadata' => $this->getProductMetadata(),
             ]);
         } catch (ApiErrorException $exception) {
-            if ($exception->getError()->code === ErrorObject::CODE_RESOURCE_MISSING) {
+            if ($exception->getStripeCode() === ErrorObject::CODE_RESOURCE_MISSING) {
                 return $this->createStripeProduct();
             }
 
@@ -206,7 +192,7 @@ trait StripeProduct
         try {
             return $this->client->prices->retrieve($this->stripe_price_id);
         } catch (ApiErrorException $exception) {
-            if ($exception->getError()->code === ErrorObject::CODE_RESOURCE_MISSING) {
+            if ($exception->getStripeCode() === ErrorObject::CODE_RESOURCE_MISSING) {
                 return $this->createStripePrice();
             }
 
@@ -235,7 +221,7 @@ trait StripeProduct
                 'nickname' => $this->name,
             ]);
         } catch (ApiErrorException $exception) {
-            if ($exception->getError()->code === ErrorObject::CODE_RESOURCE_MISSING) {
+            if ($exception->getStripeCode() === ErrorObject::CODE_RESOURCE_MISSING) {
                 return $this->createStripePrice();
             }
 
@@ -262,7 +248,7 @@ trait StripeProduct
 
         // Save the newly created price
         $this->stripe_price_id = $price->id;
-        $this->saveWithoutPushing();
+        $this->saveWithoutEvents();
     }
 
     /**
@@ -279,6 +265,6 @@ trait StripeProduct
         $this->available       = $product->active;
         $this->price           = $price->unit_amount;
         $this->stripe_price_id = $price->id;
-        $this->saveWithoutPushing();
+        $this->saveWithoutEvents();
     }
 }

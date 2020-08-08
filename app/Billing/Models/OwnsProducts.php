@@ -65,6 +65,15 @@ trait OwnsProducts
      */
     public function owns($product): bool
     {
+//        $cache = $this->cache('acquisitions', function (): array {
+//            return DB::table('acquisitions')
+//                ->select(['product_type', 'product_id'])
+//                ->where('user_id', '=', $this->id)
+//                ->get()
+//                ->map(static fn(stdClass $acquisition) => $acquisition->product_type . '_' . $acquisition->product_id)
+//                ->toArray();
+//        });
+
         if ($product instanceof Pack) {
             /** @var Collection $packIds */
             $packIds = $this->cache('packs', function () {

@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Queue;
 use Laravel\Lumen\Auth\Authorizable;
 use Railgun\Billing\Models\OwnsProducts;
 use Railgun\Billing\Models\OwnsSubscriptions;
-use Railgun\Billing\Models\StripeCustomer;
+use Railgun\Billing\Stripe\Models\StripeCustomer;
 use Railgun\Jobs\CleanUserSession;
 use Railgun\Models\Traits\Cacheable;
 use Railgun\Models\Traits\HasDatabaseNotifications;

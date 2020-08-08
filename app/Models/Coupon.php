@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Railgun\Models\Traits\Randomizable;
 
 /**
- * @property-read int    $id
+ * @property-read string $id
  * @property-read string $type
  * @property int         $value
  * @property int         $counter

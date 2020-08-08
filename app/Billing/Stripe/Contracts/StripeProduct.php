@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @mixin Model
- * @mixin \Railgun\Billing\Stripe\Products\StripeProduct
+ * @mixin \Railgun\Billing\Stripe\Models\StripeProduct
  */
 interface StripeProduct
 {

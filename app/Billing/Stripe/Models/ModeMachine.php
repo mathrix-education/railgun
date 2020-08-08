@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Railgun\Billing\Stripe\Products;
+namespace Railgun\Billing\Stripe\Models;
 
 /**
  * Stripe definitions for the "Mode Machine" premium plan.
