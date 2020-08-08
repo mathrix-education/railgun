@@ -25,7 +25,7 @@ class UnavailableProducts extends HttpException
     public function __construct(array $names, ?Throwable $previous = null)
     {
         parent::__construct(
-            trans('cart.errors.unavailable', ['ids' => implode(', ', $names)]),
+            trans('cart.errors.unavailable', ['names' => implode(', ', $names)]),
             $previous,
         );
     }

@@ -9,7 +9,7 @@ use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use Railgun\Billing\Stripe\Checkout\Cart;
+use Railgun\Billing\Cart\Cart;
 use Railgun\Billing\Stripe\Contracts\StripeProduct;
 use Railgun\Jobs\DeliverProducts;
 use Railgun\Models\User;
@@ -104,7 +104,7 @@ class CheckoutCart
     {
         /** @noinspection PhpFieldAssignmentTypeMismatchInspection */
         $this->user            = $context->user();
-        $this->cart            = Cart::build($args['cart']);
+        $this->cart            = Cart::build($args['cart'])->validate();
         $this->paymentMethodId = $args['paymentMethodId'];
         $this->invoiceItems    = new Collection();
 

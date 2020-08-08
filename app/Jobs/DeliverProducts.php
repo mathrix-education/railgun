@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Railgun\Jobs;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
-use Railgun\Billing\Stripe\Checkout\Cart;
+use Railgun\Billing\Cart\Cart;
 use Railgun\Models\Acquisition;
 use Railgun\Models\Training;
 use Railgun\Models\User;

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Concerns\HasRelationships;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Collection;
+use Railgun\Billing\Contracts\Product;
 use Railgun\Models\Acquisition;
 use Railgun\Models\Chapter;
 use Railgun\Models\Lesson;
@@ -59,11 +60,11 @@ trait OwnsProducts
     }
 
     /**
-     * @param Pack|Training|Section|Lesson $product The product to check.
+     * @param Product $product The product to check.
      *
      * @return bool If the user owns the product.
      */
-    public function owns($product): bool
+    public function owns(Product $product): bool
     {
 //        $cache = $this->cache('acquisitions', function (): array {
 //            return DB::table('acquisitions')

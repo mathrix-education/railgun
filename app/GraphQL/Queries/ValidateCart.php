@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Railgun\GraphQL\Queries;
 
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use Railgun\Billing\Stripe\Checkout\Cart;
+use Railgun\Billing\Cart\Cart;
 
 class ValidateCart
 {
@@ -18,6 +18,6 @@ class ValidateCart
      */
     public function __invoke($_, array $args, GraphQLContext $context): array
     {
-        return Cart::build($args);
+        return Cart::build($args)->validate();
     }
 }

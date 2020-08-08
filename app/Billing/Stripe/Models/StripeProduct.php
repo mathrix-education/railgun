@@ -18,9 +18,6 @@ use function class_basename;
 use function explode;
 
 /**
- * @property-read string|int $id
- * @property      string     $name
- * @property      int        $price
  * @property-read string     $is_sellable
  * @property-read string     $stripe_product_id
  * @property      string     $stripe_price_id

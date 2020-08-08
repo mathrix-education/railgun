@@ -2,29 +2,29 @@
 
 declare(strict_types=1);
 
-namespace Railgun\Billing\Exceptions;
+namespace Railgun\Billing\Stripe\Exceptions;
 
 use Psr\Log\LogLevel;
 use Railgun\Exceptions\HttpException;
 use Stripe\Charge;
 use Stripe\ErrorObject;
-use Stripe\Exception\CardException as StripeCardException;
+use Stripe\Exception\CardException;
 use function trans;
 
 /**
  * Wrapper for {@see StripeCardException}.
  */
-class CardException extends HttpException
+class StripeCardException extends HttpException
 {
     protected string $level    = LogLevel::NOTICE;
     protected string $category = 'billing';
 
     /**
-     * @param StripeCardException $cardException The original exception.
+     * @param CardException $cardException The original exception.
      *
      * @return static
      */
-    public static function from(StripeCardException $cardException): CardException
+    public static function from(CardException $cardException): StripeCardException
     {
         switch ($cardException->getStripeCode()) {
             case ErrorObject::CODE_EXPIRED_CARD:
@@ -59,7 +59,7 @@ class CardException extends HttpException
     {
         $previous = $this->getPrevious();
 
-        if ($previous instanceof StripeCardException) {
+        if ($previous instanceof CardException) {
             return [
                 'stripeCode' => $previous->getStripeCode(),
             ];

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Railgun\Billing\Stripe\Checkout;
+namespace Railgun\Billing\Cart;
 
 use Railgun\Billing\Stripe\Contracts\StripeProduct;
 use Railgun\Models\Coupon;
