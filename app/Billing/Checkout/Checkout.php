@@ -7,8 +7,8 @@ namespace Railgun\Billing\Checkout;
 use ArrayAccess;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Railgun\Billing\Contracts\Sellable;
-use Railgun\Billing\Products\Premium;
+use Railgun\Billing\Contracts\StripeProduct;
+use Railgun\Billing\Products\ModeMachine;
 use Railgun\Models\User;
 use Railgun\Support\ArrayAccessImmutable;
 use Stripe\Customer;
@@ -70,7 +70,7 @@ class Checkout implements ArrayAccess
             return;
         }
 
-        $this->invoiceItems = $this->cart->getProducts()->map(function (Sellable $product): void {
+        $this->invoiceItems = $this->cart->getProducts()->map(function (StripeProduct $product): void {
             $type    = strtolower(class_basename($product));
             $payload = [
                 'customer'    => $this->customer->id,
@@ -94,11 +94,11 @@ class Checkout implements ArrayAccess
             $this->invoiceItems->push($this->stripe->invoiceItems->create([
                 'customer'    => $this->customer->id,
                 'currency'    => 'eur',
-                'amount'      => Premium::PRICE_NO_SUB,
-                'description' => Premium::PRODUCT['name'],
+                'amount'      => ModeMachine::PRICE_NO_SUB,
+                'description' => ModeMachine::PRODUCT['name'],
                 'period'      => [
                     'start' => Carbon::now()->timestamp,
-                    'end'   => Premium::getAnchor()->timestamp,
+                    'end'   => ModeMachine::getAnchor()->timestamp,
                 ],
                 'metadata'    => [
                     'user_id'      => $this->user->id,

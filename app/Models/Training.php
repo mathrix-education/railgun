@@ -9,13 +9,13 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Railgun\Billing\Contracts\Sellable as SellableContract;
+use Railgun\Billing\Stripe\Contracts\StripeProduct as StripeProductContract;
+use Railgun\Billing\Stripe\Products\StripeProduct;
 use Railgun\Models\Traits\Acquerable;
 use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
 use Railgun\Models\Traits\SaveWithoutEvents;
 use Railgun\Models\Traits\Sluggable;
-use Railgun\Billing\Models\Sellable;
 
 /**
  * @property-read int                  $id
@@ -35,14 +35,14 @@ use Railgun\Billing\Models\Sellable;
  * @property-read Collection|Section[] $sections
  * @property-read Collection|Grade[]   $grades
  */
-class Training extends Model implements SellableContract
+class Training extends Model implements StripeProductContract
 {
     use Acquerable;
     use Reorderable;
     use Randomizable;
     use SaveWithoutEvents;
-    use Sellable;
     use Sluggable;
+    use StripeProduct;
 
     protected $fillable = [
         'name',

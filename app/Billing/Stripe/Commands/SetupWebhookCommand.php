@@ -6,16 +6,30 @@ namespace Railgun\Billing\Stripe\Commands;
 
 use Illuminate\Console\Command;
 use Railgun\Billing\Stripe\StripeClientRegistry;
-use Railgun\Billing\Stripe\StripeWebhooksController;
+use Railgun\Billing\Stripe\EventsController;
+use Stripe\Exception\ApiErrorException;
 use Stripe\StripeClient;
 use Stripe\WebhookEndpoint;
+use function app;
+use function array_keys;
 use function count;
-use function dd;
 
-class WebhooksCommand extends Command
+/**
+ * Setup the stripe webhook.
+ */
+class SetupWebhookCommand extends Command
 {
-    protected $signature = 'stripe:webhooks {--client=}';
+    /**
+     * @var string $signature The command signature.
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
+    protected $signature = 'stripe:setup:webhook {--client=}';
 
+    /**
+     * @param StripeClientRegistry $clientRegistry The Stripe client registry.
+     *
+     * @throws ApiErrorException
+     */
     public function handle(StripeClientRegistry $clientRegistry): void
     {
         /** @var StripeClient $client */
@@ -25,7 +39,7 @@ class WebhooksCommand extends Command
         $results = $client->webhookEndpoints->all(['limit' => 1])->data;
 
         if (count($results) === 0) {
-            // Create the webhook
+            // TODO: create the webhook
             return;
         }
 
@@ -34,7 +48,7 @@ class WebhooksCommand extends Command
 
         $data = [
             'description'    => 'Webhook endpoint for the Railgun ' . app()->environment() . ' environment',
-            'enabled_events' => array_keys(StripeWebhooksController::EVENT_MAP),
+            'enabled_events' => array_keys(EventsController::EVENT_MAP),
         ];
 
         $client->webhookEndpoints->update($webhook->id, $data);

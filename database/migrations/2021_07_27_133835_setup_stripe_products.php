@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class SetupStripeProducts extends Migration
@@ -15,14 +16,13 @@ class SetupStripeProducts extends Migration
     {
         Schema::table('chapters', static function (Blueprint $table): void {
             $table->unsignedSmallInteger('price')->after('slug')->nullable();
-            $table->string('stripe_price_id')->after('visible')->nullable();
         });
-        Schema::table('packs', static function (Blueprint $table): void {
-            $table->string('stripe_price_id')->after('visible')->nullable();
-        });
-        Schema::table('trainings', static function (Blueprint $table): void {
-            $table->string('stripe_price_id')->after('visible')->nullable();
-        });
+
+        foreach (['chapters', 'packs', 'trainings'] as $table) {
+            Schema::table($table, static function (Blueprint $table): void {
+                $table->string('stripe_price_id')->after('visible')->nullable();
+            });
+        }
     }
 
     /**

@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Railgun\Console;
+namespace Railgun\Billing\Stripe\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Railgun\Billing\Products\Premium;
+use Railgun\Billing\Stripe\Contracts\StripeProduct;
+use Railgun\Billing\Stripe\Products\ModeMachine;
+use Railgun\Billing\Stripe\StripeClientRegistry;
 use Railgun\Models\Chapter;
 use Railgun\Models\Pack;
 use Railgun\Models\Training;
-use Railgun\Billing\Models\Sellable;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Price;
 use Stripe\Product;
@@ -22,27 +23,33 @@ use function collect;
 use function count;
 use function forward_static_call_array;
 
-class StripeInit extends Command
+class SyncProductsCommand extends Command
 {
     /**
      * @var string $signature The command signature.
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      */
-    protected            $signature = 'stripe:init';
+    protected            $signature = 'stripe:sync:products {--intent=create} {--client=}';
     private StripeClient $stripe;
 
     /**
-     * @param StripeClient $stripe The injected Stripe Client.
+     * @param StripeClientRegistry $registry The injected Stripe Client.
      *
      * @throws ApiErrorException
      */
-    public function handle(StripeClient $stripe): void
+    public function handle(StripeClientRegistry $registry): void
     {
-        $this->stripe = $stripe;
-        $this->premium();
-        $this->products(Pack::class);
-        $this->products(Training::class);
-        $this->products(Chapter::class);
+        $this->stripe = $registry->make($this->option('client'));
+
+        // TODO: remove the Chapter auto-pricing
+        Chapter::query()
+            ->whereHas('theme.grade', static fn($q) => $q->where('grades.slug', '=', 'postbac'))
+            ->update(['price' => 4000]);
+
+        $this->syncPremium();
+        $this->syncProducts(Pack::class);
+        $this->syncProducts(Training::class);
+        $this->syncProducts(Chapter::class);
     }
 
     /**
@@ -50,19 +57,19 @@ class StripeInit extends Command
      *
      * @throws ApiErrorException
      */
-    public function premium(): void
+    public function syncPremium(): void
     {
         $this->line('Synchronizing <info>premium</info> product');
 
-        if ($this->getProduct(Premium::PRODUCT['id']) === null) {
-            $this->stripe->products->create(Premium::PRODUCT);
+        if ($this->getProduct(ModeMachine::PRODUCT['id']) === null) {
+            $this->stripe->products->create(ModeMachine::PRODUCT);
         }
 
-        $progress = $this->getOutput()->createProgressBar(count(Premium::PRICES));
+        $progress = $this->getOutput()->createProgressBar(count(ModeMachine::PRICES));
         $progress->setFormat(' %current%/%max% [%bar%] %message%');
         $progress->setMessage('');
 
-        collect(Premium::PRICES)->each(function (array $payload, string $lookupKey) use ($progress): void {
+        collect(ModeMachine::PRICES)->each(function (array $payload, string $lookupKey) use ($progress): void {
             $progress->setMessage("Pushing <info>{$lookupKey}</info> price");
             $price = $this->getPrice($lookupKey, false);
 
@@ -88,7 +95,7 @@ class StripeInit extends Command
      *
      * @param string $model The model class.
      */
-    public function products(string $model): void
+    public function syncProducts(string $model): void
     {
         $plural = Str::of(class_basename($model))->lower()->plural();
         $this->line("Synchronizing <info>$plural</info>");
@@ -96,7 +103,7 @@ class StripeInit extends Command
         if ($model === Chapter::class) {
             $models = Chapter::query()->whereNotNull('price');
         } else {
-            /** @var Collection|Sellable[] $models */
+            /** @var Collection|StripeProduct[] $models */
             $models = forward_static_call_array([$model, 'all'], []);
         }
 
@@ -105,12 +112,11 @@ class StripeInit extends Command
         $progress->setMessage('');
 
         $progress->start();
-        $models->each(static function ($model) use ($progress): void {
-            /** @var Sellable $model */
+        $models->each(function (StripeProduct $model) use ($progress): void {
             $progress->setMessage(
                 "Pushing <info>{$model->name}</info> (product <info>{$model->stripe_product_id}</info>)",
             );
-            $model->pushToStripe();
+            $model->pushToStripe($this->option('intent'));
             $progress->advance();
         });
         $progress->finish();

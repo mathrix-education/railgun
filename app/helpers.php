@@ -129,10 +129,3 @@ if (!function_exists('is_json')) { // @codeCoverageIgnore
         }
     }
 }
-
-if (!function_exists('stripe')) {
-    function stripe(?string $name = null): StripeClient
-    {
-        return app()->make(StripeClientRegistry::class)->client($name);
-    }
-}

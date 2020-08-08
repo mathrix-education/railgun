@@ -12,14 +12,14 @@ use Stripe\Event;
 use Stripe\Exception\SignatureVerificationException;
 use function app;
 
-class StripeWebhooksController
+class EventsController
 {
-    protected const HANDLERS_NAMESPACE = 'Railgun\\Billing\\Stripe\\Handlers';
     public const    EVENT_MAP          = [
         Event::CUSTOMER_SUBSCRIPTION_CREATED => CustomerSubscriptionUpdatedHandler::class,
         Event::CUSTOMER_SUBSCRIPTION_UPDATED => CustomerSubscriptionUpdatedHandler::class,
         Event::CUSTOMER_SUBSCRIPTION_DELETED => CustomerSubscriptionUpdatedHandler::class,
     ];
+    protected const HANDLERS_NAMESPACE = 'Railgun\\Billing\\Stripe\\Handlers';
 
     /**
      * Entry point for Stripe webhooks.

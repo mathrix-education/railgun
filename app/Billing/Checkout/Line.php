@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Railgun\Billing\Checkout;
 
-use Railgun\Billing\Contracts\Sellable;
-use Railgun\Billing\Products\Premium;
+use Railgun\Billing\Contracts\StripeProduct;
+use Railgun\Billing\Products\ModeMachine;
 use Railgun\Models\Coupon;
 use function class_basename;
 use function sprintf;
@@ -27,12 +27,12 @@ class Line
     public static function fromPremium(): Line
     {
         return new self(
-            Premium::PRODUCT['name'],
-            Premium::PRICE_NO_SUB,
+            ModeMachine::PRODUCT['name'],
+            ModeMachine::PRICE_NO_SUB,
         );
     }
 
-    public static function fromSellable(Sellable $model): Line
+    public static function fromSellable(StripeProduct $model): Line
     {
         return new self(
             sprintf(

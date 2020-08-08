@@ -100,4 +100,17 @@ abstract class Registry
 
         return $instance;
     }
+
+    /**
+     * Forward any call to to the default instance.
+     *
+     * @param string           $method The method name.
+     * @param array<int,mixed> $args   The method arguments.
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $args)
+    {
+        return $this->make()->{$method}(...$args);
+    }
 }

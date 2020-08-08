@@ -7,9 +7,9 @@ namespace Railgun\Billing\Checkout;
 use Dotenv\Loader\Lines;
 use ErrorException;
 use Illuminate\Support\Collection;
-use Railgun\Billing\Contracts\Sellable;
+use Railgun\Billing\Contracts\StripeProduct;
 use Railgun\Billing\Exceptions\InvalidCouponCodeException;
-use Railgun\Billing\Products\Premium;
+use Railgun\Billing\Products\ModeMachine;
 use Railgun\Models\Chapter;
 use Railgun\Models\Coupon;
 use Railgun\Models\Pack;
@@ -55,7 +55,7 @@ class Cart
     }
 
     /**
-     * @return Collection|Sellable[] The product collection.
+     * @return Collection|StripeProduct[] The product collection.
      */
     public function getProducts(): Collection
     {
@@ -78,12 +78,12 @@ class Cart
      */
     public function getSubTotal(): int
     {
-        $sum = $this->getProducts()->sum(static function (Sellable $product) {
+        $sum = $this->getProducts()->sum(static function (StripeProduct $product) {
             return $product->price;
         });
 
         if ($this->withPremium()) {
-            $sum += Premium::PRICE_NO_SUB;
+            $sum += ModeMachine::PRICE_NO_SUB;
         }
 
         return $sum;
@@ -154,7 +154,7 @@ class Cart
     {
         switch ($name) {
             case 'lines':
-                $lines = $this->getProducts()->map(static function (Sellable $sellable) {
+                $lines = $this->getProducts()->map(static function (StripeProduct $sellable) {
                     return Line::fromSellable($sellable);
                 });
 
