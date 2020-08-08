@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Railgun\Providers;
+namespace Railgun\Billing\Braintree;
 
 use Braintree\Gateway;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application;
-use Railgun\Billing\Webhooks\BraintreeWebhooksController;
 
 /**
  * @property-read Application $app

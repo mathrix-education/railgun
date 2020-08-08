@@ -12,7 +12,7 @@ use Stripe\Event;
 use Stripe\Exception\SignatureVerificationException;
 use function app;
 
-class EventsController
+class StripeWebhooksController
 {
     public const    EVENT_MAP          = [
         Event::CUSTOMER_SUBSCRIPTION_CREATED => CustomerSubscriptionUpdatedHandler::class,
@@ -41,7 +41,7 @@ class EventsController
         $handler = self::EVENT_MAP[$event->type] ?? null;
 
         if (!$handler) {
-            throw new UnsupportedEventException($event);
+            throw new UnsupportedEventException($event->type);
         }
 
         /** @noinspection PhpPossiblePolymorphicInvocationInspection */

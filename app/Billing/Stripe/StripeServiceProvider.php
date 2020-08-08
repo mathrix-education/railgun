@@ -51,7 +51,7 @@ class StripeServiceProvider extends ServiceProvider
             $config->get('stripe.webhooks_route.uri'),
             [
                 'as'   => $config->get('stripe.webhooks_route.name'),
-                'uses' => EventsController::class,
+                'uses' => StripeWebhooksController::class,
             ],
         );
     }

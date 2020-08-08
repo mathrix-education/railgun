@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Railgun\Billing\Webhooks;
+namespace Railgun\Billing\Braintree;
 
 use Braintree\Gateway;
 use Braintree\Subscription as BraintreeSubscription;
