@@ -7,7 +7,7 @@ namespace Railgun\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Cache;
-use Railgun\Billing\Stripe\InteractsWithStripe;
+use Railgun\Billing\Stripe\Models\InteractsWithStripe;
 use Railgun\Models\Traits\InteractsWithCache;
 use Stripe\Customer;
 use Stripe\Invoice;

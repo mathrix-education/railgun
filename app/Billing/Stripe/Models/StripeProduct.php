@@ -6,7 +6,6 @@ namespace Railgun\Billing\Stripe\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use Railgun\Billing\Stripe\InteractsWithStripe;
 use Railgun\Models\Traits\SaveWithoutEvents;
 use Stripe\ErrorObject;
 use Stripe\Exception\ApiErrorException;

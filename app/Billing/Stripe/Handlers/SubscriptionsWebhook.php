@@ -19,7 +19,7 @@ use function dispatch_now;
  * @see Event::CUSTOMER_SUBSCRIPTION_UPDATED
  * @see Event::CUSTOMER_SUBSCRIPTION_DELETED
  */
-class CustomerSubscriptionUpdatedHandler
+class SubscriptionsWebhook
 {
     /**
      * @param Event        $event  The "customer.subscription.updated" Stripe event.
@@ -27,7 +27,7 @@ class CustomerSubscriptionUpdatedHandler
      *
      * @return array<string, mixed>
      */
-    public function __invoke(Event $event, Subscription $object): array
+    public function upsert(Event $event, Subscription $object): array
     {
         dispatch_now(new UpsertSubscription($object));
 

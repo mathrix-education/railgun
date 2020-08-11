@@ -5,7 +5,7 @@ enum PlanID {
     V11_MONTHLY @enum(value: "v11_month")
     V11_QUARTERLY @enum(value: "v11_quarter")
     V11_SEMESTER @enum(value: "v11_semester")
-    V11_SYEAR @enum(value: "v11_year")
+    V11_YEAR @enum(value: "v11_year")
 }
 
 enum PlanPeriod {

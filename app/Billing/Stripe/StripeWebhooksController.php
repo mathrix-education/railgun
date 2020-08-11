@@ -7,19 +7,18 @@ namespace Railgun\Billing\Stripe;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Railgun\Billing\Exceptions\UnsupportedEventException;
-use Railgun\Billing\Stripe\Handlers\CustomerSubscriptionUpdatedHandler;
+use Railgun\Billing\Stripe\Handlers\SubscriptionsWebhook;
 use Stripe\Event;
 use Stripe\Exception\SignatureVerificationException;
 use function app;
 
 class StripeWebhooksController
 {
-    public const    EVENT_MAP          = [
-        Event::CUSTOMER_SUBSCRIPTION_CREATED => CustomerSubscriptionUpdatedHandler::class,
-        Event::CUSTOMER_SUBSCRIPTION_UPDATED => CustomerSubscriptionUpdatedHandler::class,
-        Event::CUSTOMER_SUBSCRIPTION_DELETED => CustomerSubscriptionUpdatedHandler::class,
+    public const EVENT_MAP = [
+        Event::CUSTOMER_SUBSCRIPTION_CREATED => SubscriptionsWebhook::class . '@upsert',
+        Event::CUSTOMER_SUBSCRIPTION_UPDATED => SubscriptionsWebhook::class . '@upsert',
+        Event::CUSTOMER_SUBSCRIPTION_DELETED => SubscriptionsWebhook::class . '@upsert',
     ];
-    protected const HANDLERS_NAMESPACE = 'Railgun\\Billing\\Stripe\\Handlers';
 
     /**
      * Entry point for Stripe webhooks.

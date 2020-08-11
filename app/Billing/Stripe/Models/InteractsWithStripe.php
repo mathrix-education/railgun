@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Railgun\Billing\Stripe;
+namespace Railgun\Billing\Stripe\Models;
 
 use Stripe\StripeClient;
 use function app;

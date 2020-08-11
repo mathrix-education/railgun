@@ -54,8 +54,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(KernelContract::class, Kernel::class);
         $this->app->singleton(ExceptionPipeline::class);
         $this->app->singleton(PHPPMStatus::class);
-
-        $this->app->singleton(ChapterContentRegistry::class);
     }
 
     /**

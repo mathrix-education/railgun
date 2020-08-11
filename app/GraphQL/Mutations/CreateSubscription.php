@@ -4,15 +4,19 @@ declare(strict_types=1);
 
 namespace Railgun\GraphQL\Mutations;
 
+use Illuminate\Contracts\Bus\Dispatcher;
+use Illuminate\Support\Facades\Cache;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Railgun\Billing\Exceptions\AlreadyPremiumException;
-use Railgun\Billing\Models\Plan;
+use Railgun\Billing\Stripe\Models\ModeMachine;
 use Railgun\Jobs\UpsertSubscription;
 use Railgun\Models\Subscription;
 use Railgun\Models\User;
 use Stripe\Exception\ApiErrorException;
-use Stripe\Subscription as StripeSubscription;
-use function dispatch_now;
+use Stripe\Price;
+use Stripe\StripeClient;
+use function array_keys;
+use function collect;
 
 /**
  * Mutation createSubscription.
@@ -20,6 +24,25 @@ use function dispatch_now;
  */
 class CreateSubscription
 {
+    protected Dispatcher   $dispatcher;
+    protected StripeClient $client;
+
+    public function __construct(Dispatcher $dispatcher, StripeClient $client)
+    {
+        $this->dispatcher = $dispatcher;
+        $this->client     = $client;
+    }
+
+    protected function resolveLookupKey(string $lookupKey): string
+    {
+        $mappings = Cache::remember('prices.lookup_keys', 3600 * 24 * 7, function () {
+            return collect($this->client->prices->all(['lookup_keys' => array_keys(ModeMachine::PRICES)])->data)
+                ->mapWithKeys(static fn(Price $price) => [$price->lookup_key => $price->id]);
+        });
+
+        return $mappings[$lookupKey];
+    }
+
     /**
      * @param null           $_       The parent value, always null in this case.
      * @param mixed[]        $args    The mutation arguments (planId, paymentMethodId).
@@ -35,34 +58,19 @@ class CreateSubscription
         $user = $context->user();
 
         if ($user->premium) {
-            // Check if the user is already premium
             throw new AlreadyPremiumException($user->id);
         }
 
         $paymentMethodId = $args['paymentMethodId'];
-        $user->createCustomer($paymentMethodId);
+        $customer        = $user->ensureStripeCustomer($paymentMethodId);
 
-        $plan = new Plan($args['planId']);
-
-        $payload = [
-            'customer'               => $user->stripe_id,
+        $subscription = $this->client->subscriptions->create([
+            'customer'               => $customer->id,
+            'items'                  => [['price' => $this->resolveLookupKey($args['planId'])]],
             'default_payment_method' => $paymentMethodId,
-            'items'                  => [
-                ['plan' => $plan->id],
-            ],
-            'metadata'               => [
-                'user_id' => $user->id,
-            ],
             'expand'                 => ['latest_invoice.payment_intent'],
-        ];
+        ]);
 
-        if ($plan->prorated) {
-            // Add the billing cycle anchor if necessary
-            $payload['billing_cycle_anchor'] = $plan->proration_anchor->getTimestamp();
-        }
-
-        $stripeSubscription = StripeSubscription::create($payload);
-
-        return dispatch_now(new UpsertSubscription($stripeSubscription));
+        return $this->dispatcher->dispatchNow(new UpsertSubscription($subscription));
     }
 }

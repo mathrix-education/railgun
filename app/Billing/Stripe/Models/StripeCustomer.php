@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Railgun\Billing\Stripe\Models;
 
 use Illuminate\Support\Collection;
-use Railgun\Billing\Stripe\InteractsWithStripe;
 use Stripe\Card;
 use Stripe\Customer;
 use Stripe\ErrorObject;
@@ -123,6 +122,24 @@ trait StripeCustomer
     }
 
     /**
+     * Ensure that the user is a Stripe customer.
+     *
+     * @param string|null $paymentMethodId The payment method id to apply.
+     *
+     * @return Customer The Stripe Customer instance.
+     *
+     * @throws ApiErrorException
+     */
+    public function ensureStripeCustomer(?string &$paymentMethodId = null): Customer
+    {
+        if (!$this->stripe_id) {
+            return $this->createStripeCustomer($paymentMethodId);
+        }
+
+        return $this->updateStripeCustomer($paymentMethodId);
+    }
+
+    /**
      * @return Collection|PaymentMethod[]
      *
      * @throws ApiErrorException
@@ -152,7 +169,7 @@ trait StripeCustomer
             $this->client->paymentMethods->attach($paymentMethodId, ['customer' => $this->stripe_id]);
         }
 
-        // This a card, we need to check the
+        // This a card, we need to check the fingerprint in order
         /** @var Card $card */
         $card           = $paymentMethod->card;
         $paymentMethods = $this->getStripePaymentMethods();

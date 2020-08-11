@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Mutations;
 
-use Carbon\Carbon;
 use Exception;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Subscription;
@@ -12,7 +11,6 @@ use Railgun\Models\User;
 use stdClass;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function factory;
-use function in_array;
 use function strtolower;
 use function trans;
 
@@ -59,7 +57,7 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
             'pm_card_threeDSecure2Required' => 'INCOMPLETE',
         ];
 
-        $plans = ['MONTHLY', 'ANNUALLY', 'BIANNUALLY'];
+        $plans = ['V11_MONTHLY', 'V11_QUARTERLY', 'V11_SEMESTER', 'V11_YEAR'];
 
         $dataset = [];
 
@@ -101,14 +99,6 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
 
         // Check that the status
         $this->assertEquals($expectedStatus, $subscription['status']);
-
-        if (in_array($planId, ['ANNUALLY', 'BIANNUALLY'], true)) {
-            // For annually and biannually plans, check that the anchor is set to the 31st July
-            $currentPeriodEnd = new Carbon($subscription['current_period_end']);
-            $this->assertTrue($currentPeriodEnd->isFuture());
-            $this->assertEquals(7, $currentPeriodEnd->month);
-            $this->assertEquals(31, $currentPeriodEnd->day);
-        }
 
         // Check that the subscription has been saved to the database
         $this->seeInDatabase('subscriptions', [
@@ -156,7 +146,7 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
     ): void
     {
         $user = $this->withPermissions();
-        $this->executeCreateSubscription('MONTHLY', $paymentMethodId);
+        $this->executeCreateSubscription('V11_MONTHLY', $paymentMethodId);
 
         $this->assertEquals($expectedMessage, $this->getContent('errors.0.message'));
         $this->assertEquals(0, $user->subscriptions->count()); // No new subscription
@@ -172,7 +162,7 @@ class CreateSubscriptionIntegrationTest extends GraphQLIntegrationTestCase
         $this->actingAs($user);
         $this->assertTrue($user->premium);
 
-        $this->executeCreateSubscription('MONTHLY', 'pm_card_fr');
+        $this->executeCreateSubscription('V11_MONTHLY', 'pm_card_fr');
 
         $this->assertResponseOk();
         $this->assertErrorCode('ALREADY_PREMIUM');

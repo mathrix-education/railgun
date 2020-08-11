@@ -96,7 +96,7 @@ class GoogleCloudJsonFormatter extends JsonFormatter
         }
 
         // Include the correlation id if applicable
-        if (Container::getInstance()->bound(CorrelationMiddleware::ABSTRACT)) {
+        if (app()->bound(CorrelationMiddleware::ABSTRACT)) {
             $payload['correlation'] = Container::getInstance()->make(CorrelationMiddleware::ABSTRACT);
         }
 
