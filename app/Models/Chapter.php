@@ -6,16 +6,13 @@ namespace Railgun\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Railgun\Billing\Stripe\Contracts\StripeProduct as StripeProductContract;
 use Railgun\Billing\Stripe\Models\StripeProduct;
-use Railgun\Models\Traits\Content;
-use Railgun\Models\Traits\Randomizable;
+use Railgun\Contracts\BelongsToChapter;
 use Railgun\Models\Traits\Reorderable;
-use Railgun\Models\Traits\SaveWithoutEvents;
 use Railgun\Models\Traits\Sluggable;
 
 /**
@@ -36,9 +33,8 @@ use Railgun\Models\Traits\Sluggable;
  * @property-read Collection|Exam[]      $exams
  * @property-read Collection|Session[]   $sessions
  */
-class Chapter extends Model implements Content, StripeProductContract
+class Chapter extends BaseModel implements BelongsToChapter, StripeProductContract
 {
-    use Randomizable;
     use Reorderable;
     use Sluggable;
     use StripeProduct;

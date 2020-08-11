@@ -4,23 +4,33 @@ declare(strict_types=1);
 
 namespace Railgun\Billing\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasRelationships;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Support\Collection;
-use Railgun\Billing\Contracts\Product;
+use Illuminate\Support\Facades\Cache;
 use Railgun\Models\Acquisition;
+use Railgun\Models\BaseModel;
 use Railgun\Models\Chapter;
+use Railgun\Models\Course;
+use Railgun\Models\Exam;
+use Railgun\Models\Exercise;
+use Railgun\Models\Flashcard;
 use Railgun\Models\Lesson;
+use Railgun\Models\Notion;
 use Railgun\Models\Pack;
 use Railgun\Models\Section;
+use Railgun\Models\Subject;
 use Railgun\Models\Training;
-use Railgun\Models\Traits\Cacheable;
+use Railgun\Models\Traits\InteractsWithCache;
+use function array_merge;
+use function in_array;
+use function resolveMorph;
 
 /**
  * @mixin HasRelationships
- * @mixin Cacheable
- * @property-read \Illuminate\Database\Eloquent\Collection|Training[] $trainings
+ * @mixin InteractsWithCache
+ * @property-read Collection|Training[] $trainings
  */
 trait OwnsProducts
 {
@@ -60,69 +70,103 @@ trait OwnsProducts
     }
 
     /**
-     * @param Product $product The product to check.
+     * @param BaseModel $model The product to check.
      *
      * @return bool If the user owns the product.
      */
-    public function owns(Product $product): bool
+    public function owns(BaseModel $model): bool
     {
-//        $cache = $this->cache('acquisitions', function (): array {
-//            return DB::table('acquisitions')
-//                ->select(['product_type', 'product_id'])
-//                ->where('user_id', '=', $this->id)
-//                ->get()
-//                ->map(static fn(stdClass $acquisition) => $acquisition->product_type . '_' . $acquisition->product_id)
-//                ->toArray();
-//        });
+        return in_array(
+            $model->getGlobalKey(),
+            Cache::remember(
+                $this->getCacheKey('products_ids'),
+                3600,
+                fn() => $this->getOwnedProductGlobalIds(),
+            ),
+            true,
+        );
+    }
 
-        if ($product instanceof Pack) {
-            /** @var Collection $packIds */
-            $packIds = $this->cache('packs', function () {
-                return $this->packs()->get(['packs.id'])->pluck('id');
-            });
+    /**
+     * Get the products global ids owned by the user.
+     *
+     * @return string[] The product global ids as an unsorted array.
+     */
+    public function getOwnedProductGlobalIds(): array
+    {
+        $products     = [];
+        $acquisitions = Acquisition::query()
+            ->where('user_id', '=', $this->id)
+            ->get();
 
-            return $packIds->search($product->id) !== false;
-        }
+        // Chapters and below
+        $chaptersIds = $acquisitions
+            ->where('product_type', '=', resolveMorph(Chapter::class))
+            ->pluck('product_id')
+            ->toArray();
 
-        if ($product instanceof Training) {
-            /** @var Collection $trainingIds */
-            $trainingIds = $this->cache('trainings', function () {
-                return $this->trainings()->get(['trainings.id'])->pluck('id');
-            });
+        Chapter::query()
+            ->with([
+                'notions.courses:id,notion_id',
+                'notions.subjects.exercises:id,subject_id',
+                'flashcards:id,chapter_id',
+                'exams:id,chapter_id',
+            ])
+            ->whereIn('id', $chaptersIds)
+            ->get()
+            ->each(static function (Chapter $chapter) use (&$products): void {
+                $products[] = $chapter->getGlobalKey();
 
-            return $trainingIds->search($product->id) !== false;
-        }
+                $chapter->notions->each(static function (Notion $notion) use (&$products): void {
+                    $notion->courses->each(static function (Course $course) use (&$products): void {
+                        $products[] = $course->getGlobalKey();
+                    });
 
-        if ($product instanceof Section) {
-            $lessonIds = $this->cache('sections', function () {
-                return $this->trainings()
-                    ->with(['sections'])
-                    ->get()
-                    ->map(static function (Training $training) {
-                        return $training->sections->map(static fn(Section $section) => $section->id);
-                    })
-                    ->flatten();
-            });
-
-            return $lessonIds->search($product->id) !== false;
-        }
-
-        if ($product instanceof Lesson) {
-            $lessonIds = $this->cache('lessons', function () {
-                return $this->trainings()
-                    ->with(['sections.lessons'])
-                    ->get()
-                    ->map(static function (Training $training) {
-                        return $training->sections->map(static function (Section $section) {
-                            return $section->lessons->map(static fn(Lesson $lesson) => $lesson->id);
+                    $notion->subjects->each(static function (Subject $subject) use (&$products): void {
+                        $subject->exercises->each(static function (Exercise $exercise) use (&$products): void {
+                            $products[] = $exercise->getGlobalKey();
                         });
-                    })
-                    ->flatten();
+                    });
+                });
+
+                $chapter->flashcards->each(static fn(Flashcard $flashcard) => $products[] = $flashcard->getGlobalKey());
+                $chapter->exams->each(static fn(Exam $exam) => $products[] = $exam->getGlobalKey());
             });
 
-            return $lessonIds->search($product->id) !== false;
-        }
+        // Packs
+        $products = array_merge(
+            $products,
+            $acquisitions->where('product_type', '=', resolveMorph(Pack::class))
+                ->pluck('product_id')
+                ->map(static fn(int $packId) => 'pack_' . $packId)
+                ->toArray(),
+        );
 
-        return false; // @codeCoverageIgnore
+        // Trainings and below
+        $trainingsIds = $acquisitions
+            ->where('product_type', '=', resolveMorph(Training::class))
+            ->pluck('product_id')
+            ->toArray();
+
+        Training::query()
+            ->with([
+                'sections:id,training_id',
+                'sections.lessons:id,section_id',
+            ])
+            ->whereIn('id', $trainingsIds)
+            ->get()
+            ->each(static function (Training $training) use (&$products): void {
+                $products[] = $training->getGlobalKey();
+
+                $training->sections->each(static function (Section $section) use (&$products): void {
+                    $products[] = $section->getGlobalKey();
+
+                    $section->lessons->each(static function (Lesson $lesson) use (&$products): void {
+                        $products[] = $lesson->getGlobalKey();
+                    });
+                });
+            });
+
+        return $products;
     }
 }

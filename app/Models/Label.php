@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Railgun\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
@@ -15,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property-read Carbon $created_at
  * @property-read Carbon $updated_at
  */
-class Label extends Model
+class Label extends BaseModel
 {
     public const LABELABLES = [Course::class, Exercise::class, Flashcard::class, Exam::class, Lesson::class];
 

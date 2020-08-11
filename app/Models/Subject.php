@@ -6,12 +6,10 @@ namespace Railgun\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Railgun\Models\Traits\Content;
+use Railgun\Contracts\BelongsToChapter;
 use Railgun\Models\Traits\Interactable;
-use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
 use Railgun\Models\Traits\Sluggable;
 
@@ -29,10 +27,9 @@ use Railgun\Models\Traits\Sluggable;
  * @property-read Notion                $notion
  * @property-read Collection|Exercise[] $exercises
  */
-class Subject extends Model implements Content
+class Subject extends BaseModel implements BelongsToChapter
 {
     use Interactable;
-    use Randomizable;
     use Reorderable;
     use Sluggable;
 

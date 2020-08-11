@@ -1,3 +1,0 @@
-extend type Query {
-    checkoutProducts: CheckoutSession! @guard
-}

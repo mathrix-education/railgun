@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Railgun\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
-use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\UUID;
 
 /**
@@ -22,9 +20,8 @@ use Railgun\Models\Traits\UUID;
  * @property-read User    $user
  * @property-read Comment $comment
  */
-class Vote extends Model
+class Vote extends BaseModel
 {
-    use Randomizable;
     use UUID;
 
     protected $fillable = ['user_id', 'comment_id', 'value'];

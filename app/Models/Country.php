@@ -6,9 +6,7 @@ namespace Railgun\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Sluggable;
 
 /**
@@ -21,9 +19,8 @@ use Railgun\Models\Traits\Sluggable;
  * ---
  * @property-read Collection|Grade[] $grades
  */
-class Country extends Model
+class Country extends BaseModel
 {
-    use Randomizable;
     use Sluggable;
 
     protected $fillable = ['name', 'slug', 'visible'];

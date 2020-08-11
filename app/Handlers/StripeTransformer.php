@@ -7,7 +7,7 @@ namespace Railgun\Handlers;
 use Closure;
 use Railgun\Billing\Exceptions\InvalidEventSignatureException;
 use Railgun\Billing\Stripe\Exceptions\StripeCardException;
-use Stripe\Exception\CardException as StripeCardException;
+use Stripe\Exception\CardException;
 use Stripe\Exception\SignatureVerificationException;
 use Throwable;
 
@@ -23,7 +23,7 @@ class StripeTransformer implements TransformsExceptions
      */
     public function transform(Throwable $original, Closure $next): Throwable
     {
-        if ($original instanceof StripeCardException) {
+        if ($original instanceof CardException) {
             // Convert Stripe card exceptions
             return StripeCardException::from($original);
         }

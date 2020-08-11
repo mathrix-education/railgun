@@ -61,32 +61,6 @@ class Cart extends Resource
     }
 
     /**
-     * Validate the cart. A user may be provided to ensure that he does not buy a product he already owns.
-     *
-     * @param User|null $user The user to check.
-     *
-     * @return $this
-     */
-    public function validate(?User $user = null): self
-    {
-        // Check that all products are available
-        $unavailable = $this->products->filter(static fn(Product $p) => !$p->available)->pluck('name');
-
-        if ($unavailable->isNotEmpty()) {
-            throw new UnavailableProducts($unavailable->toArray());
-        }
-
-        // Check that the user has not already bought one of the cart product
-        $owned = $this->products->filter(static fn(Product $p) => $user->owns($p))->pluck('name');
-
-        if ($owned->isNotEmpty()) {
-            throw new UnavailableProducts($owned->toArray());
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|StripeProduct[] The product collection.
      */
     protected function getProducts(): Collection
@@ -165,8 +139,37 @@ class Cart extends Resource
         return 0;
     }
 
+    /**
+     * @return int The final total of the cart.
+     */
     protected function getTotal(): int
     {
         return $this->subTotal - $this->couponAmount;
+    }
+
+    /**
+     * Validate the cart. A user may be provided to ensure that he does not buy a product he already owns.
+     *
+     * @param User|null $user The user to check.
+     *
+     * @return $this
+     */
+    public function validate(?User $user = null): self
+    {
+        // Check that all products are available
+        $unavailable = $this->products->filter(static fn(Product $p) => !$p->available)->pluck('name');
+
+        if ($unavailable->isNotEmpty()) {
+            throw new UnavailableProducts($unavailable->toArray());
+        }
+
+        // Check that the user has not already bought one of the cart product
+        $owned = $this->products->filter(static fn(Product $p) => $user->owns($p))->pluck('name');
+
+        if ($owned->isNotEmpty()) {
+            throw new UnavailableProducts($owned->toArray());
+        }
+
+        return $this;
     }
 }

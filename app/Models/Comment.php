@@ -6,7 +6,6 @@ namespace Railgun\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -14,7 +13,6 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Queue;
 use Railgun\Jobs\DeliverCommentReplyNotifications;
-use Railgun\Models\Traits\Randomizable;
 
 /**
  * @property-read int                  $id
@@ -34,10 +32,8 @@ use Railgun\Models\Traits\Randomizable;
  * @property-read Collection|Comment[] $children
  * @property-read Collection|Vote[]    $votes
  */
-class Comment extends Model
+class Comment extends BaseModel
 {
-    use Randomizable;
-
     protected $fillable = [
         'content',
         'parent_id',

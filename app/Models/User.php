@@ -9,7 +9,6 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\RoutesNotifications;
@@ -20,9 +19,8 @@ use Railgun\Billing\Models\OwnsProducts;
 use Railgun\Billing\Models\OwnsSubscriptions;
 use Railgun\Billing\Stripe\Models\StripeCustomer;
 use Railgun\Jobs\CleanUserSession;
-use Railgun\Models\Traits\Cacheable;
+use Railgun\Models\Traits\InteractsWithCache;
 use Railgun\Models\Traits\HasDatabaseNotifications;
-use Railgun\Models\Traits\Randomizable;
 use Railgun\Support\LazyStdClass;
 use function uuid_create;
 use function uuid_is_valid;
@@ -57,15 +55,14 @@ use function uuid_is_valid;
  * @property-read Collection|Interaction[] $interactions
  * @property-read Collection|Session[]     $sessions
  */
-class User extends Model implements AuthenticatableContract, AuthorizableContract
+class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable;
     use Authorizable;
-    use Cacheable;
+    use InteractsWithCache;
     use HasDatabaseNotifications;
     use OwnsProducts;
     use OwnsSubscriptions;
-    use Randomizable;
     use RoutesNotifications;
     use StripeCustomer;
 
@@ -187,8 +184,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     /**
      * Get the user statistics.
-     *
-     * @noinspection PhpUnused
      */
     public function getStatisticsAttribute(): LazyStdClass
     {

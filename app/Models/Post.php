@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Railgun\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
 use Railgun\Models\Traits\Sluggable;
 
@@ -25,9 +23,8 @@ use Railgun\Models\Traits\Sluggable;
  * ---
  * @property-read Category    $category
  */
-class Post extends Model
+class Post extends BaseModel
 {
-    use Randomizable;
     use Reorderable;
     use Sluggable;
 

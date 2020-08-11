@@ -33,6 +33,7 @@ use Railgun\Models\Traits\Acquerable;
 use Railgun\Models\Traits\Commentable;
 use Railgun\Models\Traits\Labelable;
 use Railgun\Models\Traits\Notable;
+use Railgun\Registries\ChapterContentRegistry;
 use Railgun\Support\PHPPMStatus;
 use function array_map;
 
@@ -53,6 +54,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(KernelContract::class, Kernel::class);
         $this->app->singleton(ExceptionPipeline::class);
         $this->app->singleton(PHPPMStatus::class);
+
+        $this->app->singleton(ChapterContentRegistry::class);
     }
 
     /**

@@ -6,10 +6,8 @@ namespace Railgun\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
 use Railgun\Models\Traits\Sluggable;
 
@@ -26,9 +24,8 @@ use Railgun\Models\Traits\Sluggable;
  * @property-read Training            $training
  * @property-read Collection|Lesson[] $lessons
  */
-class Section extends Model
+class Section extends BaseModel
 {
-    use Randomizable;
     use Reorderable;
     use Sluggable;
 

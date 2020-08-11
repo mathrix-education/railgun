@@ -6,7 +6,7 @@ namespace Railgun\Jobs;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
-use Railgun\Models\Traits\Content;
+use Railgun\Contracts\BelongsToChapter;
 use Railgun\Models\Traits\Interactable;
 
 /**
@@ -31,7 +31,7 @@ class DeleteChapterInteractions extends Job implements ShouldQueue
         $this->reference->interactions()->delete();
 
         // Delete parent chapter sessions
-        if (!($this->reference instanceof Content)) {
+        if (!($this->reference instanceof BelongsToChapter)) {
             return; // @codeCoverageIgnore
         }
 

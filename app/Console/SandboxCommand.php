@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Railgun\Console;
 
 use Illuminate\Console\Command;
-use Railgun\Models\Chapter;
+use Illuminate\Support\Facades\Cache;
+use Railgun\Auth\ProductGate;
 
 /**
  * Dummy Command which is only used to test behavioral code.
@@ -22,11 +23,20 @@ class SandboxCommand extends Command
 
     public function handle(): void
     {
-        // Implement sandbox command
-        $chapters = Chapter::query()
-            ->whereHas('theme.grade', static fn($q) => $q->where('grades.slug', '=', 'postbac'))
-            ->get();
+        $iterations = 1000;
+        $total      = 0;
 
-        dd($chapters->toArray());
+        $this->getOutput()->progressStart($iterations);
+
+        for ($i = 0; $i < $iterations; $i++) {
+            $start = microtime(true);
+            Cache::remember('zzzz', 10, static fn() => ProductGate::getUserOwnedProductsGlobalIds(126053));
+            $total += microtime(true) - $start;
+            $this->getOutput()->progressAdvance();
+        }
+
+        $this->getOutput()->progressFinish();
+
+        dd($total / $iterations * 1000);
     }
 }

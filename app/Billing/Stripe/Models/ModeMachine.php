@@ -26,6 +26,9 @@ class ModeMachine
                 'interval_count' => 1,
             ],
             'unit_amount' => 1790,
+            // GraphQL
+            'period' => 'month',
+            'months_per_period' => 1,
         ],
         'v11_quarter'  => [
             'currency'    => 'eur',
@@ -37,6 +40,9 @@ class ModeMachine
                 'interval_count' => 3,
             ],
             'unit_amount' => 5370,
+            // GraphQL
+            'period' => 'quarter',
+            'months_per_period' => 3,
         ],
         'v11_semester' => [
             'currency'    => 'eur',
@@ -48,6 +54,9 @@ class ModeMachine
                 'interval_count' => 6,
             ],
             'unit_amount' => 10740,
+            // GraphQL
+            'period' => 'semester',
+            'months_per_period' => 6,
         ],
         'v11_year'     => [
             'currency'    => 'eur',
@@ -59,6 +68,9 @@ class ModeMachine
                 'interval_count' => 1,
             ],
             'unit_amount' => 15480,
+            // GraphQL
+            'period' => 'year',
+            'months_per_period' => 6,
         ],
     ];
 }

@@ -73,6 +73,8 @@ class SyncProductsCommand extends Command
             $progress->setMessage("Pushing <info>{$lookupKey}</info> price");
             $price = $this->getPrice($lookupKey, false);
 
+            $payload = Arr::except($payload, ['period', 'price_per_month']);
+
             if ($price === null) {
                 $this->stripe->prices->create($payload);
             } else {

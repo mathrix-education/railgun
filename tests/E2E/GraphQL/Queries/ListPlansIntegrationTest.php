@@ -24,9 +24,6 @@ class ListPlansIntegrationTest extends GraphQLIntegrationTestCase
                     period
                     price_per_period
                     price_per_month
-                    prorated
-                    proration_price
-                    proration_anchor
                 }
             }
             GRAPHQL,

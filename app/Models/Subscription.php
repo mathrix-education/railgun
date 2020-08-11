@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Railgun\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Railgun\Models\Traits\Cacheable;
+use Illuminate\Support\Facades\Cache;
+use Railgun\Billing\Stripe\InteractsWithStripe;
+use Railgun\Models\Traits\InteractsWithCache;
 use Stripe\Customer;
 use Stripe\Invoice;
 use Stripe\Subscription as StripeSubscription;
 use function is_string;
 use function preg_match;
 use function str_pad;
-use function stripe;
 use const STR_PAD_LEFT;
 
 /**
@@ -33,9 +33,10 @@ use const STR_PAD_LEFT;
  * ---
  * @property-read User         $user
  */
-class Subscription extends Model
+class Subscription extends BaseModel
 {
-    use Cacheable;
+    use InteractsWithCache;
+    use InteractsWithStripe;
 
     public const PROCESSOR_STRIPE    = 'stripe';
     public const PROCESSOR_BRAINTREE = 'braintree';
@@ -122,17 +123,21 @@ class Subscription extends Model
      */
     public function getLatestInvoiceAttribute(): ?Invoice
     {
-        return $this->cache('latest_invoice', function () {
-            if ($this->processor === self::PROCESSOR_BRAINTREE) {
-                return null; // @codeCoverageIgnore
-            }
+        return Cache::remember(
+            $this->getCacheKey('latest_invoice'),
+            3600,
+            function () {
+                if ($this->processor === self::PROCESSOR_BRAINTREE) {
+                    return null; // @codeCoverageIgnore
+                }
 
-            $subscription = stripe()->subscriptions->retrieve($this->id, [
-                'expand' => ['latest_invoice.payment_intent'],
-            ]);
+                $subscription = $this->client->subscriptions->retrieve($this->id, [
+                    'expand' => ['latest_invoice.payment_intent'],
+                ]);
 
-            return $subscription->latest_invoice;
-        });
+                return $subscription->latest_invoice;
+            },
+        );
     }
 
     /**
@@ -142,28 +147,32 @@ class Subscription extends Model
      */
     public function getCardAttribute(): array
     {
-        return $this->cache('payment_method', function () {
-            if ($this->processor === self::PROCESSOR_BRAINTREE) {
-                return null; // @codeCoverageIgnore
-            }
+        return Cache::remember(
+            $this->getCacheKey('card'),
+            3600,
+            function () {
+                if ($this->processor === self::PROCESSOR_BRAINTREE) {
+                    return null; // @codeCoverageIgnore
+                }
 
-            $subscription = stripe()->subscriptions->retrieve($this->id, [
-                'expand' => ['default_payment_method'],
-            ]);
+                $subscription = $this->client->subscriptions->retrieve($this->id, [
+                    'expand' => ['default_payment_method'],
+                ]);
 
-            $paymentMethod = $subscription->default_payment_method;
+                $paymentMethod = $subscription->default_payment_method;
 
-            if ($paymentMethod->type !== 'card') {
-                return null; // @codeCoverageIgnore
-            }
+                if ($paymentMethod->type !== 'card') {
+                    return null; // @codeCoverageIgnore
+                }
 
-            return [
-                'name'      => $paymentMethod->billing_details->name,
-                'brand'     => $paymentMethod->card->brand,
-                'exp_month' => str_pad((string)$paymentMethod->card->exp_month, 2, '0', STR_PAD_LEFT),
-                'exp_year'  => (string)$paymentMethod->card->exp_year,
-                'last4'     => $paymentMethod->card->last4,
-            ];
-        });
+                return [
+                    'name'      => $paymentMethod->billing_details->name,
+                    'brand'     => $paymentMethod->card->brand,
+                    'exp_month' => str_pad((string)$paymentMethod->card->exp_month, 2, '0', STR_PAD_LEFT),
+                    'exp_year'  => (string)$paymentMethod->card->exp_year,
+                    'last4'     => $paymentMethod->card->last4,
+                ];
+            },
+        );
     }
 }

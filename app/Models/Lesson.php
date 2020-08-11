@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace Railgun\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Traits\Commentable;
 use Railgun\Models\Traits\Labelable;
 use Railgun\Models\Traits\Notable;
-use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
 use Railgun\Models\Traits\Sluggable;
 
@@ -27,12 +25,11 @@ use Railgun\Models\Traits\Sluggable;
  * ---
  * @property-read Section $section
  */
-class Lesson extends Model
+class Lesson extends BaseModel
 {
     use Commentable;
     use Labelable;
     use Notable;
-    use Randomizable;
     use Reorderable;
     use Sluggable;
 

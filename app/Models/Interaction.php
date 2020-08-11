@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace Railgun\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Queue;
+use Railgun\Contracts\BelongsToChapter;
 use Railgun\Jobs\UpdateSessionAfterInteraction;
-use Railgun\Models\Traits\Content;
-use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\UUID;
 use RuntimeException;
 use function get_class;
@@ -28,9 +26,8 @@ use function get_class;
  * ---
  * @property-read Course|Exercise|Flashcard|Exam|Subject $interactable
  */
-class Interaction extends Model
+class Interaction extends BaseModel
 {
-    use Randomizable;
     use UUID;
 
     public const INTERACTABLES  = [Course::class, Exercise::class, Flashcard::class, Exam::class, Subject::class];
@@ -62,7 +59,7 @@ class Interaction extends Model
 
     public function getChapter(): ?Chapter
     {
-        if ($this->interactable instanceof Content) {
+        if ($this->interactable instanceof BelongsToChapter) {
             return $this->interactable->getChapter();
         }
 

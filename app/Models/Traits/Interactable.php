@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Queue;
+use Railgun\Contracts\BelongsToChapter;
 use Railgun\Jobs\DeleteChapterInteractions;
 use Railgun\Models\Interaction;
 
@@ -25,8 +26,8 @@ trait Interactable
     public static function bootInteractable(): void
     {
         static::saved(static function ($model): void {
-            /** @var Interactable|Content $model */
-            if (!($model instanceof Content) || !$model->getAttribute('visible') === false) {
+            /** @var Interactable|BelongsToChapter $model */
+            if (!($model instanceof BelongsToChapter) || !$model->getAttribute('visible') === false) {
                 return;
             }
 

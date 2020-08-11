@@ -5,15 +5,13 @@ declare(strict_types=1);
 namespace Railgun\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Railgun\Contracts\BelongsToChapter;
 use Railgun\Models\Traits\Commentable;
-use Railgun\Models\Traits\Content;
 use Railgun\Models\Traits\Freezable;
 use Railgun\Models\Traits\Interactable;
 use Railgun\Models\Traits\Labelable;
 use Railgun\Models\Traits\Notable;
-use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Reorderable;
 
 /**
@@ -29,14 +27,13 @@ use Railgun\Models\Traits\Reorderable;
  * ---
  * @property-read Subject $subject
  */
-class Exercise extends Model implements Content
+class Exercise extends BaseModel implements BelongsToChapter
 {
     use Commentable;
     use Freezable;
     use Interactable;
     use Labelable;
     use Notable;
-    use Randomizable;
     use Reorderable;
 
     protected       $attributes = ['visible' => false];

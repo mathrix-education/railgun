@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Railgun\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Concerns\AsPivot;
-use Railgun\Models\Traits\Randomizable;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Railgun\Billing\Contracts\Product;
 use Railgun\Models\Traits\UUID;
 
 /**
@@ -24,10 +24,9 @@ use Railgun\Models\Traits\UUID;
  * @property-read Carbon      $created_at     The date/time when the acquisition was created.
  * @property-read Carbon      $updated_at     The date/time when the acquisition was last updated.
  */
-class Acquisition extends Model
+class Acquisition extends BaseModel
 {
     use AsPivot;
-    use Randomizable;
     use UUID;
 
     protected $table    = 'acquisitions'; // required to explicitly define the join table
@@ -37,4 +36,12 @@ class Acquisition extends Model
         'product_id',
         'transaction_id',
     ];
+
+    /**
+     * @return MorphTo<Product>
+     */
+    public function product(): MorphTo
+    {
+        return $this->morphTo();
+    }
 }
