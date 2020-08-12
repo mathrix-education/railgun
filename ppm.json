@@ -9,5 +9,6 @@
   "static-directory": "public",
   "bootstrap": "laravel",
   "max-requests": 1000,
-  "concurrent-requests": true
+  "concurrent-requests": true,
+  "request-body-buffer": 10485760
 }
