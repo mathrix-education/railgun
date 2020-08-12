@@ -1,5 +1,9 @@
 # Changelog
 
+## 10.0.1
+### Bug fixes
+- **ppm**: set request max size to 100MB
+
 ## 10.0.0
 ### Features
 - **docker**: add docker-compose.yaml file to run a local instance
