@@ -4,25 +4,32 @@ declare(strict_types=1);
 
 namespace Railgun\Billing\Cart;
 
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
-use Railgun\Billing\Contracts\Product;
 use Railgun\Billing\Exceptions\InvalidCouponCodeException;
 use Railgun\Billing\Exceptions\UnavailableProducts;
 use Railgun\Billing\Stripe\Contracts\StripeProduct;
+use Railgun\Billing\Stripe\Models\ModeMachine;
 use Railgun\Models\Chapter;
+use Railgun\Models\Contracts\Ownable;
+use Railgun\Models\Contracts\Sellable;
 use Railgun\Models\Coupon;
 use Railgun\Models\Pack;
 use Railgun\Models\Training;
 use Railgun\Models\User;
 use Railgun\Support\Resource\Resource;
+use Stripe\Price;
+use function app;
 use function array_unique;
+use function config;
 use function is_string;
 
 /**
  * @property      Collection|array<int, Chapter>  $chapters
  * @property      Collection|array<int, Pack>     $packs
  * @property      Collection|array<int, Training> $trainings
- * @property-read Collection|Product[]            $products
+ * @property-read Collection|Sellable[]           $products
+ * @property-read Price|null                      $plan
  * @property-read Coupon|null                     $coupon
  * @property-read Collection|array<int, Line>     $lines
  * @property-read int                             $subTotal
@@ -31,11 +38,17 @@ use function is_string;
  */
 class Cart extends Resource
 {
+    use SerializesModels;
+
     public const IDENTIFIER = 'cart_v11';
 
-    private function __construct()
+    protected ModeMachine $modeMachine;
+
+    protected function __construct()
     {
         parent::__construct();
+
+        $this->modeMachine = app()->make(ModeMachine::class);
     }
 
     /**
@@ -52,12 +65,21 @@ class Cart extends Resource
         $cart->packs     = Pack::query()->whereIn('id', array_unique($args['packs'] ?? [0]))->get();
         $cart->trainings = Training::query()->whereIn('id', array_unique($args['trainings'] ?? [0]))->get();
 
+        if (isset($args['plan'])) {
+            $cart->plan = $cart->modeMachine->get($args['plan']);
+        }
+
         // Set the coupon code; coupon validation is handled here
         if (isset($args['coupon'])) {
             $cart->coupon = $args['coupon'];
         }
 
         return $cart;
+    }
+
+    public static function fromMetadata(array $metadata): Cart
+    {
+
     }
 
     /**
@@ -80,6 +102,10 @@ class Cart extends Resource
             return Line::fromProduct($sellable);
         });
 
+        if ($this->plan) {
+            $lines->push(Line::fromPrice($this->plan));
+        }
+
         if ($this->couponAmount > 0) {
             $lines->push(Line::fromCoupon($this->coupon, $this->couponAmount));
         }
@@ -92,7 +118,13 @@ class Cart extends Resource
      */
     protected function getSubTotal(): int
     {
-        return $this->products->sum('price');
+        $sum = $this->products->sum('price');
+
+        if ($this->plan) {
+            $sum += $this->plan->unit_amount;
+        }
+
+        return $sum;
     }
 
     /**
@@ -157,19 +189,31 @@ class Cart extends Resource
     public function validate(?User $user = null): self
     {
         // Check that all products are available
-        $unavailable = $this->products->filter(static fn(Product $p) => !$p->available)->pluck('name');
+        $unavailable = $this->products->filter(static fn(Sellable $p) => !$p->available)->pluck('name');
 
         if ($unavailable->isNotEmpty()) {
             throw new UnavailableProducts($unavailable->toArray());
         }
 
         // Check that the user has not already bought one of the cart product
-        $owned = $this->products->filter(static fn(Product $p) => $user->owns($p))->pluck('name');
+        $owned = $this->products->filter(static fn(Ownable $p) => $user->owns($p))->pluck('name');
 
         if ($owned->isNotEmpty()) {
             throw new UnavailableProducts($owned->toArray());
         }
 
         return $this;
+    }
+
+    public function toMetadata(): array
+    {
+        return [
+            'identifier' => self::IDENTIFIER,
+            'release'    => config('app.release'),
+            'chapters'   => $this->chapters->pluck('id')->implode(','),
+            'packs'      => $this->packs->pluck('id')->implode(','),
+            'trainings'  => $this->trainings->pluck('id')->implode(','),
+            'plan'       => $this->plan,
+        ];
     }
 }

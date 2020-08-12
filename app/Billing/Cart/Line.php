@@ -7,6 +7,7 @@ namespace Railgun\Billing\Cart;
 use Railgun\Billing\Stripe\Contracts\StripeProduct;
 use Railgun\Models\Coupon;
 use Railgun\Support\Resource\Resource;
+use Stripe\Price;
 use function class_basename;
 use function sprintf;
 use function strtolower;
@@ -29,6 +30,16 @@ class Line extends Resource
             $model->name,
         );
         $line->price       = $model->price;
+
+        return $line;
+    }
+
+    public static function fromPrice(Price $price): Line
+    {
+        $line = new self();
+
+        $line->description = "{$price->nickname} : {$price->product->description}";
+        $line->price       = $price->unit_amount;
 
         return $line;
     }

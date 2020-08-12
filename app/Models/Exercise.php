@@ -6,7 +6,7 @@ namespace Railgun\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Railgun\Contracts\BelongsToChapter;
+use Railgun\Models\Contracts\BelongsToChapter;
 use Railgun\Models\Traits\Commentable;
 use Railgun\Models\Traits\Freezable;
 use Railgun\Models\Traits\Interactable;

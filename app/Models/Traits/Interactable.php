@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Queue;
-use Railgun\Contracts\BelongsToChapter;
 use Railgun\Jobs\DeleteChapterInteractions;
+use Railgun\Models\Contracts\BelongsToChapter;
 use Railgun\Models\Interaction;
 
 /**

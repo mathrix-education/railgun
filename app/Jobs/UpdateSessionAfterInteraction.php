@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Railgun\Jobs;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Railgun\Contracts\BelongsToChapter;
+use Railgun\Models\Contracts\BelongsToChapter;
 use Railgun\Models\Interaction;
 use Railgun\Models\Session;
 

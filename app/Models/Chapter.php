@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Railgun\Billing\Stripe\Contracts\StripeProduct as StripeProductContract;
 use Railgun\Billing\Stripe\Models\StripeProduct;
-use Railgun\Contracts\BelongsToChapter;
+use Railgun\Models\Contracts\BelongsToChapter;
 use Railgun\Models\Traits\Reorderable;
 use Railgun\Models\Traits\Sluggable;
 

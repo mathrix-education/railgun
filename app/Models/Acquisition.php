@@ -7,7 +7,7 @@ namespace Railgun\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\Concerns\AsPivot;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Railgun\Billing\Contracts\Product;
+use Railgun\Models\Contracts\Sellable;
 use Railgun\Models\Traits\UUID;
 
 /**
@@ -38,7 +38,7 @@ class Acquisition extends BaseModel
     ];
 
     /**
-     * @return MorphTo<Product>
+     * @return MorphTo<Sellable>
      */
     public function product(): MorphTo
     {

@@ -2,5 +2,5 @@ extend type Query {
     """
     Validate a cart.
     """
-    validateCart(cart: CartInput): Cart
+    cart(cart: CartInput!): Cart!
 }

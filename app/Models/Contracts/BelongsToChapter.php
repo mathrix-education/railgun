@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Railgun\Contracts;
+namespace Railgun\Models\Contracts;
 
 use Railgun\Models\BaseModel;
 use Railgun\Models\Chapter;

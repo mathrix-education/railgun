@@ -6,7 +6,7 @@ namespace Railgun\Jobs;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
-use Railgun\Contracts\BelongsToChapter;
+use Railgun\Models\Contracts\BelongsToChapter;
 use Railgun\Models\Traits\Interactable;
 
 /**

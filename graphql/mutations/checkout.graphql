@@ -7,7 +7,7 @@ extend type Mutation {
     You should request for the `payement_intent.client_secret` and check the `payement_intent.status`.
     See the [Payement Intent State Machine](https://stripe.com/docs/payments/intents) for further information.
     """
-    checkoutCart(
+    checkout(
         cart: CartInput!
         paymentMethodId: String!
     ): Invoice! @guard

@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Facades\Cache;
 use Railgun\Models\Acquisition;
-use Railgun\Models\BaseModel;
 use Railgun\Models\Chapter;
+use Railgun\Models\Contracts\Ownable;
 use Railgun\Models\Course;
 use Railgun\Models\Exam;
 use Railgun\Models\Exercise;
@@ -70,11 +70,11 @@ trait OwnsProducts
     }
 
     /**
-     * @param BaseModel $model The product to check.
+     * @param Ownable $model The product to check.
      *
      * @return bool If the user owns the product.
      */
-    public function owns(BaseModel $model): bool
+    public function owns(Ownable $model): bool
     {
         return in_array(
             $model->getGlobalKey(),
