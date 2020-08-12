@@ -1,66 +1,7 @@
-interface Exercise {
+type Exercise {
     id: ID!
     order: Int!
-    """
-    If the exercise is premium-locked.
-    """
-    premium: Boolean!
-    """
-    If the exercise is frozen. Requires the "exercises:freeze" to override.
-    """
-    frozen_at: DateTime
-    visible: Boolean!
-    created_at: DateTime!
-    updated_at: DateTime!
-    subject: Subject! @belongsTo
-    comments: [Comment!] @morphMany
-    """
-    The exercise administrative labels. Requires the "labels:read" permission.
-    """
-    labels: [Label!] @morphMany @permission(name: "labels:read")
-    """
-    The exercise administrative notes. Requires the "notes:read" permission.
-    """
-    notes: [Note!] @morphMany @permission(name: "notes:read")
-    interaction: Interaction @belongsTo
-}
-
-type MCQExercise implements Exercise {
-    id: ID!
-    questions: [Silicate!]! @premium(stripped: "[]")
-    choices: [[Silicate!]!]! @premium(stripped: "[]")
-    solutions: [[Int!]!]! @premium(stripped: "[]")
-    explanations: [[Silicate!]!]! @premium(stripped: "[]")
-    order: Int!
-    """
-    If the exercise is premium-locked.
-    """
-    premium: Boolean!
-    """
-    If the exercise is frozen. Requires the "exercises:freeze" to override.
-    """
-    frozen_at: DateTime
-    visible: Boolean!
-    created_at: DateTime!
-    updated_at: DateTime!
-    subject: Subject! @belongsTo
-    comments: [Comment!] @morphMany
-    """
-    The exercise administrative labels. Requires the "labels:read" permission.
-    """
-    labels: [Label!] @morphMany @permission(name: "labels:read")
-    """
-    The exercise administrative notes. Requires the "notes:read" permission.
-    """
-    notes: [Note!] @morphMany @permission(name: "notes:read")
-    interaction: Interaction @belongsTo
-}
-
-type ProofExercise implements Exercise {
-    id: ID!
-    questions: [Silicate!]! @premium(stripped: "[]")
-    explanations: [[Silicate!]!]! @premium(stripped: "[]")
-    order: Int!
+    content: Silicate! @premium(stripped: "[]")
     """
     If the exercise is premium-locked.
     """

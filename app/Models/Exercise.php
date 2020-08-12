@@ -19,10 +19,7 @@ use Railgun\Models\Traits\Reorderable;
 /**
  * @property-read int     $id
  * @property      string  $type
- * @property      array   $questions
- * @property      array   $choices
- * @property      array   $solutions
- * @property      array   $explanations
+ * @property      mixed[] $content
  * @property      int     $order
  * @property      bool    $premium
  * @property      bool    $visible
@@ -44,22 +41,15 @@ class Exercise extends Model implements Content
 
     protected       $attributes = ['visible' => false];
     protected       $fillable   = [
-        'type',
-        'questions',
-        'choices',
-        'solutions',
-        'explanations',
+        'content',
         'order',
         'visible',
         'subject_id',
     ];
     protected       $casts      = [
-        'questions'    => 'array',
-        'choices'      => 'array',
-        'solutions'    => 'array',
-        'explanations' => 'array',
-        'premium'      => 'boolean',
-        'visible'      => 'boolean',
+        'content' => 'array',
+        'premium' => 'boolean',
+        'visible' => 'boolean',
     ];
     protected array $orderGroup = ['subject_id'];
 

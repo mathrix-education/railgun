@@ -113,7 +113,7 @@ jobs:
             --coverage-text
       - name: Upload coverage report to Codecov
         if: needs.mappings.outputs.skip_test != '1'
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v1.0.12
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: storage/artifacts/phpunit-coverage.xml

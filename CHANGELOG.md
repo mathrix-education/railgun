@@ -1,5 +1,14 @@
 # Changelog
 
+## 11.0.0
+### Breaking changes
+- **exercises**: collapse `questions`, `choices`, `solutions` and `explanations` to `content` in `Exercise` type
+- **exercises**: delete type-dependent exercise types
+  - `createMCQExercise` and `createProofExercise` mutations are replaced by `createExercise`
+  - `updateMCQExercise` and `updateProofExercise` mutations are replaced by `updateExercise`
+  - `MCQExercise` and `ProofExercise` types are replaced by `Exercise`
+  - `MCQExercise | ProofExercise` is replaced by `Exercise` in `Commentable`, `Notable` annd `Reportable` unions 
+
 ## 10.0.1
 ### Bug fixes
 - **ppm**: set request max size to 100MB

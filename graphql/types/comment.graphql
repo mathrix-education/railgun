@@ -1,4 +1,4 @@
-union Commentable = Course | Exam | MCQExercise | ProofExercise | Flashcard
+union Commentable = Course | Exam | Exercise | Flashcard
 
 enum CommentableType {
     COURSE @enum(value: "course")
