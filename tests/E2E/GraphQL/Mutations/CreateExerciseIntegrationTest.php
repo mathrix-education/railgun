@@ -13,9 +13,9 @@ use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function factory;
 
 /**
- * @testdox Mutation createProofExercise
+ * @testdox Mutation createMCQExercise
  */
-class CreateProofExerciseIntegrationTest extends GraphQLIntegrationTestCase
+class CreateExerciseIntegrationTest extends GraphQLIntegrationTestCase
 {
     use DatabaseTransactions;
 
@@ -26,11 +26,10 @@ class CreateProofExerciseIntegrationTest extends GraphQLIntegrationTestCase
     {
         $this->graphQL(
             <<<'GRAPHQL'
-            mutation($input: CreateProofExercise!) {
-                createProofExercise(input: $input) {
+            mutation($input: CreateExercise!) {
+                createExercise(input: $input) {
                     id
-                    questions
-                    explanations
+                    content
                     premium
                     updated_at
                 }
@@ -50,8 +49,8 @@ class CreateProofExerciseIntegrationTest extends GraphQLIntegrationTestCase
         /** @var Subject $subject */
         $subject   = factory(Subject::class)->create(['premium' => false]);
         $variables = Arr::except(
-            factory(Exercise::class)->raw(['type' => 'MCQ', 'subject_id' => $subject->id]),
-            ['id', 'type', 'choices', 'solutions', 'premium', 'created_at', 'updated_at'],
+            factory(Exercise::class)->raw(['subject_id' => $subject->id]),
+            ['id', 'type', 'premium', 'created_at', 'updated_at'],
         );
         $this->withPermissions(['exercises:write', 'exercises:write:visible']);
 
@@ -59,12 +58,12 @@ class CreateProofExerciseIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->assertResponseOk();
         $this->assertNoErrors();
-        $this->assertEquals($variables['questions'][0][0]['uuid'], $this->getData('questions.0.0.uuid'));
+        $this->assertEquals($variables['content'][0]['uuid'], $this->getData('content.0.uuid'));
 
         $this->assertCount(
             1,
             DB::table('exercises')
-                ->whereRaw('JSON_EXTRACT(questions, \'$[0][0].uuid\') = ?', [$variables['questions'][0][0]['uuid']])
+                ->whereRaw('JSON_EXTRACT(content, \'$[0].uuid\') = ?', [$variables['content'][0]['uuid']])
                 ->get(),
         );
     }

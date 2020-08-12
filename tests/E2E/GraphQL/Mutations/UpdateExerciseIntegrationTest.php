@@ -15,7 +15,7 @@ use function factory;
 /**
  * @testdox Mutation updateMCQExercise
  */
-class UpdateMCQExerciseIntegrationTest extends GraphQLIntegrationTestCase
+class UpdateExerciseIntegrationTest extends GraphQLIntegrationTestCase
 {
     use DatabaseTransactions;
 
@@ -26,13 +26,10 @@ class UpdateMCQExerciseIntegrationTest extends GraphQLIntegrationTestCase
     {
         $this->graphQL(
             <<<'GRAPHQL'
-            mutation($input: UpdateMCQExercise!) {
-                updateMCQExercise(input: $input) {
+            mutation($input: UpdateExercise!) {
+                updateExercise(input: $input) {
                     id
-                    questions
-                    solutions
-                    explanations
-                    choices
+                    content
                     premium
                     updated_at
                 }
@@ -70,12 +67,12 @@ class UpdateMCQExerciseIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->assertResponseOk();
         $this->assertNoErrors();
-        $this->assertEquals($variables['questions'][0][0]['uuid'], $this->getData('questions.0.0.uuid'));
+        $this->assertEquals($variables['content'][0]['uuid'], $this->getData('content.0.uuid'));
 
         $this->assertCount(
             1,
             DB::table('exercises')
-                ->whereRaw('JSON_EXTRACT(questions, \'$[0][0].uuid\') = ?', [$variables['questions'][0][0]['uuid']])
+                ->whereRaw('JSON_EXTRACT(content, \'$[0].uuid\') = ?', [$variables['content'][0]['uuid']])
                 ->get(),
         );
     }

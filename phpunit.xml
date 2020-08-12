@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-  bootstrap="bootstrap/app.php"
-  cacheResultFile="storage/framework/cache/phpunit.cache.php"
->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+         bootstrap="bootstrap/app.php"
+         cacheResultFile="storage/framework/cache/phpunit.cache.php">
   <testsuites>
     <testsuite name="Functional Test Suite">
       <directory>./tests/Functional</directory>
@@ -13,14 +11,14 @@
       <directory>./tests/E2E</directory>
     </testsuite>
   </testsuites>
-  <filter>
-    <whitelist processUncoveredFilesFromWhitelist="true">
+  <coverage processUncoveredFiles="true">
+    <include>
       <directory suffix=".php">./app</directory>
-      <exclude>
-        <file>./app/Console/SandboxCommand.php</file>
-      </exclude>
-    </whitelist>
-  </filter>
+    </include>
+    <exclude>
+      <file>./app/Console/SandboxCommand.php</file>
+    </exclude>
+  </coverage>
   <php>
     <env name="APP_ENV" value="testing"/>
   </php>
