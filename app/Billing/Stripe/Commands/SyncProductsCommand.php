@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Railgun\Billing\Stripe\Contracts\StripeProduct;
+use Railgun\Billing\Stripe\Contracts\StripeSellable;
 use Railgun\Billing\Stripe\Models\ModeMachine;
 use Railgun\Billing\Stripe\StripeClientRegistry;
 use Railgun\Models\Chapter;
@@ -44,7 +44,10 @@ class SyncProductsCommand extends Command
         // TODO: remove the Chapter auto-pricing
         Chapter::query()
             ->whereHas('theme.grade', static fn($q) => $q->where('grades.slug', '=', 'postbac'))
-            ->update(['price' => 4000]);
+            ->update([
+                'price'   => 4000,
+                'visible' => true,
+            ]);
 
         $this->syncPremium();
         $this->syncProducts(Pack::class);
@@ -73,7 +76,7 @@ class SyncProductsCommand extends Command
             $progress->setMessage("Pushing <info>{$lookupKey}</info> price");
             $price = $this->getPrice($lookupKey, false);
 
-            $payload = Arr::except($payload, ['period', 'price_per_month']);
+            $payload = Arr::except($payload, ['period', 'price_per_month', 'months_per_period']);
 
             if ($price === null) {
                 $this->stripe->prices->create($payload);
@@ -105,7 +108,7 @@ class SyncProductsCommand extends Command
         if ($model === Chapter::class) {
             $models = Chapter::query()->whereNotNull('price');
         } else {
-            /** @var Collection|StripeProduct[] $models */
+            /** @var Collection|StripeSellable[] $models */
             $models = forward_static_call_array([$model, 'all'], []);
         }
 
@@ -114,7 +117,7 @@ class SyncProductsCommand extends Command
         $progress->setMessage('');
 
         $progress->start();
-        $models->each(function (StripeProduct $model) use ($progress): void {
+        $models->each(function (StripeSellable $model) use ($progress): void {
             $progress->setMessage(
                 "Pushing <info>{$model->name}</info> (product <info>{$model->stripe_product_id}</info>)",
             );

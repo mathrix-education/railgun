@@ -6,13 +6,14 @@ namespace Railgun\Jobs;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Railgun\Billing\Cart\Cart;
 use Railgun\Models\Acquisition;
 use Railgun\Models\Contracts\Sellable;
 use Railgun\Models\Pack;
 use Railgun\Models\Training;
 use function array_merge;
-use function get_class;
+use function resolveMorph;
 
 class DispatchCart extends Job
 {
@@ -29,27 +30,30 @@ class DispatchCart extends Job
 
     public function handle(): void
     {
-        $this->cart->products
-            ->map(static function (Sellable $product) {
-                $data = [
-                    'product_type' => Relation::getMorphedModel(get_class($product)),
-                    'product_id'   => $product->getKey(),
-                ];
+        $products = new Collection();
 
-                if ($product instanceof Pack) {
-                    $data = $product->trainings
-                        ->pluck('id')
-                        ->map(static fn(int $trainingId) => [
-                            'product_type' => Relation::getMorphedModel(Training::class),
-                            'product_id'   => $trainingId,
-                        ])
-                        ->prepend($data)
-                        ->toArray();
+        $this->cart->products
+            ->each(static function (Sellable $product) use ($products): void {
+                $products->push([
+                    'product_type' => resolveMorph($product),
+                    'product_id'   => $product->getKey(),
+                ]);
+
+                if (!($product instanceof Pack)) {
+                    return;
                 }
 
-                return $data;
-            })
-            ->flatten()
+                $product->trainings
+                    ->pluck('id')
+                    ->each(static function (int $trainingId) use ($products): void {
+                        $products->push([
+                            'product_type' => resolveMorph(Training::class),
+                            'product_id'   => $trainingId,
+                        ]);
+                    });
+            });
+
+        $products
             ->map(fn(array $data) => array_merge($data, [
                 'user_id'        => $this->recipientId,
                 'transaction_id' => $this->transactionId,

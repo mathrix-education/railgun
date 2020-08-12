@@ -8,7 +8,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 use Railgun\Billing\Exceptions\InvalidCouponCodeException;
 use Railgun\Billing\Exceptions\UnavailableProducts;
-use Railgun\Billing\Stripe\Contracts\StripeProduct;
+use Railgun\Billing\Stripe\Contracts\StripeSellable;
 use Railgun\Billing\Stripe\Models\ModeMachine;
 use Railgun\Models\Chapter;
 use Railgun\Models\Contracts\Ownable;
@@ -23,6 +23,7 @@ use function app;
 use function array_unique;
 use function config;
 use function is_string;
+use function round;
 
 /**
  * @property      Collection|array<int, Chapter>  $chapters
@@ -77,13 +78,8 @@ class Cart extends Resource
         return $cart;
     }
 
-    public static function fromMetadata(array $metadata): Cart
-    {
-
-    }
-
     /**
-     * @return Collection|StripeProduct[] The product collection.
+     * @return Collection|StripeSellable[] The product collection.
      */
     protected function getProducts(): Collection
     {
@@ -98,7 +94,7 @@ class Cart extends Resource
      */
     protected function getLines(): Collection
     {
-        $lines = $this->products->map(static function (StripeProduct $sellable) {
+        $lines = $this->products->map(static function (StripeSellable $sellable) {
             return Line::fromProduct($sellable);
         });
 
@@ -165,7 +161,7 @@ class Cart extends Resource
         }
 
         if ($this->coupon->type === Coupon::TYPE_PERCENT) {
-            return $this->coupon->value;
+            return (int)round($this->coupon->value / 100 * $this->subTotal);
         }
 
         return 0;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Railgun\Billing\Cart;
 
-use Railgun\Billing\Stripe\Contracts\StripeProduct;
+use Railgun\Billing\Stripe\Contracts\StripeSellable;
 use Railgun\Models\Coupon;
 use Railgun\Support\Resource\Resource;
 use Stripe\Price;
@@ -20,7 +20,7 @@ use function ucfirst;
  */
 class Line extends Resource
 {
-    public static function fromProduct(StripeProduct $model): Line
+    public static function fromProduct(StripeSellable $model): Line
     {
         $line = new self();
 

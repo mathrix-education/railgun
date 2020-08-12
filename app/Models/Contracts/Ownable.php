@@ -11,5 +11,5 @@ use Railgun\Models\BaseModel;
  */
 interface Ownable
 {
-    public function owned(): bool;
+    public function getOwnedAttribute(): bool;
 }

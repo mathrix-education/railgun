@@ -7,7 +7,7 @@ namespace Railgun\Billing\Stripe\Checkouts;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Railgun\Billing\Stripe\Contracts\StripeProduct;
+use Railgun\Billing\Stripe\Contracts\StripeSellable;
 use Railgun\Jobs\DispatchCart;
 use Stripe\ErrorObject;
 use Stripe\Exception\ApiErrorException;
@@ -37,6 +37,10 @@ class InvoiceCheckout extends Checkout
      */
     public function abort(ApiErrorException $exception): self
     {
+        if (!isset($this->invoice)) {
+            throw $exception;
+        }
+
         if ($this->invoice->status === Invoice::STATUS_DRAFT) {
             // Invoice is still in draft status and thus can be completely deleted
             $this->invoiceItems->each(function (InvoiceItem $invoiceItem): void {
@@ -59,7 +63,7 @@ class InvoiceCheckout extends Checkout
      */
     public function build(): self
     {
-        $this->invoiceItems = $this->cart->products->map(function (StripeProduct $product): void {
+        $this->invoiceItems = $this->cart->products->map(function (StripeSellable $product): void {
             $type = Str::lower(class_basename($product));
 
             $payload = [
@@ -78,7 +82,8 @@ class InvoiceCheckout extends Checkout
         if ($this->cart->coupon) {
             $this->invoiceItems->push($this->client->invoiceItems->create([
                 'customer'    => $this->customer->id,
-                'amount'      => $this->cart->coupon,
+                'currency'    => 'eur',
+                'amount'      => -$this->cart->couponAmount,
                 'description' => sprintf(
                     '%s : "%s"',
                     trans_choice('models.coupon', 1),

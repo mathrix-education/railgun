@@ -11,7 +11,7 @@ trait Sellable
 {
     public function getAvailableAttribute(): bool
     {
-        return $this->attributes['available'] ?? false;
+        return $this->sellable && ($this->attributes['available'] ?? $this->attributes['visible']);
     }
 
     public function getSellableAttribute(): bool

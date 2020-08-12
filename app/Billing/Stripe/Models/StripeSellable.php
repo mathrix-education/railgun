@@ -23,17 +23,17 @@ use function explode;
  * @mixin Model
  * @mixin SaveWithoutEvents
  */
-trait StripeProduct
+trait StripeSellable
 {
     use InteractsWithStripe;
     use SaveWithoutEvents;
 
     protected StripeClient $client;
 
-    public static function bootStripeProduct(): void
+    public static function bootStripeSellable(): void
     {
         static::saved(static function (Model $model): void {
-            /** @var StripeProduct $model */
+            /** @var StripeSellable $model */
             if ($model->isStripeDirty()) {
                 $model->pushToStripe();
             }

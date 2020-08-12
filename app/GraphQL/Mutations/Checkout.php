@@ -26,13 +26,14 @@ class Checkout
      */
     public function __invoke($_, array $args, GraphQLContext $context): Invoice
     {
-        $cart = Cart::build($args);
         /** @var User $user */
         $user            = $context->user();
         $paymentMethodId = $args['paymentMethodId'];
 
+        $cart = Cart::build($args['cart'])->validate($user);
+
         /** @var StripeCheckout $checkout */
-        $checkout = isset($args['plan'])
+        $checkout = $cart->plan
             ? new SubscriptionCheckout($cart, $user, $paymentMethodId)
             : new InvoiceCheckout($cart, $user, $paymentMethodId);
 

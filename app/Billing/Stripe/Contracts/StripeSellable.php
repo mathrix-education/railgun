@@ -9,9 +9,9 @@ use Railgun\Models\Contracts\Sellable;
 
 /**
  * @mixin Model
- * @mixin \Railgun\Billing\Stripe\Models\StripeProduct
+ * @mixin \Railgun\Billing\Stripe\Models\StripeSellable
  */
-interface StripeProduct extends Sellable
+interface StripeSellable extends Sellable
 {
     public function getStripeProductIdAttribute(): string;
 }

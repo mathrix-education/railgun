@@ -22,7 +22,7 @@ use Carbon\Carbon;
 class Coupon extends BaseModel
 {
     public const TYPE_ABSOLUTE = 'absolute';
-    public const TYPE_PERCENT  = 'percent';
+    public const TYPE_PERCENT  = 'percentage';
 
     protected $keyType      = 'string';
     public    $incrementing = false;

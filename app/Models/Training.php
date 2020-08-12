@@ -8,10 +8,12 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Railgun\Billing\Stripe\Contracts\StripeProduct as StripeProductContract;
-use Railgun\Billing\Stripe\Models\StripeProduct;
+use Railgun\Billing\Stripe\Contracts\StripeSellable as StripeProductContract;
+use Railgun\Billing\Stripe\Models\StripeSellable;
 use Railgun\Models\Traits\Acquerable;
+use Railgun\Models\Traits\Ownable;
 use Railgun\Models\Traits\Reorderable;
+use Railgun\Models\Traits\Sellable;
 use Railgun\Models\Traits\Sluggable;
 
 /**
@@ -35,9 +37,11 @@ use Railgun\Models\Traits\Sluggable;
 class Training extends BaseModel implements StripeProductContract
 {
     use Acquerable;
+    use Ownable;
     use Reorderable;
+    use Sellable;
     use Sluggable;
-    use StripeProduct;
+    use StripeSellable;
 
     protected $fillable = [
         'name',
