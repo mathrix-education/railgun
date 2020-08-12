@@ -1,24 +1,8 @@
-input CreateMCQExercise {
+input CreateExercise {
     """
-    The exercise questions. The questions are the autoritative reference for `choices`, `choices` and `solutions` sizes.
-    Cannot be empty.
+    The exercise content.
     """
-    questions: [Silicate!]!
-    """
-    The exercise choices.
-    Must have the same size as the `questions` field.
-    """
-    choices: [[Silicate!]!]!
-    """
-    The exercise solutions.
-    Must have the same size as the `questions` field.
-    """
-    solutions: [[Int!]!]!
-    """
-    The exercise explanations.
-    Must have the same size as the `questions` field.
-    """
-    explanations: [Silicate!]!
+    content: [Silicate!]!
     """
     The exercise order. If not set, the chapter will be placed in the last position of the group [subject].
     Must be positive (i.e. >=0).
@@ -45,111 +29,15 @@ input CreateMCQExercise {
     labels: BelongsToMany
 }
 
-input UpdateMCQExercise {
+input UpdateExercise {
     """
     The targeted exercise ID.
     """
     id: ID!
     """
-    The exercise new questions. The questions are the autoritative reference for `choices`, `choices` and `solutions`
-    sizes.
-    Cannot be empty.
+    The exercise content.
     """
-    questions: [Silicate!]
-    """
-    The exercise new choices.
-    Must have the same size as the `questions` field.
-    """
-    choices: [[Silicate!]!]
-    """
-    The exercise new solutions.
-    Must have the same size as the `questions` field.
-    """
-    solutions: [[Int!]!]
-    """
-    The exercise new explanations.
-    Must have the same size as the `questions` field.
-    """
-    explanations: [[Silicate!]!]
-    """
-    The exercise new order.
-    Must be positive (i.e. >=0).
-    """
-    order: Int @rules(apply: ["nullable", "integer", "min:0"])
-    """
-    The exercise frozen date. If set, only the users with the permission `exercises:freeze` will be allowed to edit the
-    exercise. Set to `null` to disable.
-    Requires the permission `exercises:freeze`.
-    """
-    frozen_at: DateTime @permission(name: "exercises:freeze")
-    """
-    If the exercise should be displayed to the end users.
-    Requires the permission `exercises:write:visible`.
-    """
-    visible: Boolean @permission(name: "exercises:write:visible")
-    """
-    The exercise new related subject ID.
-    """
-    subject_id: ID @rules(apply: ["integer"])
-    """
-    The exercise associated labels.
-    """
-    labels: BelongsToMany
-}
-
-input CreateProofExercise {
-    """
-    The exercise questions. The questions are the autoritative reference for `choices`, `choices` and `solutions` sizes.
-    Cannot be empty.
-    """
-    questions: [Silicate!]!
-    """
-    The exercise explanations.
-    Must have the same size as the `questions` field.
-    """
-    explanations: [Silicate!]!
-    """
-    The exercise order. If not set, the chapter will be placed in the last position of the group [subject].
-    Must be positive (i.e. >=0).
-    """
-    order: Int @rules(apply: ["nullable", "integer", "min:0"])
-    """
-    The exercise frozen date. If set, only the users with the permission `exercises:freeze` will be allowed to edit the
-    exercise. Set to `null` to disable.
-    Requires the permission `exercises:freeze`.
-    """
-    frozen_at: DateTime @permission(name: "exercises:freeze")
-    """
-    If the exercise should be displayed to the end users. Default value is `false`.
-    Requires the permission `exercises:write:visible`.
-    """
-    visible: Boolean @permission(name: "exercises:write:visible")
-    """
-    The exercise related subject ID.
-    """
-    subject_id: ID! @rules(apply: ["integer"])
-    """
-    The exercise associated labels.
-    """
-    labels: BelongsToMany
-}
-
-input UpdateProofExercise {
-    """
-    The targeted exercise ID.
-    """
-    id: ID!
-    """
-    The exercise new questions. The questions are the autoritative reference for `choices`, `choices` and `solutions`
-    sizes.
-    Cannot be empty.
-    """
-    questions: [Silicate!]
-    """
-    The exercise new explanations.
-    Must have the same size as the `questions` field.
-    """
-    explanations: [[Silicate!]!]
+    content: [Silicate!]
     """
     The exercise new order.
     Must be positive (i.e. >=0).
