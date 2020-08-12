@@ -6,9 +6,12 @@ namespace Railgun\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Factory as Auth;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Nuwave\Lighthouse\Execution\ErrorPool;
 use Railgun\Logging\GoogleCloudJsonFormatter;
 use Symfony\Component\HttpFoundation\Response;
 use function app;
@@ -18,10 +21,12 @@ use function app;
  */
 class TeardownMiddleware
 {
-    private Auth $auth;
+    protected Container $app;
+    private Auth        $auth;
 
-    public function __construct(Auth $auth)
+    public function __construct(Container $app, Auth $auth)
     {
+        $this->app  = $app;
         $this->auth = $auth;
     }
 
@@ -44,6 +49,8 @@ class TeardownMiddleware
      * @param Request  $request  The Illuminate HTTP request.
      * @param Response $response The Illuminate HTTP response.
      *
+     * @throws BindingResolutionException
+     *
      * @codeCoverageIgnore
      */
     public function terminate(Request $request, Response $response): void
@@ -55,6 +62,9 @@ class TeardownMiddleware
 
         // Logout the user from the application.
         $this->auth->guard()->logout();
+
+        // Lighthouse
+        $this->app->make(ErrorPool::class)->clear();
 
         // Clear the in-memory cache
         Cache::store('request')->clear();
