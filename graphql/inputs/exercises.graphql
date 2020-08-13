@@ -2,7 +2,7 @@ input CreateExercise {
     """
     The exercise content.
     """
-    content: [Silicate!]!
+    content: Silicate!
     """
     The exercise order. If not set, the chapter will be placed in the last position of the group [subject].
     Must be positive (i.e. >=0).
@@ -37,7 +37,7 @@ input UpdateExercise {
     """
     The exercise content.
     """
-    content: [Silicate!]
+    content: Silicate
     """
     The exercise new order.
     Must be positive (i.e. >=0).
