@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Nuwave\Lighthouse\Execution\ErrorPool;
+use Nuwave\Lighthouse\Execution\GraphQLRequest;
 use Railgun\Logging\GoogleCloudJsonFormatter;
 use Symfony\Component\HttpFoundation\Response;
 use function app;
@@ -65,6 +66,7 @@ class TeardownMiddleware
 
         // Lighthouse
         $this->app->make(ErrorPool::class)->clear();
+        $this->app->forgetInstance(GraphQLRequest::class);
 
         // Clear the in-memory cache
         Cache::store('request')->clear();
