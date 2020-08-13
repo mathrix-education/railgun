@@ -9,6 +9,9 @@
   - `MCQExercise` and `ProofExercise` types are replaced by `Exercise`
   - `MCQExercise | ProofExercise` is replaced by `Exercise` in `Commentable`, `Notable` annd `Reportable` unions 
 
+### Bugfixes
+- **lighthouse**: forget `GraphQLRequest` on request teardown
+
 ## 10.0.1
 ### Bug fixes
 - **ppm**: set request max size to 100MB
