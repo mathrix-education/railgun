@@ -1,7 +1,7 @@
 name: Web pipeline
 on:
   push:
-    branches: ['main']
+    branches: ['main', 'feat/stripe-v2']
     tags: ['**']
   pull_request:
     branches: ['**']
@@ -34,6 +34,8 @@ jobs:
       - name: Setup mappings
         id: mappings
         run: .github/scripts/setup.sh
+        env:
+          GITHUB_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
       - name: Check tag version
         if: startsWith(github.ref, 'refs/tags/')
         run: .github/scripts/version_check.sh

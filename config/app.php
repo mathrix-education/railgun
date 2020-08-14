@@ -6,7 +6,7 @@ return [
     'name'            => 'Railgun',
     'release'         => env('APP_RELEASE', 'RELEASE_ALIAS'),
     'env'             => env('APP_ENV', 'production'),
-    'debug'           => env('APP_DEBUG', false),
+    'debug'           => env('APP_DEBUG', env('APP_ENV', 'production') !== 'production'),
     'url'             => env('APP_URL', 'http://localhost'),
     'timezone'        => env('APP_TIMEZONE', 'UTC'),
     'locale'          => env('APP_LOCALE', 'fr'),

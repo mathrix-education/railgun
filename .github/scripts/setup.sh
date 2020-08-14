@@ -21,10 +21,14 @@ fi
 short_sha=${sha:0:7}
 
 # Setup environment
-if [[ "$GITHUB_REF" == "refs/tags"* ]]; then
-  environment="production"
-else
-  environment="edge"
+environment=$(git log -1 --format=%B | sed -n -E 's/.*deploy: ([a-z]+).*/\1/p')
+
+if [[ -z $environment ]]; then
+    if [[ "$GITHUB_REF" == "refs/tags"* ]]; then
+      environment="production"
+    else
+      environment="edge"
+    fi
 fi
 
 if [[ "$environment" == "production" ]]; then
