@@ -51,36 +51,10 @@ class ContentSeeder extends AdvancedSeeder
         $this->seedFile('disciplines.json');
 
         // Themes
-        DB::table('grades')
-            ->crossJoin('disciplines')
-            ->selectRaw('grades.id as grade_id, disciplines.id as discipline_id')
-            ->get()
-            ->flatMap(function (stdClass $theme) {
-                $themeCount = $this->faker->numberBetween(...self::THEMES_PER_TUPLE);
-
-                return collect(factory(Theme::class, $themeCount)->raw((array)$theme))
-                    ->map(static fn(array $theme, int $index) => array_merge($theme, ['order' => $index]));
-            })
-            ->tap(function (Collection $themes): void {
-                $this->writeCollectionMessage('themes');
-                $this->seedCollection($themes, 'themes');
-            });
+        $this->seedFile('themes.json');
 
         // Chapters
-        DB::table('themes')
-            ->get(['id'])
-            ->pluck('id')
-            ->flatMap(function (int $themeId) {
-                $chapterCount = $this->faker->numberBetween(...self::CHAPTERS_PER_THEME);
-
-                return collect(factory(Chapter::class, $chapterCount)
-                    ->raw(['theme_id' => $themeId]))
-                    ->map(static fn(array $chapter, int $order) => array_merge($chapter, ['order' => $order]));
-            })
-            ->tap(function (Collection $chapters): void {
-                $this->writeCollectionMessage('chapters');
-                $this->seedCollection($chapters, 'chapters');
-            });
+        $this->seedFile('chapters.json');
 
         $chapterIds = DB::table('chapters')->get(['id'])->pluck('id');
 

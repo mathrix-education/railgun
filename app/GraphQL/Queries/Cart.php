@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace Railgun\GraphQL\Queries;
 
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use Railgun\Billing\Cart\Cart;
+use Railgun\Billing\Cart\Cart as CartResource;
 
-class ValidateCart
+class Cart
 {
     /**
      * @param null           $_       The parent value, always null in this case.
      * @param mixed[]        $args    The query arguments (cart).
      * @param GraphQLContext $context The GraphQL context which holds the user.
      *
-     * @return Cart The validated cart.
+     * @return CartResource The validated cart.
      */
-    public function __invoke($_, array $args, GraphQLContext $context): array
+    public function __invoke($_, array $args, GraphQLContext $context): CartResource
     {
-        return Cart::build($args)->validate();
+        return CartResource::build($args)->validate();
     }
 }

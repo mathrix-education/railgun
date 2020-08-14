@@ -7,6 +7,7 @@ namespace Railgun\Billing\Stripe\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Railgun\Billing\Stripe\Contracts\StripeSellable;
 use Railgun\Billing\Stripe\Models\ModeMachine;
@@ -18,10 +19,15 @@ use Stripe\Exception\ApiErrorException;
 use Stripe\Price;
 use Stripe\Product;
 use Stripe\StripeClient;
+use function app;
 use function class_basename;
 use function collect;
 use function count;
+use function file_put_contents;
 use function forward_static_call_array;
+use function json_encode;
+use const JSON_PRETTY_PRINT;
+use const JSON_THROW_ON_ERROR;
 
 class SyncProductsCommand extends Command
 {
@@ -53,6 +59,32 @@ class SyncProductsCommand extends Command
         $this->syncProducts(Pack::class);
         $this->syncProducts(Training::class);
         $this->syncProducts(Chapter::class);
+
+        // Export products
+        $tables = [
+            'countries',
+            'disciplines',
+            'grades',
+            'grade_training',
+            'themes',
+            'chapters',
+            'packs',
+            'trainings',
+            'pack_training',
+        ];
+
+        foreach ($tables as $table) {
+            $data = DB::table($table)->get();
+
+            if ($table === 'grades') {
+                $data = $data->sortBy('parent_id')->values();
+            }
+
+            file_put_contents(
+                app()->databasePath("raws/$table.json"),
+                json_encode($data, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT),
+            );
+        }
     }
 
     /**
