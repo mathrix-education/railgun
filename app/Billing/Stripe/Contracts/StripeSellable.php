@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use Railgun\Models\Contracts\Sellable;
 
 /**
+ * @property-read string $is_sellable
+ * @property-read string $stripe_product_id
+ * @property      string $stripe_price_id
  * @mixin Model
- * @mixin \Railgun\Billing\Stripe\Models\StripeSellable
  */
 interface StripeSellable extends Sellable
 {
-    public function getStripeProductIdAttribute(): string;
 }

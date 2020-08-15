@@ -21,6 +21,7 @@ class SetupStripeProducts extends Migration
         foreach (['chapters', 'packs', 'trainings'] as $table) {
             Schema::table($table, static function (Blueprint $table): void {
                 $table->string('stripe_price_id')->after('visible')->nullable();
+                $table->string('stripe_product_id')->after('visible')->nullable();
             });
         }
     }
@@ -31,12 +32,15 @@ class SetupStripeProducts extends Migration
     public function down(): void
     {
         Schema::table('trainings', static function (Blueprint $table): void {
+            $table->dropColumn('stripe_product_id');
             $table->dropColumn('stripe_price_id');
         });
         Schema::table('packs', static function (Blueprint $table): void {
+            $table->dropColumn('stripe_product_id');
             $table->dropColumn('stripe_price_id');
         });
         Schema::table('chapters', static function (Blueprint $table): void {
+            $table->dropColumn('stripe_product_id');
             $table->dropColumn('stripe_price_id');
             $table->dropColumn('price');
         });

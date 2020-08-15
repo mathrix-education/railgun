@@ -25,8 +25,6 @@ use Railgun\Models\Traits\Sluggable;
  * @property      int                  $price
  * @property      int                  $order
  * @property      bool                 $visible
- * @property      string|null          $stripe_product_id
- * @property      string|null          $stripe_price_id
  * @property-read Carbon               $created_at
  * @property-read Carbon               $updated_at
  * ---

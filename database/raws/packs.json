@@ -7,9 +7,10 @@
         "price": 7800,
         "order": 0,
         "visible": 1,
-        "stripe_price_id": "price_1HGFDbIQfmflhkABLiPAg5OW",
+        "stripe_product_id": "prod_HpwbPj0APtfpPq",
+        "stripe_price_id": "price_1HGGmZIQfmflhkABSApBIU3M",
         "created_at": "2019-04-23 21:02:02",
-        "updated_at": "2020-08-15 04:34:03"
+        "updated_at": "2020-08-15 06:15:29"
     },
     {
         "id": 2,
@@ -19,8 +20,9 @@
         "price": 7800,
         "order": 1,
         "visible": 1,
-        "stripe_price_id": "price_1HGFDcIQfmflhkABP8TX3BeQ",
+        "stripe_product_id": "prod_HpwfeQlhi7oRAt",
+        "stripe_price_id": "price_1HGGmaIQfmflhkABC6JD76o2",
         "created_at": "2019-04-23 21:03:20",
-        "updated_at": "2020-08-15 04:34:04"
+        "updated_at": "2020-08-15 06:15:31"
     }
 ]

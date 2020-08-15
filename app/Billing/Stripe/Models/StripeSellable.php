@@ -5,25 +5,18 @@ declare(strict_types=1);
 namespace Railgun\Billing\Stripe\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
+use Railgun\Billing\Stripe\Models\StripeSellable as StripeSellableContract;
 use Railgun\Models\Traits\SaveWithoutEvents;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Price;
 use Stripe\Product;
 use Stripe\StripeClient;
-use function app;
-use function array_combine;
 use function array_merge;
-use function class_basename;
 use function count;
-use function explode;
+use function resolveMorph;
 
 /**
- * @property-read string $is_sellable
- * @property-read string $stripe_product_id
- * @property      string $stripe_price_id
- * @mixin Model
- * @mixin SaveWithoutEvents
+ * @mixin StripeSellableContract
  */
 trait StripeSellable
 {
@@ -61,30 +54,14 @@ trait StripeSellable
     }
 
     /**
-     * @return string The product id.
-     */
-    public function getStripeProductIdAttribute(): string
-    {
-        return Str::of(class_basename($this))->slug()->lower() . '_' . $this->id;
-    }
-
-    protected function getStripeName(): string
-    {
-        $name = $this->name;
-
-        if (app()->runningUnitTests()) {
-            $name = "[TEST] $name";
-        }
-
-        return $name;
-    }
-
-    /**
      * @return mixed[] The product and price metadata.
      */
     protected function getStripeMetadata(): array
     {
-        return array_combine(['product_type', 'product_id'], explode('_', $this->stripe_product_id));
+        return [
+            'product_type' => resolveMorph(static::class),
+            'product_id'   => $this->getKey(),
+        ];
     }
 
     /**
@@ -96,10 +73,29 @@ trait StripeSellable
      */
     protected function getStripeProduct(): ?Product
     {
-        /** @var Product[] $results */
-        $results = $this->client->products->all(['ids' => [$this->stripe_product_id]])->data;
+        if ($this->stripe_product_id) {
+            /** @var Product[] $results */
+            $results = $this->client->products->all([
+                'ids'   => [$this->stripe_product_id],
+                'limit' => 1,
+            ])->data;
 
-        return count($results) > 0 ? $results[0] : null;
+            return count($results) > 0 ? $results[0] : null;
+        }
+
+        // There is no stripe_product_id, try to resolve by name
+        /** @var Product $product */
+        foreach ($this->client->products->all(['limit' => 100])->autoPagingIterator() as $product) {
+            if ($product->name === $this->name) {
+                // exact name match
+                $this->stripe_product_id = $product->id;
+                $this->saveWithoutEvents();
+
+                return $product;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -116,8 +112,7 @@ trait StripeSellable
         }
 
         return $this->client->products->create([
-            'id'       => $this->stripe_product_id,
-            'name'     => $this->getStripeName(),
+            'name'     => $this->name,
             'active'   => $this->available ?? true,
             'metadata' => $this->getStripeMetadata(),
         ]);
@@ -220,7 +215,7 @@ trait StripeSellable
             'billing_scheme' => 'per_unit',
             'currency'       => 'eur',
             'metadata'       => $this->getStripeMetadata(),
-            'nickname'       => $this->getStripeName(),
+            'nickname'       => $this->name,
             'unit_amount'    => $this->price,
             'product'        => $this->stripe_product_id,
         ]);
@@ -304,15 +299,15 @@ trait StripeSellable
      */
     public function pushToStripe(string $intent = 'update'): void
     {
-        if ($intent === 'create') {
-            $this->createStripeProduct();
-            $price = $this->createStripePrice();
-        } else {
-            $this->updateStripeProduct();
-            $price = $this->updateStripePrice();
-        }
+        $product                 = $intent === 'create'
+            ? $this->createStripeProduct()
+            : $this->updateStripePrice();
+        $this->stripe_product_id = $product->id;
+        $this->saveWithoutEvents();
 
-        // Save the newly created price
+        $price                 = $intent === 'create'
+            ? $this->createStripePrice()
+            : $this->updateStripePrice();
         $this->stripe_price_id = $price->id;
         $this->saveWithoutEvents();
     }
