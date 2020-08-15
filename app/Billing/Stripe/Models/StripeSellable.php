@@ -7,19 +7,21 @@ namespace Railgun\Billing\Stripe\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Railgun\Models\Traits\SaveWithoutEvents;
-use Stripe\ErrorObject;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Price;
 use Stripe\Product;
 use Stripe\StripeClient;
+use function app;
 use function array_combine;
+use function array_merge;
 use function class_basename;
+use function count;
 use function explode;
 
 /**
- * @property-read string     $is_sellable
- * @property-read string     $stripe_product_id
- * @property      string     $stripe_price_id
+ * @property-read string $is_sellable
+ * @property-read string $stripe_product_id
+ * @property      string $stripe_price_id
  * @mixin Model
  * @mixin SaveWithoutEvents
  */
@@ -32,23 +34,30 @@ trait StripeSellable
 
     public static function bootStripeSellable(): void
     {
-        static::saved(static function (Model $model): void {
+        static::created(static function (Model $model): void {
             /** @var StripeSellable $model */
             if ($model->isStripeDirty()) {
-                $model->pushToStripe();
+                $model->pushToStripe('create');
             }
         });
-    }
 
-    public function isSellable(): bool
-    {
-        return $this->price !== null;
+        static::updated(static function (Model $model): void {
+            /** @var StripeSellable $model */
+            if ($model->isStripeDirty()) {
+                $model->pushToStripe('update');
+            }
+        });
     }
 
     public function isStripeDirty(): bool
     {
         return ($this->stripe_price_id === null && $this->price !== null)
-            || ($this->stripe_price_id !== null && $this->wasChanged(['name', 'price', 'available']));
+            || ($this->stripe_price_id !== null && $this->isDirty(['name', 'price', 'available']));
+    }
+
+    public function getIsSellableAttribute(): bool
+    {
+        return $this->price !== null;
     }
 
     /**
@@ -59,12 +68,38 @@ trait StripeSellable
         return Str::of(class_basename($this))->slug()->lower() . '_' . $this->id;
     }
 
+    protected function getStripeName(): string
+    {
+        $name = $this->name;
+
+        if (app()->runningUnitTests()) {
+            $name = "[TEST] $name";
+        }
+
+        return $name;
+    }
+
     /**
      * @return mixed[] The product and price metadata.
      */
-    protected function getProductMetadata(): array
+    protected function getStripeMetadata(): array
     {
         return array_combine(['product_type', 'product_id'], explode('_', $this->stripe_product_id));
+    }
+
+    /**
+     * Get the associated Stripe product if it exists, return null otherwise.
+     *
+     * @return Product|null The Stripe product instance if it exists, null otherwise.
+     *
+     * @throws ApiErrorException
+     */
+    protected function getStripeProduct(): ?Product
+    {
+        /** @var Product[] $results */
+        $results = $this->client->products->all(['ids' => [$this->stripe_product_id]])->data;
+
+        return count($results) > 0 ? $results[0] : null;
     }
 
     /**
@@ -76,20 +111,16 @@ trait StripeSellable
      */
     public function createStripeProduct(): Product
     {
-        try {
-            return $this->client->products->create([
-                'id'       => $this->stripe_product_id,
-                'name'     => $this->name,
-                'active'   => $this->available ?? true,
-                'metadata' => $this->getProductMetadata(),
-            ]);
-        } catch (ApiErrorException $exception) {
-            if ($exception->getStripeCode() === ErrorObject::CODE_RESOURCE_ALREADY_EXISTS) {
-                return $this->retrieveStripeProduct();
-            }
-
-            throw $exception;
+        if ($this->getStripeProduct()) {
+            return $this->updateStripeProduct();
         }
+
+        return $this->client->products->create([
+            'id'       => $this->stripe_product_id,
+            'name'     => $this->getStripeName(),
+            'active'   => $this->available ?? true,
+            'metadata' => $this->getStripeMetadata(),
+        ]);
     }
 
     /**
@@ -101,15 +132,13 @@ trait StripeSellable
      */
     public function retrieveStripeProduct(): Product
     {
-        try {
-            return $this->client->products->retrieve($this->stripe_product_id);
-        } catch (ApiErrorException $exception) {
-            if ($exception->getStripeCode() === ErrorObject::CODE_RESOURCE_MISSING) {
-                return $this->createStripeProduct();
-            }
+        $product = $this->getStripeProduct();
 
-            throw $exception;
+        if ($product) {
+            return $product;
         }
+
+        return $this->createStripeProduct();
     }
 
     /**
@@ -121,19 +150,43 @@ trait StripeSellable
      */
     public function updateStripeProduct(): Product
     {
-        try {
-            return $this->client->products->update($this->stripe_product_id, [
-                'name'     => $this->name,
-                'active'   => $this->available ?? true,
-                'metadata' => $this->getProductMetadata(),
-            ]);
-        } catch (ApiErrorException $exception) {
-            if ($exception->getStripeCode() === ErrorObject::CODE_RESOURCE_MISSING) {
-                return $this->createStripeProduct();
+        if (!$this->getStripeProduct()) {
+            return $this->createStripeProduct();
+        }
+
+        return $this->client->products->update($this->stripe_product_id, [
+            'name'     => $this->name,
+            'active'   => $this->available ?? true,
+            'metadata' => $this->getStripeMetadata(),
+        ]);
+    }
+
+    /**
+     * Get the associated Stripe price if it exists, return null otherwise.
+     *
+     * @return Price|null The Stripe price instance if it exists, null otherwise.
+     *
+     * @throws ApiErrorException
+     */
+    protected function getStripePrice(): ?Price
+    {
+        if ($this->stripe_price_id === null) {
+            return null;
+        }
+
+        $results = $this->client->prices->all(['product' => $this->stripe_product_id])->autoPagingIterator();
+
+        /** @var Price $price */
+        foreach ($results as $price) {
+            if (isset($price->metadata['legacy'])) {
+                // Ignore "legacy" prices
+                continue;
             }
 
-            throw $exception;
+            return $price;
         }
+
+        return null;
     }
 
     /**
@@ -150,11 +203,12 @@ trait StripeSellable
         }
 
         // price_id is null but is still possible that a price exists for that product
-        $prices = $this->client->prices->all(['product' => $this->stripe_product_id]);
+        /** @var Price[] $prices */
+        $prices = $this->client->prices->all(['product' => $this->stripe_product_id])->data;
 
-        if ($prices->count() > 0) {
+        if (count($prices) > 0) {
             // An existing price exists, seemingly update
-            $this->stripe_price_id = $prices->data[0]->id;
+            $this->stripe_price_id = $prices[0]->id;
             $this->saveWithoutEvents();
 
             return $this->updateStripePrice();
@@ -165,8 +219,8 @@ trait StripeSellable
             'active'         => $this->available ?? true,
             'billing_scheme' => 'per_unit',
             'currency'       => 'eur',
-            'metadata'       => $this->getProductMetadata(),
-            'nickname'       => $this->name,
+            'metadata'       => $this->getStripeMetadata(),
+            'nickname'       => $this->getStripeName(),
             'unit_amount'    => $this->price,
             'product'        => $this->stripe_product_id,
         ]);
@@ -185,15 +239,13 @@ trait StripeSellable
             return $this->createStripePrice();
         }
 
-        try {
-            return $this->client->prices->retrieve($this->stripe_price_id);
-        } catch (ApiErrorException $exception) {
-            if ($exception->getStripeCode() === ErrorObject::CODE_RESOURCE_MISSING) {
-                return $this->createStripePrice();
-            }
+        $price = $this->getStripePrice();
 
-            throw $exception;
+        if (!$price) {
+            return $this->createStripePrice();
         }
+
+        return $price;
     }
 
     /**
@@ -205,24 +257,42 @@ trait StripeSellable
      */
     public function updateStripePrice(): Price
     {
-        if ($this->stripe_price_id === null || $this->isDirty('price')) {
-            // If price was changed, we cannot update the chapter Stripe Price and have to create a new one.
+        if ($this->stripe_price_id === null) {
             $this->createStripePrice();
         }
 
-        try {
-            return $this->client->prices->update($this->stripe_price_id, [
-                'active'   => $this->available ?? true,
-                'metadata' => $this->getProductMetadata(),
-                'nickname' => $this->name,
-            ]);
-        } catch (ApiErrorException $exception) {
-            if ($exception->getStripeCode() === ErrorObject::CODE_RESOURCE_MISSING) {
-                return $this->createStripePrice();
+        $price = $this->getStripePrice();
+
+        if (!$price) {
+            $this->stripe_price_id = null;
+            $this->saveWithoutEvents();
+        }
+
+        if ($this->isDirty('price')) {
+            // If price was changed, we cannot update the chapter Stripe Price and have to create a new one.
+            if ($price) {
+                $this->client->prices->update($price->id, [
+                    'active'   => false,
+                    'metadata' => array_merge(
+                        $this->getStripeMetadata(),
+                        ['legacy' => 'true'],
+                    ),
+                ]);
             }
 
-            throw $exception;
+            return $this->createStripePrice();
         }
+
+        if (!$price) {
+            // If there is no price, just create
+            return $this->createStripePrice();
+        }
+
+        return $this->client->prices->update($this->stripe_price_id, [
+            'active'   => $this->available ?? true,
+            'metadata' => $this->getStripeMetadata(),
+            'nickname' => $this->name,
+        ]);
     }
 
     /**

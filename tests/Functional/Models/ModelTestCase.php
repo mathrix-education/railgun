@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Railgun\Models\BaseModel;
 use Tests\ApplicationTestCase;
 use function array_merge;
 use function class_basename;
@@ -19,7 +20,7 @@ use function str_replace;
 
 abstract class ModelTestCase extends ApplicationTestCase
 {
-    /** @var string $modelClass The model class, resolved from the test class name. */
+    /** @var string|BaseModel $modelClass The model class, resolved from the test class name. */
     protected string $modelClass;
 
     public function setUp(): void
@@ -27,8 +28,6 @@ abstract class ModelTestCase extends ApplicationTestCase
         parent::setUp();
 
         $this->modelClass = 'Railgun\\Models\\' . str_replace('Test', '', class_basename($this));
-
-        $this->withoutEvents();
     }
 
     /**
@@ -45,18 +44,19 @@ abstract class ModelTestCase extends ApplicationTestCase
     ): void
     {
         /** @var Model $instance */
-        $instance = factory($this->modelClass)->create($attributes);
+        $instance = $this->modelClass::withoutEvents(fn() => factory($this->modelClass)->create($attributes));
         $this->assertTrue(method_exists($instance, $relation));
 
         /** @var HasOne $hasMany */
         $hasMany = $instance->{$relation}();
         $this->assertInstanceOf(HasOne::class, $hasMany);
 
+        /** @var string|BaseModel $class */
         $class   = get_class($hasMany->getQuery()->getModel());
-        $related = factory($class)->create(array_merge(
+        $related = $class::withoutEvents(static fn() => factory($class)->create(array_merge(
             $relatedAttributes,
             [$hasMany->getForeignKeyName() => $instance->getKey()],
-        ));
+        )));
 
         $this->assertTrue($instance->{$relation}->is($related));
         $this->assertInstanceOf($class, $instance->{$relation});
@@ -83,11 +83,15 @@ abstract class ModelTestCase extends ApplicationTestCase
         $belongsTo = $instance->{$relation}();
         $this->assertInstanceOf(BelongsTo::class, $belongsTo);
 
+        /** @var string|BaseModel $class */
         $class    = get_class($belongsTo->getQuery()->getModel());
-        $instance = factory($this->modelClass)->create(array_merge(
+        $instance = $this->modelClass::withoutEvents(fn() => factory($this->modelClass)->create(array_merge(
             $attributes,
-            [$belongsTo->getForeignKeyName() => factory($class)->create($relatedAttributes)->getKey()]),
-        );
+            [
+                $belongsTo->getForeignKeyName() => $class::withoutEvents(static fn() => factory($class)
+                    ->create($relatedAttributes)->getKey()),
+            ]),
+        ));
 
         $this->assertInstanceOf($class, $instance->{$relation});
     }
@@ -106,18 +110,19 @@ abstract class ModelTestCase extends ApplicationTestCase
     ): void
     {
         /** @var Model $instance */
-        $instance = factory($this->modelClass)->create($attributes);
+        $instance = $this->modelClass::withoutEvents(fn() => factory($this->modelClass)->create($attributes));
         $this->assertTrue(method_exists($instance, $relation));
 
         /** @var HasMany $hasMany */
         $hasMany = $instance->{$relation}();
         $this->assertInstanceOf(HasMany::class, $hasMany);
 
+        /** @var string|BaseModel $class */
         $class   = get_class($hasMany->getQuery()->getModel());
-        $related = factory($class)->create(array_merge(
+        $related = $class::withoutEvents(static fn() => factory($class)->create(array_merge(
             $relatedAttributes,
             [$hasMany->getForeignKeyName() => $instance->getKey()],
-        ));
+        )));
 
         $this->assertTrue($instance->{$relation}->contains($related));
         $this->assertInstanceOf($class, $instance->{$relation}[0]);
@@ -139,15 +144,17 @@ abstract class ModelTestCase extends ApplicationTestCase
     ): void
     {
         /** @var Model $instance */
-        $instance = factory($this->modelClass)->create($attributes);
+        $instance = $this->modelClass::withoutEvents(fn() => factory($this->modelClass)->create($attributes));
         $this->assertTrue(method_exists($instance, $relation));
 
         /** @var BelongsToMany $belongsToMany */
         $belongsToMany = $instance->{$relation}();
         $this->assertInstanceOf(BelongsToMany::class, $belongsToMany);
 
-        $class   = get_class($belongsToMany->getQuery()->getModel());
-        $related = factory($class)->create($relatedAttributes);
+        /** @var string|BaseModel $class */
+        $class = get_class($belongsToMany->getQuery()->getModel());
+
+        $related = $class::withoutEvents(static fn() => factory($class)->create($relatedAttributes));
 
         $belongsToMany->attach($related->getKey(), $pivotAttributes);
 

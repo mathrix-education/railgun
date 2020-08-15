@@ -8,6 +8,7 @@ use Illuminate\Support\Arr;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Grade;
 use Railgun\Models\Training;
+use Stripe\StripeClient;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function array_merge;
 use function factory;
@@ -39,6 +40,24 @@ class CreateTrainingIntegrationTest extends GraphQLIntegrationTestCase
             GRAPHQL,
             ['input' => $input],
         );
+    }
+
+    public function testCreateTraining(): void
+    {
+        $this->withPermissions('trainings:write');
+
+        $payload = Arr::except(
+            factory(Training::class)->raw([
+                'name'      => 'Formation de test',
+                'slug'      => 'formation-de-test',
+                'available' => true,
+            ]),
+            ['created_at', 'updated_at'],
+        );
+
+        $this->executeCreateTraining($payload);
+
+        $this->dump();
     }
 
     /**

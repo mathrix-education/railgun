@@ -20,6 +20,10 @@ class BaseModel extends Model
      */
     public function getGlobalKey(): string
     {
+        if (!$this->getKey()) {
+            $this->save();
+        }
+
         return Str::of(class_basename($this))->slug()->lower() . '_' . $this->getKey();
     }
 }

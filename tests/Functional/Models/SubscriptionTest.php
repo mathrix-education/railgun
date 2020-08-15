@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Tests\Functional\Models;
 
 use Carbon\Carbon;
-use Railgun\Billing\Bridges\StripeSubscriptionBridge;
+use Illuminate\Support\Facades\Cache;
 use Railgun\Billing\Models\Plan;
 use Railgun\Models\Subscription;
 use Railgun\Models\User;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Invoice;
+use Stripe\StripeClient;
 use Stripe\Subscription as StripeSubscription;
 use function factory;
 use function str_replace;
@@ -93,14 +94,15 @@ class SubscriptionTest extends ModelTestCase
      */
     public function testGetLatestInvoice(): void
     {
+        $client = $this->app->make(StripeClient::class);
+
         /** @var StripeSubscription $stripeSubscription */
-        $stripeSubscription = StripeSubscription::all([
+        $stripeSubscription = $client->subscriptions->all([
             'limit'  => 1,
             'status' => StripeSubscription::STATUS_ACTIVE,
         ])->data[0];
 
         $subscription = Subscription::fromStripe($stripeSubscription);
-        $subscription->save();
 
         $this->assertInstanceOf(Invoice::class, $subscription->latest_invoice);
     }
