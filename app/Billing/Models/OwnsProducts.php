@@ -92,7 +92,7 @@ trait OwnsProducts
      *
      * @return string[] The product global ids as an unsorted array.
      */
-    public function getOwnedProductGlobalIds(): array
+    protected function getOwnedProductGlobalIds(): array
     {
         $products     = [];
         $acquisitions = Acquisition::query()

@@ -33,7 +33,6 @@ use Railgun\Models\Traits\Acquerable;
 use Railgun\Models\Traits\Commentable;
 use Railgun\Models\Traits\Labelable;
 use Railgun\Models\Traits\Notable;
-use Railgun\Registries\ChapterContentRegistry;
 use Railgun\Support\PHPPMStatus;
 use function array_map;
 

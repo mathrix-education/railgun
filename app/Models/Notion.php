@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Railgun\Models\Contracts\BelongsToChapter;
+use Railgun\Models\Contracts\Ownable as OwnableContract;
+use Railgun\Models\Traits\Ownable;
 use Railgun\Models\Traits\Reorderable;
 
 /**
@@ -24,8 +26,9 @@ use Railgun\Models\Traits\Reorderable;
  * @property-read Collection|Course[]  $courses
  * @property-read Collection|Subject[] $subjects
  */
-class Notion extends BaseModel implements BelongsToChapter
+class Notion extends BaseModel implements BelongsToChapter, OwnableContract
 {
+    use Ownable;
     use Reorderable;
 
     public const TYPE_STANDARD = 'standard';

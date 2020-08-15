@@ -1,4 +1,4 @@
-type Lesson {
+type Lesson implements Ownable {
     id: ID!
     name: String!
     slug: String!
@@ -7,6 +7,7 @@ type Lesson {
     visible: Boolean!
     created_at: DateTime!
     updated_at: DateTime!
+    owned: Boolean!
     section: Section! @belongsTo
     comments: [Comment!] @morphMany
     """

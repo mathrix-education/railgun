@@ -8,7 +8,6 @@ use Illuminate\Support\Arr;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Grade;
 use Railgun\Models\Training;
-use Stripe\StripeClient;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function array_merge;
 use function factory;
@@ -23,7 +22,7 @@ class CreateTrainingIntegrationTest extends GraphQLIntegrationTestCase
     /**
      * @param mixed[] $input The CreateTraining input.
      */
-    private function executeCreateTraining(array $input): void
+    protected function executeCreateTraining(array $input): void
     {
         $this->graphQL(
             <<<'GRAPHQL'
@@ -31,6 +30,16 @@ class CreateTrainingIntegrationTest extends GraphQLIntegrationTestCase
                 createTraining(input: $input) {
                     id
                     name
+                    slug
+                    duration
+                    content
+                    image
+                    available
+                    price
+                    order
+                    visible
+                    created_at
+                    updated_at
                     grades {
                         id
                         name
@@ -47,17 +56,17 @@ class CreateTrainingIntegrationTest extends GraphQLIntegrationTestCase
         $this->withPermissions('trainings:write');
 
         $payload = Arr::except(
-            factory(Training::class)->raw([
-                'name'      => 'Formation de test',
-                'slug'      => 'formation-de-test',
-                'available' => true,
-            ]),
+            factory(Training::class)->raw(),
             ['created_at', 'updated_at'],
         );
 
         $this->executeCreateTraining($payload);
 
-        $this->dump();
+        /** @var Training $training */
+        $training = Training::query()->findOrFail($this->getData('id'));
+
+        $this->assertNotNull($training->stripe_product_id);
+        $this->assertNotNull($training->stripe_price_id);
     }
 
     /**
@@ -82,5 +91,11 @@ class CreateTrainingIntegrationTest extends GraphQLIntegrationTestCase
             'training_id' => $this->getData('id'),
             'grade_id'    => $grade->id,
         ]);
+
+        /** @var Training $training */
+        $training = Training::query()->findOrFail($this->getData('id'));
+
+        $this->assertNotNull($training->stripe_product_id);
+        $this->assertNotNull($training->stripe_price_id);
     }
 }

@@ -5943,11 +5943,11 @@
         "redirect": "\/postbac\/maths\/suites-numeriques",
         "order": 0,
         "visible": 1,
-        "stripe_product_id": "prod_HpwgOjSDuGGWGS",
-        "stripe_price_id": "price_1HGGmnIQfmflhkABUD5aN4zL",
+        "stripe_product_id": "prod_HpzQmSZ3k2g0Vq",
+        "stripe_price_id": "price_1HGJRMIQfmflhkABI88xb5Rw",
         "theme_id": 47,
         "created_at": "2020-06-16 12:24:28",
-        "updated_at": "2020-08-15 06:15:48"
+        "updated_at": "2020-08-15 09:50:24"
     },
     {
         "id": 725,
@@ -6111,11 +6111,11 @@
         "redirect": "\/postbac\/maths\/series-numeriques",
         "order": 1,
         "visible": 1,
-        "stripe_product_id": "prod_Hpwg94zr0SvWtk",
-        "stripe_price_id": "price_1HGGmnIQfmflhkABF5XwncHJ",
+        "stripe_product_id": "prod_HpzQ4ev29hG7HU",
+        "stripe_price_id": "price_1HGJROIQfmflhkABjpf4csvO",
         "theme_id": 47,
         "created_at": "2020-05-25 06:51:17",
-        "updated_at": "2020-08-15 06:15:49"
+        "updated_at": "2020-08-15 09:50:26"
     },
     {
         "id": 739,
@@ -6125,11 +6125,11 @@
         "redirect": "\/postbac\/maths\/fonctions-reelles-continuite",
         "order": 2,
         "visible": 1,
-        "stripe_product_id": "prod_HpwgaBmOHWpqwv",
-        "stripe_price_id": "price_1HGGmoIQfmflhkABAfs7yNC0",
+        "stripe_product_id": "prod_HpzQ4cKp9zaENq",
+        "stripe_price_id": "price_1HGJRPIQfmflhkABLBGyjied",
         "theme_id": 47,
         "created_at": "2020-06-16 12:31:04",
-        "updated_at": "2020-08-15 06:15:51"
+        "updated_at": "2020-08-15 09:50:27"
     },
     {
         "id": 740,
@@ -6139,11 +6139,11 @@
         "redirect": "\/postbac\/maths\/derivabilite",
         "order": 3,
         "visible": 1,
-        "stripe_product_id": "prod_Hpwg3fAYhJKe6N",
-        "stripe_price_id": "price_1HGGmpIQfmflhkAB0RQlqFPc",
+        "stripe_product_id": "prod_HpzQn0rVtsBRHs",
+        "stripe_price_id": "price_1HGJRRIQfmflhkABiuSiECOB",
         "theme_id": 47,
         "created_at": "2020-06-16 12:31:43",
-        "updated_at": "2020-08-15 06:15:52"
+        "updated_at": "2020-08-15 09:50:29"
     },
     {
         "id": 741,
@@ -6153,11 +6153,11 @@
         "redirect": "\/postbac\/maths\/integration",
         "order": 4,
         "visible": 1,
-        "stripe_product_id": "prod_Hpwg9mK6cRYfGl",
-        "stripe_price_id": "price_1HGGmqIQfmflhkABbV91Zjzl",
+        "stripe_product_id": "prod_HpzQSoNKNwFQOf",
+        "stripe_price_id": "price_1HGJRTIQfmflhkABZ5nErErz",
         "theme_id": 47,
         "created_at": "2020-07-09 08:08:34",
-        "updated_at": "2020-08-15 06:15:54"
+        "updated_at": "2020-08-15 09:50:31"
     },
     {
         "id": 742,
@@ -6167,11 +6167,11 @@
         "redirect": "\/postbac\/maths\/integrales-generalisees",
         "order": 5,
         "visible": 1,
-        "stripe_product_id": "prod_Hpwg4OxhdyiJ95",
-        "stripe_price_id": "price_1HGGmrIQfmflhkABvn1aaICy",
+        "stripe_product_id": "prod_HpzQvdlntDCR7i",
+        "stripe_price_id": "price_1HGJRVIQfmflhkABut0M8gkJ",
         "theme_id": 47,
         "created_at": "2020-07-09 08:18:18",
-        "updated_at": "2020-08-15 06:15:55"
+        "updated_at": "2020-08-15 09:50:32"
     },
     {
         "id": 743,
@@ -6181,11 +6181,11 @@
         "redirect": "\/postbac\/physique-chimie\/oscillateur-harmonique",
         "order": 0,
         "visible": 1,
-        "stripe_product_id": "prod_Hpwgs3XoQVs5JN",
-        "stripe_price_id": "price_1HGGmsIQfmflhkABHVXi8ZvJ",
+        "stripe_product_id": "prod_HpzQEFuD4doheH",
+        "stripe_price_id": "price_1HGJRXIQfmflhkABeSrIWFRS",
         "theme_id": 54,
         "created_at": "2020-07-19 15:03:52",
-        "updated_at": "2020-08-15 06:15:56"
+        "updated_at": "2020-08-15 09:50:34"
     },
     {
         "id": 744,

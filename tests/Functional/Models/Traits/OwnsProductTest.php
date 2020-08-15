@@ -4,27 +4,37 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Models\Traits;
 
+use Railgun\Models\Contracts\Ownable;
 use Railgun\Models\User;
 use Tests\Functional\Models\ModelTestCase;
 use function factory;
-use function forward_static_call_array;
 
 /**
- * @coversDefaultClass \Railgun\Billing\Models\OwnsProducts
+ * @covers \Railgun\Billing\Models\OwnsProducts
  */
 class OwnsProductTest extends ModelTestCase
 {
     /**
-     * @testWith ["\\Railgun\\Models\\Pack"]
+     * @testWith ["\\Railgun\\Models\\Chapter"]
+     *           ["\\Railgun\\Models\\Notion"]
+     *           ["\\Railgun\\Models\\Course"]
+     *           ["\\Railgun\\Models\\Subject"]
+     *           ["\\Railgun\\Models\\Exercise"]
+     *           ["\\Railgun\\Models\\Flashcard"]
+     *           ["\\Railgun\\Models\\Exam"]
+     *           ["\\Railgun\\Models\\Lesson"]
+     *           ["\\Railgun\\Models\\Pack"]
      *           ["\\Railgun\\Models\\Training"]
      *           ["\\Railgun\\Models\\Section"]
      *           ["\\Railgun\\Models\\Lesson"]
+     *
+     * @param string|Ownable $modelClass
      */
-    public function testOwns(string $modelClass): void
+    public function testDoesNotOwns(string $modelClass): void
     {
         /** @var User $user */
         $user  = factory(User::class)->create();
-        $model = forward_static_call_array([$modelClass, 'random'], []);
+        $model = $modelClass::random();
 
         $this->assertFalse($user->owns($model));
     }

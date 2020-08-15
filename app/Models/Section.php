@@ -8,6 +8,8 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Railgun\Models\Contracts\Ownable as OwnableContract;
+use Railgun\Models\Traits\Ownable;
 use Railgun\Models\Traits\Reorderable;
 use Railgun\Models\Traits\Sluggable;
 
@@ -24,8 +26,9 @@ use Railgun\Models\Traits\Sluggable;
  * @property-read Training            $training
  * @property-read Collection|Lesson[] $lessons
  */
-class Section extends BaseModel
+class Section extends BaseModel implements OwnableContract
 {
+    use Ownable;
     use Reorderable;
     use Sluggable;
 

@@ -13,6 +13,7 @@ use Monolog\Formatter\JsonFormatter;
 use Railgun\Middleware\CorrelationMiddleware;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
+use function app;
 use function array_key_exists;
 use function array_map;
 use function array_merge;

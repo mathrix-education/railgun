@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Railgun\Jobs;
 
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Railgun\Billing\Cart\Cart;

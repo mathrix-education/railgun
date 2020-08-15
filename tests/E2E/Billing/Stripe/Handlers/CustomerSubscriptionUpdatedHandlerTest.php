@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\E2E\Billing\Stripe\Handlers;
 
 use Carbon\Carbon;

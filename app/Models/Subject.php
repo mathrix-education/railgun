@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Railgun\Models\Contracts\BelongsToChapter;
+use Railgun\Models\Contracts\Ownable as OwnableContract;
 use Railgun\Models\Traits\Interactable;
+use Railgun\Models\Traits\Ownable;
 use Railgun\Models\Traits\Reorderable;
 use Railgun\Models\Traits\Sluggable;
 
@@ -27,8 +29,9 @@ use Railgun\Models\Traits\Sluggable;
  * @property-read Notion                $notion
  * @property-read Collection|Exercise[] $exercises
  */
-class Subject extends BaseModel implements BelongsToChapter
+class Subject extends BaseModel implements BelongsToChapter, OwnableContract
 {
+    use Ownable;
     use Interactable;
     use Reorderable;
     use Sluggable;

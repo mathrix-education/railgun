@@ -6,9 +6,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Railgun\Models\Coupon;
 use Railgun\Models\Lesson;
-use Railgun\Models\Pack;
 use Railgun\Models\Section;
-use Railgun\Models\Training;
 
 /**
  * Seed the training data (packs, trainings, sections and lessons).

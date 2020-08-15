@@ -7,12 +7,14 @@ namespace Railgun\Billing\Stripe\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Railgun\Billing\Stripe\Contracts\StripeSellable;
 use Railgun\Billing\Stripe\Models\ModeMachine;
 use Railgun\Billing\Stripe\StripeClientRegistry;
 use Railgun\Models\Chapter;
+use Railgun\Models\Contracts\Sellable;
 use Railgun\Models\Pack;
 use Railgun\Models\Training;
 use Stripe\Exception\ApiErrorException;
@@ -24,8 +26,8 @@ use function class_basename;
 use function collect;
 use function count;
 use function file_put_contents;
-use function forward_static_call_array;
 use function json_encode;
+use function preg_match;
 use const JSON_PRETTY_PRINT;
 use const JSON_THROW_ON_ERROR;
 
@@ -46,6 +48,8 @@ class SyncProductsCommand extends Command
     public function handle(StripeClientRegistry $registry): void
     {
         $this->stripe = $registry->make($this->option('client'));
+
+        Cache::tags(['stripe'])->flush();
 
         // TODO: remove the Chapter auto-pricing
         Chapter::query()
@@ -108,8 +112,6 @@ class SyncProductsCommand extends Command
             $progress->setMessage("Pushing <info>{$lookupKey}</info> price");
             $price = $this->getPrice($lookupKey, false);
 
-            $payload = Arr::except($payload, ['period', 'price_per_month', 'months_per_period']);
-
             if ($price === null) {
                 $this->stripe->prices->create($payload);
             } else {
@@ -130,7 +132,7 @@ class SyncProductsCommand extends Command
     /**
      * Synchronize products (packs and trainings) with Stripe.
      *
-     * @param string $model The model class.
+     * @param string|Sellable $model The model class.
      */
     public function syncProducts(string $model): void
     {
@@ -138,27 +140,35 @@ class SyncProductsCommand extends Command
         $this->line("Synchronizing <info>$plural</info>");
 
         if ($model === Chapter::class) {
-            $models = Chapter::query()->whereNotNull('price');
+            $models = Chapter::query()->whereNotNull('price')->get();
         } else {
             /** @var Collection|StripeSellable[] $models */
-            $models = forward_static_call_array([$model, 'all'], []);
+            $models = $model::all();
         }
 
-        $progress = $this->getOutput()->createProgressBar($models->count());
-        $progress->setFormat(' %current%/%max% [%bar%] %message%');
-        $progress->setMessage('');
+        $progress = $this->getOutput()->createProgressBar();
 
-        $progress->start();
-        $models->each(function (StripeSellable $model) use ($progress): void {
-            $progress->setMessage(
-                "Pushing <info>{$model->name}</info> (product <info>{$model->stripe_product_id}</info>)",
-            );
-            $model->ensureStripeProduct($this->option('intent'));
-            $progress->advance();
-        });
-        $progress->finish();
-        unset($progress);
-        $this->getOutput()->newLine(2);
+        $models->reject(static fn(Sellable $model) => preg_match('/.* \(\d+\)/', $model->name))
+            ->tap(static function (Collection $models) use ($progress): void {
+                $progress->setFormat(' %current%/%max% [%bar%] %message%');
+                $progress->setMessage('');
+                $progress->setMaxSteps($models->count());
+                $progress->start();
+            })
+            ->each(static function (StripeSellable $model) use ($progress): void {
+                $model->touch();
+                $model->save();
+
+                $progress->setMessage(
+                    "Pushed <info>{$model->name}</info> (product <info>{$model->stripe_product_id}</info>)",
+                );
+                $progress->advance();
+            })
+            ->tap(function () use ($progress): void {
+                $progress->finish();
+                unset($progress);
+                $this->getOutput()->newLine(2);
+            });
     }
 
     /**

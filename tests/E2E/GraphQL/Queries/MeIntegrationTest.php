@@ -6,7 +6,7 @@ namespace Tests\E2E\GraphQL\Queries;
 
 use Illuminate\Database\Eloquent\Collection;
 use Laravel\Lumen\Testing\DatabaseTransactions;
-use Railgun\Billing\Models\Plan;
+use Railgun\Billing\Stripe\Models\ModeMachine;
 use Railgun\Jobs\UpsertSubscription;
 use Railgun\Models\Chapter;
 use Railgun\Models\Comment;
@@ -16,7 +16,7 @@ use Railgun\Models\Session;
 use Railgun\Models\User;
 use Railgun\Notifications\CommentReplyNotification;
 use Stripe\Exception\ApiErrorException;
-use Stripe\Subscription;
+use Stripe\StripeClient;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use Windy\Guardian\Guardian;
 use function dispatch_now;
@@ -29,6 +29,15 @@ use function strlen;
 class MeIntegrationTest extends GraphQLIntegrationTestCase
 {
     use DatabaseTransactions;
+
+    protected StripeClient $client;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->client = $this->app->make(StripeClient::class);
+    }
 
     /**
      * @testdox returns the user id using a true, non-mocked JWT
@@ -192,14 +201,16 @@ class MeIntegrationTest extends GraphQLIntegrationTestCase
     {
         $user            = $this->actingAsGetUser();
         $paymentMethodId = 'pm_card_fr';
-        $customer        = $user->createCustomer($paymentMethodId);
+        $customer        = $user->ensureStripeCustomer($paymentMethodId);
         $user->refresh();
 
-        $subscription = Subscription::create([
+        $modeMachine = $this->app->make(ModeMachine::class);
+
+        $subscription = $this->client->subscriptions->create([
             'customer'               => $customer->id,
             'default_payment_method' => $paymentMethodId,
             'items'                  => [
-                ['plan' => Plan::MONTHLY_PLAN],
+                ['price' => $modeMachine->get('laser_month')->id],
             ],
             'metadata'               => [
                 'user_id' => $user->id,

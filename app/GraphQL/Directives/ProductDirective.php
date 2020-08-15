@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace Railgun\GraphQL\Directives;
 
 use Closure;
-use GraphQL\Type\Definition\ListOfType;
-use GraphQL\Type\Definition\NonNull;
 use GraphQL\Type\Definition\ResolveInfo;
-use GraphQL\Type\Definition\StringType;
 use Illuminate\Support\Facades\Gate;
 use Nuwave\Lighthouse\Schema\Directives\BaseDirective;
 use Nuwave\Lighthouse\Schema\Values\FieldValue;

@@ -32,6 +32,8 @@ use Windy\Mailjet\MailjetServiceProvider;
 
 (new LoadEnvironmentVariables(dirname(__DIR__)))->bootstrap();
 
+date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
+
 $app = new Application(dirname(__DIR__));
 $app->withFacades();
 $app->withEloquent();

@@ -58,6 +58,10 @@ class SubscriptionCheckout extends Checkout
         /** @noinspection PhpFieldAssignmentTypeMismatchInspection */
         $this->invoice = $this->subscription->latest_invoice;
 
+        $this->client->invoices->update($this->invoice->id, [
+            'metadata' => $this->cart->toMetadata(),
+        ]);
+
         return $this;
     }
 

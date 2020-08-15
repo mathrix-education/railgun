@@ -1,4 +1,4 @@
-type Exercise {
+type Exercise implements Ownable {
     id: ID!
     order: Int!
     content: Silicate! @premium(stripped: "[]")
@@ -13,6 +13,7 @@ type Exercise {
     visible: Boolean!
     created_at: DateTime!
     updated_at: DateTime!
+    owned: Boolean!
     subject: Subject! @belongsTo
     comments: [Comment!] @morphMany
     """

@@ -8,6 +8,8 @@ use Railgun\Models\Chapter;
 use Railgun\Models\Coupon;
 use Railgun\Models\Pack;
 use Railgun\Models\Training;
+use Stripe\Invoice;
+use Stripe\PaymentIntent;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function array_merge;
 use function collect;
@@ -45,6 +47,12 @@ class CheckoutIntegrationTest extends GraphQLIntegrationTestCase
         );
     }
 
+    /**
+     * @param string[]    $options The products to include in the cart.
+     * @param string|null $plan    The subscription plan.
+     *
+     * @return mixed[] A valid CartInput GraphQL input.
+     */
     protected function cartInputFactory(array $options = [], ?string $plan = null): array
     {
         $cart = [];
@@ -62,6 +70,7 @@ class CheckoutIntegrationTest extends GraphQLIntegrationTestCase
             $cart['packs'] = Pack::query()
                 ->inRandomOrder()
                 ->where('available', '=', true)
+                ->whereNotNull('stripe_price_id')
                 ->limit(1)
                 ->pluck('id')
                 ->toArray();
@@ -84,6 +93,7 @@ class CheckoutIntegrationTest extends GraphQLIntegrationTestCase
                 ->inRandomOrder()
                 ->whereNotIn('id', $exclude)
                 ->where('available')
+                ->whereNotNull('stripe_price_id')
                 ->limit(3)
                 ->pluck('id')
                 ->toArray();
@@ -116,7 +126,7 @@ class CheckoutIntegrationTest extends GraphQLIntegrationTestCase
             ],
             [
                 'products' => ['chapters', 'packs', 'trainings', 'coupon'],
-                'plan'     => 'V11_MONTH',
+                'plan'     => 'laser_month',
             ],
         ];
     }
@@ -130,15 +140,15 @@ class CheckoutIntegrationTest extends GraphQLIntegrationTestCase
             [
                 'paymentMethodId' => 'pm_card_visa_credit_fr_cartesBancaires',
                 'expectations'    => [
-                    'invoiceStatus'       => 'PAID',
-                    'paymentIntentStatus' => 'SUCCEEDED',
+                    'invoiceStatus'       => Invoice::STATUS_PAID,
+                    'paymentIntentStatus' => PaymentIntent::STATUS_SUCCEEDED,
                 ],
             ],
             [
                 'paymentMethodId' => 'pm_card_threeDSecure2Required',
                 'expectations'    => [
-                    'invoiceStatus'       => 'OPEN',
-                    'paymentIntentStatus' => 'REQUIRES_ACTION',
+                    'invoiceStatus'       => Invoice::STATUS_OPEN,
+                    'paymentIntentStatus' => PaymentIntent::STATUS_REQUIRES_ACTION,
                 ],
             ],
         ];
@@ -204,7 +214,7 @@ class CheckoutIntegrationTest extends GraphQLIntegrationTestCase
 
         $user->refresh();
 
-        if ($expectations['invoiceStatus'] === 'PAID') {
+        if ($expectations['invoiceStatus'] === Invoice::STATUS_PAID) {
             // Assert that products have been delivered
             $acquisitions->each(fn(array $acquisition) => $this->seeInDatabase('acquisitions', $acquisition));
 

@@ -1,4 +1,4 @@
-type Exam {
+type Exam implements Ownable {
     id: ID!
     name: String!
     slug: String!
@@ -16,6 +16,7 @@ type Exam {
     visible: Boolean!
     created_at: DateTime!
     updated_at: DateTime!
+    owned: Boolean!
     chapter: Chapter! @belongsTo
     comments: [Comment!] @morphMany
     """

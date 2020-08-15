@@ -1,4 +1,4 @@
-type Course {
+type Course implements Ownable {
     id: ID!
     name: String!
     slug: String!
@@ -19,6 +19,7 @@ type Course {
     seo_description: String
     created_at: DateTime!
     updated_at: DateTime!
+    owned: Boolean!
     notion: Notion! @belongsTo
     comments: [Comment!] @morphMany
     """

@@ -1,4 +1,4 @@
-type Flashcard {
+type Flashcard implements Ownable {
     id: ID!
     name: String!
     content: [FlashcardContent!]! @premium(stripped: "[]")
@@ -14,6 +14,7 @@ type Flashcard {
     visible: Boolean!
     created_at: DateTime!
     updated_at: DateTime!
+    owned: Boolean!
     chapter: Chapter! @belongsTo
     comments: [Comment!] @morphMany
     """

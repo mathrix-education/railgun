@@ -20,7 +20,12 @@ class ReadLessonIntegrationTest extends GraphQLIntegrationTestCase
             <<<'GRAPHQL'
             query($id: ID!) {
                 readLesson(id: $id) {
+                    id
+                    name
+                    slug
                     content
+                    order
+                    visible
                 }
             }
             GRAPHQL,
@@ -37,6 +42,8 @@ class ReadLessonIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->executeReadLesson($lesson->id);
 
+        $this->assertResponseOk();
+        $this->assertNoErrors();
         $this->assertEquals([], $this->getData('content'));
     }
 

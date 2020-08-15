@@ -6,6 +6,7 @@ namespace Railgun\Billing\Stripe\Models;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Stripe\Exception\ApiErrorException;
 use Stripe\Price;
 use Stripe\StripeClient;
 use function app;
@@ -24,9 +25,9 @@ class ModeMachine
         'description' => 'Accès au contenu premium de Mathrix.fr en illimité.',
     ];
     public const PRICES  = [
-        'v11_month'    => [
+        'laser_month'    => [
             'currency'    => 'eur',
-            'lookup_key'  => 'v11_month',
+            'lookup_key'  => 'laser_month',
             'nickname'    => 'Plan mensuel',
             'product'     => self::PRODUCT['id'],
             'recurring'   => [
@@ -35,9 +36,9 @@ class ModeMachine
             ],
             'unit_amount' => 2700,
         ],
-        'v11_quarter'  => [
+        'laser_quarter'  => [
             'currency'    => 'eur',
-            'lookup_key'  => 'v11_quarter',
+            'lookup_key'  => 'laser_quarter',
             'nickname'    => 'Plan trimestriel',
             'product'     => self::PRODUCT['id'],
             'recurring'   => [
@@ -46,9 +47,9 @@ class ModeMachine
             ],
             'unit_amount' => 6700,
         ],
-        'v11_semester' => [
+        'laser_semester' => [
             'currency'    => 'eur',
-            'lookup_key'  => 'v11_semester',
+            'lookup_key'  => 'laser_semester',
             'nickname'    => 'Plan semestriel',
             'product'     => self::PRODUCT['id'],
             'recurring'   => [
@@ -57,9 +58,9 @@ class ModeMachine
             ],
             'unit_amount' => 9700,
         ],
-        'v11_year'     => [
+        'laser_year'     => [
             'currency'    => 'eur',
-            'lookup_key'  => 'v11_year',
+            'lookup_key'  => 'laser_year',
             'nickname'    => 'Plan annuel',
             'product'     => self::PRODUCT['id'],
             'recurring'   => [
@@ -72,18 +73,17 @@ class ModeMachine
 
     /**
      * @return Collection|Price[] The "Mode Machine" prices.
+     *
+     * @throws ApiErrorException
      */
     public function all(): Collection
     {
-        return Cache::remember('stripe:plans', 3600, static function () {
+        return Cache::tags('stripe')->remember('stripe:plans', 3600, static function () {
             return collect(
                 app()
                     ->make(StripeClient::class)
                     ->prices
-                    ->all([
-                        'lookup_keys' => array_keys(self::PRICES),
-                        'expand'      => ['product'],
-                    ])
+                    ->all(['lookup_keys' => array_keys(self::PRICES)])
                     ->data,
             );
         });
@@ -92,7 +92,9 @@ class ModeMachine
     /**
      * @param string $idOrLookupKey The price id or lookup key.
      *
-     * @return Price Teh matching price.
+     * @return Price The matching price.
+     *
+     * @throws ApiErrorException
      */
     public function get(string $idOrLookupKey): Price
     {

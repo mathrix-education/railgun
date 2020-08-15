@@ -96,7 +96,7 @@ class StripeSellableTest extends ApplicationTestCase
 
     public function testUpdatePrice(): void
     {
-        $training        = factory(Training::class)->create();
+        $training         = factory(Training::class)->create();
         $training->price += 1000;
         $training->save();
 

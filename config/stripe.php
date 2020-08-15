@@ -5,7 +5,7 @@ declare(strict_types=1);
 return [
     'defaults'       => [
         'client'   => 'primary',
-        'webhooks' => 'secondary',
+        'webhooks' => 'primary',
     ],
     'clients'        => [
         'primary'   => env('STRIPE_PRIMARY_API_KEY'),

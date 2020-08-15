@@ -1,10 +1,10 @@
 enum InvoiceStatus {
-    DELETED @enum(value: "deleted")
-    DRAFT @enum(value: "draft")
-    OPEN @enum(value: "open")
-    PAID @enum(value: "paid")
-    UNCOLLECTIBLE @enum(value: "uncollectible")
-    VOID @enum(value: "void")
+    deleted @enum(value: "deleted")
+    draft @enum(value: "draft")
+    open @enum(value: "open")
+    paid @enum(value: "paid")
+    uncollectible @enum(value: "uncollectible")
+    void @enum(value: "void")
 }
 
 type Invoice {

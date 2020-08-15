@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Mutations;
 
-use Railgun\Billing\Models\Plan;
+use Illuminate\Contracts\Bus\Dispatcher;
+use Railgun\Billing\Stripe\Models\ModeMachine;
 use Railgun\Jobs\UpsertSubscription;
 use Railgun\Models\User;
 use Stripe\Exception\ApiErrorException;
-use Stripe\Subscription;
+use Stripe\StripeClient;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
 use function dispatch_now;
 use function factory;
@@ -18,6 +19,19 @@ use function factory;
  */
 class UpdateSubscriptionTest extends GraphQLIntegrationTestCase
 {
+    protected Dispatcher   $dispatcher;
+    protected StripeClient $client;
+    protected ModeMachine  $modeMachine;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->dispatcher  = $this->app->make(Dispatcher::class);
+        $this->client      = $this->app->make(StripeClient::class);
+        $this->modeMachine = $this->app->make(ModeMachine::class);
+    }
+
     /**
      * @testdox changes the payment method of a subscription
      *
@@ -25,16 +39,16 @@ class UpdateSubscriptionTest extends GraphQLIntegrationTestCase
      */
     public function testPaymentMethodReplacement(): void
     {
-        $user            = $this->withPermissions();
+        $user            = $this->actingAsGetUser();
         $paymentMethodId = 'pm_card_fr';
-        $customer        = $user->createCustomer($paymentMethodId);
+        $customer        = $user->ensureStripeCustomer($paymentMethodId);
         $user->refresh();
 
-        $subscription = Subscription::create([
+        $subscription = $this->client->subscriptions->create([
             'customer'               => $customer->id,
             'default_payment_method' => $paymentMethodId,
             'items'                  => [
-                ['plan' => Plan::MONTHLY_PLAN],
+                ['price' => $this->modeMachine->get('laser_month')->id],
             ],
             'metadata'               => [
                 'user_id' => $user->id,
@@ -61,8 +75,7 @@ class UpdateSubscriptionTest extends GraphQLIntegrationTestCase
             ],
         );
 
-        $subscription = Subscription::retrieve([
-            'id'     => $subscription->id,
+        $subscription = $this->client->subscriptions->retrieve($subscription->id, [
             'expand' => ['default_payment_method'],
         ]);
 
@@ -84,21 +97,21 @@ class UpdateSubscriptionTest extends GraphQLIntegrationTestCase
         /** @var User $user */
         $user            = factory(User::class)->create();
         $paymentMethodId = 'pm_card_fr';
-        $customer        = $user->createCustomer($paymentMethodId);
+        $customer        = $user->ensureStripeCustomer($paymentMethodId);
         $user->refresh();
 
-        $subscription = Subscription::create([
+        $subscription = $this->client->subscriptions->create([
             'customer'               => $customer->id,
             'default_payment_method' => $paymentMethodId,
             'items'                  => [
-                ['plan' => Plan::MONTHLY_PLAN],
+                ['price' => $this->modeMachine->get('laser_month')->id],
             ],
             'metadata'               => [
                 'user_id' => $user->id,
             ],
         ]);
 
-        dispatch_now(new UpsertSubscription($subscription));
+        $this->dispatcher->dispatchNow(new UpsertSubscription($subscription));
 
         $this->withPermissions();
 
@@ -118,8 +131,7 @@ class UpdateSubscriptionTest extends GraphQLIntegrationTestCase
             ],
         );
 
-        $this->assertResponseOk();
-        $this->assertErrorCode('OWNERSHIP');
-        $this->assertErrorCategory('auth');
+        $this->assertResponseStatus(200);
+        $this->assertErrorCategory('internal');
     }
 }

@@ -1,4 +1,4 @@
-type Chapter {
+type Chapter implements Ownable {
     id: ID!
     name: String!
     slug: String!
@@ -6,6 +6,7 @@ type Chapter {
     visible: Boolean!
     created_at: DateTime!
     updated_at: DateTime!
+    owned: Boolean!
     theme: Theme! @belongsTo
     notions: [Notion!]! @hasMany
     summary: Notion @belongsTo

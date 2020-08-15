@@ -1,4 +1,4 @@
-type Pack {
+type Pack implements Ownable {
     id: ID!
     name: String!
     slug: String!
@@ -8,5 +8,6 @@ type Pack {
     visible: Boolean!
     created_at: DateTime!
     updated_at: DateTime!
+    owned: Boolean!
     trainings: [Training!]! @belongsToMany
 }

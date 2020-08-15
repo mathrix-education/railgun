@@ -7,11 +7,13 @@ namespace Railgun\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Contracts\BelongsToChapter;
+use Railgun\Models\Contracts\Ownable as OwnableContract;
 use Railgun\Models\Traits\Commentable;
 use Railgun\Models\Traits\Freezable;
 use Railgun\Models\Traits\Interactable;
 use Railgun\Models\Traits\Labelable;
 use Railgun\Models\Traits\Notable;
+use Railgun\Models\Traits\Ownable;
 use Railgun\Models\Traits\Reorderable;
 use Railgun\Models\Traits\Sluggable;
 
@@ -32,13 +34,14 @@ use Railgun\Models\Traits\Sluggable;
  * ---
  * @property-read Notion $notion
  */
-class Course extends BaseModel implements BelongsToChapter
+class Course extends BaseModel implements BelongsToChapter, OwnableContract
 {
     use Commentable;
     use Freezable;
     use Interactable;
     use Labelable;
     use Notable;
+    use Ownable;
     use Reorderable;
     use Sluggable;
 

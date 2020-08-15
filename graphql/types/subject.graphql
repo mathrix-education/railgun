@@ -1,4 +1,4 @@
-type Subject {
+type Subject implements Ownable {
     id: ID!
     name: String!
     slug: String!
@@ -7,6 +7,7 @@ type Subject {
     visible: Boolean!
     created_at: DateTime!
     updated_at: DateTime!
+    owned: Boolean!
     notion: Notion! @belongsTo
     exercises: [Exercise!]! @hasMany
     interaction: Interaction @belongsTo

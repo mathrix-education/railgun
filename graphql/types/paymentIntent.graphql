@@ -1,11 +1,11 @@
 enum PaymentIntentStatus {
-    CANCELED @enum(value: "canceled")
-    PROCESSING @enum(value: "processing")
-    REQUIRES_ACTION @enum(value: "requires_action")
-    REQUIRES_CAPTURE @enum(value: "requires_capture")
-    REQUIRES_CONFIRMATION @enum(value: "requires_confirmation")
-    REQUIRES_PAYMENT_METHOD @enum(value: "requires_payment_method")
-    SUCCEEDED @enum(value: "succeeded")
+    canceled @enum(value: "canceled")
+    processing @enum(value: "processing")
+    requires_action @enum(value: "requires_action")
+    requires_capture @enum(value: "requires_capture")
+    requires_confirmation @enum(value: "requires_confirmation")
+    requires_payment_method @enum(value: "requires_payment_method")
+    succeeded @enum(value: "succeeded")
 }
 
 type PaymentIntent {

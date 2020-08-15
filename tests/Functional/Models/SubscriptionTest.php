@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Functional\Models;
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Cache;
 use Railgun\Billing\Models\Plan;
 use Railgun\Models\Subscription;
 use Railgun\Models\User;
@@ -13,6 +12,7 @@ use Stripe\Exception\ApiErrorException;
 use Stripe\Invoice;
 use Stripe\StripeClient;
 use Stripe\Subscription as StripeSubscription;
+use function count;
 use function factory;
 use function str_replace;
 
@@ -96,13 +96,19 @@ class SubscriptionTest extends ModelTestCase
     {
         $client = $this->app->make(StripeClient::class);
 
-        /** @var StripeSubscription $stripeSubscription */
-        $stripeSubscription = $client->subscriptions->all([
+        /** @var StripeSubscription[] $results */
+        $results = $client->subscriptions->all([
             'limit'  => 1,
             'status' => StripeSubscription::STATUS_ACTIVE,
-        ])->data[0];
+        ])->data;
 
-        $subscription = Subscription::fromStripe($stripeSubscription);
+        if (count($results) === 0) {
+            $this->markTestSkipped('There is no subscriptions at the moment');
+
+            return;
+        }
+
+        $subscription = Subscription::fromStripe($results[0]);
 
         $this->assertInstanceOf(Invoice::class, $subscription->latest_invoice);
     }
