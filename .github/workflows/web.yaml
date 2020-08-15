@@ -100,7 +100,6 @@ jobs:
           sudo service mysql start
           mysql -u "root" -p"root" -Bse "CREATE DATABASE mathrix_education_testing;"
           cp tests/.env .env
-          php artisan migrate --seed
       - name: Test with PHPUnit
         if: needs.mappings.outputs.skip_test != '1'
         env:
@@ -110,6 +109,7 @@ jobs:
           STRIPE_SECONDARY_API_KEY: ${{ secrets.STRIPE_SECONDARY_API_KEY }}
           BRAINTREE_PRIVATE_KEY: ${{ secrets.BRAINTREE_PRIVATE_KEY }}
         run: |
+          php artisan migrate --seed
           vendor/bin/paratest -f \
             --log-junit=storage/artifacts/phpunit-junit.xml \
             --coverage-clover=storage/artifacts/phpunit-coverage.xml \
