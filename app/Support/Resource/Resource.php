@@ -63,13 +63,37 @@ class Resource implements ArrayAccess, Arrayable, JsonSerializable, IteratorAggr
     /**
      * @param string $attribute The attribute name.
      *
+     * @return false|string
+     */
+    public function getter(string $attribute)
+    {
+        $getter = 'get' . Str::studly($attribute);
+
+        return method_exists($this, $getter) ? $getter : false;
+    }
+
+    /**
+     * @param string $attribute The attribute name.
+     *
+     * @return false|string
+     */
+    public function setter(string $attribute)
+    {
+        $getter = 'set' . Str::studly($attribute);
+
+        return method_exists($this, $getter) ? $getter : false;
+    }
+
+    /**
+     * @param string $attribute The attribute name.
+     *
      * @return mixed The attribute value.
      */
     public function getAttribute(string $attribute)
     {
-        $getter = 'get' . Str::studly($attribute);
+        $getter = $this->getter($attribute);
 
-        if (method_exists($this, $getter)) {
+        if ($getter) {
             return $this->{$getter}();
         }
 
@@ -82,17 +106,15 @@ class Resource implements ArrayAccess, Arrayable, JsonSerializable, IteratorAggr
      *
      * @return $this
      */
-    public function setAttribute(string $attribute, $value): self
+    public function setAttribute(string $attribute, $value): void
     {
-        $setter = 'set' . Str::studly($attribute);
+        $setter = $this->setter($attribute);
 
-        if (method_exists($this, $setter)) {
-            return $this->{$setter}($value);
+        if ($setter) {
+            $this->{$setter}($attribute, $value);
+        } else {
+            $this->attributes[$attribute] = $value;
         }
-
-        $this->attributes[$attribute] = $value;
-
-        return $this;
     }
 
     /**
@@ -110,7 +132,15 @@ class Resource implements ArrayAccess, Arrayable, JsonSerializable, IteratorAggr
      */
     public function toArray(): array
     {
-        return $this->attributes;
+        $export = [];
+
+        foreach ($this->attributes as $attribute => $value) {
+            if ($value instanceof Arrayable) {
+                $export[$attribute] = $value->toArray();
+            }
+        }
+
+        return $export;
     }
 
     /**
@@ -130,7 +160,7 @@ class Resource implements ArrayAccess, Arrayable, JsonSerializable, IteratorAggr
      */
     public function offsetExists($attribute): bool
     {
-        return array_key_exists($attribute, $this->attributes);
+        return array_key_exists($attribute, $this->attributes) || $this->getter($attribute);
     }
 
     /**
@@ -172,7 +202,7 @@ class Resource implements ArrayAccess, Arrayable, JsonSerializable, IteratorAggr
      */
     public function __isset(string $attribute): bool
     {
-        return isset($this->attributes[$attribute]);
+        return isset($this->attributes[$attribute]) || $this->getter($attribute);
     }
 
     /**

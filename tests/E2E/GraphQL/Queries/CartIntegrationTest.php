@@ -39,4 +39,12 @@ class CartIntegrationTest extends GraphQLIntegrationTestCase
         $this->assertResponseOk();
         $this->assertErrorCode('INVALID_COUPON_CODE');
     }
+
+    public function testPlan(): void
+    {
+        $this->executeCart(['plan' => 'laser_month']);
+
+        $this->assertResponseOk();
+        $this->assertNoErrors();
+    }
 }
