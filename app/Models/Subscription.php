@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Cache;
 use Railgun\Billing\Stripe\Models\InteractsWithStripe;
 use Railgun\Billing\Stripe\Models\ModeMachine;
 use Railgun\Models\Traits\InteractsWithCache;
-use RuntimeException;
 use Stripe\Customer;
 use Stripe\Invoice;
 use Stripe\Subscription as StripeSubscription;

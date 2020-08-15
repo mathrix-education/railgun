@@ -64,7 +64,7 @@ class CartGenerator
             $cart['trainings'] = Training::query()
                 ->inRandomOrder()
                 ->whereNotIn('id', $exclude)
-                ->where('available')
+                ->where('available', '=', true)
                 ->whereNotNull('stripe_price_id')
                 ->limit(3)
                 ->pluck('id')

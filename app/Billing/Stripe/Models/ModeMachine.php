@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Cache;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Price;
 use Stripe\StripeClient;
-use function app;
 use function array_keys;
 use function collect;
 
@@ -71,6 +70,13 @@ class ModeMachine
         ],
     ];
 
+    protected StripeClient $client;
+
+    public function __construct(StripeClient $client)
+    {
+        $this->client = $client;
+    }
+
     /**
      * @return Collection|Price[] The "Mode Machine" prices.
      *
@@ -78,12 +84,14 @@ class ModeMachine
      */
     public function all(): Collection
     {
-        return Cache::tags('stripe')->remember('stripe:plans', 3600, static function () {
+        return Cache::tags('stripe')->remember('stripe:plans', 3600, function () {
             return collect(
-                app()
-                    ->make(StripeClient::class)
+                $this->client
                     ->prices
-                    ->all(['lookup_keys' => array_keys(self::PRICES)])
+                    ->all([
+                        'lookup_keys' => array_keys(self::PRICES),
+                        'expand'      => ['data.product'],
+                    ])
                     ->data,
             );
         });
