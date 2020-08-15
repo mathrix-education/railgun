@@ -63,32 +63,6 @@ class SyncProductsCommand extends Command
         $this->syncProducts(Pack::class);
         $this->syncProducts(Training::class);
         $this->syncProducts(Chapter::class);
-
-        // Export products
-        $tables = [
-            'countries',
-            'disciplines',
-            'grades',
-            'grade_training',
-            'themes',
-            'chapters',
-            'packs',
-            'trainings',
-            'pack_training',
-        ];
-
-        foreach ($tables as $table) {
-            $data = DB::table($table)->get();
-
-            if ($table === 'grades') {
-                $data = $data->sortBy('parent_id')->values();
-            }
-
-            file_put_contents(
-                app()->databasePath("raws/$table.json"),
-                json_encode($data, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT),
-            );
-        }
     }
 
     /**
