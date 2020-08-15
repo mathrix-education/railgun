@@ -106,7 +106,8 @@ jobs:
         env:
           GOOGLE_CLOUD_KEY_FILE: keychain/service_account.json
           MAILJET_SECRET: ${{ secrets.MAILJET_SECRET }}
-          STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
+          STRIPE_PRIMARY_API_KEY: ${{ secrets.STRIPE_PRIMARY_API_KEY }}
+          STRIPE_SECONDARY_API_KEY: ${{ secrets.STRIPE_SECONDARY_API_KEY }}
           BRAINTREE_PRIVATE_KEY: ${{ secrets.BRAINTREE_PRIVATE_KEY }}
         run: |
           vendor/bin/paratest -f \

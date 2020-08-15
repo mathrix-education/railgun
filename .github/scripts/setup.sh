@@ -27,7 +27,7 @@ if [[ -z $environment ]]; then
     cmd="jq -r '.[\"${GITHUB_REF/refs\/heads\//}\"]' $root/../../environments.json"
     mapped_environment=$(eval "$cmd")
 
-    if [[ "$mapped_environement" != "null" ]]; then
+    if [[ "$mapped_environment" != "null" ]]; then
         environment=$mapped_environment
     fi
 fi
