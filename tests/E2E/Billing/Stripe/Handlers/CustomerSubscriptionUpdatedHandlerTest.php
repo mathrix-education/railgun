@@ -5,24 +5,32 @@ declare(strict_types=1);
 namespace Tests\E2E\Billing\Stripe\Handlers;
 
 use Carbon\Carbon;
-use Railgun\Billing\Models\Plan;
+use Laravel\Lumen\Testing\DatabaseTransactions;
+use Railgun\Billing\Stripe\Models\ModeMachine;
+use Stripe\Exception\ApiErrorException;
 use Stripe\Subscription;
 
 class CustomerSubscriptionUpdatedHandlerTest extends HandlerTestCase
 {
+    use DatabaseTransactions;
+
     /**
      * @testWith ["customer.subscription.updated"]
      * @testdox handles asynchronous $event
      *
      * @param string $event The webhook event.
+     *
+     * @throws ApiErrorException
      */
     public function testSubscriptionUpdated(string $event): void
     {
+        $modeMachine = $this->app->make(ModeMachine::class);
+
         $subscription = Subscription::constructFrom([
             'object'               => Subscription::OBJECT_NAME,
             'id'                   => $this->faker->regexify('sub_[a-zA-Z0-9]{14}'),
             'plan'                 => [
-                'id' => Plan::MONTHLY_PLAN,
+                'id' => $modeMachine->get('laser_month')->id,
             ],
             'customer'             => $this->faker->regexify('cus_[a-zA-Z0-9]{14}'),
             'status'               => Subscription::STATUS_CANCELED,

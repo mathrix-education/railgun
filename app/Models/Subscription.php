@@ -8,10 +8,13 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Cache;
 use Railgun\Billing\Stripe\Models\InteractsWithStripe;
+use Railgun\Billing\Stripe\Models\ModeMachine;
 use Railgun\Models\Traits\InteractsWithCache;
+use RuntimeException;
 use Stripe\Customer;
 use Stripe\Invoice;
 use Stripe\Subscription as StripeSubscription;
+use function app;
 use function is_string;
 use function preg_match;
 use function str_pad;
@@ -60,31 +63,32 @@ class Subscription extends BaseModel
         'canceled_at'          => 'datetime',
     ];
 
-    public static function fromStripe(StripeSubscription $stripe): self
+    public static function fromStripe(StripeSubscription $stripeSubscription): self
     {
         $subscription     = new self();
-        $subscription->id = $stripe->id;
+        $subscription->id = $stripeSubscription->id;
 
-        if (self::query()->where('id', '=', $stripe)->exists()) {
+        if (self::query()->where('id', '=', $stripeSubscription)->exists()) {
             /** @noinspection PhpIncompatibleReturnTypeInspection */
-            return self::query()->findOrFail($stripe->id);
+            return self::query()->findOrFail($stripeSubscription->id);
         }
 
-        $subscription->plan = $stripe->plan->id;
+        $modeMachine        = app()->make(ModeMachine::class);
+        $subscription->plan = $modeMachine->get($stripeSubscription->plan->id)->lookup_key;
 
-        if (is_string($stripe->customer)) {
-            $subscription->customer_id = $stripe->customer;
-        } elseif ($stripe->customer instanceof Customer) {
-            $subscription->customer_id = $stripe->customer->id;
+        if (is_string($stripeSubscription->customer)) {
+            $subscription->customer_id = $stripeSubscription->customer;
+        } elseif ($stripeSubscription->customer instanceof Customer) {
+            $subscription->customer_id = $stripeSubscription->customer->id;
         }
 
-        $subscription->status               = $stripe->status;
-        $subscription->current_period_start = Carbon::createFromTimestamp($stripe->current_period_start);
-        $subscription->current_period_end   = Carbon::createFromTimestamp($stripe->current_period_end);
-        $subscription->created_at           = Carbon::createFromTimestamp($stripe->created);
-        $subscription->updated_at           = Carbon::createFromTimestamp($stripe->created);
+        $subscription->status               = $stripeSubscription->status;
+        $subscription->current_period_start = Carbon::createFromTimestamp($stripeSubscription->current_period_start);
+        $subscription->current_period_end   = Carbon::createFromTimestamp($stripeSubscription->current_period_end);
+        $subscription->created_at           = Carbon::createFromTimestamp($stripeSubscription->created);
+        $subscription->updated_at           = Carbon::createFromTimestamp($stripeSubscription->created);
 
-        $canceledAt = $stripe->canceled_at ?? $stripe->cancel_at;
+        $canceledAt = $stripeSubscription->canceled_at ?? $stripeSubscription->cancel_at;
         if ($canceledAt !== null) {
             $subscription->canceled_at = Carbon::createFromTimestamp($canceledAt);
         }
