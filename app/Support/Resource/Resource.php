@@ -103,15 +103,13 @@ class Resource implements ArrayAccess, Arrayable, JsonSerializable, IteratorAggr
     /**
      * @param string|int $attribute The attribute name.
      * @param mixed      $value     The attribute new value.
-     *
-     * @return $this
      */
     public function setAttribute(string $attribute, $value): void
     {
         $setter = $this->setter($attribute);
 
         if ($setter) {
-            $this->{$setter}($attribute, $value);
+            $this->{$setter}($value);
         } else {
             $this->attributes[$attribute] = $value;
         }
