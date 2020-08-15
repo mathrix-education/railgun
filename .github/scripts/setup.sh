@@ -24,6 +24,15 @@ short_sha=${sha:0:7}
 environment=$(git log -1 --format=%B | sed -n -E 's/.*deploy: ([a-z]+).*/\1/p')
 
 if [[ -z $environment ]]; then
+    cmd="jq -r '.[\"${GITHUB_REF/refs\/heads\//}\"]' $root/../../environments.json"
+    mapped_environment=$(eval "$cmd")
+
+    if [[ "$mapped_environement" != "null" ]]; then
+        environment=$mapped_environment
+    fi
+fi
+
+if [[ -z $environment ]]; then
     if [[ "$GITHUB_REF" == "refs/tags"* ]]; then
       environment="production"
     else
