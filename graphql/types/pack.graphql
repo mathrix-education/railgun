@@ -1,8 +1,8 @@
-type Pack implements Ownable {
+type Pack implements Sellable & Ownable {
     id: ID!
     name: String!
     slug: String!
-    buyable: Boolean!
+    available: Boolean!
     price: Int!
     order: Int!
     visible: Boolean!

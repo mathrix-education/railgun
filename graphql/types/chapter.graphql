@@ -1,11 +1,14 @@
-type Chapter implements Ownable {
+type Chapter implements Sellable & Ownable {
     id: ID!
     name: String!
     slug: String!
+    "The chapter price **in cents**. May be null if the chapter is not sellable."
+    price: Int
     order: Int!
     visible: Boolean!
     created_at: DateTime!
     updated_at: DateTime!
+    available: Boolean!
     owned: Boolean!
     theme: Theme! @belongsTo
     notions: [Notion!]! @hasMany

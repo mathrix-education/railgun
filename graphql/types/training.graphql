@@ -1,4 +1,4 @@
-type Training implements Ownable {
+type Training implements Sellable & Ownable {
     id: ID!
     name: String!
     slug: String!
