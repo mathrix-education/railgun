@@ -66,6 +66,6 @@ class TrainingsSeeder extends AdvancedSeeder
             ->tap(fn(Collection $lessons) => $this->seedCollection($lessons, 'lessons'));
 
         // Coupons
-        $this->seedFactory(Coupon::class, 15);
+        $this->seedFactory(Coupon::class, 60);
     }
 }

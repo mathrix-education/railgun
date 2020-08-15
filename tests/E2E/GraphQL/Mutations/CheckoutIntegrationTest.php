@@ -103,6 +103,7 @@ class CheckoutIntegrationTest extends GraphQLIntegrationTestCase
             $cart['coupon'] = Coupon::query()
                 ->inRandomOrder()
                 ->where('counter', '=', '-1')
+                ->whereNull('expires_at')
                 ->firstOrFail()
                 ->getKey();
         }

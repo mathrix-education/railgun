@@ -25,7 +25,7 @@ $factory->define(Coupon::class, static function (Faker $faker) {
         'type'       => $type,
         'value'      => $value,
         'counter'    => $faker->boolean ? -1 : $faker->randomDigit,
-        'expires_at' => $faker->dateTimeBetween($timestamps->createdAt),
+        'expires_at' => $faker->boolean ? null : $faker->dateTimeBetween($timestamps->createdAt),
         'created_at' => $timestamps->createdAt,
         'updated_at' => $timestamps->updatedAt,
     ];
