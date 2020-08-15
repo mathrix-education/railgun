@@ -88,7 +88,7 @@ class ExportFixturesCommand extends Command
     }
 
     /**
-     * @return Collection|stdClass The grades in an insert-compatible order.
+     * @return Collection|stdClass[] The grades in an insert-compatible order.
      */
     public function exportGrades(): Collection
     {

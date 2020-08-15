@@ -18,6 +18,7 @@ use Railgun\Models\Pack;
 use Railgun\Models\Training;
 use Railgun\Models\User;
 use Railgun\Support\Resource\Resource;
+use Stripe\Exception\ApiErrorException;
 use Stripe\Price;
 use function app;
 use function array_unique;
@@ -41,7 +42,7 @@ class Cart extends Resource
 {
     use SerializesModels;
 
-    public const IDENTIFIER = 'cart_v11';
+    public const IDENTIFIER = 'cart_laser';
 
     protected ModeMachine $modeMachine;
 
@@ -56,6 +57,8 @@ class Cart extends Resource
      * @param mixed[] $args The Cart GraphQL input.
      *
      * @return Cart The new Cart instance.
+     *
+     * @throws ApiErrorException
      */
     public static function build(array $args): Cart
     {
@@ -201,6 +204,9 @@ class Cart extends Resource
         return $this;
     }
 
+    /**
+     * @return string[] The Stripe metadata cart representation.
+     */
     public function toMetadata(): array
     {
         return [

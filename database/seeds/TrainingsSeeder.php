@@ -18,11 +18,12 @@ use Railgun\Models\Section;
  */
 class TrainingsSeeder extends AdvancedSeeder
 {
-    private const PACK_COUNT            = 3;
-    private const TRAINING_COUNT        = 10;
     private const SECTIONS_PER_TRAINING = [1, 2];
     private const LESSONS_PER_SECTION   = [1, 2];
 
+    /**
+     * @throws JsonException
+     */
     public function run(): void
     {
         $this->seedFile('packs.json');

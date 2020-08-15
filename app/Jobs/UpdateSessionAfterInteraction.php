@@ -23,7 +23,10 @@ class UpdateSessionAfterInteraction extends Job implements ShouldQueue
 
     public function handle(): void
     {
-        if (!($this->interaction instanceof Interaction) || !($this->interaction->interactable instanceof BelongsToChapter)) {
+        if (
+            !($this->interaction instanceof Interaction)
+            || !($this->interaction->interactable instanceof BelongsToChapter)
+        ) {
             // This should never happen
             return; // @codeCoverageIgnore
         }

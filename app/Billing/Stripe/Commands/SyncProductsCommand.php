@@ -8,7 +8,6 @@ use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Railgun\Billing\Stripe\Contracts\StripeSellable;
 use Railgun\Billing\Stripe\Models\ModeMachine;
@@ -21,15 +20,10 @@ use Stripe\Exception\ApiErrorException;
 use Stripe\Price;
 use Stripe\Product;
 use Stripe\StripeClient;
-use function app;
 use function class_basename;
 use function collect;
 use function count;
-use function file_put_contents;
-use function json_encode;
 use function preg_match;
-use const JSON_PRETTY_PRINT;
-use const JSON_THROW_ON_ERROR;
 
 class SyncProductsCommand extends Command
 {

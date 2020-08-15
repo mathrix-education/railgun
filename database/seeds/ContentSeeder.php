@@ -28,8 +28,6 @@ use Railgun\Models\Subject;
  */
 class ContentSeeder extends AdvancedSeeder
 {
-    private const THEMES_PER_TUPLE       = [1, 2];
-    private const CHAPTERS_PER_THEME     = [1, 2];
     private const NOTIONS_PER_CHAPTER    = [1, 2];
     private const COURSES_PER_NOTION     = [1, 2];
     private const SUBJECTS_PER_NOTION    = [1, 2];
