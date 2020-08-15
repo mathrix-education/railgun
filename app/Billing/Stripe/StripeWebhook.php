@@ -43,7 +43,7 @@ class StripeWebhook
         }
 
         if (!is_array($config)) {
-            throw new InvalidArgumentException('$config must be a string or an array');
+            throw new InvalidArgumentException('$config must be a string or an array'); // @codeCoverageIgnore
         }
 
         Validator::make($config, ['secret' => 'required', 'tolerance' => 'integer'])->validate();
@@ -78,7 +78,7 @@ class StripeWebhook
     public function sign(string $payload, ?DateTimeInterface $date = null): string
     {
         if ($date instanceof DateTimeInterface) {
-            $timestamp = $date->getTimestamp();
+            $timestamp = $date->getTimestamp(); // @codeCoverageIgnore
         } else {
             $timestamp = time();
         }

@@ -134,6 +134,8 @@ class Cart extends Resource
     protected function setCoupon($coupon): self
     {
         if (is_string($coupon)) {
+            $couponId = $coupon;
+
             /**
              * @var Coupon $coupon
              * @noinspection CallableParameterUseCaseInTypeContextInspection
@@ -141,7 +143,7 @@ class Cart extends Resource
             $coupon = Coupon::query()->find($coupon);
 
             if ($coupon === null || !$coupon->valid) {
-                throw new InvalidCouponCodeException($coupon->id);
+                throw new InvalidCouponCodeException($couponId);
             }
         }
 

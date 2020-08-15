@@ -16,6 +16,8 @@ use function count;
 
 /**
  * Setup the stripe webhook.
+ *
+ * @codeCoverageIgnore
  */
 class SetupWebhookCommand extends Command
 {

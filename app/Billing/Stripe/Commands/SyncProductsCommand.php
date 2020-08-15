@@ -25,6 +25,11 @@ use function collect;
 use function count;
 use function preg_match;
 
+/**
+ * Synchronize current database products with Stripe.
+ *
+ * @codeCoverageIgnore
+ */
 class SyncProductsCommand extends Command
 {
     /**

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Functional\Models;
 
 use Carbon\Carbon;
-use Railgun\Billing\Models\Plan;
+use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Subscription;
 use Railgun\Models\User;
 use Stripe\Exception\ApiErrorException;
@@ -22,6 +22,8 @@ use function str_replace;
  */
 class SubscriptionTest extends ModelTestCase
 {
+    use DatabaseTransactions;
+
     /**
      * @covers ::user
      */
@@ -35,7 +37,7 @@ class SubscriptionTest extends ModelTestCase
 
         $subscription = new Subscription([
             'id'                   => $subscriptionId,
-            'plan'                 => Plan::MONTHLY_PLAN,
+            'plan'                 => 'laser_month',
             'customer_id'          => $customerId,
             'status'               => StripeSubscription::STATUS_ACTIVE,
             'current_period_start' => $anchor->subMonth(),
@@ -60,7 +62,7 @@ class SubscriptionTest extends ModelTestCase
 
         $subscription = new Subscription([
             'id'                   => $subscriptionId,
-            'plan'                 => Plan::MONTHLY_PLAN,
+            'plan'                 => 'laser_month',
             'customer_id'          => $customerId,
             'status'               => StripeSubscription::STATUS_ACTIVE,
             'current_period_start' => $anchor->subMonth(),

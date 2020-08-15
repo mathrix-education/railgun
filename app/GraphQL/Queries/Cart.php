@@ -18,6 +18,6 @@ class Cart
      */
     public function __invoke($_, array $args, GraphQLContext $context): CartResource
     {
-        return CartResource::build($args)->validate();
+        return CartResource::build($args['cart'])->validate();
     }
 }
