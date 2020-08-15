@@ -153,7 +153,7 @@ class SyncProductsCommand extends Command
             $progress->setMessage(
                 "Pushing <info>{$model->name}</info> (product <info>{$model->stripe_product_id}</info>)",
             );
-            $model->pushToStripe($this->option('intent'));
+            $model->ensureStripeProduct($this->option('intent'));
             $progress->advance();
         });
         $progress->finish();

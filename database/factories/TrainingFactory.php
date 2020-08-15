@@ -17,7 +17,7 @@ $factory->define(Training::class, static function (Faker $faker) {
     $timestamps = Timestamps::factory();
 
     return [
-        'name'       => $name,
+        'name'       => sprintf('%s (%s)', $name, $faker->randomNumber(6)),
         'slug'       => Str::slug($name),
         'duration'   => $faker->numberBetween(1, 4) * 10,
         'content'    => Silicate::wall(),

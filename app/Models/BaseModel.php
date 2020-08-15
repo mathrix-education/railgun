@@ -26,4 +26,16 @@ class BaseModel extends Model
 
         return Str::of(class_basename($this))->slug()->lower() . '_' . $this->getKey();
     }
+
+    /**
+     * Save the model to the database without triggering any event.
+     *
+     * @param mixed[] $options The save options.
+     *
+     * @return bool If the save succeeded.
+     */
+    public function saveWithoutEvents(array $options = []): bool
+    {
+        return static::withoutEvents(fn() => $this->save($options));
+    }
 }

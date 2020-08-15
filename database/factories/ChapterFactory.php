@@ -17,7 +17,7 @@ $factory->define(Chapter::class, static function (Faker $faker) {
     $timestamps = Timestamps::factory();
 
     return [
-        'name'       => $name,
+        'name'       => sprintf('%s (%s)', $name, $faker->randomNumber(6)),
         'slug'       => Str::slug($name),
         'order'      => 0,
         'visible'    => $faker->boolean(95),

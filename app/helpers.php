@@ -20,7 +20,7 @@ if (!function_exists('prefix')) { // @codeCoverageIgnore
      */
     function prefix(?string $path = null, bool $colon = false): string
     {
-        $prefix  = env('APP_NAME', 'app') . ':' . env('APP_RELEASE', 'stable') . '';
+        $prefix = env('APP_NAME', 'app') . ':' . env('APP_RELEASE', 'stable') . '';
         $prefix .= $path ? ":$path" : '';
         $prefix .= $colon && $prefix[strlen($prefix) - 1] !== ':' ? ':' : '';
 
