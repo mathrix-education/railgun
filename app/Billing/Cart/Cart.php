@@ -196,11 +196,13 @@ class Cart extends Resource
             throw new UnavailableProducts($unavailable->toArray());
         }
 
-        // Check that the user has not already bought one of the cart product
-        $owned = $this->products->filter(static fn(Ownable $p) => $user->owns($p))->pluck('name');
+        if ($user) {
+            // Check that the user has not already bought one of the cart product
+            $owned = $this->products->filter(static fn(Ownable $p) => $user->owns($p))->pluck('name');
 
-        if ($owned->isNotEmpty()) {
-            throw new UnavailableProducts($owned->toArray());
+            if ($owned->isNotEmpty()) {
+                throw new UnavailableProducts($owned->toArray());
+            }
         }
 
         return $this;
