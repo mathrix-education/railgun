@@ -27,6 +27,8 @@ abstract class ModelTestCase extends ApplicationTestCase
         parent::setUp();
 
         $this->modelClass = 'Railgun\\Models\\' . str_replace('Test', '', class_basename($this));
+
+        $this->withoutEvents();
     }
 
     /**

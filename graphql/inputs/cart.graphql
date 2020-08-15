@@ -2,6 +2,6 @@ input CartInput {
     packs: [ID!]
     trainings: [ID!]
     chapters: [ID!]
-    plan: PlanID
+    plan: ID
     coupon: ID
 }

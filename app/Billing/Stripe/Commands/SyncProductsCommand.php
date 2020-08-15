@@ -51,7 +51,7 @@ class SyncProductsCommand extends Command
         Chapter::query()
             ->whereHas('theme.grade', static fn($q) => $q->where('grades.slug', '=', 'postbac'))
             ->update([
-                'price'   => 4000,
+                'price'   => 4700,
                 'visible' => true,
             ]);
 

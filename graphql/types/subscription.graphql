@@ -10,7 +10,7 @@ enum SubscriptionStatus {
 
 type Subscription_ {
     id: ID!
-    plan: PlanID!
+    plan: ID!
     customer_id: String!
     status: SubscriptionStatus!
     current_period_start: DateTime

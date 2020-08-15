@@ -1,26 +1,26 @@
 [
-  {
-    "id": 1,
-    "name": "Pack Bac S SVT 2020",
-    "slug": "pack-bac-s-svt-2019",
-    "available": 1,
-    "price": 7800,
-    "order": 0,
-    "visible": 1,
-    "stripe_price_id": "price_1HFvPXIQfmflhkABpAvrHTUW",
-    "created_at": "2019-04-23 21:02:02",
-    "updated_at": "2020-08-14 07:38:18"
-  },
-  {
-    "id": 2,
-    "name": "Pack Bac S SI 2020",
-    "slug": "pack-bac-s-si-2019",
-    "available": 1,
-    "price": 7800,
-    "order": 1,
-    "visible": 1,
-    "stripe_price_id": "price_1HFvPYIQfmflhkABV8WHXcQL",
-    "created_at": "2019-04-23 21:03:20",
-    "updated_at": "2020-08-14 07:38:19"
-  }
+    {
+        "id": 1,
+        "name": "Pack Bac S SVT 2020",
+        "slug": "pack-bac-s-svt-2019",
+        "available": 1,
+        "price": 7800,
+        "order": 0,
+        "visible": 1,
+        "stripe_price_id": "price_1HFvPXIQfmflhkABpAvrHTUW",
+        "created_at": "2019-04-23 21:02:02",
+        "updated_at": "2020-08-15 01:52:17"
+    },
+    {
+        "id": 2,
+        "name": "Pack Bac S SI 2020",
+        "slug": "pack-bac-s-si-2019",
+        "available": 1,
+        "price": 7800,
+        "order": 1,
+        "visible": 1,
+        "stripe_price_id": "price_1HFvPYIQfmflhkABV8WHXcQL",
+        "created_at": "2019-04-23 21:03:20",
+        "updated_at": "2020-08-15 01:52:18"
+    }
 ]

@@ -12,7 +12,9 @@
   - `updateMCQExercise` and `updateProofExercise` mutations are replaced by `updateExercise`
   - `MCQExercise` and `ProofExercise` types are replaced by `Exercise`
   - `MCQExercise | ProofExercise` is replaced by `Exercise` in `Commentable`, `Notable` annd `Reportable` unions 
-- **plans**: deleted `prorated`, `proration_price` and `proration_anchor` from `Plan` type
+- **plans**: rewrite `Plan` type, see new specification
+- **subscriptions**: deleted `createMutation`, use `checkout` mutation
+- **products**: delete `checkoutCart` use `checkout` instead
 
 ### Bugfixes
 - **lighthouse**: forget `GraphQLRequest` on request teardown

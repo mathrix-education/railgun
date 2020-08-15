@@ -1,26 +1,26 @@
-enum PlanID {
-    V5_MONTHLY @enum(value: "v5_monthly")
-    V5_ANNUALLY @enum(value: "v5_annually")
-    V5_BIANNUALLY @enum(value: "v5_biannually")
-    V11_MONTH @enum(value: "v11_month")
-    V11_QUARTER @enum(value: "v11_quarter")
-    V11_SEMESTER @enum(value: "v11_semester")
-    V11_YEAR @enum(value: "v11_year")
-}
-
-enum PlanPeriod {
-    MONTH @enum(value: "month")
-    QUARTER @enum(value: "quarter")
-    SEMESTER @enum(value: "semester")
-    YEAR @enum(value: "year")
-}
-
 type Plan {
-    id: PlanID!
-    "The period between payments."
-    period: PlanPeriod!
-    "The price, **in cents** per period."
-    price_per_period: Int!
-    "The price, **in cents** per month."
-    price_per_month: Int!
+    "The plan identifier."
+    id: ID! @rename(attribute: "lookup_key")
+    "The plan human-readable name."
+    name: String! @rename(attribute: "nickname")
+    "The plan [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html) currency code. In our case, always \"eur\"."
+    currency: String!
+    "The plan price per period **in cents.**"
+    price: Int! @rename(attribute: "unit_amount")
+    "The plan period details"
+    period: PlanPeriod! @rename(attribute: "recurring")
+}
+
+enum PlanInterval {
+    day @enum(value: "day")
+    week @enum(value: "week")
+    month @enum(value: "month")
+    year @enum(value: "year")
+}
+
+type PlanPeriod {
+    "The plan period unit."
+    unit: PlanInterval! @rename(attribute: "interval")
+    "The plan period length multiplier."
+    length: Int! @rename(attribute: "interval_count")
 }

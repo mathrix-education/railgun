@@ -21,13 +21,19 @@ class ListPlansIntegrationTest extends GraphQLIntegrationTestCase
             query {
                 listPlans {
                     id
-                    period
-                    price_per_period
-                    price_per_month
+                    name
+                    currency
+                    price
+                    period {
+                        unit
+                        length
+                    }
                 }
             }
             GRAPHQL,
         );
+
+        $this->dump();
 
         $this->assertResponseOk();
         $this->assertNoErrors();
