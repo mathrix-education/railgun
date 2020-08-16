@@ -57,7 +57,7 @@ class UpdateExerciseIntegrationTest extends GraphQLIntegrationTestCase
                 'id'         => $exercise->id,
                 'subject_id' => $subject->id,
             ]),
-            ['type'],
+            ['protected'],
         );
 
         $this->withPermissions(['exercises:write', 'exercises:write:visible']);

@@ -50,7 +50,7 @@ class CreateExerciseIntegrationTest extends GraphQLIntegrationTestCase
         $subject   = factory(Subject::class)->create(['premium' => false]);
         $variables = Arr::except(
             factory(Exercise::class)->raw(['subject_id' => $subject->id]),
-            ['id', 'type', 'premium', 'created_at', 'updated_at'],
+            ['id', 'protected', 'premium', 'created_at', 'updated_at'],
         );
         $this->withPermissions(['exercises:write', 'exercises:write:visible']);
 
