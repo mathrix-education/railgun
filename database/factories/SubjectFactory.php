@@ -21,6 +21,7 @@ $factory->define(Subject::class, static function (Faker $faker) {
         'slug'       => Str::slug($name),
         'order'      => 99,
         'premium'    => $faker->boolean(10),
+        'protected'  => false,
         'visible'    => $faker->boolean(90),
         'notion_id'  => Notion::random()->id,
         'created_at' => $timestamps->createdAt,
