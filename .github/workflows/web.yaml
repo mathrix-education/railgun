@@ -1,7 +1,7 @@
 name: Web pipeline
 on:
   push:
-    branches: ['main', 'feat/stripe-v2']
+    branches: ['main']
     tags: ['**']
   pull_request:
     branches: ['**']
