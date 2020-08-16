@@ -22,6 +22,7 @@ use Railgun\Models\Traits\Sluggable;
  * @property      int                   $order
  * @property      bool                  $premium
  * @property      bool                  $visible
+ * @property      bool                  $protected
  * @property      int                   $notion_id
  * @property-read Carbon                $created_at
  * @property-read Carbon                $updated_at
@@ -37,20 +38,23 @@ class Subject extends BaseModel implements BelongsToChapter, OwnableContract
     use Sluggable;
 
     protected       $attributes     = [
-        'premium' => false,
-        'visible' => false,
+        'premium'   => false,
+        'protected' => false,
+        'visible'   => false,
     ];
     protected       $fillable       = [
         'name',
         'slug',
         'order',
         'premium',
+        'protected',
         'visible',
         'notion_id',
     ];
     protected       $casts          = [
-        'premium' => 'boolean',
-        'visible' => 'boolean',
+        'premium'   => 'boolean',
+        'protected' => 'boolean',
+        'visible'   => 'boolean',
     ];
     protected array $orderGroup     = ['notion_id'];
     protected array $orderRelations = [Course::class];
@@ -60,6 +64,10 @@ class Subject extends BaseModel implements BelongsToChapter, OwnableContract
         self::saving(static function (Subject $subject): void {
             if ($subject->isDirty('premium')) {
                 $subject->exercises()->update(['premium' => $subject->premium]);
+            }
+
+            if ($subject->isDirty('protected')) {
+                $subject->exercises()->update(['protected' => $subject->protected]);
             }
         });
     }

@@ -46,6 +46,7 @@ class Chapter extends BaseModel implements BelongsToChapter, StripeSellableContr
     protected       $fillable   = [
         'name',
         'slug',
+        'price',
         'order',
         'visible',
         'theme_id',

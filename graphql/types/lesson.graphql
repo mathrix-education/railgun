@@ -2,7 +2,7 @@ type Lesson implements Ownable {
     id: ID!
     name: String!
     slug: String!
-    content: Silicate! @product(stripped: "[]")
+    content: Silicate! @censor(value: "[]")
     order: Int!
     visible: Boolean!
     created_at: DateTime!

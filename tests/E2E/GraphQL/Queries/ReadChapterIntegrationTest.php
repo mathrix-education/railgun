@@ -84,4 +84,29 @@ class ReadChapterIntegrationTest extends GraphQLIntegrationTestCase
         $this->assertEquals($chapter->theme->grade->slug, $this->getData('theme.grade.slug'));
         $this->assertEquals($chapter->theme->discipline->slug, $this->getData('theme.discipline.slug'));
     }
+
+    /**
+     * @testdox available field is accessible.
+     */
+    public function testAvailable(): void
+    {
+        /** @var Chapter $chapter */
+        $chapter = Chapter::query()->whereNotNull('price')->firstOrFail();
+
+        $this->graphQL(
+            <<<'GRAPHQL'
+            query($id: ID!) {
+                readChapter(id: $id) {
+                    id
+                    available
+                }
+            }
+            GRAPHQL,
+            ['id' => $chapter->id],
+        );
+
+        $this->assertResponseOk();
+        $this->assertNoErrors();
+        $this->assertTrue($this->getData('available'));
+    }
 }

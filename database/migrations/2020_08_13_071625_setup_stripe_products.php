@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class SetupStripeProducts extends Migration
@@ -23,6 +24,15 @@ class SetupStripeProducts extends Migration
                 $table->string('stripe_product_id')->after('visible')->nullable();
             });
         }
+
+        DB::table('chapters')
+            ->join('themes', 'chapters.theme_id', '=', 'themes.id')
+            ->join('grades', 'themes.grade_id', '=', 'grades.id')
+            ->where('grades.slug', '=', 'postbac')
+            ->update([
+                'chapters.price'   => 4700,
+                'chapters.visible' => true,
+            ]);
     }
 
     /**

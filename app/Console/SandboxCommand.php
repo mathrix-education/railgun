@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Railgun\Console;
 
 use Illuminate\Console\Command;
-use Windy\Guardian\Guardian;
 
 /**
  * Dummy Command which is only used to test behavioral code.
@@ -22,7 +21,6 @@ class SandboxCommand extends Command
 
     public function handle(): void
     {
-        Guardian::get('reset')->sign('e');
         // Implement sandbox command
     }
 }

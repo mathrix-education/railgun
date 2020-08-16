@@ -39,7 +39,11 @@ class Exercise extends BaseModel implements BelongsToChapter, OwnableContract
     use Ownable;
     use Reorderable;
 
-    protected       $attributes = ['visible' => false];
+    protected       $attributes = [
+        'premium'   => false,
+        'protected' => false,
+        'visible'   => false,
+    ];
     protected       $fillable   = [
         'content',
         'order',
@@ -47,9 +51,10 @@ class Exercise extends BaseModel implements BelongsToChapter, OwnableContract
         'subject_id',
     ];
     protected       $casts      = [
-        'content' => 'array',
-        'premium' => 'boolean',
-        'visible' => 'boolean',
+        'content'   => 'array',
+        'premium'   => 'boolean',
+        'protected' => 'boolean',
+        'visible'   => 'boolean',
     ];
     protected array $orderGroup = ['subject_id'];
 

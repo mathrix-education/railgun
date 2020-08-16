@@ -44,8 +44,9 @@ class Exam extends BaseModel implements BelongsToChapter, OwnableContract
     use Sluggable;
 
     protected       $attributes = [
-        'premium' => false,
-        'visible' => false,
+        'premium'   => false,
+        'protected' => false,
+        'visible'   => false,
     ];
     protected       $fillable   = [
         'name',
@@ -54,13 +55,15 @@ class Exam extends BaseModel implements BelongsToChapter, OwnableContract
         'content',
         'order',
         'premium',
+        'protected',
         'visible',
         'chapter_id',
     ];
     protected       $casts      = [
-        'content' => 'array',
-        'premium' => 'boolean',
-        'visible' => 'boolean',
+        'content'   => 'array',
+        'premium'   => 'boolean',
+        'protected' => 'boolean',
+        'visible'   => 'boolean',
     ];
     protected array $orderGroup = ['chapter_id'];
 

@@ -19,6 +19,11 @@ input CreateFlashcard {
     """
     premium: Boolean @permission(name: "flashcards:write:premium") @rules(apply: ["boolean"])
     """
+    If the flashcard is only accessible for users who bought the parent chapter. Default value is `false`.
+    Requires the permission `exam:write:protected`.
+    """
+    protected: Boolean @permission(name: "exam:write:protected") @rules(apply: ["boolean"])
+    """
     The flashcard frozen date. If set, only the users with the permission `flashcards:freeze` will be allowed to edit
     the flashcard. Set to `null` to disable.
     Requires the permission `flashcards:freeze`.
@@ -69,6 +74,11 @@ input UpdateFlashcard {
     Requires the permission `flashcards:write:premium`.
     """
     premium: Boolean @permission(name: "flashcards:write:premium") @rules(apply: ["boolean"])
+    """
+    If the flashcard is only accessible for users who bought the parent chapter. Default value is `false`.
+    Requires the permission `exam:write:protected`.
+    """
+    protected: Boolean @permission(name: "exam:write:protected") @rules(apply: ["boolean"])
     """
     The flashcard frozen date. If set, only the users with the permission `flashcards:freeze` will be allowed to edit
     the flashcard. Set to `null` to disable.

@@ -24,6 +24,7 @@ use Railgun\Models\Traits\Sluggable;
  * @property      array  $content
  * @property      int    $order
  * @property      bool   $premium
+ * @property      bool   $protected
  * @property      bool   $visible
  * @property      bool   $seo_index
  * @property      string $seo_title
@@ -46,8 +47,9 @@ class Course extends BaseModel implements BelongsToChapter, OwnableContract
     use Sluggable;
 
     protected       $attributes     = [
-        'premium' => false,
-        'visible' => false,
+        'premium'   => false,
+        'protected' => false,
+        'visible'   => false,
     ];
     protected       $fillable       = [
         'name',
@@ -55,6 +57,7 @@ class Course extends BaseModel implements BelongsToChapter, OwnableContract
         'content',
         'order',
         'premium',
+        'protected',
         'visible',
         'seo_index',
         'seo_title',
@@ -65,6 +68,7 @@ class Course extends BaseModel implements BelongsToChapter, OwnableContract
     protected       $casts          = [
         'content'   => 'array',
         'premium'   => 'boolean',
+        'protected' => 'boolean',
         'visible'   => 'boolean',
         'seo_index' => 'boolean',
     ];
