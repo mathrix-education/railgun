@@ -20,6 +20,7 @@ jobs:
       image_latest: ${{ steps.mappings.outputs.image_latest }}
       image_version: ${{ steps.mappings.outputs.image_version }}
       image_exists: ${{ steps.mappings.outputs.image_exists }}
+      deploy_force: ${{ steps.mappings.outputs.deploy_force }}
       skip_lint: ${{ steps.mappings.outputs.skip_lint }}
       skip_test: ${{ steps.mappings.outputs.skip_test }}
       skip_build: ${{ steps.mappings.outputs.skip_build }}
@@ -166,7 +167,7 @@ jobs:
   # ============================================================================
   deploy_gke:
     name: Deploy on Google Kubernetes Engine
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' || needs.mappings.outputs.deploy_force
     needs: [mappings, lint, tests, docker]
     runs-on: ubuntu-latest
     steps:
@@ -181,7 +182,7 @@ jobs:
           service-account-key: ${{ secrets.GCLOUD_AUTH }}
       - name: Trigger deployment event
         id: deployment
-        if: needs.mappings.outputs.image_exists && github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' || needs.mappings.outputs.deploy_force
         uses: avakar/create-deployment@v1
         with:
           ref: ${{ github.ref }}
