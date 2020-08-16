@@ -29,7 +29,7 @@ class StripeWebhook
 
     /**
      * @param string                      $name   The webhook name.
-     * @param array<string, mixed>|string $config The Webhooks configuration.
+     * @param mixed[]|string $config The Webhooks configuration.
      */
     public function __construct(string $name, $config)
     {

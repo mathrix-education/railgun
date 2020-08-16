@@ -27,7 +27,7 @@ class StripeWebhookRegistry extends Registry
 
     /**
      * @param string                     $name    The webhook name.
-     * @param array<string|mixed>|string $options The webhook options.
+     * @param mixed[]|string $options The webhook options.
      *
      * @return StripeWebhook The StripeWebhook instance.
      */

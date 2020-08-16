@@ -6,7 +6,7 @@ namespace Tests\Functional\Billing\Cart;
 
 use Railgun\Billing\Cart\Cart;
 use Tests\ApplicationTestCase;
-use Tests\Utils\CartGenerator;
+use Tests\Utils\CartInputGenerator;
 
 /**
  * @covers \Railgun\Billing\Cart\Cart
@@ -15,7 +15,7 @@ class CartTest extends ApplicationTestCase
 {
     public function testFullValid(): void
     {
-        $cart = Cart::build(CartGenerator::input(['chapters', 'packs', 'trainings', 'coupon'], 'laser_month'));
+        $cart = Cart::build(CartInputGenerator::make(['chapters', 'packs', 'trainings', 'coupon'], 'laser_month'));
 
         $this->assertGreaterThan(0, $cart->subTotal);
         $this->assertGreaterThan(0, $cart->total);

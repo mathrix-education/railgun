@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Railgun\Support\Resource;
+namespace Railgun\Support;
 
 use ArrayAccess;
 use ArrayIterator;
@@ -11,9 +11,11 @@ use Illuminate\Support\Str;
 use IteratorAggregate;
 use JsonException;
 use JsonSerializable;
+use Throwable;
 use Traversable;
 use function array_key_exists;
-use function json_decode;
+use function array_keys;
+use function array_merge;
 use function json_encode;
 use function method_exists;
 use const JSON_THROW_ON_ERROR;
@@ -21,13 +23,15 @@ use const JSON_THROW_ON_ERROR;
 /**
  * Base class for data classes.
  */
-class Resource implements ArrayAccess, Arrayable, JsonSerializable, IteratorAggregate
+abstract class Container implements ArrayAccess, Arrayable, JsonSerializable, IteratorAggregate
 {
-    /** @var array<string, mixed> $attributes The resource attributes. */
+    /** @var mixed[] $attributes The resource attributes. */
     protected array $attributes = [];
+    /** @var string[] $appends The attributes to append when serializing and iterating. */
+    protected array $appends = [];
 
     /**
-     * @param array<string, mixed> $attributes The initial attributes.
+     * @param mixed[] $attributes The initial attributes.
      */
     public function __construct(array $attributes = [])
     {
@@ -35,19 +39,7 @@ class Resource implements ArrayAccess, Arrayable, JsonSerializable, IteratorAggr
     }
 
     /**
-     * @param string $str The resource data string.
-     *
-     * @return static
-     *
-     * @throws JsonException
-     */
-    public static function fromString(string $str)
-    {
-        return (new static())->apply(json_decode($str, true, 512, JSON_THROW_ON_ERROR));
-    }
-
-    /**
-     * @param array<string,mixed> $attributes The attributes to apply.
+     * @param mixed[] $attributes The attributes to apply.
      *
      * @return $this
      */
@@ -85,6 +77,16 @@ class Resource implements ArrayAccess, Arrayable, JsonSerializable, IteratorAggr
     }
 
     /**
+     * @param string|int $attribute The attribute name.
+     *
+     * @return bool If the attribute exists.
+     */
+    public function issetAttribute(string $attribute): bool
+    {
+        return array_key_exists($attribute, $this->attributes) || $this->getter($attribute);
+    }
+
+    /**
      * @param string $attribute The attribute name.
      *
      * @return mixed The attribute value.
@@ -101,8 +103,8 @@ class Resource implements ArrayAccess, Arrayable, JsonSerializable, IteratorAggr
     }
 
     /**
-     * @param string|int $attribute The attribute name.
-     * @param mixed      $value     The attribute new value.
+     * @param string $attribute The attribute name.
+     * @param mixed  $value     The attribute new value.
      */
     public function setAttribute(string $attribute, $value): void
     {
@@ -123,18 +125,35 @@ class Resource implements ArrayAccess, Arrayable, JsonSerializable, IteratorAggr
         unset($this->attributes[$attribute]);
     }
 
+    public function getIterator(): Traversable
+    {
+        return new ArrayIterator(array_merge(array_keys($this->attributes), $this->appends));
+    }
+
     /**
      * Get the array representation of the resource.
      *
-     * @return array<string, mixed>
+     * @return mixed[]
      */
     public function toArray(): array
     {
+        try {
+            $iterator = $this->getIterator();
+            // @codeCoverageIgnoreStart
+        } catch (Throwable $e) {
+            $iterator = [];
+        }
+        // @codeCoverageIgnoreEnd
+
         $export = [];
 
-        foreach ($this->attributes as $attribute => $value) {
+        foreach ($iterator as $attribute) {
+            $value = $this->getAttribute($attribute);
+
             if ($value instanceof Arrayable) {
                 $export[$attribute] = $value->toArray();
+            } else {
+                $export[$attribute] = $value;
             }
         }
 
@@ -144,11 +163,11 @@ class Resource implements ArrayAccess, Arrayable, JsonSerializable, IteratorAggr
     /**
      * Get the JSON-able representation of the resource.
      *
-     * @return array<string, mixed>
+     * @return mixed[]
      */
     public function jsonSerialize(): array
     {
-        return $this->attributes;
+        return $this->toArray();
     }
 
     /**
@@ -158,7 +177,7 @@ class Resource implements ArrayAccess, Arrayable, JsonSerializable, IteratorAggr
      */
     public function offsetExists($attribute): bool
     {
-        return array_key_exists($attribute, $this->attributes) || $this->getter($attribute);
+        return $this->issetAttribute($attribute);
     }
 
     /**
@@ -188,11 +207,6 @@ class Resource implements ArrayAccess, Arrayable, JsonSerializable, IteratorAggr
         $this->unsetAttribute($attribute);
     }
 
-    public function getIterator(): Traversable
-    {
-        return new ArrayIterator($this->attributes);
-    }
-
     /**
      * @param string $attribute The attribute name.
      *
@@ -200,7 +214,7 @@ class Resource implements ArrayAccess, Arrayable, JsonSerializable, IteratorAggr
      */
     public function __isset(string $attribute): bool
     {
-        return isset($this->attributes[$attribute]) || $this->getter($attribute);
+        return $this->issetAttribute($attribute);
     }
 
     /**

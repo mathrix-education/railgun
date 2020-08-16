@@ -29,7 +29,7 @@ class StripeWebhooksController
      * @param StripeWebhookRegistry $webhooks The Stripe webhook registry.
      * @param string|null           $account  The Stripe account.
      *
-     * @return JsonResponse|array<string|int, mixed>
+     * @return JsonResponse|mixed[]
      *
      * @throws SignatureVerificationException
      */

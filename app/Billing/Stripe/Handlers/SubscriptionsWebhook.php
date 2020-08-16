@@ -25,7 +25,7 @@ class SubscriptionsWebhook
      * @param Event        $event  The "customer.subscription.updated" Stripe event.
      * @param Subscription $object The subscription object.
      *
-     * @return array<string, mixed>
+     * @return mixed[]
      */
     public function upsert(Event $event, Subscription $object): array
     {

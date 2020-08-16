@@ -24,7 +24,7 @@ class StripeClientRegistry extends Registry
 
     /**
      * @param string                      $name    The StripeClient name.
-     * @param array<string, mixed>|string $options The StripeClient options ({@see BaseStripeClient::__construct}).
+     * @param mixed[]|string $options The StripeClient options ({@see BaseStripeClient::__construct}).
      *
      * @return StripeClient The new StripeClient.
      */

@@ -17,13 +17,13 @@ use function collect;
  */
 class ModeMachine
 {
-    public const PRODUCT = [
+    public const PRODUCT       = [
         'id'          => 'mode_machine',
         'name'        => 'Mode Machine',
         'active'      => true,
         'description' => 'Accès au contenu premium de Mathrix.fr en illimité.',
     ];
-    public const PRICES  = [
+    public const PRICES        = [
         'laser_month'    => [
             'currency'    => 'eur',
             'lookup_key'  => 'laser_month',
@@ -68,6 +68,9 @@ class ModeMachine
             ],
             'unit_amount' => 16700,
         ],
+    ];
+    public const PRICES_LEGACY = [
+
     ];
 
     protected StripeClient $client;

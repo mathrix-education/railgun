@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\E2E\GraphQL\Queries;
 
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
-use Tests\Utils\CartGenerator;
+use Tests\Utils\CartInputGenerator;
 use function array_merge;
 
 class CartIntegrationTest extends GraphQLIntegrationTestCase
@@ -34,7 +34,7 @@ class CartIntegrationTest extends GraphQLIntegrationTestCase
 
     public function testInvalidCouponCode(): void
     {
-        $this->executeCart(array_merge(CartGenerator::input('trainings'), ['coupon' => 'wrong']));
+        $this->executeCart(array_merge(CartInputGenerator::make('trainings'), ['coupon' => 'wrong']));
 
         $this->assertResponseOk();
         $this->assertErrorCode('INVALID_COUPON_CODE');

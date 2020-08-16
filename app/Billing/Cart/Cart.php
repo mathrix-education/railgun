@@ -17,7 +17,7 @@ use Railgun\Models\Coupon;
 use Railgun\Models\Pack;
 use Railgun\Models\Training;
 use Railgun\Models\User;
-use Railgun\Support\Resource\Resource;
+use Railgun\Support\Container;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Price;
 use function app;
@@ -27,18 +27,18 @@ use function is_string;
 use function round;
 
 /**
- * @property      Collection|array<int, Chapter>  $chapters
- * @property      Collection|array<int, Pack>     $packs
- * @property      Collection|array<int, Training> $trainings
- * @property-read Collection|Sellable[]           $products
- * @property-read Price|null                      $plan
- * @property-read Coupon|null                     $coupon
- * @property-read Collection|array<int, Line>     $lines
- * @property-read int                             $subTotal
- * @property-read int                             $couponAmount
- * @property-read int                             $total
+ * @property      Collection|Chapter[]  $chapters
+ * @property      Collection|Pack[]     $packs
+ * @property      Collection|Training[] $trainings
+ * @property-read Collection|Sellable[] $products
+ * @property-read Price|null            $plan
+ * @property-read Coupon|null           $coupon
+ * @property-read Collection|Line[]     $lines
+ * @property-read int                   $subTotal
+ * @property-read int                   $couponAmount
+ * @property-read int                   $total
  */
-class Cart extends Resource
+class Cart extends Container
 {
     use SerializesModels;
 
@@ -54,28 +54,28 @@ class Cart extends Resource
     }
 
     /**
-     * @param mixed[] $args The Cart GraphQL input.
+     * @param mixed[] $cartInput The CartInput GraphQL input.
      *
      * @return Cart The new Cart instance.
      *
      * @throws ApiErrorException
      */
-    public static function build(array $args): Cart
+    public static function build(array $cartInput): Cart
     {
         $cart = new self();
 
         // Set the products (use of `array_unique` solve duplicates)
-        $cart->chapters  = Chapter::query()->whereIn('id', array_unique($args['chapters'] ?? [0]))->get();
-        $cart->packs     = Pack::query()->whereIn('id', array_unique($args['packs'] ?? [0]))->get();
-        $cart->trainings = Training::query()->whereIn('id', array_unique($args['trainings'] ?? [0]))->get();
+        $cart->chapters  = Chapter::query()->whereIn('id', array_unique($cartInput['chapters'] ?? [0]))->get();
+        $cart->packs     = Pack::query()->whereIn('id', array_unique($cartInput['packs'] ?? [0]))->get();
+        $cart->trainings = Training::query()->whereIn('id', array_unique($cartInput['trainings'] ?? [0]))->get();
 
-        if (isset($args['plan'])) {
-            $cart->plan = $cart->modeMachine->get($args['plan']);
+        if (isset($cartInput['plan'])) {
+            $cart->plan = $cart->modeMachine->get($cartInput['plan']);
         }
 
         // Set the coupon code; coupon validation is handled here
-        if (isset($args['coupon'])) {
-            $cart->coupon = $args['coupon'];
+        if (isset($cartInput['coupon'])) {
+            $cart->coupon = $cartInput['coupon'];
         }
 
         return $cart;
@@ -93,7 +93,7 @@ class Cart extends Resource
     }
 
     /**
-     * @return Collection|array<int, Line>
+     * @return Collection|Line[]
      */
     protected function getLines(): Collection
     {

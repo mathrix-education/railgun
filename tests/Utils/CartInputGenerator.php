@@ -11,7 +11,7 @@ use Railgun\Models\Training;
 use function in_array;
 use function is_string;
 
-class CartGenerator
+class CartInputGenerator
 {
     /**
      * Generate a valid CartInput GraphQL input.
@@ -21,7 +21,7 @@ class CartGenerator
      *
      * @return mixed[] A valid CartInput GraphQL input.
      */
-    public static function input($options = [], ?string $plan = null): array
+    public static function make($options = [], ?string $plan = null): array
     {
         if (is_string($options)) {
             $options = [$options];

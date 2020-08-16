@@ -6,7 +6,7 @@ namespace Railgun\Billing\Cart;
 
 use Railgun\Billing\Stripe\Contracts\StripeSellable;
 use Railgun\Models\Coupon;
-use Railgun\Support\Resource\Resource;
+use Railgun\Support\Container;
 use Stripe\Price;
 use function class_basename;
 use function sprintf;
@@ -18,7 +18,7 @@ use function ucfirst;
  * @property string $description
  * @property string $price
  */
-class Line extends Resource
+class Line extends Container
 {
     public static function fromProduct(StripeSellable $model): Line
     {

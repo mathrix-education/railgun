@@ -18,7 +18,7 @@ abstract class Registry
     protected string $configPath;
 
     protected Container $container;
-    /** @var array<string, mixed> $instances */
+    /** @var mixed[] $instances */
     protected array $instances = [];
 
     public function __construct(Container $container)
@@ -34,14 +34,14 @@ abstract class Registry
     /**
      * Validation rules for every configuration.
      *
-     * @return array<string, string|mixed>
+     * @return mixed[]
      */
     abstract protected function rules(): array;
 
     /**
      * @param string $name The configuration name.
      *
-     * @return array<mixed, mixed>|mixed
+     * @return mixed[]|mixed
      */
     protected function options(string $name)
     {
@@ -104,8 +104,8 @@ abstract class Registry
     /**
      * Forward any call to to the default instance.
      *
-     * @param string           $method The method name.
-     * @param array<int,mixed> $args   The method arguments.
+     * @param string  $method The method name.
+     * @param mixed[] $args   The method arguments.
      *
      * @return mixed
      */

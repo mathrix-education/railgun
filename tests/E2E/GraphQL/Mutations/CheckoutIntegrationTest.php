@@ -10,7 +10,7 @@ use Railgun\Models\Training;
 use Stripe\Invoice;
 use Stripe\PaymentIntent;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
-use Tests\Utils\CartGenerator;
+use Tests\Utils\CartInputGenerator;
 use function array_merge;
 use function collect;
 use function resolveMorph;
@@ -120,7 +120,7 @@ class CheckoutIntegrationTest extends GraphQLIntegrationTestCase
         array $expectations
     ): void
     {
-        $cart = CartGenerator::input($products, $plan);
+        $cart = CartInputGenerator::make($products, $plan);
 
         $user = $this->actingAsGetUser();
 
