@@ -2,22 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Tests\E2E\Billing\Webhooks;
+namespace Tests\E2E\Billing\Stripe\Webhooks;
 
 use JsonException;
 use Railgun\Billing\Stripe\StripeWebhook;
 use Stripe\Event;
 use Stripe\StripeObject;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
-use function config;
 use function json_encode;
-use function str_replace;
 use const JSON_THROW_ON_ERROR;
 
-/**
- * Base class for testing Stripe webhooks.
- */
-abstract class WebhookTestCase extends GraphQLIntegrationTestCase
+class WebhookTestCase extends GraphQLIntegrationTestCase
 {
     protected StripeWebhook $webhook;
 
@@ -36,7 +31,11 @@ abstract class WebhookTestCase extends GraphQLIntegrationTestCase
      */
     protected function callStripeWebhook(string $type, StripeObject $data): void
     {
-        $event = $this->buildEvent($type, $data);
+
+        $event = Event::constructFrom([
+            'type' => $type,
+            'data' => ['object' => $data],
+        ]);
 
         try {
             $payload = json_encode($event->jsonSerialize(), JSON_THROW_ON_ERROR, 512);
@@ -59,32 +58,12 @@ abstract class WebhookTestCase extends GraphQLIntegrationTestCase
     {
         $this->call(
             'post',
-            str_replace(
-                '{account}',
-                config('stripe.defaults.webhooks'),
-                config('stripe.webhooks_route.uri'),
-            ),
+            $this->webhook->route(),
             [],
             [],
             [],
             ['HTTP_STRIPE_SIGNATURE' => $signature],
             $payload,
         );
-    }
-
-    /**
-     * Build the event.
-     *
-     * @param string       $type The event type {@see buildEvent}
-     * @param StripeObject $data The event payload.
-     *
-     * @return Event The Stripe event.
-     */
-    public function buildEvent(string $type, StripeObject $data): Event
-    {
-        return Event::constructFrom([
-            'type' => $type,
-            'data' => ['object' => $data],
-        ]);
     }
 }

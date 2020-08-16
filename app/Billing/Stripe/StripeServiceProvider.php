@@ -11,6 +11,7 @@ use Psr\Log\LoggerInterface;
 use Railgun\Billing\Stripe\Commands\SetupWebhookCommand;
 use Railgun\Billing\Stripe\Commands\SyncProductsCommand;
 use Railgun\Billing\Stripe\Models\ModeMachine;
+use Railgun\Billing\Stripe\Webhooks\WebhooksController;
 use Stripe\Stripe;
 use Stripe\StripeClient;
 
@@ -54,7 +55,7 @@ class StripeServiceProvider extends ServiceProvider
             $config->get('stripe.webhooks_route.uri'),
             [
                 'as'   => $config->get('stripe.webhooks_route.name'),
-                'uses' => StripeWebhooksController::class,
+                'uses' => WebhooksController::class,
             ],
         );
     }

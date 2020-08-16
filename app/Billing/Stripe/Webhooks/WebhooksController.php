@@ -2,22 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Railgun\Billing\Stripe;
+namespace Railgun\Billing\Stripe\Webhooks;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Railgun\Billing\Exceptions\UnsupportedEventException;
-use Railgun\Billing\Stripe\Handlers\SubscriptionsWebhook;
+use Railgun\Billing\Stripe\StripeWebhookRegistry;
 use Stripe\Event;
 use Stripe\Exception\SignatureVerificationException;
 use function app;
 
-class StripeWebhooksController
+class WebhooksController
 {
     public const EVENT_MAP = [
         Event::CUSTOMER_SUBSCRIPTION_CREATED => SubscriptionsWebhook::class . '@upsert',
         Event::CUSTOMER_SUBSCRIPTION_UPDATED => SubscriptionsWebhook::class . '@upsert',
         Event::CUSTOMER_SUBSCRIPTION_DELETED => SubscriptionsWebhook::class . '@upsert',
+        Event::INVOICE_PAID                  => InvoicesWebhook::class . '@process',
+        Event::INVOICE_PAYMENT_SUCCEEDED     => InvoicesWebhook::class . '@process',
     ];
 
     /**

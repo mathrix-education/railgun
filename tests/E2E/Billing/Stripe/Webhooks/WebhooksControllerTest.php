@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\E2E\Billing\Webhooks;
+namespace Tests\E2E\Billing\Stripe\Webhooks;
 
+use Laravel\Lumen\Testing\DatabaseTransactions;
 use Stripe\StripeObject;
 use function trans;
 
@@ -12,12 +13,17 @@ use function trans;
  */
 class WebhooksControllerTest extends WebhookTestCase
 {
+    use DatabaseTransactions;
+
     /**
      * @testdox fails to handle the event when signature is invalid
      */
     public function testInvalidSignature(): void
     {
-        $this->postStripe($this->faker->md5, $this->faker->md5);
+        $this->postStripe(
+            $this->faker->md5,
+            $this->webhook->sign($this->faker->md5),
+        );
 
         $this->assertResponseStatus(400);
     }
@@ -27,14 +33,13 @@ class WebhooksControllerTest extends WebhookTestCase
      */
     public function testUnsupportedEvent(): void
     {
-        $event = $this->faker->uuid;
-        $this->callStripeWebhook($event, StripeObject::constructFrom([]));
+        $this->callStripeWebhook('unsupported', StripeObject::constructFrom([]));
 
         $this->assertResponseStatus(400);
         $this->assertEquals('UNSUPPORTED_EVENT', $this->getContent('extensions.code'));
         $this->assertEquals('billing', $this->getContent('extensions.category'));
         $this->assertEquals(
-            trans('billing.errors.unsupported_event', ['eventType' => $event]),
+            trans('billing.errors.unsupported_event', ['eventType' => 'unsupported']),
             $this->getContent('message'),
         );
     }

@@ -6,6 +6,7 @@ namespace Railgun\GraphQL\Directives;
 
 use Closure;
 use GraphQL\Type\Definition\ResolveInfo;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 use Nuwave\Lighthouse\Schema\Directives\BaseDirective;
 use Nuwave\Lighthouse\Schema\Values\FieldValue;
@@ -53,7 +54,10 @@ class ProductDirective extends BaseDirective implements FieldMiddleware, Defined
         $previous = $fieldValue->getResolver();
 
         $resolver = function ($root, array $args, GraphQLContext $context, ResolveInfo $resolveInfo) use ($previous) {
-            if (Gate::denies(ProductGate::NAME, $root)) {
+            if (
+                !$root instanceof Model
+                && ($root->getAttribute('premium') && Gate::denies(ProductGate::NAME, $root))
+            ) {
                 $stripped = $this->directiveArgValue('stripped');
 
                 return is_json($stripped)

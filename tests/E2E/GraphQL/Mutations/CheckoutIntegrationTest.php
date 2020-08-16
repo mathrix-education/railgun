@@ -126,6 +126,7 @@ class CheckoutIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->executeCheckoutMutation($cart, $paymentMethodId);
 
+        $this->assertNoErrors();
         $this->assertEquals($expectations['invoiceStatus'], $this->getData('status'));
         $this->assertEquals($expectations['paymentIntentStatus'], $this->getData('payment_intent.status'));
 

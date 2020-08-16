@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Railgun\Billing\Stripe\Handlers;
+namespace Railgun\Billing\Stripe\Webhooks;
 
+use Illuminate\Contracts\Bus\Dispatcher;
 use Railgun\Jobs\UpsertSubscription;
 use Stripe\Event;
 use Stripe\Subscription;
-use function dispatch_now;
 
 /**
  * Handler for the Stripe events:
@@ -22,14 +22,15 @@ use function dispatch_now;
 class SubscriptionsWebhook
 {
     /**
-     * @param Event        $event  The "customer.subscription.updated" Stripe event.
-     * @param Subscription $object The subscription object.
+     * @param Dispatcher   $dispatcher The bus dispatcher.
+     * @param Event        $event      The Stripe event.
+     * @param Subscription $object     The subscription object.
      *
      * @return mixed[]
      */
-    public function upsert(Event $event, Subscription $object): array
+    public function upsert(Dispatcher $dispatcher, Event $event, Subscription $object): array
     {
-        dispatch_now(new UpsertSubscription($object));
+        $dispatcher->dispatchNow(new UpsertSubscription($object));
 
         return [
             'message' => 'Subscription handled',

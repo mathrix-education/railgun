@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\E2E\Billing\Stripe\Handlers;
+namespace Tests\E2E\Billing\Stripe\Webhooks;
 
 use Carbon\Carbon;
 use Laravel\Lumen\Testing\DatabaseTransactions;
@@ -10,7 +10,7 @@ use Railgun\Billing\Stripe\Models\ModeMachine;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Subscription;
 
-class CustomerSubscriptionUpdatedHandlerTest extends HandlerTestCase
+class SubscriptionsWebhookTest extends WebhookTestCase
 {
     use DatabaseTransactions;
 
@@ -22,7 +22,7 @@ class CustomerSubscriptionUpdatedHandlerTest extends HandlerTestCase
      *
      * @throws ApiErrorException
      */
-    public function testSubscriptionUpdated(string $event): void
+    public function testUpsert(string $event): void
     {
         $modeMachine = $this->app->make(ModeMachine::class);
 

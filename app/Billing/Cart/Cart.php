@@ -23,6 +23,7 @@ use Stripe\Price;
 use function app;
 use function array_unique;
 use function config;
+use function explode;
 use function is_string;
 use function round;
 
@@ -79,6 +80,34 @@ class Cart extends Container
         }
 
         return $cart;
+    }
+
+    /**
+     * @see Cart::toMetadata
+     *
+     * @param mixed[] $metadata The cart metadata.
+     *
+     * @return Cart The new Cart instance.
+     *
+     * @throws ApiErrorException
+     */
+    public static function fromMetadata(array $metadata): Cart
+    {
+        $args = [];
+
+        if (isset($metadata['chapters'])) {
+            $args['chapters'] = explode(',', $metadata['chapters'] ?? '');
+        }
+
+        if (isset($metadata['pack'])) {
+            $args['pack'] = explode(',', $metadata['chapters'] ?? '');
+        }
+
+        if (isset($metadata['trainings'])) {
+            $args['trainings'] = explode(',', $metadata['chapters'] ?? '');
+        }
+
+        return static::build($args);
     }
 
     /**
