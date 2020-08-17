@@ -33,20 +33,20 @@ class SearchChapters
         return Chapter::query()
             ->selectRaw("`chapters`.*")
             ->join('themes', 'chapters.theme_id', '=', 'themes.id')
-            ->join(DB::raw('`chapters` as chapters_inner'), 'chapters.slug', '=', 'chapters_inner.slug')
+            ->crossJoin(DB::raw('`chapters` as chapters_inner'), 'chapters.slug', '=', 'chapters_inner.slug')
             ->join(DB::raw('`themes` as themes_inner'), 'chapters_inner.theme_id', '=', 'themes_inner.id')
-            ->leftJoin(DB::raw("`chapters` as chapter_compare"), static function (JoinClause $join) use (
+            ->join(DB::raw("`chapters` as chapter_compare"), static function (JoinClause $join) use (
                 $weights1,
                 $weights2
             ): void {
                 $join->on('chapters.slug', '=', 'chapter_compare.slug')
-                    ->whereRaw("$weights1 > $weights2");
+                    ->whereRaw("$weights1 < $weights2");
             })
-            ->whereNull('chapter_compare.id')
             ->where(static function (Builder $query) use ($like): void {
                 $query->orWhere('chapters.name', 'LIKE', $like)
                     ->orWhere('chapters.slug', 'LIKE', $like);
             })
-            ->where('chapters.visible', '=', true);
+            ->where('chapters.visible', '=', true)
+            ->groupBy('chapters.id');
     }
 }

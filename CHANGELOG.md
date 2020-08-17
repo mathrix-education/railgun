@@ -1,5 +1,9 @@
 # Changelog
 
+## 11.0.1
+### Bugfixes
+- **graphql**: remove results duplicates (#487)
+
 ## 11.0.0
 ### Breaking changes
 - **exercises**: collapse `questions`, `choices`, `solutions` and `explanations` to `content` in `Exercise` type
