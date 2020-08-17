@@ -73,7 +73,9 @@ class OwnsProductTest extends ModelTestCase
         $chapter = Chapter::query()
             ->inRandomOrder()
             ->has('notions.courses')
-            ->whereNotNull('price')
+            ->has('notions.subjects.exercises')
+            ->has('flashcards')
+            ->has('exams')
             ->firstOrFail();
         /** @var Acquisition $acquisition */
         $acquisition = factory(Acquisition::class)->create([
@@ -91,7 +93,7 @@ class OwnsProductTest extends ModelTestCase
         /** @var User $user */
         $user = factory(User::class)->create();
         /** @var Pack $pack */
-        $pack = Pack::query()->inRandomOrder()->where('available', '=', true)->firstOrFail();
+        $pack = Pack::query()->inRandomOrder()->firstOrFail();
         /** @var Acquisition $acquisition */
         $acquisition = factory(Acquisition::class)->create([
             'user_id'      => $user->id,
@@ -110,7 +112,6 @@ class OwnsProductTest extends ModelTestCase
         $training = Training::query()
             ->inRandomOrder()
             ->has('sections')
-            ->where('available', '=', true)
             ->firstOrFail();
         /** @var Acquisition $acquisition */
         $acquisition = factory(Acquisition::class)->create([
