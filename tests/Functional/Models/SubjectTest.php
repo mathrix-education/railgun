@@ -54,7 +54,7 @@ class SubjectTest extends ModelTestCase
         $exercises = factory(Exercise::class, 5)->create(['subject_id' => $subject->id]);
         $exercises->each(function (Exercise $e): void {
             $e->refresh();
-            $this->assertFalse($e->premium);
+            $this->assertFalse($e->protected);
         });
 
         $subject->protected = true;
