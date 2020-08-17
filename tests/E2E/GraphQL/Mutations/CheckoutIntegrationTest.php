@@ -14,6 +14,7 @@ use Tests\Utils\CartInputGenerator;
 use function array_merge;
 use function collect;
 use function resolveMorph;
+use function trans;
 
 class CheckoutIntegrationTest extends GraphQLIntegrationTestCase
 {
@@ -47,62 +48,88 @@ class CheckoutIntegrationTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @return mixed[][] The cart dataset.
-     */
-    protected function cartDataset(): array
-    {
-        return [
-            [
-                'products' => ['chapters', 'packs', 'trainings', 'coupon'],
-                'plan'     => null,
-            ],
-            [
-                'products' => ['chapters', 'packs', 'trainings', 'coupon'],
-                'plan'     => 'laser_month',
-            ],
-        ];
-    }
-
-    /**
      * @return mixed[][] The payment methods dataset.
      */
-    protected function paymentMethodDataset(): array
+    public function checkoutDataset(): array
     {
         return [
-            [
+            'products|visa'             => [
+                'products'        => ['chapters', 'packs', 'trainings', 'coupon'],
+                'plan'            => null,
                 'paymentMethodId' => 'pm_card_visa_credit_fr_cartesBancaires',
                 'expectations'    => [
                     'invoiceStatus'       => Invoice::STATUS_PAID,
                     'paymentIntentStatus' => PaymentIntent::STATUS_SUCCEEDED,
                 ],
             ],
-            [
+            'full|mastercard'           => [
+                'products'        => ['chapters', 'packs', 'trainings', 'coupon'],
+                'plan'            => 'laser_month',
+                'paymentMethodId' => 'pm_card_visa_credit_fr_cartesBancaires',
+                'expectations'    => [
+                    'invoiceStatus'       => Invoice::STATUS_PAID,
+                    'paymentIntentStatus' => PaymentIntent::STATUS_SUCCEEDED,
+                ],
+            ],
+            'products|3DS2'             => [
+                'products'        => ['chapters', 'packs', 'trainings', 'coupon'],
+                'plan'            => null,
                 'paymentMethodId' => 'pm_card_threeDSecure2Required',
                 'expectations'    => [
                     'invoiceStatus'       => Invoice::STATUS_OPEN,
                     'paymentIntentStatus' => PaymentIntent::STATUS_REQUIRES_ACTION,
                 ],
             ],
+            'full|3DS2'                 => [
+                'products'        => ['chapters', 'packs', 'trainings', 'coupon'],
+                'plan'            => 'laser_month',
+                'paymentMethodId' => 'pm_card_threeDSecure2Required',
+                'expectations'    => [
+                    'invoiceStatus'       => Invoice::STATUS_OPEN,
+                    'paymentIntentStatus' => PaymentIntent::STATUS_REQUIRES_ACTION,
+                ],
+            ],
+            'products|charge_fail'      => [
+                'products'        => ['chapters', 'packs', 'trainings'],
+                'plan'            => null,
+                'paymentMethodId' => 'pm_card_chargeDeclined',
+                'expectations'    => [
+                    'error_message' => trans('stripe.errors.card.generic'),
+                ],
+            ],
+            'products|incorrect_cvc'    => [
+                'products'        => ['chapters', 'packs', 'trainings'],
+                'plan'            => null,
+                'paymentMethodId' => 'pm_card_cvcCheckFail',
+                'expectations'    => [
+                    'error_message' => trans('stripe.errors.card.incorrect_cvc'),
+                ],
+            ],
+            'products|expired'          => [
+                'products'        => ['chapters', 'packs', 'trainings'],
+                'plan'            => null,
+                'paymentMethodId' => 'pm_card_chargeDeclinedExpiredCard',
+                'expectations'    => [
+                    'error_message' => trans('stripe.errors.card.expired'),
+                ],
+            ],
+            'products|risk_level'       => [
+                'products'        => ['chapters', 'packs', 'trainings'],
+                'plan'            => null,
+                'paymentMethodId' => 'pm_card_riskLevelHighest',
+                'expectations'    => [
+                    'error_message' => trans('stripe.errors.card.generic'),
+                ],
+            ],
+            'products|processing_error' => [
+                'products'        => ['chapters', 'packs', 'trainings'],
+                'plan'            => null,
+                'paymentMethodId' => 'pm_card_chargeDeclinedProcessingError',
+                'expectations'    => [
+                    'error_message' => trans('stripe.errors.card.generic'),
+                ],
+            ],
         ];
-    }
-
-    /**
-     * @return mixed[] The checkout mutation dataset.
-     */
-    public function checkoutDataset(): array
-    {
-        $carts          = $this->cartDataset();
-        $paymentMethods = $this->paymentMethodDataset();
-
-        $products = [];
-
-        foreach ($carts as $cart) {
-            foreach ($paymentMethods as $paymentMethod) {
-                $products[] = array_merge($cart, $paymentMethod);
-            }
-        }
-
-        return $products;
     }
 
     /**
@@ -126,10 +153,6 @@ class CheckoutIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->executeCheckoutMutation($cart, $paymentMethodId);
 
-        $this->assertNoErrors();
-        $this->assertEquals($expectations['invoiceStatus'], $this->getData('status'));
-        $this->assertEquals($expectations['paymentIntentStatus'], $this->getData('payment_intent.status'));
-
         $acquisitions = collect()
             ->merge(collect($cart['chapters'] ?? [])->map(static fn($id) => [
                 'product_type' => resolveMorph(Chapter::class),
@@ -147,16 +170,26 @@ class CheckoutIntegrationTest extends GraphQLIntegrationTestCase
 
         $user->refresh();
 
-        if ($expectations['invoiceStatus'] === Invoice::STATUS_PAID) {
-            // Assert that products have been delivered
-            $acquisitions->each(fn(array $acquisition) => $this->seeInDatabase('acquisitions', $acquisition));
+        if (isset($expectations['invoiceStatus'])) {
+            $this->assertNoErrors();
+            $this->assertEquals($expectations['invoiceStatus'], $this->getData('status'));
+            $this->assertEquals($expectations['paymentIntentStatus'], $this->getData('payment_intent.status'));
 
-            if (isset($cart['plan'])) {
-                $this->assertTrue($user->premium);
+            if ($expectations['invoiceStatus'] === Invoice::STATUS_PAID) {
+                // Assert that products have been delivered
+                $acquisitions->each(fn(array $acquisition) => $this->seeInDatabase('acquisitions', $acquisition));
+
+                if (isset($cart['plan'])) {
+                    $this->assertTrue($user->premium);
+                }
             }
         } else {
             $acquisitions->each(fn(array $acquisition) => $this->notSeeInDatabase('acquisitions', $acquisition));
             $this->assertFalse($user->premium);
+        }
+
+        if (isset($expectations['error_message'])) {
+            $this->assertErrorMessage($expectations['error_message']);
         }
     }
 }
