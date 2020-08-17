@@ -7,6 +7,7 @@ namespace Railgun\Billing\Cart;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 use Railgun\Billing\Exceptions\AlreadyBoughtException;
+use Railgun\Billing\Exceptions\AlreadyPremiumException;
 use Railgun\Billing\Exceptions\DuplicateProductsException;
 use Railgun\Billing\Exceptions\EmptyCartException;
 use Railgun\Billing\Exceptions\InvalidCouponCodeException;
@@ -246,12 +247,17 @@ class Cart extends Container
             throw new UnavailableProductsException($unavailable->toArray());
         }
 
-        // Check that the user has not already bought one of the cart product
         if ($user) {
+            // Check that the user has not already bought one of the cart product
             $owned = $this->products->filter(static fn(Ownable $p) => $user->owns($p))->pluck('name');
 
             if ($owned->isNotEmpty()) {
                 throw new AlreadyBoughtException($owned->toArray(), $user->id);
+            }
+
+            // Check that the user is already premium
+            if ($user->premium) {
+                throw new AlreadyPremiumException($user->id);
             }
         }
 

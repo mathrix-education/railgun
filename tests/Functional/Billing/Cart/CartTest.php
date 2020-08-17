@@ -7,6 +7,7 @@ namespace Tests\Functional\Billing\Cart;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Billing\Cart\Cart;
 use Railgun\Billing\Exceptions\AlreadyBoughtException;
+use Railgun\Billing\Exceptions\AlreadyPremiumException;
 use Railgun\Billing\Exceptions\DuplicateProductsException;
 use Railgun\Billing\Exceptions\EmptyCartException;
 use Railgun\Billing\Exceptions\InvalidCouponCodeException;
@@ -141,6 +142,8 @@ class CartTest extends ApplicationTestCase
     }
 
     /**
+     * @covers \Railgun\Billing\Exceptions\EmptyCartException
+     *
      * @throws ApiErrorException
      */
     public function testEmpty(): void
@@ -152,6 +155,8 @@ class CartTest extends ApplicationTestCase
     }
 
     /**
+     * @covers \Railgun\Billing\Exceptions\DuplicateProductsException
+     *
      * @throws ApiErrorException
      */
     public function testDuplicateProducts(): void
@@ -168,6 +173,8 @@ class CartTest extends ApplicationTestCase
     }
 
     /**
+     * @covers \Railgun\Billing\Exceptions\UnavailableProductsException
+     *
      * @throws ApiErrorException
      */
     public function testUnavailableProducts(): void
@@ -180,6 +187,11 @@ class CartTest extends ApplicationTestCase
         $cart->validate();
     }
 
+    /**
+     * @covers \Railgun\Billing\Exceptions\AlreadyBoughtException
+     *
+     * @throws ApiErrorException
+     */
     public function testOwnedProducts(): void
     {
         $cart = Cart::build(CartInputGenerator::make('trainings'));
@@ -195,6 +207,20 @@ class CartTest extends ApplicationTestCase
         $user->flushCache();
 
         $this->expectException(AlreadyBoughtException::class);
+        $cart->validate($user);
+    }
+
+    /**
+     * @covers \Railgun\Billing\Exceptions\AlreadyPremiumException
+     *
+     * @throws ApiErrorException
+     */
+    public function testAlreadyPremium(): void
+    {
+        $user = factory(User::class)->create(['premium_bypass' => true]);
+        $cart = Cart::build(['plan' => 'laser_month']);
+
+        $this->expectException(AlreadyPremiumException::class);
         $cart->validate($user);
     }
 

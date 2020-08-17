@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Railgun\Billing\Stripe\Checkouts;
 
-use Railgun\Billing\Exceptions\AlreadyPremiumException;
 use Railgun\Billing\Stripe\Contracts\StripeSellable;
 use Railgun\Jobs\DispatchCart;
 use Railgun\Jobs\UpsertSubscription;
@@ -15,17 +14,6 @@ use function trans_choice;
 class SubscriptionCheckout extends Checkout
 {
     protected Subscription $subscription;
-
-    public function validate(): Checkout
-    {
-        parent::validate();
-
-        if ($this->user->premium) {
-            throw new AlreadyPremiumException($this->user->id);
-        }
-
-        return $this;
-    }
 
     public function build(): Checkout
     {
