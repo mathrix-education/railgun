@@ -14,7 +14,6 @@ use function trans;
  */
 class InvalidCouponCodeException extends HttpException
 {
-    protected string $level    = LogLevel::NOTICE;
     protected string $category = 'cart';
 
     public function __construct(string $couponCode, ?Throwable $previous = null)
