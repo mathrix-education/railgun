@@ -1,6 +1,6 @@
 enum NotionType {
-    STANDARD @enum(value: "standard")
-    SUMMARY @enum(value: "summary")
+    standard @enum(value: "standard")
+    summary @enum(value: "summary")
 }
 
 type Notion implements Ownable {

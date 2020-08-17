@@ -40,13 +40,13 @@ class CreateNotionIntegrationTest extends GraphQLIntegrationTestCase
                     'visible'    => true,
                     'chapter_id' => Chapter::random()->id,
                     'order'      => 0,
-                    'type'       => 'SUMMARY',
+                    'type'       => 'summary',
                 ],
             ],
         );
 
         $this->assertResponseOk();
         $this->assertNoErrors();
-        $this->assertEquals('SUMMARY', $this->getData('type'));
+        $this->assertEquals('summary', $this->getData('type'));
     }
 }

@@ -3,7 +3,7 @@ enum NotificationType {
     - user_comment: Comment!
     - new_comment: Comment!
     """
-    COMMENT_REPLY @enum(value: "Railgun\\Notifications\\CommentReplyNotification")
+    comment_reply @enum(value: "Railgun\\Notifications\\CommentReplyNotification")
 }
 
 interface Notification {

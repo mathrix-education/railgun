@@ -79,7 +79,7 @@ class CartTest extends ApplicationTestCase
     {
         /** @var Coupon $coupon */
         $coupon = factory(Coupon::class)->create([
-            'type'       => Coupon::TYPE_PERCENT,
+            'type'       => Coupon::TYPE_PERCENTAGE,
             'value'      => 30,
             'counter'    => -1,
             'expires_at' => null,

@@ -20,7 +20,6 @@ use function class_basename;
 use function factory;
 use function forward_static_call_array;
 use function strtolower;
-use function strtoupper;
 
 /**
  * @testdox Mutation interact
@@ -62,10 +61,10 @@ class InteractIntegrationTest extends GraphQLIntegrationTestCase
      * @dataProvider createInteractSuccessDataset
      * @testdox      creates an interaction
      *
-     * @param string $class         The interactable model class.
-     * @param string $comprehension The interaction comprehension.
-     * @param int    $score         The interaction score.
-     * @param int    $watchtime     The interaction watchtime.
+     * @param string      $class         The interactable model class.
+     * @param string|null $comprehension The interaction comprehension.
+     * @param int|null    $score         The interaction score.
+     * @param int|null    $watchtime     The interaction watchtime.
      */
     public function testInteractSuccess(
         string $class,
@@ -80,12 +79,12 @@ class InteractIntegrationTest extends GraphQLIntegrationTestCase
         $model = forward_static_call_array([$class, 'random'], []);
 
         $input = [
-            'interactable_type' => strtoupper(class_basename($class)),
+            'interactable_type' => strtolower(class_basename($class)),
             'interactable_id'   => $model->getKey(),
         ];
 
         if ($comprehension) {
-            $input['comprehension'] = strtoupper($comprehension);
+            $input['comprehension'] = strtolower($comprehension);
         }
 
         if ($score) {
@@ -127,7 +126,7 @@ class InteractIntegrationTest extends GraphQLIntegrationTestCase
 
         $input = [
             'interactable_id'   => $interaction->interactable_id,
-            'interactable_type' => 'COURSE',
+            'interactable_type' => 'course',
             'comprehension'     => null,
         ];
 

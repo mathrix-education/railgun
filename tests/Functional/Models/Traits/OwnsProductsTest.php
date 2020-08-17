@@ -16,9 +16,9 @@ use function factory;
 use function resolveMorph;
 
 /**
- * @covers \Railgun\Billing\Models\OwnsProducts
+ * @coversDefaultClass \Railgun\Billing\Models\OwnsProducts
  */
-class OwnsProductTest extends ModelTestCase
+class OwnsProductsTest extends ModelTestCase
 {
     public function setUp(): void
     {

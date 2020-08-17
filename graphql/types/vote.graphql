@@ -1,6 +1,6 @@
 enum VoteValue {
-    UP @enum(value: 1)
-    DOWN @enum(value: -1)
+    up @enum(value: 1)
+    down @enum(value: -1)
 }
 
 type Vote {

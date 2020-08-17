@@ -55,7 +55,7 @@ class ReadCourseIntegrationTest extends GraphQLIntegrationTestCase
 
         $this->assertResponseOk();
         $this->assertNoErrors();
-        $this->assertEquals('COURSE', $this->getData('readCourse.interaction.interactable_type'));
+        $this->assertEquals('course', $this->getData('readCourse.interaction.interactable_type'));
         $this->assertEquals($course->id, $this->getData('readCourse.interaction.interactable_id'));
     }
 

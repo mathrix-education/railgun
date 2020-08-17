@@ -199,7 +199,7 @@ class Cart extends Container
             return 0;
         }
 
-        if ($this->coupon->type === Coupon::TYPE_PERCENT) {
+        if ($this->coupon->type === Coupon::TYPE_PERCENTAGE) {
             return (int)round($this->coupon->value / 100 * $this->subTotal);
         }
 
@@ -256,7 +256,7 @@ class Cart extends Container
             }
 
             // Check that the user is already premium
-            if ($user->premium) {
+            if ($this->plan && $user->premium) {
                 throw new AlreadyPremiumException($user->id);
             }
         }

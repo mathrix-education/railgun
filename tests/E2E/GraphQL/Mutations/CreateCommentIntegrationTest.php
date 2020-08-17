@@ -10,7 +10,6 @@ use Railgun\Jobs\DeliverCommentReplyNotifications;
 use Railgun\Models\Comment;
 use Railgun\Models\Course;
 use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
-use function strtoupper;
 
 /**
  * @testdox Mutation createComment
@@ -43,7 +42,7 @@ class CreateCommentIntegrationTest extends GraphQLIntegrationTestCase
         $this->graphQL(self::QUERY, [
             'input' => [
                 'content'          => $content,
-                'commentable_type' => 'COURSE',
+                'commentable_type' => 'course',
                 'commentable_id'   => $course->id,
             ],
         ]);
@@ -55,7 +54,7 @@ class CreateCommentIntegrationTest extends GraphQLIntegrationTestCase
             'content'          => $content,
             'parent_id'        => null,
             'user_id'          => $user->id,
-            'commentable_type' => 'COURSE',
+            'commentable_type' => 'course',
             'commentable_id'   => $course->id,
         ]);
 
@@ -72,7 +71,7 @@ class CreateCommentIntegrationTest extends GraphQLIntegrationTestCase
         $user            = $this->withPermissions();
         $parent          = Comment::random();
         $content         = $this->faker->text;
-        $commentableType = strtoupper($parent->commentable_type);
+        $commentableType = $parent->commentable_type;
 
         $this->graphQL(self::QUERY, [
             'input' => [

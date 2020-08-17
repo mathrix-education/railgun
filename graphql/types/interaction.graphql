@@ -1,14 +1,14 @@
 enum InteractionType {
-    COURSE @enum(value: "course")
-    EXAM @enum(value: "exam")
-    EXERCISE @enum(value: "exercise")
-    FLASHCARD @enum(value: "flashcard")
-    SUBJECT @enum(value: "subject")
+    course @enum(value: "course")
+    exam @enum(value: "exam")
+    exercise @enum(value: "exercise")
+    flashcard @enum(value: "flashcard")
+    subject @enum(value: "subject")
 }
 
 enum InteractionComprehension {
-    BLUR @enum(value: "blur")
-    CLEAR @enum(value: "clear")
+    blur @enum(value: "blur")
+    clear @enum(value: "clear")
 }
 
 type Interaction {
