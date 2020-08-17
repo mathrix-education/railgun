@@ -19,8 +19,9 @@ use Railgun\Billing\Models\OwnsProducts;
 use Railgun\Billing\Models\OwnsSubscriptions;
 use Railgun\Billing\Stripe\Models\StripeCustomer;
 use Railgun\Jobs\CleanUserSession;
+use Railgun\Models\Contracts\Cacheable as CacheableContract;
+use Railgun\Models\Traits\Cacheable;
 use Railgun\Models\Traits\HasDatabaseNotifications;
-use Railgun\Models\Traits\InteractsWithCache;
 use Railgun\Support\LazyStdClass;
 use function uuid_create;
 use function uuid_is_valid;
@@ -55,11 +56,11 @@ use function uuid_is_valid;
  * @property-read Collection|Interaction[] $interactions
  * @property-read Collection|Session[]     $sessions
  */
-class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
+class User extends BaseModel implements AuthenticatableContract, AuthorizableContract, CacheableContract
 {
     use Authenticatable;
     use Authorizable;
-    use InteractsWithCache;
+    use Cacheable;
     use HasDatabaseNotifications;
     use OwnsProducts;
     use OwnsSubscriptions;

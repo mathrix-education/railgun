@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Railgun\Billing\Stripe\Webhooks;
 
+use Exception;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Railgun\Jobs\UpsertSubscription;
 use Railgun\Models\Subscription;
@@ -46,15 +47,26 @@ class SubscriptionsWebhook
      * @param StripeSubscription $object The subscription object.
      *
      * @return mixed[]
+     *
+     * @throws Exception
      */
     public function delete(Event $event, StripeSubscription $object): array
     {
-        $count = Subscription::query()->where('id', '=', $object->id)->delete();
+        /** @var Subscription $subscription */
+        $subscription = Subscription::query()->where('id', '=', $object->id)->first();
+
+        if (!$subscription) {
+            return [
+                'message' => 'Subscription not found',
+                'event'   => $event->jsonSerialize(),
+            ];
+        }
+
+        $subscription->flushCache();
+        $subscription->delete();
 
         return [
-            'message' => $count === 0
-                ? 'Subscription not deleted (not found)'
-                : 'Subscription deleted',
+            'message' => 'Subscription deleted',
             'event'   => $event->jsonSerialize(),
         ];
     }

@@ -52,8 +52,9 @@ class InvoicesWebhook
         }
 
         $cart = Cart::fromMetadata($object->metadata->toArray());
-
         $dispatcher->dispatchNow(new DispatchCart($cart, $user->id, $object->id));
+
+        $user->flushCache(); // Flush the user cache
 
         return [
             'message' => 'Invoice handled',

@@ -87,7 +87,7 @@ class ModeMachine
      */
     public function all(): Collection
     {
-        return Cache::tags('stripe')->remember('stripe:plans', 3600, function () {
+        return Cache::tags('stripe')->remember('plans', 3600, function () {
             return collect(
                 $this->client
                     ->prices

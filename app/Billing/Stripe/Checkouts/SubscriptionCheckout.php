@@ -73,6 +73,8 @@ class SubscriptionCheckout extends Checkout
             $this->dispatcher->dispatchNow(new DispatchCart($this->cart, $this->user->id, $this->invoice->id));
         }
 
+        $this->user->flushCache();
+
         return $this;
     }
 }

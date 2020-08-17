@@ -6,11 +6,12 @@ namespace Railgun\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Cache;
 use Railgun\Billing\Stripe\Models\InteractsWithStripe;
 use Railgun\Billing\Stripe\Models\ModeMachine;
-use Railgun\Models\Traits\InteractsWithCache;
+use Railgun\Models\Contracts\Cacheable as CacheableContract;
+use Railgun\Models\Traits\Cacheable;
 use Stripe\Customer;
+use Stripe\Exception\ApiErrorException;
 use Stripe\Invoice;
 use Stripe\Subscription as StripeSubscription;
 use function app;
@@ -35,9 +36,9 @@ use const STR_PAD_LEFT;
  * ---
  * @property-read User         $user
  */
-class Subscription extends BaseModel
+class Subscription extends BaseModel implements CacheableContract
 {
-    use InteractsWithCache;
+    use Cacheable;
     use InteractsWithStripe;
 
     public const PROCESSOR_STRIPE    = 'stripe';
@@ -72,8 +73,12 @@ class Subscription extends BaseModel
             return self::query()->findOrFail($stripeSubscription->id);
         }
 
-        $modeMachine        = app()->make(ModeMachine::class);
-        $subscription->plan = $modeMachine->get($stripeSubscription->plan->id)->lookup_key;
+        if (isset($stripeSubscription->items[0]->price->lookup_key)) {
+            $subscription->plan = $stripeSubscription->items[0]->price->lookup_key;
+        } else { // @codeCoverageIgnoreStart
+            $modeMachine        = app()->make(ModeMachine::class);
+            $subscription->plan = $modeMachine->get($stripeSubscription->plan->id)->lookup_key;
+        } // @codeCoverageIgnoreEnd
 
         if (is_string($stripeSubscription->customer)) {
             $subscription->customer_id = $stripeSubscription->customer;
@@ -126,21 +131,21 @@ class Subscription extends BaseModel
      */
     public function getLatestInvoiceAttribute(): ?Invoice
     {
-        return Cache::remember(
-            $this->getCacheKey('latest_invoice'),
-            3600,
-            function () {
-                if ($this->processor === self::PROCESSOR_BRAINTREE) {
-                    return null; // @codeCoverageIgnore
-                }
+        return $this->getCache()->rememberForever('latest_invoice', function () {
+            if ($this->processor === self::PROCESSOR_BRAINTREE) {
+                return null; // @codeCoverageIgnore
+            }
 
+            try {
                 $subscription = $this->client->subscriptions->retrieve($this->id, [
                     'expand' => ['latest_invoice.payment_intent'],
                 ]);
 
                 return $subscription->latest_invoice;
-            },
-        );
+            } catch (ApiErrorException $exception) {
+                return null;
+            }
+        });
     }
 
     /**
@@ -150,32 +155,32 @@ class Subscription extends BaseModel
      */
     public function getCardAttribute(): array
     {
-        return Cache::remember(
-            $this->getCacheKey('card'),
-            3600,
-            function () {
-                if ($this->processor === self::PROCESSOR_BRAINTREE) {
-                    return null; // @codeCoverageIgnore
-                }
+        return $this->getCache()->rememberForever('card', function () {
+            if ($this->processor === self::PROCESSOR_BRAINTREE) {
+                return null; // @codeCoverageIgnore
+            }
 
+            try {
                 $subscription = $this->client->subscriptions->retrieve($this->id, [
                     'expand' => ['default_payment_method'],
                 ]);
+            } catch (ApiErrorException $exception) {
+                return null;
+            }
 
-                $paymentMethod = $subscription->default_payment_method;
+            $paymentMethod = $subscription->default_payment_method;
 
-                if ($paymentMethod->type !== 'card') {
-                    return null; // @codeCoverageIgnore
-                }
+            if ($paymentMethod->type !== 'card') {
+                return null; // @codeCoverageIgnore
+            }
 
-                return [
-                    'name'      => $paymentMethod->billing_details->name,
-                    'brand'     => $paymentMethod->card->brand,
-                    'exp_month' => str_pad((string)$paymentMethod->card->exp_month, 2, '0', STR_PAD_LEFT),
-                    'exp_year'  => (string)$paymentMethod->card->exp_year,
-                    'last4'     => $paymentMethod->card->last4,
-                ];
-            },
-        );
+            return [
+                'name'      => $paymentMethod->billing_details->name,
+                'brand'     => $paymentMethod->card->brand,
+                'exp_month' => str_pad((string)$paymentMethod->card->exp_month, 2, '0', STR_PAD_LEFT),
+                'exp_year'  => (string)$paymentMethod->card->exp_year,
+                'last4'     => $paymentMethod->card->last4,
+            ];
+        });
     }
 }

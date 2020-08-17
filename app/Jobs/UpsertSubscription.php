@@ -40,6 +40,8 @@ class UpsertSubscription extends Job
                 $converted->toArray(),
             );
 
+        $subscription->flushCache();
+
         return $subscription;
     }
 }

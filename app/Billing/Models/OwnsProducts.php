@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasRelationships;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Support\Facades\Cache;
 use Railgun\Models\Acquisition;
 use Railgun\Models\Chapter;
 use Railgun\Models\Contracts\Ownable;
@@ -22,18 +21,19 @@ use Railgun\Models\Pack;
 use Railgun\Models\Section;
 use Railgun\Models\Subject;
 use Railgun\Models\Training;
-use Railgun\Models\Traits\InteractsWithCache;
+use Railgun\Models\Traits\Cacheable;
 use function array_merge;
 use function in_array;
 use function resolveMorph;
 
 /**
  * @mixin HasRelationships
- * @mixin InteractsWithCache
  * @property-read Collection|Training[] $trainings
  */
 trait OwnsProducts
 {
+    use Cacheable;
+
     /**
      * @return HasMany<Acquisition>
      */
@@ -78,11 +78,7 @@ trait OwnsProducts
     {
         return in_array(
             $model->getGlobalKey(),
-            Cache::remember(
-                $this->getCacheKey('products_ids'),
-                3600,
-                fn() => $this->getOwnedProductGlobalIds(),
-            ),
+            $this->getCache()->remember('products_ids', 3600, fn() => $this->getOwnedProductGlobalIds()),
             true,
         );
     }

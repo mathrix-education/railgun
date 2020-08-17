@@ -7,9 +7,9 @@ namespace Railgun\Billing\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Railgun\Models\Subscription;
+use Railgun\Models\Traits\Cacheable;
 use Railgun\Models\User;
 use Stripe\Subscription as StripeSubscription;
 use function count;
@@ -22,6 +22,8 @@ use function count;
  */
 trait OwnsSubscriptions
 {
+    use Cacheable;
+
     /**
      * @return HasMany<Subscription>
      */
@@ -51,7 +53,7 @@ trait OwnsSubscriptions
         }
 
         // Cache for the current request
-        return Cache::store('request')->rememberForever('user.' . $this->id . '.premium', function (): bool {
+        return $this->getCache()->remember('premium', 3600, function (): bool {
             $customerIds = [];
 
             if ($this->stripe_id !== null) {
