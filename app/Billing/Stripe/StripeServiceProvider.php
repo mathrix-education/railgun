@@ -8,7 +8,6 @@ use Illuminate\Contracts\Config\Repository;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application;
 use Psr\Log\LoggerInterface;
-use Railgun\Billing\Stripe\Commands\SetupWebhookCommand;
 use Railgun\Billing\Stripe\Commands\SyncProductsCommand;
 use Railgun\Billing\Stripe\Models\ModeMachine;
 use Railgun\Billing\Stripe\Webhooks\WebhooksController;
@@ -43,7 +42,6 @@ class StripeServiceProvider extends ServiceProvider
 
         // Register commands
         $this->commands([
-            SetupWebhookCommand::class,
             SyncProductsCommand::class,
         ]);
 

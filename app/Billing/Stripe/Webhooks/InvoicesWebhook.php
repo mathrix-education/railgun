@@ -28,31 +28,32 @@ class InvoicesWebhook
     /**
      * @param Dispatcher $dispatcher The bus dispatcher.
      * @param Event      $event      The Stripe event.
-     * @param Invoice    $invoice    The Invoice object.
+     * @param Invoice    $object     The Invoice object.
      *
      * @return mixed[]
      *
      * @throws ApiErrorException
      */
-    public function process(Dispatcher $dispatcher, Event $event, Invoice $invoice): array
+    public function process(Dispatcher $dispatcher, Event $event, Invoice $object): array
     {
-        if (!isset($invoice->metadata['identifier']) || $invoice->metadata['identifier'] === Cart::IDENTIFIER) {
+        if (!isset($object->metadata['identifier']) || $object->metadata['identifier'] !== Cart::IDENTIFIER) {
             return [
                 'message' => 'Invoice ignored',
                 'event'   => $event->jsonSerialize(),
             ];
         }
 
-        $customer = is_string($invoice->customer) ? $invoice->customer : $invoice->customer->id;
-        $user     = User::query()->where('stripe_id', '=', $customer)->first();
+        $customer = is_string($object->customer) ? $object->customer : $object->customer->id;
+        /** @var User $user */
+        $user = User::query()->where('stripe_id', '=', $customer)->first();
 
-        if ($user && !app()->environment('production')) {
+        if (!$user && app()->environment('production')) {
             throw new RuntimeException("Stripe customer $customer not found");
         }
 
-        $cart = Cart::fromMetadata($invoice->metadata->toArray());
+        $cart = Cart::fromMetadata($object->metadata->toArray());
 
-        $dispatcher->dispatchNow(new DispatchCart($cart, $user->id, $invoice->id));
+        $dispatcher->dispatchNow(new DispatchCart($cart, $user->id, $object->id));
 
         return [
             'message' => 'Invoice handled',

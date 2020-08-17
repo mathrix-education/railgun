@@ -35,13 +35,6 @@ abstract class Checkout
         $this->paymentMethodId = $paymentMethodId;
     }
 
-    public function validate(): self
-    {
-        $this->cart = $this->cart->validate();
-
-        return $this;
-    }
-
     /**
      * Setup the checkout (in this can, ensure that the user is a stripe customer).
      *
@@ -57,6 +50,18 @@ abstract class Checkout
     }
 
     /**
+     * Validate the checkout parameters.
+     *
+     * @return $this
+     */
+    public function validate(): self
+    {
+        $this->cart = $this->cart->validate();
+
+        return $this;
+    }
+
+    /**
      * If any {@see ApiErrorException} occurs, handle the failure here.
      *
      * @param ApiErrorException $exception The API error exception.
@@ -67,7 +72,6 @@ abstract class Checkout
      */
     public function abort(ApiErrorException $exception): self
     {
-        // Cancel any remaining items
         throw $exception;
     }
 
@@ -98,7 +102,10 @@ abstract class Checkout
     public function execute(): self
     {
         try {
-            return $this->setup()->build()->finalize();
+            return $this->setup()
+                ->validate()
+                ->build()
+                ->finalize();
         } catch (ApiErrorException $exception) {
             return $this->abort($exception);
         }

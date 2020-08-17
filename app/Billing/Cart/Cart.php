@@ -95,16 +95,16 @@ class Cart extends Container
     {
         $args = [];
 
-        if (isset($metadata['chapters'])) {
+        if (isset($metadata['chapters']) && $metadata['chapters'] !== '') {
             $args['chapters'] = explode(',', $metadata['chapters'] ?? '');
         }
 
-        if (isset($metadata['pack'])) {
-            $args['pack'] = explode(',', $metadata['chapters'] ?? '');
+        if (isset($metadata['packs']) && $metadata['packs'] !== '') {
+            $args['pack'] = explode(',', $metadata['packs'] ?? '');
         }
 
-        if (isset($metadata['trainings'])) {
-            $args['trainings'] = explode(',', $metadata['chapters'] ?? '');
+        if (isset($metadata['trainings']) && $metadata['trainings'] !== '') {
+            $args['trainings'] = explode(',', $metadata['trainings'] ?? '');
         }
 
         return static::build($args);

@@ -17,7 +17,7 @@ class WebhooksController
     public const EVENT_MAP = [
         Event::CUSTOMER_SUBSCRIPTION_CREATED => SubscriptionsWebhook::class . '@upsert',
         Event::CUSTOMER_SUBSCRIPTION_UPDATED => SubscriptionsWebhook::class . '@upsert',
-        Event::CUSTOMER_SUBSCRIPTION_DELETED => SubscriptionsWebhook::class . '@upsert',
+        Event::CUSTOMER_SUBSCRIPTION_DELETED => SubscriptionsWebhook::class . '@delete',
         Event::INVOICE_PAID                  => InvoicesWebhook::class . '@process',
         Event::INVOICE_PAYMENT_SUCCEEDED     => InvoicesWebhook::class . '@process',
     ];

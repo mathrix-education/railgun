@@ -57,11 +57,9 @@ class DispatchCart extends Job
                 'user_id'        => $this->recipientId,
                 'transaction_id' => $this->transactionId,
             ]))
-            ->each(static function (array $data): void {
-                Acquisition::query()->updateOrCreate(
-                    Arr::only($data, ['user_id', 'product_type', 'product_id']),
-                    Arr::only($data, ['transaction_id']),
-                );
-            });
+            ->map(static fn(array $data) => Acquisition::query()->updateOrCreate(
+                Arr::only($data, ['user_id', 'product_type', 'product_id']),
+                $data,
+            ));
     }
 }
