@@ -25,6 +25,7 @@ use Railgun\Models\Traits\Sluggable;
  * @property      array   $content
  * @property      int     $order
  * @property      bool    $premium
+ * @property      bool    $protected
  * @property      bool    $visible
  * @property      int     $chapter_id
  * @property-read Carbon  $created_at

@@ -43,6 +43,30 @@ class SubjectTest extends ModelTestCase
     }
 
     /**
+     * @testdox syncs has its protected attribute sync with its exercises
+     * @covers ::booting
+     */
+    public function testExercisesProtectedSync(): void
+    {
+        /** @var Subject $subject */
+        $subject = factory(Subject::class)->create(['protected' => false]);
+        /** @var Collection|Exercise[] $exercises */
+        $exercises = factory(Exercise::class, 5)->create(['subject_id' => $subject->id]);
+        $exercises->each(function (Exercise $e): void {
+            $e->refresh();
+            $this->assertFalse($e->premium);
+        });
+
+        $subject->protected = true;
+        $subject->save();
+
+        $exercises->each(function (Exercise $e): void {
+            $e->refresh();
+            $this->assertTrue($e->protected);
+        });
+    }
+
+    /**
      * @covers ::notion
      */
     public function testNotion(): void

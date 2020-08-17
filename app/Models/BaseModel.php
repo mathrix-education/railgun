@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 use Railgun\Models\Traits\Randomizable;
 use function class_basename;
 
-class BaseModel extends Model
+abstract class BaseModel extends Model
 {
     use Randomizable;
 
@@ -21,7 +21,7 @@ class BaseModel extends Model
     public function getGlobalKey(): string
     {
         if (!$this->getKey()) {
-            $this->save(); // @¢odeCoverageIgnore
+            $this->save();
         }
 
         return Str::of(class_basename($this))->slug()->lower() . '_' . $this->getKey();

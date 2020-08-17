@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Railgun\Billing\Stripe\Contracts\StripeSellable as StripeSellableContract;
 use Railgun\Billing\Stripe\Models\StripeSellable;
 use Railgun\Models\Contracts\BelongsToChapter;
+use Railgun\Models\Traits\Acquerable;
 use Railgun\Models\Traits\Ownable;
 use Railgun\Models\Traits\Reorderable;
 use Railgun\Models\Traits\Sellable;
@@ -37,8 +38,9 @@ use Railgun\Models\Traits\Sluggable;
  */
 class Chapter extends BaseModel implements BelongsToChapter, StripeSellableContract
 {
-    use Reorderable;
+    use Acquerable;
     use Ownable;
+    use Reorderable;
     use Sellable;
     use Sluggable;
     use StripeSellable;

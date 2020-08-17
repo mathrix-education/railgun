@@ -48,7 +48,7 @@ class InvoicesWebhook
         $user = User::query()->where('stripe_id', '=', $customer)->first();
 
         if (!$user && app()->environment('production')) {
-            throw new RuntimeException("Stripe customer $customer not found");
+            throw new RuntimeException("Stripe customer $customer not found"); // @codeCoverageIgnore
         }
 
         $cart = Cart::fromMetadata($object->metadata->toArray());

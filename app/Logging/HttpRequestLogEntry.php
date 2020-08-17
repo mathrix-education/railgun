@@ -30,7 +30,7 @@ class HttpRequestLogEntry implements Arrayable
         $this->response = $response;
 
         if ($this->request->userAgent() === 'Symfony') {
-            $this->request = null;
+            $this->request = null; // @codeCoverageIgnore
         }
     }
 
@@ -44,7 +44,7 @@ class HttpRequestLogEntry implements Arrayable
     public function toArray(): ?array
     {
         if ($this->request === null) {
-            return null;
+            return null; // @codeCoverageIgnore
         }
 
         return [

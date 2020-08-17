@@ -49,6 +49,7 @@ class GoogleCloudJsonFormatter extends JsonFormatter
      *
      * @return string The encoded Monolog records.
      *
+     * @throws BindingResolutionException
      * @throws JsonException
      */
     protected function formatBatchJson(array $records): string
@@ -89,7 +90,7 @@ class GoogleCloudJsonFormatter extends JsonFormatter
         ];
 
         if ($payload['message'] === self::NO_MESSAGE) {
-            unset($payload['message']);
+            unset($payload['message']); // @codeCoverageIgnore
         }
 
         if ($payload['httpRequest'] === null) {

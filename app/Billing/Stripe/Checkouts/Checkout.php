@@ -69,6 +69,8 @@ abstract class Checkout
      * @return Checkout
      *
      * @throws ApiErrorException
+     *
+     * @codeCoverageIgnore
      */
     public function abort(ApiErrorException $exception): self
     {

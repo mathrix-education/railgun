@@ -32,8 +32,10 @@ class StripeCardException extends HttpException
                 break;
             case ErrorObject::CODE_INCORRECT_CVC:
             case ErrorObject::CODE_INVALID_CVC:
+                // @codeCoverageIgnoreStart
                 $message = trans('stripe.errors.card.incorrect_cvc');
                 break;
+            // @codeCoverageIgnoreEnd
             case ErrorObject::CODE_INVALID_EXPIRY_MONTH:
             case ErrorObject::CODE_INVALID_EXPIRY_YEAR:
                 $message = trans('stripe.errors.card.incorrect_exp');
@@ -41,8 +43,10 @@ class StripeCardException extends HttpException
             case ErrorObject::CODE_CARD_DECLINED:
                 switch ($cardException->getDeclineCode()) {
                     case Charge::DECLINED_INSUFFICIENT_FUNDS:
+                        // @codeCoverageIgnoreStart
                         $message = trans('stripe.errors.card.insufficient_funds');
                         break;
+                    // @codeCoverageIgnoreEnd
                 }
                 break;
         }

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Collection;
 use Railgun\Models\BaseModel;
 use Tests\ApplicationTestCase;
 use function array_merge;
@@ -160,5 +161,18 @@ abstract class ModelTestCase extends ApplicationTestCase
 
         $this->assertTrue($instance->{$relation}->contains($related));
         $this->assertInstanceOf($class, $instance->{$relation}[0]);
+    }
+
+    /**
+     * Assert that the provided model class has a valid {@see MorphMany} relationship using the given relation.
+     *
+     * @param string  $relation   The relation name.
+     * @param mixed[] $attributes The model attributes.
+     */
+    public function assertMorphToMany(string $relation, array $attributes = []): void
+    {
+        /** @var BaseModel $model */
+        $model = $this->modelClass::withoutEvents(fn() => factory($this->modelClass)->create($attributes));
+        $this->assertInstanceOf(Collection::class, $model->{$relation}()->get());
     }
 }

@@ -108,7 +108,7 @@ class InvoiceCheckout extends Checkout
             if ($this->invoice->status === Invoice::STATUS_PAID) {
                 // The invoice has already been paid using the default payment method, return immediately (but it
                 // should never happen)
-                return $this; // @codeCoverage
+                return $this; // @codeCoverageIgnore
             }
 
             $this->invoice = $this->client->invoices->pay($this->invoice->id, [
