@@ -31,7 +31,6 @@ class WebhookTestCase extends GraphQLIntegrationTestCase
      */
     protected function callStripeWebhook(string $type, StripeObject $data): void
     {
-
         $event = Event::constructFrom([
             'type' => $type,
             'data' => ['object' => $data],

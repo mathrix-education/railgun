@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Railgun\Models;
 
+use Braintree\CustomerSearch;
+use Braintree\Gateway;
+use Braintree\Subscription as BraintreeSubscription;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Billing\Stripe\Models\InteractsWithStripe;
@@ -98,6 +101,40 @@ class Subscription extends BaseModel implements CacheableContract
         }
 
         return $subscription;
+    }
+
+    public static function fromBraintree(BraintreeSubscription $btSubscription): Subscription
+    {
+        $gateway = app()->make(Gateway::class);
+
+        /** @var string[] $statusMap The status map from Braintree <=> Stripe */
+        $statusMap = [
+            BraintreeSubscription::ACTIVE   => StripeSubscription::STATUS_ACTIVE,
+            BraintreeSubscription::CANCELED => StripeSubscription::STATUS_CANCELED,
+            BraintreeSubscription::EXPIRED  => StripeSubscription::STATUS_CANCELED,
+            BraintreeSubscription::PAST_DUE => StripeSubscription::STATUS_PAST_DUE,
+            BraintreeSubscription::PENDING  => StripeSubscription::STATUS_ACTIVE,
+        ];
+        $status    = [$btSubscription->status];
+
+        $customerResults = $gateway->customer()->search([
+            CustomerSearch::paymentMethodToken()->is($btSubscription->paymentMethodToken),
+        ]);
+        $customerId      = $customerResults->getIds()[0] ?? 'unknown';
+
+        return new self([
+            'id'                   => $btSubscription->id,
+            'plan'                 => $btSubscription->planId,
+            'customer_id'          => $customerId,
+            'status'               => $statusMap[$btSubscription->status],
+            'current_period_start' => Carbon::instance($btSubscription->billingPeriodStartDate),
+            'current_period_end'   => Carbon::instance($btSubscription->billingPeriodEndDate),
+            'created_at'           => Carbon::instance($btSubscription->createdAt),
+            'updated_at'           => Carbon::instance($btSubscription->updatedAt),
+            'canceled_at'          => $status === StripeSubscription::STATUS_CANCELED
+                ? Carbon::instance($btSubscription->statusHistory[0]->timestamp)
+                : null,
+        ]);
     }
 
     /**

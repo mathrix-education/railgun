@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Railgun\Jobs;
 
+use Braintree\Subscription as BraintreeSubscription;
 use Railgun\Models\Subscription;
 use Railgun\Models\User;
 use Stripe\Subscription as StripeSubscription;
@@ -14,23 +15,27 @@ use function config;
  */
 class UpsertSubscription extends Job
 {
-    /** @var StripeSubscription|string $stripeSubscription The subscription object or id */
-    public StripeSubscription $stripeSubscription;
+    /** @var StripeSubscription|BraintreeSubscription $entry The subscription object. */
+    public $entry;
 
     /**
-     * @param StripeSubscription $stripeSubscription The subscription object or id.
+     * @param StripeSubscription|BraintreeSubscription $entry The subscription object.
      */
-    public function __construct(StripeSubscription $stripeSubscription)
+    public function __construct($entry)
     {
-        $this->stripeSubscription = $stripeSubscription;
+        $this->entry = $entry;
     }
 
     public function handle(): Subscription
     {
-        $converted = Subscription::fromStripe($this->stripeSubscription);
+        if ($this->entry instanceof BraintreeSubscription) {
+            $converted = Subscription::fromBraintree($this->entry);
+        } else {
+            $converted = Subscription::fromStripe($this->entry);
 
-        if (config('stripe.sandbox') && !User::query()->where('stripe_id')->exists()) {
-            return new Subscription();
+            if (config('stripe.sandbox') && !User::query()->where('stripe_id')->exists()) {
+                return new Subscription();
+            }
         }
 
         /** @var Subscription $subscription */

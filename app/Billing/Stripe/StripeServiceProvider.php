@@ -22,13 +22,11 @@ class StripeServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(StripeClientRegistry::class);
-
         $this->app->singleton(StripeClient::class, function () {
             return $this->app->make(StripeClientRegistry::class)->make();
         });
 
         $this->app->singleton(StripeWebhookRegistry::class);
-
         $this->app->singleton(StripeWebhook::class, function () {
             return $this->app->make(StripeWebhookRegistry::class)->make();
         });
