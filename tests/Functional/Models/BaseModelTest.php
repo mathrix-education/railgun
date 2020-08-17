@@ -29,7 +29,7 @@ class BaseModelTest extends ModelTestCase
         /** @var User $user */
         $user = factory(User::class)->make();
         $this->assertFalse($user->exists);
-        $this->assertStringMatchesFormat('/user_\\d+/', $user->getGlobalKey());
+        $this->assertMatchesRegularExpression('/user_\d+/', $user->getGlobalKey());
         $this->assertTrue($user->exists);
     }
 }
