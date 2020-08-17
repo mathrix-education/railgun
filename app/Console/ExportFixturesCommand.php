@@ -101,4 +101,43 @@ class ExportFixturesCommand extends Command
             return DB::table('grades')->where('slug', '=', $slug)->first();
         });
     }
+
+    /**
+     * @return Collection|stdClass[] The parsed chapters.
+     */
+    public function exportChapters(): Collection
+    {
+        return DB::table('chapters')->get()->map(static function (stdClass $chapter) {
+            $chapter->stripe_product_id = null;
+            $chapter->stripe_price_id   = null;
+
+            return $chapter;
+        });
+    }
+
+    /**
+     * @return Collection|stdClass[] The parsed packs.
+     */
+    public function exportPacks(): Collection
+    {
+        return DB::table('packs')->get()->map(static function (stdClass $pack) {
+            $pack->stripe_product_id = null;
+            $pack->stripe_price_id   = null;
+
+            return $pack;
+        });
+    }
+
+    /**
+     * @return Collection|stdClass[] The parsed trainings.
+     */
+    public function exportTrainings(): Collection
+    {
+        return DB::table('trainings')->get()->map(static function (stdClass $training) {
+            $training->stripe_product_id = null;
+            $training->stripe_price_id   = null;
+
+            return $training;
+        });
+    }
 }
