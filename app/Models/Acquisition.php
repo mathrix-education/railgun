@@ -23,6 +23,8 @@ use Railgun\Models\Traits\UUID;
  * @property-read string|null $transaction_id The related Stripe invoice or Braintree transaction id.
  * @property-read Carbon      $created_at     The date/time when the acquisition was created.
  * @property-read Carbon      $updated_at     The date/time when the acquisition was last updated.
+ * ---
+ * @property-read Sellable    $product        The acquired product.
  */
 class Acquisition extends BaseModel
 {
