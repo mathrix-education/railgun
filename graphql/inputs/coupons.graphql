@@ -31,7 +31,7 @@ input UpdateCoupon {
     """
     The targeted coupon ID.
     """
-    id: ID! @rules(apply: ["string", "max:60", "unique:coupons,id"])
+    id: ID! @rules(apply: ["string", "max:60", "exists:coupons,id"])
     """
     The coupon new type. Absolute coupons are a flat discount on a total price, while percentage applies a propertional
     discount.
