@@ -13,7 +13,7 @@ use function trans;
 /**
  * Thrown when a user tries to buy unavailable products.
  */
-class UnavailableProducts extends HttpException
+class UnavailableProductsException extends HttpException
 {
     protected string $level    = LogLevel::NOTICE;
     protected string $category = 'cart';

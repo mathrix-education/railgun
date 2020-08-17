@@ -6,8 +6,11 @@ namespace Railgun\Billing\Cart;
 
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
+use Railgun\Billing\Exceptions\AlreadyBoughtException;
+use Railgun\Billing\Exceptions\DuplicateProductsException;
+use Railgun\Billing\Exceptions\EmptyCartException;
 use Railgun\Billing\Exceptions\InvalidCouponCodeException;
-use Railgun\Billing\Exceptions\UnavailableProducts;
+use Railgun\Billing\Exceptions\UnavailableProductsException;
 use Railgun\Billing\Stripe\Contracts\StripeSellable;
 use Railgun\Billing\Stripe\Models\ModeMachine;
 use Railgun\Models\Chapter;
@@ -24,6 +27,7 @@ use function app;
 use function array_unique;
 use function config;
 use function explode;
+use function in_array;
 use function is_string;
 use function round;
 
@@ -100,11 +104,15 @@ class Cart extends Container
         }
 
         if (isset($metadata['packs']) && $metadata['packs'] !== '') {
-            $args['pack'] = explode(',', $metadata['packs'] ?? '');
+            $args['packs'] = explode(',', $metadata['packs'] ?? '');
         }
 
         if (isset($metadata['trainings']) && $metadata['trainings'] !== '') {
             $args['trainings'] = explode(',', $metadata['trainings'] ?? '');
+        }
+
+        if (isset($metadata['plan'])) {
+            $args['plan'] = $metadata['plan'];
         }
 
         return static::build($args);
@@ -190,15 +198,11 @@ class Cart extends Container
             return 0;
         }
 
-        if ($this->coupon->type === Coupon::TYPE_ABSOLUTE) {
-            return $this->coupon->value;
-        }
-
         if ($this->coupon->type === Coupon::TYPE_PERCENT) {
             return (int)round($this->coupon->value / 100 * $this->subTotal);
         }
 
-        return 0;
+        return $this->coupon->value;
     }
 
     /**
@@ -218,19 +222,36 @@ class Cart extends Container
      */
     public function validate(?User $user = null): self
     {
-        // Check that all products are available
-        $unavailable = $this->products->filter(static fn(Sellable $p) => !$p->available)->pluck('name');
-
-        if ($unavailable->isNotEmpty()) {
-            throw new UnavailableProducts($unavailable->toArray());
+        // Check that the cart is not empty
+        if ($this->plan === null && $this->products->isEmpty()) {
+            throw new EmptyCartException();
         }
 
+        // Check that there are no collisions between packs and trainings
+        $trainingPackIds = $this->packs
+            ->map(static fn(Pack $pack) => $pack->trainings->pluck('id'))
+            ->flatten()
+            ->toArray();
+        $duplicates      = $this->trainings
+            ->filter(static fn(Training $training) => in_array($training->id, $trainingPackIds, true));
+
+        if ($duplicates->isNotEmpty()) {
+            throw new DuplicateProductsException($duplicates->pluck('name')->toArray());
+        }
+
+        // Check that all products are available
+        $unavailable = $this->products->reject(static fn(Sellable $p) => $p->available)->pluck('name');
+
+        if ($unavailable->isNotEmpty()) {
+            throw new UnavailableProductsException($unavailable->toArray());
+        }
+
+        // Check that the user has not already bought one of the cart product
         if ($user) {
-            // Check that the user has not already bought one of the cart product
             $owned = $this->products->filter(static fn(Ownable $p) => $user->owns($p))->pluck('name');
 
             if ($owned->isNotEmpty()) {
-                throw new UnavailableProducts($owned->toArray());
+                throw new AlreadyBoughtException($owned->toArray(), $user->id);
             }
         }
 
@@ -248,7 +269,7 @@ class Cart extends Container
             'chapters'   => $this->chapters->pluck('id')->implode(','),
             'packs'      => $this->packs->pluck('id')->implode(','),
             'trainings'  => $this->trainings->pluck('id')->implode(','),
-            'plan'       => $this->plan,
+            'plan'       => $this->plan ? $this->plan->lookup_key : null,
         ];
     }
 }

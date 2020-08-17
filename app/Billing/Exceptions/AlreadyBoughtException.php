@@ -21,10 +21,14 @@ class AlreadyBoughtException extends HttpException
 
     /**
      * @param string[]       $productNames The products name.
-     * @param int            $userId       The user ID.
+     * @param int|null       $userId       The user ID.
      * @param Throwable|null $previous     The previous exception, if any.
      */
-    public function __construct(array $productNames, int $userId, ?Throwable $previous = null)
+    public function __construct(
+        array $productNames,
+        ?int $userId = null,
+        ?Throwable $previous = null
+    )
     {
         $names = implode(', ', $productNames);
 

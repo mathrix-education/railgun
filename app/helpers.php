@@ -129,7 +129,8 @@ if (!function_exists('is_json')) { // @codeCoverageIgnore
     }
 }
 
-if (!function_exists('resolveMorph')) {
+if (!function_exists('resolveMorph')) { // @codeCoverageIgnore
+
     /**
      * @param string|Model $model The model to resolve.
      *

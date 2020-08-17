@@ -19,6 +19,9 @@ use function str_replace;
 use const JSON_PRETTY_PRINT;
 use const JSON_THROW_ON_ERROR;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ExportFixturesCommand extends Command
 {
     protected const TABLES = [
