@@ -45,7 +45,6 @@ use function uuid_is_valid;
  * @property-read Carbon                   $created_at
  * @property-read Carbon                   $updated_at
  * ---
- * @property-read string                   $full_name
  * @property-read bool                     $premium If the user is premium
  * @property-read string                   $provider
  * @property-read LazyStdClass             $statistics
@@ -159,18 +158,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function votes(): HasMany
     {
         return $this->hasMany(Vote::class);
-    }
-
-    /**
-     * full_name attribute.
-     */
-    public function getFullNameAttribute(): string
-    {
-        if (!$this->firstname && !$this->lastname) {
-            return $this->username;
-        }
-
-        return "{$this->firstname} {$this->lastname}";
     }
 
     /**

@@ -34,7 +34,7 @@ class UpsertSubscription extends Job
             $converted = Subscription::fromStripe($this->entry);
 
             if (config('stripe.sandbox') && !User::query()->where('stripe_id')->exists()) {
-                return new Subscription();
+                return new Subscription(); // @codeCoverageIgnore
             }
         }
 

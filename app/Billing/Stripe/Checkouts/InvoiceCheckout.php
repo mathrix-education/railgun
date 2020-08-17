@@ -42,12 +42,14 @@ class InvoiceCheckout extends Checkout
         }
 
         if ($this->invoice->status === Invoice::STATUS_DRAFT) {
-            // Invoice is still in draft status and thus can be completely deleted
+            // @codeCoverageIgnoreStart
+            // Invoice is still in draft status and thus can be completely deleted, but it should never be the case
             $this->invoiceItems->each(function (InvoiceItem $invoiceItem): void {
                 $this->client->invoiceItems->delete($invoiceItem->id);
             });
 
             $this->client->invoices->delete($this->invoice->id);
+            // @codeCoverageIgnoreEnd
         } else {
             // Invoice has already advanced to open or further and can only be voided
             $this->client->invoices->voidInvoice($this->invoice->id);
@@ -104,8 +106,9 @@ class InvoiceCheckout extends Checkout
             ]);
 
             if ($this->invoice->status === Invoice::STATUS_PAID) {
-                // The invoice has already been paid using the default payment method, return immediately
-                return $this;
+                // The invoice has already been paid using the default payment method, return immediately (but it
+                // should never happen)
+                return $this; // @codeCoverage
             }
 
             $this->invoice = $this->client->invoices->pay($this->invoice->id, [

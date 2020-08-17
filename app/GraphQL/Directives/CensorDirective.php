@@ -25,6 +25,8 @@ class CensorDirective extends BaseDirective implements FieldMiddleware, DefinedD
 {
     /**
      * SDL definition of the directive.
+     *
+     * @codeCoverageIgnore
      */
     public static function definition(): string
     {
@@ -58,7 +60,8 @@ class CensorDirective extends BaseDirective implements FieldMiddleware, DefinedD
                 : $raw;
 
             if (!$root instanceof BaseModel) {
-                return $previous($root, $args, $context, $resolveInfo);
+                // This should never be the case
+                return $previous($root, $args, $context, $resolveInfo); // @codeCoverageIgnore
             }
 
             // $root is now a model

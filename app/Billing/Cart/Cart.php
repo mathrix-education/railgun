@@ -252,12 +252,12 @@ class Cart extends Container
             $owned = $this->products->filter(static fn(Ownable $p) => $user->owns($p))->pluck('name');
 
             if ($owned->isNotEmpty()) {
-                throw new AlreadyBoughtException($owned->toArray(), $user->id);
+                throw new AlreadyBoughtException($owned->toArray());
             }
 
             // Check that the user is already premium
             if ($this->plan && $user->premium) {
-                throw new AlreadyPremiumException($user->id);
+                throw new AlreadyPremiumException();
             }
         }
 

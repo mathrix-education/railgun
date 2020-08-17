@@ -21,7 +21,7 @@ class BaseModel extends Model
     public function getGlobalKey(): string
     {
         if (!$this->getKey()) {
-            $this->save();
+            $this->save(); // @¢odeCoverageIgnore
         }
 
         return Str::of(class_basename($this))->slug()->lower() . '_' . $this->getKey();

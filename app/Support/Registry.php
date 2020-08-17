@@ -108,6 +108,8 @@ abstract class Registry
      * @param mixed[] $args   The method arguments.
      *
      * @return mixed
+     *
+     * @codeCoverageIgnore
      */
     public function __call(string $method, array $args)
     {

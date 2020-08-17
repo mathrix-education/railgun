@@ -65,6 +65,6 @@ class StripeCardException extends HttpException
             ];
         }
 
-        return [];
+        return []; // @codeCoverageIgnore
     }
 }

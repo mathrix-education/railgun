@@ -15,7 +15,9 @@ class StripeWebhookRegistry extends Registry
     protected string $configPath  = 'stripe.webhooks.%s';
 
     /**
-     * @return string[]
+     * @return string[] The webhook configuration validation rules.
+     *
+     * @codeCoverageIgnore
      */
     protected function rules(): array
     {

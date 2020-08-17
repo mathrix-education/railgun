@@ -13,7 +13,9 @@ class StripeClientRegistry extends Registry
     protected string $configPath  = 'stripe.clients.%s';
 
     /**
-     * @return string[]
+     * @return string[] The client configuration validation rules.
+     *
+     * @codeCoverageIgnore
      */
     protected function rules(): array
     {

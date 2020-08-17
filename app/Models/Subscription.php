@@ -13,12 +13,10 @@ use Railgun\Billing\Stripe\Models\InteractsWithStripe;
 use Railgun\Billing\Stripe\Models\ModeMachine;
 use Railgun\Models\Contracts\Cacheable as CacheableContract;
 use Railgun\Models\Traits\Cacheable;
-use Stripe\Customer;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Invoice;
 use Stripe\Subscription as StripeSubscription;
 use function app;
-use function is_string;
 use function preg_match;
 use function str_pad;
 use const STR_PAD_LEFT;
@@ -68,37 +66,29 @@ class Subscription extends BaseModel implements CacheableContract
 
     public static function fromStripe(StripeSubscription $stripeSubscription): self
     {
-        $subscription     = new self();
-        $subscription->id = $stripeSubscription->id;
+        $subscription = new self([
+            'id'                   => $stripeSubscription->id,
+            'customer_id'          => $stripeSubscription->customer->id ?? $stripeSubscription->customer,
+            'status'               => $stripeSubscription->status,
+            'current_period_start' => Carbon::createFromTimestamp($stripeSubscription->current_period_start),
+            'current_period_end'   => Carbon::createFromTimestamp($stripeSubscription->current_period_end),
+            'created_at'           => Carbon::createFromTimestamp($stripeSubscription->created),
+            'updated_at'           => Carbon::createFromTimestamp($stripeSubscription->created),
+        ]);
 
-        if (self::query()->where('id', '=', $stripeSubscription)->exists()) {
-            /** @noinspection PhpIncompatibleReturnTypeInspection */
-            return self::query()->findOrFail($stripeSubscription->id);
-        }
-
+        // @codeCoverageIgnoreStart
         if (isset($stripeSubscription->items[0]->price->lookup_key)) {
             $subscription->plan = $stripeSubscription->items[0]->price->lookup_key;
-        } else { // @codeCoverageIgnoreStart
+        } else {
             $modeMachine        = app()->make(ModeMachine::class);
             $subscription->plan = $modeMachine->get($stripeSubscription->plan->id)->lookup_key;
-        } // @codeCoverageIgnoreEnd
-
-        if (is_string($stripeSubscription->customer)) {
-            $subscription->customer_id = $stripeSubscription->customer;
-        } elseif ($stripeSubscription->customer instanceof Customer) {
-            $subscription->customer_id = $stripeSubscription->customer->id;
         }
-
-        $subscription->status               = $stripeSubscription->status;
-        $subscription->current_period_start = Carbon::createFromTimestamp($stripeSubscription->current_period_start);
-        $subscription->current_period_end   = Carbon::createFromTimestamp($stripeSubscription->current_period_end);
-        $subscription->created_at           = Carbon::createFromTimestamp($stripeSubscription->created);
-        $subscription->updated_at           = Carbon::createFromTimestamp($stripeSubscription->created);
 
         $canceledAt = $stripeSubscription->canceled_at ?? $stripeSubscription->cancel_at;
         if ($canceledAt !== null) {
             $subscription->canceled_at = Carbon::createFromTimestamp($canceledAt);
         }
+        // @codeCoverageIgnoreEnd
 
         return $subscription;
     }
@@ -115,7 +105,7 @@ class Subscription extends BaseModel implements CacheableContract
             BraintreeSubscription::PAST_DUE => StripeSubscription::STATUS_PAST_DUE,
             BraintreeSubscription::PENDING  => StripeSubscription::STATUS_ACTIVE,
         ];
-        $status    = [$btSubscription->status];
+        $status    = $statusMap[$btSubscription->status];
 
         $customerResults = $gateway->customer()->search([
             CustomerSearch::paymentMethodToken()->is($btSubscription->paymentMethodToken),
@@ -132,7 +122,7 @@ class Subscription extends BaseModel implements CacheableContract
             'created_at'           => Carbon::instance($btSubscription->createdAt),
             'updated_at'           => Carbon::instance($btSubscription->updatedAt),
             'canceled_at'          => $status === StripeSubscription::STATUS_CANCELED
-                ? Carbon::instance($btSubscription->statusHistory[0]->timestamp)
+                ? Carbon::instance($btSubscription->updatedAt)
                 : null,
         ]);
     }
@@ -179,9 +169,9 @@ class Subscription extends BaseModel implements CacheableContract
                 ]);
 
                 return $subscription->latest_invoice;
-            } catch (ApiErrorException $exception) {
+            } catch (ApiErrorException $exception) { // @codeCoverageIgnoreStart
                 return null;
-            }
+            } // @codeCoverageIgnoreEnd
         });
     }
 
@@ -201,9 +191,9 @@ class Subscription extends BaseModel implements CacheableContract
                 $subscription = $this->client->subscriptions->retrieve($this->id, [
                     'expand' => ['default_payment_method'],
                 ]);
-            } catch (ApiErrorException $exception) {
+            } catch (ApiErrorException $exception) { // @codeCoverageIgnoreStart
                 return null;
-            }
+            } // @codeCoverageIgnoreEnd
 
             $paymentMethod = $subscription->default_payment_method;
 
