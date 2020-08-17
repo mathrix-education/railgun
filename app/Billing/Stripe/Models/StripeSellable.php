@@ -43,7 +43,7 @@ trait StripeSellable
     protected function isStripeDirty(): bool
     {
         return ($this->stripe_price_id === null && $this->price !== null)
-            || ($this->stripe_price_id !== null && $this->isDirty(['name', 'price', 'available']));
+            || ($this->stripe_price_id !== null && $this->isDirty(['name', 'price', 'available', static::UPDATED_AT]));
     }
 
     protected function isStripeProduct(Product $product): bool
