@@ -88,11 +88,14 @@ class SubscriptionsWebhookTest extends WebhookTestCase
         $this->notSeeInDatabase('subscriptions', Arr::only($payload, ['id', 'status', 'customer_id']));
     }
 
+    /**
+     * @throws ApiErrorException
+     */
     public function testDeleteNotFound(): void
     {
         $this->callStripeWebhook(
             Event::CUSTOMER_SUBSCRIPTION_DELETED,
-            StripeSubscription::constructFrom(['id' => 'sub_notfound']),
+            StripeSubscription::constructFrom($this->getSubscriptionPayload()),
         );
 
         $this->assertResponseOk();
