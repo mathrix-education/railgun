@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Railgun\Billing\Exceptions;
 
-use Psr\Log\LogLevel;
 use Railgun\Exceptions\HttpException;
 use Throwable;
 use function trans;
