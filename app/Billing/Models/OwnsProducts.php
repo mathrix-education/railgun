@@ -23,6 +23,7 @@ use Railgun\Models\Subject;
 use Railgun\Models\Training;
 use Railgun\Models\Traits\Cacheable;
 use function array_merge;
+use function count;
 use function in_array;
 use function resolveMorph;
 
@@ -76,6 +77,11 @@ trait OwnsProducts
      */
     public function owns(Ownable $model): bool
     {
+        if (count($this->permissions) > 0) {
+            // If the user has at least one permission, he should owns all products.
+            return true;
+        }
+
         return in_array(
             $model->getGlobalKey(),
             $this->getCache()->remember('products_ids', 3600, fn() => $this->getOwnedProductGlobalIds()),
