@@ -111,6 +111,8 @@ jobs:
           BRAINTREE_PRIVATE_KEY: ${{ secrets.BRAINTREE_PRIVATE_KEY }}
         run: |
           php artisan migrate --seed
+          php artisan stripe:sync:products
+
           vendor/bin/paratest -f \
             --log-junit=storage/artifacts/phpunit-junit.xml \
             --coverage-clover=storage/artifacts/phpunit-coverage.xml \
