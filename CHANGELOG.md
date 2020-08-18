@@ -1,5 +1,9 @@
 # Changelog
 
+## 11.0.2
+### Bugfixes
+- **exams**: allow comprehension field for exam interactions
+
 ## 11.0.1
 ### Bugfixes
 - **graphql**: remove results duplicates (#487)
