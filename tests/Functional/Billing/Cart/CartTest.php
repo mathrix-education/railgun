@@ -42,7 +42,7 @@ class CartTest extends ApplicationTestCase
 
         $this->assertGreaterThan(0, $cart->subTotal);
         $this->assertGreaterThan(0, $cart->total);
-        $this->assertGreaterThan($cart->total, $cart->subTotal);
+        $this->assertGreaterThanOrEqual($cart->total, $cart->subTotal);
 
         $this->assertNotEmpty($cart->chapters);
         $this->assertNotEmpty($cart->packs);
