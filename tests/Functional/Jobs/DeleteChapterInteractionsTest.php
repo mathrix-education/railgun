@@ -9,13 +9,11 @@ use Railgun\Models\Course;
 use Tests\ApplicationTestCase;
 
 /**
- * @testdox DeleteChapterInteractions Job
  * @coversDefaultClass \Railgun\Jobs\DeleteChapterInteractions
  */
 class DeleteChapterInteractionsTest extends ApplicationTestCase
 {
     /**
-     * @testdox deletes the existing interactions and sessions of a course
      * @covers ::__construct
      * @covers ::handle
      */

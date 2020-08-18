@@ -7,14 +7,8 @@ namespace Tests\Functional\Console\Commands;
 use Illuminate\Support\Facades\Artisan;
 use Tests\ApplicationTestCase;
 
-/**
- * @testdox Schema
- */
 class SchemaTest extends ApplicationTestCase
 {
-    /**
-     * @testdox is validated with lighthouse:validate-schema command
-     */
     public function testSchemaIntegrity(): void
     {
         $exit   = Artisan::call('lighthouse:validate-schema');

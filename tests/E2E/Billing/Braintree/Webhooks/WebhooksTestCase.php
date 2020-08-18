@@ -11,12 +11,12 @@ use Braintree\Subscription;
 use Braintree\WebhookNotification;
 use Braintree\Xml;
 use Carbon\Carbon;
-use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
+use Tests\E2E\GraphQL\GraphQLTestCase;
 use function base64_encode;
 use function config;
 use function str_replace;
 
-class WebhooksTestCase extends GraphQLIntegrationTestCase
+class WebhooksTestCase extends GraphQLTestCase
 {
     protected Gateway $gateway;
 
@@ -25,17 +25,6 @@ class WebhooksTestCase extends GraphQLIntegrationTestCase
         parent::setUp();
 
         $this->gateway = $this->app->make(Gateway::class);
-    }
-
-    /**
-     * @param string $payload Sign the payload.
-     *
-     * @return string The payload signature.
-     */
-    protected function sign(string $payload): string
-    {
-        return $this->gateway->config->getPublicKey() . '|'
-            . Digest::hexDigestSha1($this->gateway->config->getPrivateKey(), $payload);
     }
 
     /**
@@ -60,6 +49,17 @@ class WebhooksTestCase extends GraphQLIntegrationTestCase
         $signature = $this->sign($payload);
 
         $this->postBraintree($payload, $signature);
+    }
+
+    /**
+     * @param string $payload Sign the payload.
+     *
+     * @return string The payload signature.
+     */
+    protected function sign(string $payload): string
+    {
+        return $this->gateway->config->getPublicKey() . '|'
+            . Digest::hexDigestSha1($this->gateway->config->getPrivateKey(), $payload);
     }
 
     /**

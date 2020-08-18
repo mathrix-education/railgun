@@ -44,9 +44,7 @@ class GoogleCloudJsonFormatterTest extends ApplicationTestCase
         ];
     }
 
-    /**
-     * @testdox formats a single record
-     * @covers ::format
+    /** @covers ::format
      * @covers ::toGoogleCloudLogging
      *
      * @throws JsonException
@@ -65,9 +63,7 @@ class GoogleCloudJsonFormatterTest extends ApplicationTestCase
         $this->assertJson($result);
     }
 
-    /**
-     * @testdox formats multiple records
-     * @covers ::formatBatchJson
+    /** @covers ::formatBatchJson
      * @covers ::toGoogleCloudLogging
      */
     public function testFormatBatchJson(): void

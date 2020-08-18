@@ -10,7 +10,6 @@ use Railgun\Models\Notion;
 use function factory;
 
 /**
- * @testdox Model Chapter
  * @coversDefaultClass \Railgun\Models\Chapter
  */
 class ChapterTest extends ModelTestCase

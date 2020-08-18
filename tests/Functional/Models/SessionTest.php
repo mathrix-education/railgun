@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Models;
 
-/**
- * @testdox Model Session
- * @coversDefaultClass \Railgun\Models\Session
+/** @coversDefaultClass \Railgun\Models\Session
  */
 class SessionTest extends ModelTestCase
 {

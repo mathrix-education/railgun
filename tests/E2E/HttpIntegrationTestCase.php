@@ -40,6 +40,44 @@ class HttpIntegrationTestCase extends ApplicationTestCase
     }
 
     /**
+     * @param string|string[]|null $permissions The permissions to grant to the user.
+     * @param string|null          $guard       The guard to use, use the default one if null is provided.
+     *
+     * @return User The application user.
+     */
+    protected function withPermissions($permissions = null, ?string $guard = null): User
+    {
+        if ($permissions === null) {
+            $permissions = [];
+        } elseif (!is_array($permissions)) {
+            $permissions = [$permissions];
+        }
+
+        /** @var User $user The currently logged user. */
+        $user = $this->app->make('auth')->guard($guard)->user() ?? factory(User::class)->create();
+
+        $user->permissions = array_unique(array_merge($user->permissions, $permissions));
+        $user->save();
+
+        return $this->actingAsGetUser($user);
+    }
+
+    /**
+     * Set the currently logged user and returns it.
+     *
+     * @param Authenticatable|User|mixed[] $user  The user or the user attributes.
+     * @param string|null                  $guard The guard to use, use the default one if null is provided.
+     *
+     * @return User The currently logged user.
+     */
+    public function actingAsGetUser($user = [], ?string $guard = null): User
+    {
+        $this->actingAs($user, $guard);
+
+        return $this->getUser();
+    }
+
+    /**
      * @param Authenticatable|User|mixed[] $user  The user or the user attributes.
      * @param string|null                  $guard The guard to use, use the default one if null is provided.
      *
@@ -68,41 +106,16 @@ class HttpIntegrationTestCase extends ApplicationTestCase
     }
 
     /**
-     * Set the currently logged user and returns it.
-     *
-     * @param Authenticatable|User|mixed[] $user  The user or the user attributes.
-     * @param string|null                  $guard The guard to use, use the default one if null is provided.
-     *
-     * @return User The currently logged user.
+     * Dump the current response JSON content.
      */
-    public function actingAsGetUser($user = [], ?string $guard = null): User
+    protected function dump(): void
     {
-        $this->actingAs($user, $guard);
-
-        return $this->getUser();
-    }
-
-    /**
-     * @param string|string[]|null $permissions The permissions to grant to the user.
-     * @param string|null          $guard       The guard to use, use the default one if null is provided.
-     *
-     * @return User The application user.
-     */
-    protected function withPermissions($permissions = null, ?string $guard = null): User
-    {
-        if ($permissions === null) {
-            $permissions = [];
-        } elseif (!is_array($permissions)) {
-            $permissions = [$permissions];
-        }
-
-        /** @var User $user The currently logged user. */
-        $user = $this->app->make('auth')->guard($guard)->user() ?? factory(User::class)->create();
-
-        $user->permissions = array_unique(array_merge($user->permissions, $permissions));
-        $user->save();
-
-        return $this->actingAsGetUser($user);
+        $this->tearDown();
+        self::tearDownAfterClass();
+        $content = $this->getContent();
+        /** @noinspection ForgottenDebugOutputInspection */
+        dump($content);
+        exit(1);
     }
 
     /**
@@ -124,18 +137,5 @@ class HttpIntegrationTestCase extends ApplicationTestCase
         }
 
         return Arr::get($this->contentCache, $path, $default);
-    }
-
-    /**
-     * Dump the current response JSON content.
-     */
-    protected function dump(): void
-    {
-        $this->tearDown();
-        self::tearDownAfterClass();
-        $content = $this->getContent();
-        /** @noinspection ForgottenDebugOutputInspection */
-        dump($content);
-        exit(1);
     }
 }

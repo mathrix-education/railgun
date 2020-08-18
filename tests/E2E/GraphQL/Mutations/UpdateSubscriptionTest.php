@@ -10,14 +10,11 @@ use Railgun\Jobs\UpsertSubscription;
 use Railgun\Models\User;
 use Stripe\Exception\ApiErrorException;
 use Stripe\StripeClient;
-use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
+use Tests\E2E\GraphQL\GraphQLTestCase;
 use function dispatch_now;
 use function factory;
 
-/**
- * @testdox Mutation updateSubscription
- */
-class UpdateSubscriptionTest extends GraphQLIntegrationTestCase
+class UpdateSubscriptionTest extends GraphQLTestCase
 {
     protected Dispatcher   $dispatcher;
     protected StripeClient $client;
@@ -33,8 +30,6 @@ class UpdateSubscriptionTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox changes the payment method of a subscription
-     *
      * @throws ApiErrorException
      */
     public function testPaymentMethodReplacement(): void
@@ -48,7 +43,7 @@ class UpdateSubscriptionTest extends GraphQLIntegrationTestCase
             'customer'               => $customer->id,
             'default_payment_method' => $paymentMethodId,
             'items'                  => [
-                ['price' => $this->modeMachine->get('laser_month')->id],
+                ['price' => $this->modeMachine->get(ModeMachine::PLAN_MONTH)->id],
             ],
             'metadata'               => [
                 'user_id' => $user->id,
@@ -88,8 +83,6 @@ class UpdateSubscriptionTest extends GraphQLIntegrationTestCase
     }
 
     /**
-     * @testdox denies the access to a subscription if the user does not own it
-     *
      * @throws ApiErrorException
      */
     public function testNotOwner(): void
@@ -104,7 +97,7 @@ class UpdateSubscriptionTest extends GraphQLIntegrationTestCase
             'customer'               => $customer->id,
             'default_payment_method' => $paymentMethodId,
             'items'                  => [
-                ['price' => $this->modeMachine->get('laser_month')->id],
+                ['price' => $this->modeMachine->get(ModeMachine::PLAN_MONTH)->id],
             ],
             'metadata'               => [
                 'user_id' => $user->id,

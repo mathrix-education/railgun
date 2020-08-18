@@ -6,9 +6,7 @@ namespace Tests\Functional\Models;
 
 use Railgun\Models\Notion;
 
-/**
- * @testdox Model Notion
- * @coversDefaultClass \Railgun\Models\Notion
+/** @coversDefaultClass \Railgun\Models\Notion
  */
 class NotionTest extends ModelTestCase
 {

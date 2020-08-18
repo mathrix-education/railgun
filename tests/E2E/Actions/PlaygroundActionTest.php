@@ -6,9 +6,6 @@ namespace Tests\E2E\Actions;
 
 use Tests\E2E\HttpIntegrationTestCase;
 
-/**
- * @testdox Playground Action
- */
 class PlaygroundActionTest extends HttpIntegrationTestCase
 {
     public function testPlayground(): void

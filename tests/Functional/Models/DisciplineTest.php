@@ -10,7 +10,6 @@ use Railgun\Models\Theme;
 use function factory;
 
 /**
- * @testdox Model Discipline
  * @coversDefaultClass \Railgun\Models\Discipline
  */
 class DisciplineTest extends ModelTestCase

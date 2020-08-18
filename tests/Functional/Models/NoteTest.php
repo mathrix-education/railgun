@@ -7,7 +7,6 @@ namespace Tests\Functional\Models;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 /**
- * @testdox Model Note
  * @coversDefaultClass \Railgun\Models\Note
  */
 class NoteTest extends ModelTestCase

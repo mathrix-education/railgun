@@ -13,13 +13,11 @@ use Tests\ApplicationTestCase;
 use function factory;
 
 /**
- * @testdox DeliverCommentReplyNotifications Job
  * @coversDefaultClass \Railgun\Jobs\DeliverCommentReplyNotifications
  */
 class DeliverCommentReplyNotificationsTest extends ApplicationTestCase
 {
     /**
-     * @testdox delivers the notifications on comment reply
      * @covers ::__construct
      * @covers ::handle
      */

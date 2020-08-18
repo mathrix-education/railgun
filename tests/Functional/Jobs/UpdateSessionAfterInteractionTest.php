@@ -9,28 +9,20 @@ use Railgun\Jobs\UpdateSessionAfterInteraction;
 use Railgun\Models\Chapter;
 use Railgun\Models\Exam;
 use Railgun\Models\Flashcard;
-use Railgun\Models\Grade;
 use Railgun\Models\Interaction;
 use Railgun\Models\Theme;
 use Railgun\Models\User;
 use Tests\ApplicationTestCase;
 use function factory;
 
-/**
- * @testdox UpdateSessionAfterInteraction Job
- */
 class UpdateSessionAfterInteractionTest extends ApplicationTestCase
 {
     /**
-     * @testdox replaces an existing session [user_id, discipline_id]
-     *
      * @ticket #207
      */
     public function testHandleExistingSession(): void
     {
         Queue::fake();
-
-        $grade = Grade::random();
 
         /** @var Theme $theme */
         $theme = Theme::query()

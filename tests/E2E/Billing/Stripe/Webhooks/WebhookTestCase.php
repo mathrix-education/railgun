@@ -8,11 +8,11 @@ use JsonException;
 use Railgun\Billing\Stripe\StripeWebhook;
 use Stripe\Event;
 use Stripe\StripeObject;
-use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
+use Tests\E2E\GraphQL\GraphQLTestCase;
 use function json_encode;
 use const JSON_THROW_ON_ERROR;
 
-class WebhookTestCase extends GraphQLIntegrationTestCase
+class WebhookTestCase extends GraphQLTestCase
 {
     protected StripeWebhook $webhook;
 

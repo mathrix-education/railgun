@@ -35,7 +35,7 @@ class LineTest extends ApplicationTestCase
      */
     public function testFromPrice(): void
     {
-        $price = $this->app->make(ModeMachine::class)->get('laser_month');
+        $price = $this->app->make(ModeMachine::class)->get(ModeMachine::PLAN_MONTH);
         $line  = Line::fromPrice($price);
 
         $this->assertEquals($price->unit_amount, $line->price);

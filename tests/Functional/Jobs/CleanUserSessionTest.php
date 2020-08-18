@@ -16,16 +16,12 @@ use Tests\ApplicationTestCase;
 use function factory;
 
 /**
- * @testdox CleanUserSession Job
  * @coversDefaultClass \Railgun\Jobs\CleanUserSession
  */
 class CleanUserSessionTest extends ApplicationTestCase
 {
     use DatabaseTransactions;
 
-    /**
-     * @testdox deletes the previous user session on grade change
-     */
     public function testHandle(): void
     {
         Queue::fake();

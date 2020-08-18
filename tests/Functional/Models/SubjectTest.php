@@ -10,17 +10,13 @@ use Railgun\Models\Exercise;
 use Railgun\Models\Subject;
 use function factory;
 
-/**
- * @testdox Model Subject
- * @coversDefaultClass \Railgun\Models\Subject
+/** @coversDefaultClass \Railgun\Models\Subject
  */
 class SubjectTest extends ModelTestCase
 {
     use DatabaseTransactions;
 
-    /**
-     * @testdox syncs has its premium attribute sync with its exercises
-     * @covers ::booting
+    /** @covers ::booting
      */
     public function testExercisesPremiumSync(): void
     {
@@ -42,9 +38,7 @@ class SubjectTest extends ModelTestCase
         });
     }
 
-    /**
-     * @testdox syncs has its protected attribute sync with its exercises
-     * @covers ::booting
+    /** @covers ::booting
      */
     public function testExercisesProtectedSync(): void
     {

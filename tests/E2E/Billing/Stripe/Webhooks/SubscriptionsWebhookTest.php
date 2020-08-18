@@ -19,33 +19,6 @@ class SubscriptionsWebhookTest extends WebhookTestCase
     use DatabaseTransactions;
 
     /**
-     * Get a valid subscription payload.
-     *
-     * @see https://stripe.com/docs/api/subscriptions/object
-     *
-     * @return mixed[] The subscription payload.
-     *
-     * @throws ApiErrorException
-     */
-    protected function getSubscriptionPayload(): array
-    {
-        $modeMachine = $this->app->make(ModeMachine::class);
-
-        return [
-            'object'               => StripeSubscription::OBJECT_NAME,
-            'id'                   => $this->faker->regexify('sub_[a-zA-Z0-9]{14}'),
-            'plan'                 => [
-                'id' => $modeMachine->get('laser_month')->id,
-            ],
-            'customer'             => $this->faker->regexify('cus_[a-zA-Z0-9]{14}'),
-            'status'               => StripeSubscription::STATUS_CANCELED,
-            'current_period_start' => Carbon::now()->timestamp,
-            'current_period_end'   => Carbon::now()->addMonth()->timestamp,
-            'created'              => Carbon::now()->timestamp,
-        ];
-    }
-
-    /**
      * @throws ApiErrorException
      */
     public function testUpsert(): void
@@ -63,6 +36,33 @@ class SubscriptionsWebhookTest extends WebhookTestCase
         $this->assertEquals('Subscription handled', $this->getContent('message'));
 
         $this->seeInDatabase('subscriptions', Arr::only($payload, ['id', 'status', 'customer_id']));
+    }
+
+    /**
+     * Get a valid subscription payload.
+     *
+     * @see https://stripe.com/docs/api/subscriptions/object
+     *
+     * @return mixed[] The subscription payload.
+     *
+     * @throws ApiErrorException
+     */
+    protected function getSubscriptionPayload(): array
+    {
+        $modeMachine = $this->app->make(ModeMachine::class);
+
+        return [
+            'object'               => StripeSubscription::OBJECT_NAME,
+            'id'                   => $this->faker->regexify('sub_[a-zA-Z0-9]{14}'),
+            'plan'                 => [
+                'id' => $modeMachine->get(ModeMachine::PLAN_MONTH)->id,
+            ],
+            'customer'             => $this->faker->regexify('cus_[a-zA-Z0-9]{14}'),
+            'status'               => StripeSubscription::STATUS_CANCELED,
+            'current_period_start' => Carbon::now()->timestamp,
+            'current_period_end'   => Carbon::now()->addMonth()->timestamp,
+            'created'              => Carbon::now()->timestamp,
+        ];
     }
 
     /**

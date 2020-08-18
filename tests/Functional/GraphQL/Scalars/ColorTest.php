@@ -11,7 +11,6 @@ use Throwable;
 use function collect;
 
 /**
- * @testdox Color scalar
  * @coversDefaultClass \Railgun\GraphQL\Scalars\Color
  */
 class ColorTest extends ApplicationTestCase

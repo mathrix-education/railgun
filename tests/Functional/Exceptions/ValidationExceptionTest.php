@@ -9,14 +9,9 @@ use Illuminate\Validation\Validator;
 use Railgun\Exceptions\ValidationException;
 use Throwable;
 
-/**
- * @testdox Validation Exception
- */
 class ValidationExceptionTest extends ExceptionTestCase
 {
     /**
-     * @testdox convert exceptions from Illuminate Validator
-     *
      * @throws Throwable
      */
     public function testIlluminateException(): void

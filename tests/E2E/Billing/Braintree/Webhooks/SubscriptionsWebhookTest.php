@@ -17,12 +17,6 @@ class SubscriptionsWebhookTest extends WebhooksTestCase
 {
     use DatabaseTransactions;
 
-    public function setUpCustomerMock(string $mockedId): void
-    {
-        $customerGateway = Mockery::mock('overload:' . CustomerGateway::class);
-        $customerGateway->expects('search->getIds')->andReturns([$mockedId]);
-    }
-
     public function testWentActive(): void
     {
         $expectedData = [
@@ -48,6 +42,12 @@ class SubscriptionsWebhookTest extends WebhooksTestCase
         $this->assertResponseOk();
         $this->assertEquals('Subscription handled', $this->getContent('message'));
         $this->seeInDatabase('subscriptions', $expectedData);
+    }
+
+    public function setUpCustomerMock(string $mockedId): void
+    {
+        $customerGateway = Mockery::mock('overload:' . CustomerGateway::class);
+        $customerGateway->expects('search->getIds')->andReturns([$mockedId]);
     }
 
     public function testCancel(): void

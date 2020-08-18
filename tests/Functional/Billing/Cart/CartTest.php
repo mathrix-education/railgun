@@ -12,6 +12,7 @@ use Railgun\Billing\Exceptions\DuplicateProductsException;
 use Railgun\Billing\Exceptions\EmptyCartException;
 use Railgun\Billing\Exceptions\InvalidCouponCodeException;
 use Railgun\Billing\Exceptions\UnavailableProductsException;
+use Railgun\Billing\Stripe\Models\ModeMachine;
 use Railgun\Models\Acquisition;
 use Railgun\Models\Coupon;
 use Railgun\Models\Pack;
@@ -33,7 +34,10 @@ class CartTest extends ApplicationTestCase
 
     public function testFullValid(): void
     {
-        $cart = Cart::build(CartInputGenerator::make(['chapters', 'packs', 'trainings', 'coupon'], 'laser_month'));
+        $cart = Cart::build(CartInputGenerator::make(
+            ['chapters', 'packs', 'trainings', 'coupon'],
+            ModeMachine::PLAN_MONTH,
+        ));
         $cart->validate();
 
         $this->assertGreaterThan(0, $cart->subTotal);
@@ -218,7 +222,7 @@ class CartTest extends ApplicationTestCase
     public function testAlreadyPremium(): void
     {
         $user = factory(User::class)->create(['premium_bypass' => true]);
-        $cart = Cart::build(['plan' => 'laser_month']);
+        $cart = Cart::build(['plan' => ModeMachine::PLAN_MONTH]);
 
         $this->expectException(AlreadyPremiumException::class);
         $cart->validate($user);
@@ -229,7 +233,10 @@ class CartTest extends ApplicationTestCase
      */
     public function testMetadataSerialization(): void
     {
-        $cart1     = Cart::build(CartInputGenerator::make(['chapters', 'packs', 'trainings', 'coupon'], 'laser_month'));
+        $cart1     = Cart::build(CartInputGenerator::make(
+            ['chapters', 'packs', 'trainings', 'coupon'],
+            ModeMachine::PLAN_MONTH,
+        ));
         $metadata1 = $cart1->toMetadata();
 
         $cart2     = Cart::fromMetadata($metadata1);

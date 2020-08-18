@@ -1,0 +1,77 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\E2E\GraphQL\Mutations;
+
+use Laravel\Lumen\Testing\DatabaseTransactions;
+use Railgun\Facades\Storage;
+use Tests\E2E\GraphQL\FilesystemTestCase;
+use Tests\E2E\GraphQL\GraphQLTestCase;
+use function trans;
+
+class DeleteFileTest extends GraphQLTestCase
+{
+    use DatabaseTransactions;
+    use FilesystemTestCase;
+
+    public function testDeleteExistingFile(): void
+    {
+        $this->seedTestDirectory(['foo.txt']);
+        $this->withPermissions('files:delete');
+
+        $this->executeDeleteBlob('foo.txt');
+
+        $this->assertResponseOk();
+        $this->assertNoErrors();
+    }
+
+    public function executeDeleteBlob(string $path): void
+    {
+        $this->graphQL(
+            <<<'GRAPHQL'
+            mutation($path: String!) {
+                deleteFile(path: $path) {
+                    path
+                    basename
+                    url
+                    basename
+                    dirname
+                    mimetype
+                    size
+                    updated_at
+                }
+            }
+            GRAPHQL,
+            ['path' => $this->getTestPath($path)],
+        );
+    }
+
+    public function testDeleteNonExistingFile(): void
+    {
+        $path = $this->getTestPath('foo.txt');
+        Storage::delete($path);
+        $this->withPermissions('files:delete');
+
+        $this->executeDeleteBlob($path);
+
+        $this->assertResponseOk();
+        $this->assertErrorCode('FILE_NOT_FOUND');
+        $this->assertErrorCategory('storage');
+        $this->assertErrorMessage(trans('storage.errors.file_not_found', ['file' => $path]));
+    }
+
+    public function testDeleteDirectory(): void
+    {
+        $path = $this->getTestPath('foo');
+        $this->seedTestDirectory(['foo/bar.txt']);
+        $this->withPermissions('files:delete');
+
+        $this->executeDeleteBlob($path);
+
+        $this->assertResponseOk();
+        $this->assertErrorCode('FILE_NOT_FOUND');
+        $this->assertErrorCategory('storage');
+        $this->assertErrorMessage(trans('storage.errors.file_not_found', ['file' => $path]));
+    }
+}

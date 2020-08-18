@@ -20,7 +20,6 @@ use function data_get;
 use function factory;
 
 /**
- * @testdox Interactable Model trait
  * @coversDefaultClass \Railgun\Models\Traits\Interactable
  */
 class InteractableTest extends ApplicationTestCase
@@ -40,7 +39,6 @@ class InteractableTest extends ApplicationTestCase
 
     /**
      * @dataProvider createInteractablesDataset
-     * @testdox      has a valid relation with $class
      *
      * @param string|Randomizable $class The model class.
      */
@@ -94,7 +92,6 @@ class InteractableTest extends ApplicationTestCase
 
     /**
      * @dataProvider createInteractablesDataset
-     * @testdox      is in the GraphQL type associated with $class
      *
      * @param string|Randomizable $class The model class.
      */

@@ -21,9 +21,7 @@ use function data_get;
 use function factory;
 use function strtolower;
 
-/**
- * @testdox Notable Model trait
- * @coversDefaultClass \Railgun\Models\Note
+/** @coversDefaultClass \Railgun\Models\Note
  */
 class NotableTest extends ApplicationTestCase
 {
@@ -42,7 +40,6 @@ class NotableTest extends ApplicationTestCase
 
     /**
      * @dataProvider createNotablesDataset
-     * @testdox      has a valid notable morph (using $class)
      * @covers       ::notable
      *
      * @param string|Randomizable $class The model class.
@@ -76,7 +73,6 @@ class NotableTest extends ApplicationTestCase
 
     /**
      * @dataProvider createNotablesDataset
-     * @testdox      is in the GraphQL type associated with $class
      *
      * @param string|Randomizable $class The model class.
      */

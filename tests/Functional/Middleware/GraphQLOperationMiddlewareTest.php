@@ -11,15 +11,11 @@ use Railgun\Middleware\GraphQLOperationMiddleware;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\ApplicationTestCase;
 
-/**
- * @testdox GraphQLOperation Middleware
- * @coversDefaultClass \Railgun\Middleware\GraphQLOperationMiddleware
+/** @coversDefaultClass \Railgun\Middleware\GraphQLOperationMiddleware
  */
 class GraphQLOperationMiddlewareTest extends ApplicationTestCase
 {
-    /**
-     * @testdox does not the Prometheus metrics whe operationName is not provided
-     * @covers ::handle
+    /** @covers ::handle
      * @covers ::terminate
      */
     public function testWithoutOperationName(): void
@@ -37,9 +33,7 @@ class GraphQLOperationMiddlewareTest extends ApplicationTestCase
         $instance->terminate($request);
     }
 
-    /**
-     * @testdox update the Prometheus metrics whe operationName is provided
-     * @covers ::handle
+    /** @covers ::handle
      * @covers ::terminate
      */
     public function testWithOperationName(): void

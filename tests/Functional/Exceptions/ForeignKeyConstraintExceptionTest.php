@@ -9,9 +9,6 @@ use Railgun\Models\Chapter;
 use Railgun\Models\Notion;
 use function factory;
 
-/**
- * @testdox ForeignKeyConstraint Exception
- */
 class ForeignKeyConstraintExceptionTest extends ExceptionTestCase
 {
     public function testDeleteChapter(): void

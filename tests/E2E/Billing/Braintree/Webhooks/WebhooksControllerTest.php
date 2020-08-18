@@ -12,9 +12,6 @@ class WebhooksControllerTest extends WebhooksTestCase
 {
     use DatabaseTransactions;
 
-    /**
-     * @testdox fails to handle the event when signature is invalid
-     */
     public function testInvalidSignature(): void
     {
         $this->postBraintree(
@@ -25,9 +22,6 @@ class WebhooksControllerTest extends WebhooksTestCase
         $this->assertResponseStatus(400);
     }
 
-    /**
-     * @testdox fails to handle an unsupported event
-     */
     public function testUnsupportedEvent(): void
     {
         $this->callBraintreeWebhook('unsupported', Subscription::factory([]));

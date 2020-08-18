@@ -17,14 +17,8 @@ use function count;
 use function factory;
 use function range;
 
-/**
- * @testdox Orderable Model trait
- */
 class OrderableTest extends ApplicationTestCase
 {
-    /**
-     * @testdox orders models (notions) during creation
-     */
     public function testCreateModels(): void
     {
         $chapterId = DB::table('chapters')->insertGetId(factory(Chapter::class)->raw());
@@ -84,9 +78,6 @@ class OrderableTest extends ApplicationTestCase
         $this->assertEquals($expected, $ordered);
     }
 
-    /**
-     * @testdox orders related models (courses and subjects) during creation
-     */
     public function testCreateRelatedModels(): void
     {
         /** @var Notion $notion */

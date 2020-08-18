@@ -10,7 +10,6 @@ use Railgun\Models\Coupon;
 use function factory;
 
 /**
- * @testdox Model Coupon
  * @coversDefaultClass \Railgun\Models\Coupon
  */
 class CouponTest extends ModelTestCase

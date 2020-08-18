@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Functional\Models;
 
 /**
- * @testdox Model Section
  * @coversDefaultClass \Railgun\Models\Section
  */
 class SectionTest extends ModelTestCase

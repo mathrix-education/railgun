@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Models;
 
-/**
- * @testdox Model Vote
- * @coversDefaultClass \Railgun\Models\Vote
+/** @coversDefaultClass \Railgun\Models\Vote
  */
 class VoteTest extends ModelTestCase
 {

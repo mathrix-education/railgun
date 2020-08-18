@@ -7,7 +7,6 @@ namespace Tests\Functional\Models;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 /**
- * @testdox Model Category
  * @coversDefaultClass \Railgun\Models\Category
  */
 class CategoryTest extends ModelTestCase
@@ -15,7 +14,6 @@ class CategoryTest extends ModelTestCase
     use DatabaseTransactions;
 
     /**
-     * @testdox has a valid relations with posts
      * @covers ::posts
      */
     public function testPosts(): void

@@ -8,9 +8,7 @@ use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Exercise;
 use function factory;
 
-/**
- * @testdox Model Exercise
- * @coversDefaultClass \Railgun\Models\Exercise
+/** @coversDefaultClass \Railgun\Models\Exercise
  */
 class ExerciseTest extends ModelTestCase
 {

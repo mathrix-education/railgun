@@ -8,16 +8,10 @@ use Laravel\Lumen\Testing\DatabaseTransactions;
 use Stripe\StripeObject;
 use function trans;
 
-/**
- * @testdox Webhooks Controller
- */
 class WebhooksControllerTest extends WebhookTestCase
 {
     use DatabaseTransactions;
 
-    /**
-     * @testdox fails to handle the event when signature is invalid
-     */
     public function testInvalidSignature(): void
     {
         $this->postStripe(
@@ -28,9 +22,6 @@ class WebhooksControllerTest extends WebhookTestCase
         $this->assertResponseStatus(400);
     }
 
-    /**
-     * @testdox fails to handle an unsupported event
-     */
     public function testUnsupportedEvent(): void
     {
         $this->callStripeWebhook('unsupported', StripeObject::constructFrom([]));

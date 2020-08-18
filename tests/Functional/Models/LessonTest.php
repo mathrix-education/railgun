@@ -7,7 +7,6 @@ namespace Tests\Functional\Models;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 /**
- * @testdox Model Lesson
  * @coversDefaultClass \Railgun\Models\Lesson
  */
 class LessonTest extends ModelTestCase

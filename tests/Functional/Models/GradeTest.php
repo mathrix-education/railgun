@@ -10,7 +10,6 @@ use Railgun\Models\Theme;
 use function factory;
 
 /**
- * @testdox Model Grade
  * @coversDefaultClass \Railgun\Models\Grade
  */
 class GradeTest extends ModelTestCase
