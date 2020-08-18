@@ -35,9 +35,6 @@ class Interact
             case 'exercise':
                 unset($args['comprehension'], $args['watchtime']);
                 break;
-            case 'exam':
-                unset($args['comprehension']);
-                break;
         }
 
         $keys        = Arr::only($args, ['interactable_type', 'interactable_id', 'user_id']);
