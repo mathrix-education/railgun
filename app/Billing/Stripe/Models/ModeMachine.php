@@ -17,6 +17,16 @@ use function collect;
  */
 class ModeMachine
 {
+    public const PLAN_MONTH    = 'laser_month';
+    public const PLAN_QUARTER  = 'laser_quarter';
+    public const PLAN_SEMESTER = 'laser_semester';
+    public const PLAN_YEAR     = 'laser_year';
+    public const PLANS         = [
+        self::PLAN_MONTH,
+        self::PLAN_QUARTER,
+        self::PLAN_SEMESTER,
+        self::PLAN_YEAR,
+    ];
     public const PRODUCT       = [
         'id'          => 'mode_machine',
         'name'        => 'Mode Machine',
@@ -24,9 +34,9 @@ class ModeMachine
         'description' => 'Accès au contenu premium de Mathrix.fr en illimité.',
     ];
     public const PRICES        = [
-        'laser_month'    => [
+        self::PLAN_MONTH    => [
             'currency'    => 'eur',
-            'lookup_key'  => 'laser_month',
+            'lookup_key'  => self::PLAN_MONTH,
             'nickname'    => 'Plan mensuel',
             'product'     => self::PRODUCT['id'],
             'recurring'   => [
@@ -35,9 +45,9 @@ class ModeMachine
             ],
             'unit_amount' => 2700,
         ],
-        'laser_quarter'  => [
+        self::PLAN_QUARTER  => [
             'currency'    => 'eur',
-            'lookup_key'  => 'laser_quarter',
+            'lookup_key'  => self::PLAN_QUARTER,
             'nickname'    => 'Plan trimestriel',
             'product'     => self::PRODUCT['id'],
             'recurring'   => [
@@ -46,9 +56,9 @@ class ModeMachine
             ],
             'unit_amount' => 6700,
         ],
-        'laser_semester' => [
+        self::PLAN_SEMESTER => [
             'currency'    => 'eur',
-            'lookup_key'  => 'laser_semester',
+            'lookup_key'  => self::PLAN_SEMESTER,
             'nickname'    => 'Plan semestriel',
             'product'     => self::PRODUCT['id'],
             'recurring'   => [
@@ -57,9 +67,9 @@ class ModeMachine
             ],
             'unit_amount' => 9700,
         ],
-        'laser_year'     => [
+        self::PLAN_YEAR     => [
             'currency'    => 'eur',
-            'lookup_key'  => 'laser_year',
+            'lookup_key'  => self::PLAN_YEAR,
             'nickname'    => 'Plan annuel',
             'product'     => self::PRODUCT['id'],
             'recurring'   => [
@@ -68,9 +78,6 @@ class ModeMachine
             ],
             'unit_amount' => 16700,
         ],
-    ];
-    public const PRICES_LEGACY = [
-
     ];
 
     protected StripeClient $client;
