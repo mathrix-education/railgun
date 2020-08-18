@@ -47,8 +47,16 @@ class InvoicesWebhook
         /** @var User $user */
         $user = User::query()->where('stripe_id', '=', $customer)->first();
 
-        if (!$user && app()->environment('production')) {
-            throw new RuntimeException("Stripe customer $customer not found"); // @codeCoverageIgnore
+        if (!$user) {
+            if (app()->environment('production')) {
+                throw new RuntimeException("Stripe customer $customer not found"); // @codeCoverageIgnore
+            }
+
+            // Development environment, simply ignore
+            return [
+                'message' => 'Invoice ignored (customer does not exists)',
+                'event'   => $event->jsonSerialize(),
+            ];
         }
 
         $cart = Cart::fromMetadata($object->metadata->toArray());

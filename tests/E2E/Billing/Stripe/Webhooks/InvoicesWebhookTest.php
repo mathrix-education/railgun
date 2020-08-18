@@ -56,4 +56,24 @@ class InvoicesWebhookTest extends WebhookTestCase
 
         $this->assertEquals('Invoice ignored', $this->getContent('message'));
     }
+
+    /**
+     * @throws ApiErrorException
+     */
+    public function testUserDoesNotExists(): void
+    {
+        $cart = Cart::build(CartInputGenerator::make('trainings'));
+
+        $invoice = Invoice::constructFrom([
+            'object'   => Invoice::OBJECT_NAME,
+            'id'       => $this->faker->regexify('in_[a-zA-Z0-9]{14}'),
+            'customer' => $this->faker->regexify('cus_[a-zA-Z0-9]{14}'),
+            'metadata' => $cart->toMetadata(),
+        ]);
+
+        $this->callStripeWebhook(Event::INVOICE_PAYMENT_SUCCEEDED, $invoice);
+        $this->assertResponseOk();
+
+        $this->assertEquals('Invoice ignored (customer does not exists)', $this->getContent('message'));
+    }
 }
