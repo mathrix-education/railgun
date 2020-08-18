@@ -5,19 +5,25 @@ declare(strict_types=1);
 namespace Railgun\Models;
 
 use Braintree\CustomerSearch;
+use Braintree\Exception\NotFound;
 use Braintree\Gateway;
+use Braintree\PayPalAccount;
 use Braintree\Subscription as BraintreeSubscription;
+use Braintree\Transaction;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 use Railgun\Billing\Stripe\Models\InteractsWithStripe;
 use Railgun\Billing\Stripe\Models\ModeMachine;
+use Railgun\Billing\Stripe\StripeClientRegistry;
 use Railgun\Models\Contracts\Cacheable as CacheableContract;
 use Railgun\Models\Traits\Cacheable;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Invoice;
+use Stripe\Price;
 use Stripe\Subscription as StripeSubscription;
 use function app;
-use function preg_match;
+use function in_array;
 use function str_pad;
 use const STR_PAD_LEFT;
 
@@ -34,6 +40,7 @@ use const STR_PAD_LEFT;
  * ---
  * @property-read string       $processor
  * @property-read Invoice|null $latest_invoice
+ * @property-read mixed[]|null $card
  * ---
  * @property-read User         $user
  */
@@ -42,8 +49,30 @@ class Subscription extends BaseModel implements CacheableContract
     use Cacheable;
     use InteractsWithStripe;
 
-    public const PROCESSOR_STRIPE    = 'stripe';
-    public const PROCESSOR_BRAINTREE = 'braintree';
+    public const PROCESSOR_STRIPE           = 'stripe';
+    public const PROCESSOR_STRIPE_LEGACY    = 'stripe_legacy';
+    public const PROCESSOR_BRAINTREE_LEGACY = 'braintree_legacy';
+    public const BRAINTREE_STATUS_MAP       = [
+        // Subscriptions
+        BraintreeSubscription::ACTIVE         => StripeSubscription::STATUS_ACTIVE,
+        BraintreeSubscription::CANCELED       => StripeSubscription::STATUS_CANCELED,
+        BraintreeSubscription::EXPIRED        => StripeSubscription::STATUS_CANCELED,
+        BraintreeSubscription::PAST_DUE       => StripeSubscription::STATUS_PAST_DUE,
+        BraintreeSubscription::PENDING        => StripeSubscription::STATUS_ACTIVE,
+        // Invoices
+        Transaction::AUTHORIZATION_EXPIRED    => Invoice::STATUS_UNCOLLECTIBLE,
+        Transaction::AUTHORIZED               => Invoice::STATUS_OPEN,
+        Transaction::AUTHORIZING              => Invoice::STATUS_OPEN,
+        Transaction::SETTLEMENT_PENDING       => Invoice::STATUS_UNCOLLECTIBLE,
+        Transaction::SETTLEMENT_DECLINED      => Invoice::STATUS_UNCOLLECTIBLE,
+        Transaction::FAILED                   => Invoice::STATUS_UNCOLLECTIBLE,
+        Transaction::GATEWAY_REJECTED         => Invoice::STATUS_UNCOLLECTIBLE,
+        Transaction::PROCESSOR_DECLINED       => Invoice::STATUS_UNCOLLECTIBLE,
+        Transaction::SETTLED                  => Invoice::STATUS_PAID,
+        Transaction::SETTLING                 => Invoice::STATUS_PAID,
+        Transaction::SUBMITTED_FOR_SETTLEMENT => Invoice::STATUS_OPEN,
+        Transaction::VOIDED                   => Invoice::STATUS_VOID,
+    ];
 
     public    $incrementing = false;
     protected $keyType      = 'string';
@@ -77,17 +106,20 @@ class Subscription extends BaseModel implements CacheableContract
         ]);
 
         // @codeCoverageIgnoreStart
-        if (isset($stripeSubscription->items[0]->price->lookup_key)) {
-            $subscription->plan = $stripeSubscription->items[0]->price->lookup_key;
+        /** @var Price $price */
+        $price = $stripeSubscription->items->data[0]->price;
+
+        if (in_array($price->lookup_key, ModeMachine::PLANS, true)) {
+            $subscription->plan = $price->lookup_key;
         } else {
-            $modeMachine        = app()->make(ModeMachine::class);
-            $subscription->plan = $modeMachine->get($stripeSubscription->plan->id)->lookup_key;
+            $subscription->plan = $price->id;
         }
 
         $canceledAt = $stripeSubscription->canceled_at ?? $stripeSubscription->cancel_at;
         if ($canceledAt !== null) {
             $subscription->canceled_at = Carbon::createFromTimestamp($canceledAt);
         }
+
         // @codeCoverageIgnoreEnd
 
         return $subscription;
@@ -97,16 +129,9 @@ class Subscription extends BaseModel implements CacheableContract
     {
         $gateway = app()->make(Gateway::class);
 
-        /** @var string[] $statusMap The status map from Braintree <=> Stripe */
-        $statusMap = [
-            BraintreeSubscription::ACTIVE   => StripeSubscription::STATUS_ACTIVE,
-            BraintreeSubscription::CANCELED => StripeSubscription::STATUS_CANCELED,
-            BraintreeSubscription::EXPIRED  => StripeSubscription::STATUS_CANCELED,
-            BraintreeSubscription::PAST_DUE => StripeSubscription::STATUS_PAST_DUE,
-            BraintreeSubscription::PENDING  => StripeSubscription::STATUS_ACTIVE,
-        ];
-        $status    = $statusMap[$btSubscription->status];
+        $status = self::BRAINTREE_STATUS_MAP[$btSubscription->status];
 
+        // We need to use the customer search workaround
         $customerResults = $gateway->customer()->search([
             CustomerSearch::paymentMethodToken()->is($btSubscription->paymentMethodToken),
         ]);
@@ -116,7 +141,7 @@ class Subscription extends BaseModel implements CacheableContract
             'id'                   => $btSubscription->id,
             'plan'                 => $btSubscription->planId,
             'customer_id'          => $customerId,
-            'status'               => $statusMap[$btSubscription->status],
+            'status'               => $status,
             'current_period_start' => Carbon::instance($btSubscription->billingPeriodStartDate),
             'current_period_end'   => Carbon::instance($btSubscription->billingPeriodEndDate),
             'created_at'           => Carbon::instance($btSubscription->createdAt),
@@ -132,11 +157,7 @@ class Subscription extends BaseModel implements CacheableContract
      */
     public function user(): BelongsTo
     {
-        if ($this->processor === self::PROCESSOR_STRIPE) {
-            return $this->belongsTo(User::class, 'customer_id', 'stripe_id');
-        }
-
-        return $this->belongsTo(User::class, 'customer_id', 'braintree_id');
+        return $this->belongsTo(User::class, 'customer_id', 'stripe_id');
     }
 
     /**
@@ -144,11 +165,19 @@ class Subscription extends BaseModel implements CacheableContract
      */
     public function getProcessorAttribute(): string
     {
-        if (preg_match('/^sub_[a-zA-Z0-9]{14}$/', $this->id)) {
-            return self::PROCESSOR_STRIPE;
+        if (
+            Str::startsWith($this->plan, 'v2')
+            || Str::startsWith($this->plan, 'v3')
+            || Str::startsWith($this->plan, 'v5')
+        ) {
+            return self::PROCESSOR_STRIPE_LEGACY;
         }
 
-        return self::PROCESSOR_BRAINTREE;
+        if (Str::startsWith($this->plan, 'v4')) {
+            return self::PROCESSOR_BRAINTREE_LEGACY;
+        }
+
+        return self::PROCESSOR_STRIPE;
     }
 
     /**
@@ -159,19 +188,48 @@ class Subscription extends BaseModel implements CacheableContract
     public function getLatestInvoiceAttribute(): ?Invoice
     {
         return $this->getCache()->rememberForever('latest_invoice', function () {
-            if ($this->processor === self::PROCESSOR_BRAINTREE) {
-                return null; // @codeCoverageIgnore
+            if ($this->processor === self::PROCESSOR_BRAINTREE_LEGACY) {
+                // Braintree, convert to a fake Stripe Invoice
+                try {
+                    $btSubscription = app()->make(Gateway::class)->subscription()->find($this->id);
+                } catch (NotFound $e) {
+                    return null;
+                }
+
+                if (!$btSubscription || !isset($btSubscription->transactions[0])) {
+                    return null; // @codeCoverageIgnore
+                }
+
+                $transaction = $btSubscription->transactions[0];
+
+                return Invoice::constructFrom([
+                    'object'             => Invoice::OBJECT_NAME,
+                    'id'                 => $transaction->id,
+                    'amount_paid'        => (int)((float)$transaction->amount) * 100,
+                    'hosted_invoice_url' => null,
+                    'invoice_pdf'        => null,
+                    'payment_intent'     => null,
+                    'number'             => $transaction->id,
+                    'status'             => self::BRAINTREE_STATUS_MAP[$transaction->status],
+                ]);
+            }
+
+            // Stripe, hot reload the client
+            $localStripeClient = $this->client;
+
+            if ($this->processor === self::PROCESSOR_STRIPE_LEGACY) {
+                $localStripeClient = app()->make(StripeClientRegistry::class)->make('secondary');
             }
 
             try {
-                $subscription = $this->client->subscriptions->retrieve($this->id, [
+                $subscription = $localStripeClient->subscriptions->retrieve($this->id, [
                     'expand' => ['latest_invoice.payment_intent'],
                 ]);
 
                 return $subscription->latest_invoice;
-            } catch (ApiErrorException $exception) { // @codeCoverageIgnoreStart
+            } catch (ApiErrorException $exception) {
                 return null;
-            } // @codeCoverageIgnoreEnd
+            }
         });
     }
 
@@ -180,20 +238,55 @@ class Subscription extends BaseModel implements CacheableContract
      *
      * @return mixed[] The card details.
      */
-    public function getCardAttribute(): array
+    public function getCardAttribute(): ?array
     {
         return $this->getCache()->rememberForever('card', function () {
-            if ($this->processor === self::PROCESSOR_BRAINTREE) {
-                return null; // @codeCoverageIgnore
+            if ($this->processor === self::PROCESSOR_BRAINTREE_LEGACY) {
+                $gateway = app()->make(Gateway::class);
+                try {
+                    $btSubscription = $gateway->subscription()->find($this->id);
+                } catch (NotFound $e) {
+                    return null;
+                }
+
+                if (!$btSubscription || !isset($btSubscription->paymentMethodToken)) {
+                    return null; // @codeCoverageIgnore
+                }
+
+                try {
+                    $paymentMethod = $gateway->paymentMethod()->find($btSubscription->paymentMethodToken);
+                } catch (NotFound $exception) {
+                    return null;
+                }
+
+                if ($paymentMethod instanceof PayPalAccount) {
+                    // PayPal accounts does not have cards
+                    return null;
+                }
+
+                return [
+                    'name'      => $paymentMethod->cardholderName,
+                    'brand'     => $paymentMethod->cardType,
+                    'exp_month' => $paymentMethod->expirationMonth,
+                    'exp_year'  => $paymentMethod->expirationYear,
+                    'last4'     => $paymentMethod->last4,
+                ];
+            }
+
+            // Stripe, hot reload the client
+            $localStripeClient = $this->client;
+
+            if ($this->processor === self::PROCESSOR_STRIPE_LEGACY) {
+                $localStripeClient = app()->make(StripeClientRegistry::class)->make('secondary');
             }
 
             try {
-                $subscription = $this->client->subscriptions->retrieve($this->id, [
+                $subscription = $localStripeClient->subscriptions->retrieve($this->id, [
                     'expand' => ['default_payment_method'],
                 ]);
-            } catch (ApiErrorException $exception) { // @codeCoverageIgnoreStart
+            } catch (ApiErrorException $exception) {
                 return null;
-            } // @codeCoverageIgnoreEnd
+            }
 
             $paymentMethod = $subscription->default_payment_method;
 
