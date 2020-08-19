@@ -128,6 +128,7 @@ class SubscriptionTest extends ModelTestCase
             'status'               => StripeSubscription::STATUS_ACTIVE,
             'current_period_start' => $anchor->subMonth(),
             'current_period_end'   => $anchor,
+            'user_id'              => $user->id,
             'canceled_at'          => null,
         ]);
         $subscription->save();
@@ -153,6 +154,7 @@ class SubscriptionTest extends ModelTestCase
             'status'               => StripeSubscription::STATUS_ACTIVE,
             'current_period_start' => $anchor->subMonth(),
             'current_period_end'   => $anchor,
+            'user_id'              => $user->id,
             'canceled_at'          => null,
         ]);
         $subscription->save();

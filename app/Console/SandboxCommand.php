@@ -23,6 +23,5 @@ class SandboxCommand extends Command
     public function handle(Gateway $client): void
     {
         // Implement sandbox command
-        dd($client->transaction()->find('g3e2pcbe')->jsonSerialize());
     }
 }

@@ -54,6 +54,11 @@ class SubscriptionsWebhookTest extends WebhookTestCase
         return [
             'object'               => StripeSubscription::OBJECT_NAME,
             'id'                   => $this->faker->regexify('sub_[a-zA-Z0-9]{14}'),
+            'items'                => [
+                'data' => [
+                    ['price' => $modeMachine->get(ModeMachine::PLAN_MONTH)->jsonSerialize()],
+                ],
+            ],
             'plan'                 => [
                 'id' => $modeMachine->get(ModeMachine::PLAN_MONTH)->id,
             ],

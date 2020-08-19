@@ -29,7 +29,7 @@ trait OwnsSubscriptions
      */
     public function subscriptions(): HasMany
     {
-        return $this->hasMany(Subscription::class, 'customer_id', 'stripe_id');
+        return $this->hasMany(Subscription::class);
     }
 
     /**

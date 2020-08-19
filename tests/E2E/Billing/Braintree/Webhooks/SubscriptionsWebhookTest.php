@@ -25,6 +25,8 @@ class SubscriptionsWebhookTest extends WebhooksTestCase
             'customer_id' => $this->faker->regexify('cus_[0-9a-f]{32}'),
         ];
 
+        $this->setUpCustomerMock($expectedData['customer_id']);
+
         $sub = BraintreeSubscription::factory(array_merge($expectedData, [
             'planId'                 => 'v5_monthly',
             'status'                 => BraintreeSubscription::ACTIVE,
@@ -34,8 +36,6 @@ class SubscriptionsWebhookTest extends WebhooksTestCase
             'createdAt'              => Carbon::now(),
             'updatedAt'              => Carbon::now(),
         ]));
-
-        $this->setUpCustomerMock($expectedData['customer_id']);
 
         $this->callBraintreeWebhook(WebhookNotification::SUBSCRIPTION_WENT_ACTIVE, $sub);
 
@@ -58,6 +58,8 @@ class SubscriptionsWebhookTest extends WebhooksTestCase
             'customer_id' => $this->faker->regexify('cus_[0-9a-f]{32}'),
         ];
 
+        $this->setUpCustomerMock($expectedData['customer_id']);
+
         $sub = BraintreeSubscription::factory(array_merge($expectedData, [
             'planId'                 => 'v5_monthly',
             'status'                 => BraintreeSubscription::CANCELED,
@@ -72,8 +74,6 @@ class SubscriptionsWebhookTest extends WebhooksTestCase
             'createdAt'              => Carbon::now(),
             'updatedAt'              => Carbon::now(),
         ]));
-
-        $this->setUpCustomerMock($expectedData['customer_id']);
 
         $this->callBraintreeWebhook(WebhookNotification::SUBSCRIPTION_CANCELED, $sub);
 
