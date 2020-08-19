@@ -12,7 +12,6 @@ use Railgun\Models\User;
 use function factory;
 
 /**
- * @testdox Model User
  * @coversDefaultClass \Railgun\Models\User
  */
 class UserTest extends ModelTestCase
@@ -52,7 +51,6 @@ class UserTest extends ModelTestCase
     }
 
     /**
-     * @testdox hashes passwords on set
      * @covers ::setPasswordAttribute
      */
     public function testSetPasswordAttribute(): void
@@ -68,7 +66,6 @@ class UserTest extends ModelTestCase
     }
 
     /**
-     * @testdox returns the user statistics
      * @covers ::getStatisticsAttribute
      */
     public function testGetStatisticsAttribute(): void

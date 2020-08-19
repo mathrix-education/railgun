@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Railgun\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Railgun\Models\Traits\Randomizable;
 
 /**
  * @property-read int                            $id
@@ -24,10 +22,9 @@ use Railgun\Models\Traits\Randomizable;
  * ---
  * @property-read Course|Exercise|Flashcard|Exam $notable
  */
-class Note extends Model
+class Note extends BaseModel
 {
     use SoftDeletes;
-    use Randomizable;
 
     public const NOTABLES = [Course::class, Exercise::class, Flashcard::class, Exam::class, Lesson::class];
 

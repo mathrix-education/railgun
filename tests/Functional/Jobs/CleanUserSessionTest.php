@@ -16,21 +16,17 @@ use Tests\ApplicationTestCase;
 use function factory;
 
 /**
- * @testdox CleanUserSession Job
  * @coversDefaultClass \Railgun\Jobs\CleanUserSession
  */
 class CleanUserSessionTest extends ApplicationTestCase
 {
     use DatabaseTransactions;
 
-    /**
-     * @testdox deletes the previous user session on grade change
-     */
     public function testHandle(): void
     {
         Queue::fake();
 
-        $count = 5;
+        $max = 5;
 
         /**
          * @var Grade $grade1 The grade initially assigned to the user.
@@ -41,7 +37,7 @@ class CleanUserSessionTest extends ApplicationTestCase
         /** @var User $user */
         $user = factory(User::class)->create(['grade_id' => $grade1->id]);
 
-        Theme::query()
+        $count = Theme::query()
             ->where('grade_id', '=', $grade1->id)
             ->has('chapters')
             ->get()
@@ -49,7 +45,7 @@ class CleanUserSessionTest extends ApplicationTestCase
                 return [$theme->discipline_id => $theme];
             })
             ->values()
-            ->splice(0, $count)
+            ->splice(0, $max)
             ->each(static function (Theme $theme) use ($user): void {
                 $session = new Session([
                     'user_id'       => $user->id,
@@ -57,7 +53,8 @@ class CleanUserSessionTest extends ApplicationTestCase
                     'chapter_id'    => $theme->chapters()->inRandomOrder()->firstOrFail()->id,
                 ]);
                 $session->save();
-            });
+            })
+            ->count();
 
         $this->assertEquals($count, DB::table('sessions')->where(['user_id' => $user->id])->count());
 

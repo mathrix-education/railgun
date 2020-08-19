@@ -4,142 +4,278 @@ declare(strict_types=1);
 
 namespace Railgun\Billing\Cart;
 
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Collection as BaseCollection;
-use Railgun\Billing\Models\Premium;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Collection;
+use Railgun\Billing\Exceptions\AlreadyBoughtException;
+use Railgun\Billing\Exceptions\AlreadyPremiumException;
+use Railgun\Billing\Exceptions\DuplicateProductsException;
+use Railgun\Billing\Exceptions\EmptyCartException;
+use Railgun\Billing\Exceptions\InvalidCouponCodeException;
+use Railgun\Billing\Exceptions\UnavailableProductsException;
+use Railgun\Billing\Stripe\Contracts\StripeSellable;
+use Railgun\Billing\Stripe\Models\ModeMachine;
+use Railgun\Models\Chapter;
+use Railgun\Models\Contracts\Ownable;
+use Railgun\Models\Contracts\Sellable;
 use Railgun\Models\Coupon;
 use Railgun\Models\Pack;
 use Railgun\Models\Training;
 use Railgun\Models\User;
+use Railgun\Support\Container;
+use Stripe\Exception\ApiErrorException;
+use Stripe\Price;
+use function app;
+use function array_unique;
+use function config;
+use function explode;
+use function in_array;
+use function is_string;
 use function round;
 
 /**
- * Represents the user cart (products + discounts).
+ * @property      Collection|Chapter[]  $chapters
+ * @property      Collection|Pack[]     $packs
+ * @property      Collection|Training[] $trainings
+ * @property-read Collection|Sellable[] $products
+ * @property-read Price|null            $plan
+ * @property-read Coupon|null           $coupon
+ * @property-read Collection|Line[]     $lines
+ * @property-read int                   $subTotal
+ * @property-read int                   $couponAmount
+ * @property-read int                   $total
  */
-class Cart
+class Cart extends Container
 {
-    public const IDENTIFIER = 'cart_v7';
+    use SerializesModels;
 
-    /** @var User|null The user associated with the cart. */
-    public ?User $user;
-    /** @var mixed[] $input The input from the GraphQL query. */
-    public array $input;
-    /** @var Collection|Pack[] $packs The packs in the cart. */
-    public Collection $packs;
-    /** @var Collection|Training[] $trainings The trainings in the cart. */
-    public Collection $trainings;
-    /** @var Premium|null If the cart contains a premium product, it will be not null. */
-    public ?Premium $premium;
-    /** @var Coupon|null If the cart contains a valid coupon code, it will be not null. */
-    public ?Coupon $coupon;
+    public const IDENTIFIER = 'cart_laser';
 
-    /**
-     * @param mixed[]   $input The input from the GraphQL query.
-     * @param User|null $user  The user associated with the cart. If it is not null, additional checks such as product
-     *                         eligibility will be performed.
-     */
-    public function __construct(array $input, ?User $user = null)
+    protected ModeMachine $modeMachine;
+
+    protected function __construct()
     {
-        $this->setInput($input);
-        $this->user = $user;
-        $this->fetch();
+        parent::__construct();
+
+        $this->modeMachine = app()->make(ModeMachine::class);
     }
 
     /**
-     * Validate the cart using the {@see CartValidator}.
+     * @param mixed[] $cartInput The CartInput GraphQL input.
      *
-     * @return $this
+     * @return Cart The new Cart instance.
+     *
+     * @throws ApiErrorException
      */
-    public function validate(): self
+    public static function build(array $cartInput): Cart
     {
-        (new CartValidator($this))->validate();
+        $cart = new self();
+
+        // Set the products (use of `array_unique` solve duplicates)
+        $cart->chapters  = Chapter::query()->whereIn('id', array_unique($cartInput['chapters'] ?? [0]))->get();
+        $cart->packs     = Pack::query()->whereIn('id', array_unique($cartInput['packs'] ?? [0]))->get();
+        $cart->trainings = Training::query()->whereIn('id', array_unique($cartInput['trainings'] ?? [0]))->get();
+
+        if (isset($cartInput['plan'])) {
+            $cart->plan = $cart->modeMachine->get($cartInput['plan']);
+        }
+
+        // Set the coupon code; coupon validation is handled here
+        if (isset($cartInput['coupon'])) {
+            $cart->coupon = $cartInput['coupon'];
+        }
+
+        return $cart;
+    }
+
+    /**
+     * @see Cart::toMetadata
+     *
+     * @param mixed[] $metadata The cart metadata.
+     *
+     * @return Cart The new Cart instance.
+     *
+     * @throws ApiErrorException
+     */
+    public static function fromMetadata(array $metadata): Cart
+    {
+        $args = [];
+
+        if (isset($metadata['chapters']) && $metadata['chapters'] !== '') {
+            $args['chapters'] = explode(',', $metadata['chapters'] ?? '');
+        }
+
+        if (isset($metadata['packs']) && $metadata['packs'] !== '') {
+            $args['packs'] = explode(',', $metadata['packs'] ?? '');
+        }
+
+        if (isset($metadata['trainings']) && $metadata['trainings'] !== '') {
+            $args['trainings'] = explode(',', $metadata['trainings'] ?? '');
+        }
+
+        if (isset($metadata['plan'])) {
+            $args['plan'] = $metadata['plan'];
+        }
+
+        return static::build($args);
+    }
+
+    /**
+     * @return Collection|StripeSellable[] The product collection.
+     */
+    protected function getProducts(): Collection
+    {
+        return (new Collection())
+            ->merge($this->chapters)
+            ->merge($this->packs)
+            ->merge($this->trainings);
+    }
+
+    /**
+     * @return Collection|Line[]
+     */
+    protected function getLines(): Collection
+    {
+        $lines = $this->products->map(static function (StripeSellable $sellable) {
+            return Line::fromProduct($sellable);
+        });
+
+        if ($this->plan) {
+            $lines->push(Line::fromPrice($this->plan));
+        }
+
+        if ($this->couponAmount > 0) {
+            $lines->push(Line::fromCoupon($this->coupon, $this->couponAmount));
+        }
+
+        return $lines;
+    }
+
+    /**
+     * @return int The cart sub-total, which is the sum of the product prices without any applied discount.
+     */
+    protected function getSubTotal(): int
+    {
+        $sum = $this->products->sum('price');
+
+        if ($this->plan) {
+            $sum += $this->plan->unit_amount;
+        }
+
+        return $sum;
+    }
+
+    /**
+     * @param Coupon|string $coupon The coupon.
+     *
+     * @return Cart
+     */
+    protected function setCoupon($coupon): self
+    {
+        if (is_string($coupon)) {
+            $couponId = $coupon;
+
+            /**
+             * @var Coupon $coupon
+             * @noinspection CallableParameterUseCaseInTypeContextInspection
+             */
+            $coupon = Coupon::query()->find($coupon);
+
+            if ($coupon === null || !$coupon->valid) {
+                throw new InvalidCouponCodeException($couponId);
+            }
+        }
+
+        $this->attributes['coupon'] = $coupon;
 
         return $this;
     }
 
     /**
-     * Set a complete the input from the GraphQL query.
-     *
-     * @param mixed[] $input The input from the GraphQL query.
+     * @return int Get the coupon amount as a positive integer.
      */
-    private function setInput(array $input): void
-    {
-        $input['packIds']     ??= [];
-        $input['trainingIds'] ??= [];
-        $input['premium']     ??= false;
-        $input['coupon']      ??= null;
-
-        $this->input = $input;
-    }
-
-    /**
-     * Fetch the cart models from the database, based on the passed $args.
-     */
-    private function fetch(): void
-    {
-        $this->packs     = Pack::query()
-            ->with(['trainings:trainings.id'])
-            ->whereIn('packs.id', $this->input['packIds'])
-            ->get();
-        $this->trainings = Training::query()->whereIn('id', $this->input['trainingIds'])->get();
-        $this->premium   = $this->input['premium'] ? new Premium() : null;
-        $this->coupon    = Coupon::query()->find($this->input['coupon']);
-    }
-
-    /**
-     * Get the cart products as a single {@see BaseCollection}.
-     *
-     * @return BaseCollection|Pack[]|Training[]
-     */
-    public function getProducts(): BaseCollection
-    {
-        return $this->packs->toBase()
-            ->merge($this->trainings)
-            ->push($this->premium)
-            ->filter(static fn($p) => $p !== null);
-    }
-
-    /**
-     * Get the total price in cents of the cart, without the coupon.
-     *
-     * @return int The subtotal in cents.
-     */
-    public function getSubTotal(): int
-    {
-        return $this->packs->sum('price')
-            + $this->trainings->sum('price')
-            + ($this->premium ? $this->premium->price : 0);
-    }
-
-    /**
-     * Get the total price in cents of the cart, with the coupon.
-     *
-     * @return int The total price in cents.
-     */
-    public function getTotal(): int
+    protected function getCouponAmount(): int
     {
         if ($this->coupon === null) {
-            return $this->getSubTotal();
+            return 0;
         }
 
-        if ($this->coupon->type === 'percentage') {
-            return (int)round((100 - $this->coupon->value) / 100 * $this->getSubTotal());
+        if ($this->coupon->type === Coupon::TYPE_PERCENTAGE) {
+            return (int)round($this->coupon->value / 100 * $this->subTotal);
         }
 
-        return $this->getSubTotal() - $this->coupon->value;
+        return $this->coupon->value;
     }
 
     /**
-     * @return mixed[] Get the GraphQL type Cart representation.
+     * @return int The final total of the cart.
      */
-    public function toGraphQL(): array
+    protected function getTotal(): int
+    {
+        return $this->subTotal - $this->couponAmount;
+    }
+
+    /**
+     * Validate the cart. A user may be provided to ensure that he does not buy a product he already owns.
+     *
+     * @param User|null $user The user to check.
+     *
+     * @return $this
+     */
+    public function validate(?User $user = null): self
+    {
+        // Check that the cart is not empty
+        if ($this->plan === null && $this->products->isEmpty()) {
+            throw new EmptyCartException();
+        }
+
+        // Check that there are no collisions between packs and trainings
+        $trainingPackIds = $this->packs
+            ->map(static fn(Pack $pack) => $pack->trainings->pluck('id'))
+            ->flatten()
+            ->toArray();
+        $duplicates      = $this->trainings
+            ->filter(static fn(Training $training) => in_array($training->id, $trainingPackIds, true));
+
+        if ($duplicates->isNotEmpty()) {
+            throw new DuplicateProductsException($duplicates->pluck('name')->toArray());
+        }
+
+        // Check that all products are available
+        $unavailable = $this->products->reject(static fn(Sellable $p) => $p->available)->pluck('name');
+
+        if ($unavailable->isNotEmpty()) {
+            throw new UnavailableProductsException($unavailable->toArray());
+        }
+
+        if ($user) {
+            // Check that the user has not already bought one of the cart product
+            $owned = $this->products->filter(static fn(Ownable $p) => $user->owns($p))->pluck('name');
+
+            if ($owned->isNotEmpty()) {
+                throw new AlreadyBoughtException($owned->toArray());
+            }
+
+            // Check that the user is already premium
+            if ($this->plan && $user->premium) {
+                throw new AlreadyPremiumException();
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return string[] The Stripe metadata cart representation.
+     */
+    public function toMetadata(): array
     {
         return [
-            'packs'     => $this->packs,
-            'trainings' => $this->trainings,
-            'coupon'    => $this->coupon,
-            'subTotal'  => $this->getSubTotal(),
-            'total'     => $this->getTotal(),
+            'identifier' => self::IDENTIFIER,
+            'release'    => config('app.release'),
+            'chapters'   => $this->chapters->pluck('id')->implode(','),
+            'packs'      => $this->packs->pluck('id')->implode(','),
+            'trainings'  => $this->trainings->pluck('id')->implode(','),
+            'plan'       => $this->plan ? $this->plan->lookup_key : null,
         ];
     }
 }

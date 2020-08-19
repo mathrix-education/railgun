@@ -4,39 +4,24 @@ declare(strict_types=1);
 
 namespace Railgun\Models\Traits;
 
-use Closure;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Cache\TaggedCache;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
+use Railgun\Models\Contracts\Cacheable as CacheableContract;
+use function class_basename;
 
 /**
- * Allow models to have local in-memory cache.
- *
- * @mixin Model
+ * @mixin CacheableContract
  */
 trait Cacheable
 {
-    /**
-     * Cache data for the model.
-     *
-     * @param string  $key      The cache sub key name.
-     * @param Closure $callback The cache callback.
-     *
-     * @return mixed The cached data.
-     */
-    public function cache(string $key, Closure $callback)
+    public function getCache(?string $store = null): TaggedCache
     {
-        return Cache::store('request')->rememberForever($this->getCacheKey($key), $callback);
+        return Cache::store($store)->tags(['models', Str::lower(class_basename($this)), $this->getKey()]);
     }
 
-    /**
-     * Get the full qualified cache key.
-     *
-     * @param string $key The cache sun key.
-     *
-     * @return string The full qualified cache key.
-     */
-    protected function getCacheKey(string $key): string
+    public function flushCache(?string $store = null): void
     {
-        return 'models.' . static::class . ".{$this->getKey()}.$key";
+        $this->getCache($store)->flush();
     }
 }

@@ -68,9 +68,9 @@ class GraphQLOperationMiddleware
             $this->collector
                 ->histogram(GraphQLCollector::GRAPHQL_OPERATIONS_LATENCY_SECONDS)
                 ->observe($this->latency, [$operation]);
-        } catch (StorageException | RedisException $exception) {
+        } catch (StorageException | RedisException $exception) { // @codeCoverageIgnoreStart
             // Silently log the exception but don't throw as the response was already built
             Log::error($exception->getMessage(), ['exception' => $exception]);
-        }
+        } // @codeCoverageIgnoreEnd
     }
 }

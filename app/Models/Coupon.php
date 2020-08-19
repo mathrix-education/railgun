@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Railgun\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
-use Railgun\Models\Traits\Randomizable;
 
 /**
- * @property-read int    $id
+ * @property-read string $id
  * @property-read string $type
  * @property int         $value
  * @property int         $counter
@@ -21,9 +19,10 @@ use Railgun\Models\Traits\Randomizable;
  * @property-read bool   $expired
  * @property-read bool   $valid
  */
-class Coupon extends Model
+class Coupon extends BaseModel
 {
-    use Randomizable;
+    public const TYPE_ABSOLUTE   = 'absolute';
+    public const TYPE_PERCENTAGE = 'percentage';
 
     protected $keyType      = 'string';
     public    $incrementing = false;

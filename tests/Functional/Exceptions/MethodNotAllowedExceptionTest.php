@@ -9,14 +9,9 @@ use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException as Symf
 use Symfony\Component\Routing\Exception\MethodNotAllowedException as SymfonyMethodNotAllowedException;
 use Throwable;
 
-/**
- * @testdox MethodNotAllowed Exception
- */
 class MethodNotAllowedExceptionTest extends ExceptionTestCase
 {
     /**
-     * @testdox converts \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
-     *
      * @throws Throwable
      */
     public function testSymfonyMethodNotAllowedHttpException(): void
@@ -29,8 +24,6 @@ class MethodNotAllowedExceptionTest extends ExceptionTestCase
     }
 
     /**
-     * @testdox converts \Symfony\Component\Routing\Exception\MethodNotAllowedException
-     *
      * @throws Throwable
      */
     public function testSymfonyMethodNotAllowed(): void

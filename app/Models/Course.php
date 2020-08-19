@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Railgun\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Railgun\Models\Contracts\BelongsToChapter;
+use Railgun\Models\Contracts\Ownable as OwnableContract;
 use Railgun\Models\Traits\Commentable;
-use Railgun\Models\Traits\Content;
 use Railgun\Models\Traits\Freezable;
 use Railgun\Models\Traits\Interactable;
 use Railgun\Models\Traits\Labelable;
 use Railgun\Models\Traits\Notable;
-use Railgun\Models\Traits\Randomizable;
+use Railgun\Models\Traits\Ownable;
 use Railgun\Models\Traits\Reorderable;
 use Railgun\Models\Traits\Sluggable;
 
@@ -24,6 +24,7 @@ use Railgun\Models\Traits\Sluggable;
  * @property      array  $content
  * @property      int    $order
  * @property      bool   $premium
+ * @property      bool   $protected
  * @property      bool   $visible
  * @property      bool   $seo_index
  * @property      string $seo_title
@@ -34,20 +35,21 @@ use Railgun\Models\Traits\Sluggable;
  * ---
  * @property-read Notion $notion
  */
-class Course extends Model implements Content
+class Course extends BaseModel implements BelongsToChapter, OwnableContract
 {
     use Commentable;
     use Freezable;
     use Interactable;
     use Labelable;
     use Notable;
-    use Randomizable;
+    use Ownable;
     use Reorderable;
     use Sluggable;
 
     protected       $attributes     = [
-        'premium' => false,
-        'visible' => false,
+        'premium'   => false,
+        'protected' => false,
+        'visible'   => false,
     ];
     protected       $fillable       = [
         'name',
@@ -55,6 +57,7 @@ class Course extends Model implements Content
         'content',
         'order',
         'premium',
+        'protected',
         'visible',
         'seo_index',
         'seo_title',
@@ -65,6 +68,7 @@ class Course extends Model implements Content
     protected       $casts          = [
         'content'   => 'array',
         'premium'   => 'boolean',
+        'protected' => 'boolean',
         'visible'   => 'boolean',
         'seo_index' => 'boolean',
     ];

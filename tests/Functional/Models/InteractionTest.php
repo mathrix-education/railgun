@@ -10,9 +10,7 @@ use Railgun\Jobs\UpdateSessionAfterInteraction;
 use Railgun\Models\Interaction;
 use function factory;
 
-/**
- * @testdox Model Interaction
- * @coversDefaultClass \Railgun\Models\Interaction
+/** @coversDefaultClass \Railgun\Models\Interaction
  */
 class InteractionTest extends ModelTestCase
 {

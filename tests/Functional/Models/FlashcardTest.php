@@ -9,7 +9,6 @@ use Railgun\Models\Flashcard;
 use function factory;
 
 /**
- * @testdox Model Flashcard
  * @coversDefaultClass \Railgun\Models\Flashcard
  */
 class FlashcardTest extends ModelTestCase

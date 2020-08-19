@@ -13,11 +13,11 @@ use Railgun\Support\Timestamps;
  * @var Factory $factory
  */
 $factory->define(Chapter::class, static function (Faker $faker) {
-    $name       = ucfirst($faker->words(3, true));
+    $name       = (string)Str::of($faker->words(3, true))->lower()->ucfirst();
     $timestamps = Timestamps::factory();
 
     return [
-        'name'       => $name,
+        'name'       => sprintf('%s (%s)', $name, $faker->randomNumber(6)),
         'slug'       => Str::slug($name),
         'order'      => 0,
         'visible'    => $faker->boolean(95),

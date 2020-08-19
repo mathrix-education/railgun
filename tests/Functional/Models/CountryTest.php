@@ -7,7 +7,6 @@ namespace Tests\Functional\Models;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 /**
- * @testdox Model Country
  * @coversDefaultClass \Railgun\Models\Country
  */
 class CountryTest extends ModelTestCase

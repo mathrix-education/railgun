@@ -26,7 +26,6 @@ class TimestampsTest extends ApplicationTestCase
 
     /**
      * @dataProvider createFactoryDataset
-     * @testdox      generates coherent timestamps using ($start, $bias)
      * @covers ::factory
      *
      * @param string $start The range starting date

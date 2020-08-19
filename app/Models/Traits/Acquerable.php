@@ -16,9 +16,11 @@ use Railgun\Models\User;
  */
 trait Acquerable
 {
+    use Ownable;
+
     public function owners(): MorphToMany
     {
-        return $this->morphToMany(User::class, 'product')
+        return $this->morphToMany(User::class, 'product', 'acquisitions')
             ->as(Acquisition::class);
     }
 }

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Railgun\Jobs;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Railgun\Models\Contracts\BelongsToChapter;
 use Railgun\Models\Interaction;
 use Railgun\Models\Session;
-use Railgun\Models\Traits\Content;
 
 /**
  * After a user interacted with a {@see Interactable} model, update its session.
@@ -23,7 +23,10 @@ class UpdateSessionAfterInteraction extends Job implements ShouldQueue
 
     public function handle(): void
     {
-        if (!($this->interaction instanceof Interaction) || !($this->interaction->interactable instanceof Content)) {
+        if (
+            !($this->interaction instanceof Interaction)
+            || !($this->interaction->interactable instanceof BelongsToChapter)
+        ) {
             // This should never happen
             return; // @codeCoverageIgnore
         }

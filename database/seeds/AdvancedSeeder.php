@@ -195,7 +195,7 @@ class AdvancedSeeder extends Seeder
         if (!isset($options['seed']) || $options['seed']) {
             $file = str_replace(app()->basePath(), '', $file);
             $this->writeln("Seeding <info>$table</info> from <info>$file</info>");
-            $this->seedCollection($data, $table);
+            $this->seedCollection($data, $table, $options['chunk'] ?? 1000);
         }
 
         return $data;

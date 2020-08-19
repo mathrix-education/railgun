@@ -23,6 +23,7 @@ $factory->define(Exam::class, static function (Faker $faker) {
         'content'    => Silicate::wall($faker->numberBetween(1, 3)),
         'order'      => 99,
         'premium'    => $faker->boolean(90),
+        'protected'  => false,
         'visible'    => $faker->boolean(90),
         'chapter_id' => Chapter::random()->id,
         'created_at' => $timestamps->createdAt,

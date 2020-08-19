@@ -1,11 +1,15 @@
-type Exercise {
+type Exercise implements Ownable {
     id: ID!
     order: Int!
-    content: Silicate! @premium(stripped: "[]")
+    content: Silicate! @censor(value: "[]")
     """
     If the exercise is premium-locked.
     """
     premium: Boolean!
+    """
+    If the exercise is protected (is part of a sellable Chapter and is not free).
+    """
+    protected: Boolean!
     """
     If the exercise is frozen. Requires the "exercises:freeze" to override.
     """
@@ -13,6 +17,7 @@ type Exercise {
     visible: Boolean!
     created_at: DateTime!
     updated_at: DateTime!
+    owned: Boolean!
     subject: Subject! @belongsTo
     comments: [Comment!] @morphMany
     """

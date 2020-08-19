@@ -20,6 +20,7 @@ jobs:
       image_latest: ${{ steps.mappings.outputs.image_latest }}
       image_version: ${{ steps.mappings.outputs.image_version }}
       image_exists: ${{ steps.mappings.outputs.image_exists }}
+      deploy_force: ${{ steps.mappings.outputs.deploy_force }}
       skip_lint: ${{ steps.mappings.outputs.skip_lint }}
       skip_test: ${{ steps.mappings.outputs.skip_test }}
       skip_build: ${{ steps.mappings.outputs.skip_build }}
@@ -34,6 +35,8 @@ jobs:
       - name: Setup mappings
         id: mappings
         run: .github/scripts/setup.sh
+        env:
+          GITHUB_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
       - name: Check tag version
         if: startsWith(github.ref, 'refs/tags/')
         run: .github/scripts/version_check.sh
@@ -98,15 +101,18 @@ jobs:
           sudo service mysql start
           mysql -u "root" -p"root" -Bse "CREATE DATABASE mathrix_education_testing;"
           cp tests/.env .env
-          php artisan migrate --seed
       - name: Test with PHPUnit
         if: needs.mappings.outputs.skip_test != '1'
         env:
           GOOGLE_CLOUD_KEY_FILE: keychain/service_account.json
           MAILJET_SECRET: ${{ secrets.MAILJET_SECRET }}
-          STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
+          STRIPE_PRIMARY_API_KEY: ${{ secrets.STRIPE_PRIMARY_API_KEY }}
+          STRIPE_SECONDARY_API_KEY: ${{ secrets.STRIPE_SECONDARY_API_KEY }}
           BRAINTREE_PRIVATE_KEY: ${{ secrets.BRAINTREE_PRIVATE_KEY }}
         run: |
+          php artisan migrate --seed
+          php artisan stripe:sync:products
+
           vendor/bin/paratest -f \
             --log-junit=storage/artifacts/phpunit-junit.xml \
             --coverage-clover=storage/artifacts/phpunit-coverage.xml \
@@ -163,7 +169,7 @@ jobs:
   # ============================================================================
   deploy_gke:
     name: Deploy on Google Kubernetes Engine
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' || needs.mappings.outputs.deploy_force
     needs: [mappings, lint, tests, docker]
     runs-on: ubuntu-latest
     steps:
@@ -178,7 +184,7 @@ jobs:
           service-account-key: ${{ secrets.GCLOUD_AUTH }}
       - name: Trigger deployment event
         id: deployment
-        if: needs.mappings.outputs.image_exists && github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' || needs.mappings.outputs.deploy_force
         uses: avakar/create-deployment@v1
         with:
           ref: ${{ github.ref }}

@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Railgun\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\UUID;
 
 /**
@@ -19,9 +17,8 @@ use Railgun\Models\Traits\UUID;
  * ---
  * @property-read User   $user
  */
-class Session extends Model
+class Session extends BaseModel
 {
-    use Randomizable;
     use UUID;
 
     public    $timestamps = false;

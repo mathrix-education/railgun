@@ -1,14 +1,3 @@
-input CreateSubscription {
-    """
-    The subscription plan ID.
-    """
-    planId: PlanID!
-    """
-    The payment method ID.
-    """
-    paymentMethodId: String!
-}
-
 input UpdateSubscription {
     """
     The targeted subscription ID.

@@ -1,10 +1,10 @@
 union Commentable = Course | Exam | Exercise | Flashcard
 
 enum CommentableType {
-    COURSE @enum(value: "course")
-    EXAM @enum(value: "exam")
-    EXERCISE @enum(value: "exercise")
-    FLASHCARD @enum(value: "flashcard")
+    course @enum(value: "course")
+    exam @enum(value: "exam")
+    exercise @enum(value: "exercise")
+    flashcard @enum(value: "flashcard")
 }
 
 type Comment {

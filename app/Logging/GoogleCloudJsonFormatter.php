@@ -13,6 +13,7 @@ use Monolog\Formatter\JsonFormatter;
 use Railgun\Middleware\CorrelationMiddleware;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
+use function app;
 use function array_key_exists;
 use function array_map;
 use function array_merge;
@@ -48,6 +49,7 @@ class GoogleCloudJsonFormatter extends JsonFormatter
      *
      * @return string The encoded Monolog records.
      *
+     * @throws BindingResolutionException
      * @throws JsonException
      */
     protected function formatBatchJson(array $records): string
@@ -88,7 +90,7 @@ class GoogleCloudJsonFormatter extends JsonFormatter
         ];
 
         if ($payload['message'] === self::NO_MESSAGE) {
-            unset($payload['message']);
+            unset($payload['message']); // @codeCoverageIgnore
         }
 
         if ($payload['httpRequest'] === null) {
@@ -96,7 +98,7 @@ class GoogleCloudJsonFormatter extends JsonFormatter
         }
 
         // Include the correlation id if applicable
-        if (Container::getInstance()->bound(CorrelationMiddleware::ABSTRACT)) {
+        if (app()->bound(CorrelationMiddleware::ABSTRACT)) {
             $payload['correlation'] = Container::getInstance()->make(CorrelationMiddleware::ABSTRACT);
         }
 

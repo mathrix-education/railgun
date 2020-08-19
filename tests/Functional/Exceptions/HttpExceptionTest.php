@@ -105,8 +105,6 @@ class HttpExceptionTest extends ApplicationTestCase
     }
 
     /**
-     * @testdox fails to convert the exception data
-     *
      * @throws JsonException
      */
     public function testSetDataError(): void

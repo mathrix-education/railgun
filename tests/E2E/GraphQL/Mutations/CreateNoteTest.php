@@ -1,0 +1,52 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\E2E\GraphQL\Mutations;
+
+use Laravel\Lumen\Testing\DatabaseTransactions;
+use Railgun\Models\Course;
+use Railgun\Support\Silicate;
+use Tests\E2E\GraphQL\GraphQLTestCase;
+
+class CreateNoteTest extends GraphQLTestCase
+{
+    use DatabaseTransactions;
+
+    public function testNoteIsCreated(): void
+    {
+        $user   = $this->withPermissions('notes:write');
+        $course = Course::random();
+
+        $this->graphQL(
+            <<<'GRAPHQL'
+            mutation($input: CreateNote!) {
+                createNote(input: $input) {
+                    id
+                    notable {
+                        ... on Course {
+                            id
+                        }
+                    }
+                }
+            }
+            GRAPHQL,
+            [
+                'input' => [
+                    'content'      => Silicate::wall(),
+                    'notable_type' => 'course',
+                    'notable_id'   => $course->id,
+                ],
+            ],
+        );
+
+        $this->assertResponseOk();
+        $this->assertNoErrors();
+        $this->seeInDatabase('notes', [
+            'user_id'      => $user->id,
+            'notable_type' => 'course',
+            'notable_id'   => $course->id,
+        ]);
+        $this->assertEquals($course->id, $this->getData('createNote.notable.id'));
+    }
+}

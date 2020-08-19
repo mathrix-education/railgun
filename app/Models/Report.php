@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Railgun\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
-use Railgun\Models\Traits\Randomizable;
 
 /**
  * @property-read int    $id
@@ -18,10 +16,8 @@ use Railgun\Models\Traits\Randomizable;
  * @property-read Carbon $created_at
  * @property-read Carbon $updated_at
  */
-class Report extends Model
+class Report extends BaseModel
 {
-    use Randomizable;
-
     public const STATUSES = ['todo', 'done', 'validated'];
 
     /** @var array The attributes that are mass assignable */

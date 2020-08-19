@@ -20,39 +20,23 @@ use const JSON_THROW_ON_ERROR;
 
 class HttpIntegrationTestCase extends ApplicationTestCase
 {
+    /** @var User $user The logged user which is running the tests. */
+    protected User $user;
     /** @var stdClass|mixed[] $contentCache The JSON-decoded content. */
-    private $contentCache;
+    protected $contentCache;
 
     /**
-     * @param Authenticatable|User|mixed[] $user  The user or the user attributes.
-     * @param string|null                  $guard The guard to use, use the default one if null is provided.
+     * Set the currently logged in user for the application.
      *
-     * @return $this
+     * @param Authenticatable|User $user  The user.
+     * @param string|null          $guard The guard to use, use the default one if null is provided.
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
-    public function actingAs($user = [], $guard = null): self
+    public function be(Authenticatable $user, $guard = null): void
     {
-        if (is_array($user)) {
-            $user = factory(User::class)->create($user);
-        }
-
-        return parent::actingAs($user);
-    }
-
-    /**
-     * Set the currently logged user and returns it.
-     *
-     * @param Authenticatable|User|mixed[] $user  The user or the user attributes.
-     * @param string|null                  $guard The guard to use, use the default one if null is provided.
-     *
-     * @return User The currently logged user.
-     */
-    public function actingAsGetUser($user = [], ?string $guard = null): User
-    {
-        $this->actingAs($user, $guard);
-
-        return $this->app->make('auth')->guard($guard)->user();
+        $this->app['auth']->guard($guard)->setUser($user);
+        $this->user = $user;
     }
 
     /**
@@ -79,6 +63,62 @@ class HttpIntegrationTestCase extends ApplicationTestCase
     }
 
     /**
+     * Set the currently logged user and returns it.
+     *
+     * @param Authenticatable|User|mixed[] $user  The user or the user attributes.
+     * @param string|null                  $guard The guard to use, use the default one if null is provided.
+     *
+     * @return User The currently logged user.
+     */
+    public function actingAsGetUser($user = [], ?string $guard = null): User
+    {
+        $this->actingAs($user, $guard);
+
+        return $this->getUser();
+    }
+
+    /**
+     * @param Authenticatable|User|mixed[] $user  The user or the user attributes.
+     * @param string|null                  $guard The guard to use, use the default one if null is provided.
+     *
+     * @return $this
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     */
+    public function actingAs($user = [], $guard = null): self
+    {
+        if (is_array($user)) {
+            $user = factory(User::class)->create($user);
+        }
+
+        return parent::actingAs($user);
+    }
+
+    /**
+     * Get the currently logged user.
+     *
+     * @return User|null The currently logged user.
+     */
+    protected function getUser(): ?User
+    {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return $this->user ?? $this->app->make('auth')->guard()->user();
+    }
+
+    /**
+     * Dump the current response JSON content.
+     */
+    protected function dump(): void
+    {
+        $this->tearDown();
+        self::tearDownAfterClass();
+        $content = $this->getContent();
+        /** @noinspection ForgottenDebugOutputInspection */
+        dump($content);
+        exit(1);
+    }
+
+    /**
      * Get an arbitrary part of the response data.
      *
      * @param string $path    The path to get.
@@ -97,18 +137,5 @@ class HttpIntegrationTestCase extends ApplicationTestCase
         }
 
         return Arr::get($this->contentCache, $path, $default);
-    }
-
-    /**
-     * Dump the current response JSON content.
-     */
-    protected function dump(): void
-    {
-        $this->tearDown();
-        self::tearDownAfterClass();
-        $content = $this->getContent();
-        /** @noinspection ForgottenDebugOutputInspection */
-        dump($content);
-        exit(1);
     }
 }

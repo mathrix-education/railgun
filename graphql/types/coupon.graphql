@@ -1,12 +1,12 @@
 "See \\App\\Models\\Coupon:TYPES"
 enum CouponType {
-    PERCENTAGE @enum(value: "percentage")
-    ABSOLUTE @enum(value: "absolute")
+    percentage @enum(value: "percentage")
+    absolute @enum(value: "absolute")
 }
 
 type Coupon {
     id: ID!
-    type: CouponType
+    type: CouponType!
     value: Int!
     counter: Int!
     expires_at: DateTime

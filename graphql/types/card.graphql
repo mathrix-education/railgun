@@ -1,12 +1,12 @@
 enum CardType {
-    AMEX @enum(value: "amex")
-    DINERS @enum(value: "diners")
-    DISCOVER @enum(value: "discover")
-    JCB @enum(value: "jcb")
-    MASTERCARD @enum(value: "mastercard")
-    UNIONPAY @enum(value: "unionpay")
-    VISA @enum(value: "visa")
-    UNKNOWN @enum(value: "unknown")
+    amex @enum(value: "amex")
+    diners @enum(value: "diners")
+    discover @enum(value: "discover")
+    jcb @enum(value: "jcb")
+    mastercard @enum(value: "mastercard")
+    unionpay @enum(value: "unionpay")
+    visa @enum(value: "visa")
+    unknown @enum(value: "unknown")
 }
 
 type Card {

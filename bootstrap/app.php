@@ -16,14 +16,14 @@ use Mathrix\Prometheus\PrometheusServiceProvider;
 use MLL\GraphQLPlayground\GraphQLPlaygroundServiceProvider;
 use Nuwave\Lighthouse\LighthouseServiceProvider;
 use Nuwave\Lighthouse\Tracing\TracingServiceProvider;
+use Railgun\Billing\Braintree\BraintreeServiceProvider;
+use Railgun\Billing\Stripe\StripeServiceProvider;
 use Railgun\Providers\AppServiceProvider;
 use Railgun\Providers\AuthServiceProvider;
-use Railgun\Providers\BraintreeServiceProvider;
 use Railgun\Providers\CryptoServiceProvider;
 use Railgun\Providers\FacebookServiceProvider;
 use Railgun\Providers\GoogleServiceProvider;
 use Railgun\Providers\RouterServiceProvider;
-use Railgun\Providers\StripeServiceProvider;
 use Sentry\Laravel\ServiceProvider as SentryServiceProvider;
 use Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider;
 use Windy\Guardian\GuardianServiceProvider;
@@ -31,6 +31,8 @@ use Windy\LaravelCacheFallback\CacheFallbackServiceProvider;
 use Windy\Mailjet\MailjetServiceProvider;
 
 (new LoadEnvironmentVariables(dirname(__DIR__)))->bootstrap();
+
+date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
 
 $app = new Application(dirname(__DIR__));
 $app->withFacades();
@@ -85,7 +87,9 @@ $app->register(GoogleServiceProvider::class);
 $app->register(GoogleCloudStorageServiceProvider::class);
 
 // Billing
+$app->configure('stripe');
 $app->register(StripeServiceProvider::class);
+$app->configure('braintree');
 $app->register(BraintreeServiceProvider::class);
 
 // Sentry

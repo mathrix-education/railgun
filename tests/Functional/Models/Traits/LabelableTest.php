@@ -20,9 +20,6 @@ use function collect;
 use function data_get;
 use function factory;
 
-/**
- * @testdox Labelable Model trait
- */
 class LabelableTest extends ApplicationTestCase
 {
     use DatabaseTransactions;
@@ -40,7 +37,6 @@ class LabelableTest extends ApplicationTestCase
 
     /**
      * @dataProvider createLabelablesDataset
-     * @testdox      has a valid relation with $class
      *
      * @param string|Randomizable $class The model class.
      */
@@ -70,7 +66,6 @@ class LabelableTest extends ApplicationTestCase
 
     /**
      * @dataProvider createLabelablesDataset
-     * @testdox      is in the GraphQL type associated with $class
      *
      * @param string|Randomizable $class The model class.
      */

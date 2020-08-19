@@ -1,16 +1,16 @@
 enum SubscriptionStatus {
-    ACTIVE @enum(value: "active")
-    CANCELED @enum(value: "canceled")
-    INCOMPLETE @enum(value: "incomplete")
-    INCOMPLETE_EXPIRED @enum(value: "incomplete_expired")
-    PAST_DUE @enum(value: "past_due")
-    TRIALING @enum(value: "trialing")
-    UNPAID @enum(value: "unpaid")
+    active @enum(value: "active")
+    canceled @enum(value: "canceled")
+    incomplete @enum(value: "incomplete")
+    incomplete_expired @enum(value: "incomplete_expired")
+    past_due @enum(value: "past_due")
+    trialing @enum(value: "trialing")
+    unpaid @enum(value: "unpaid")
 }
 
 type Subscription_ {
     id: ID!
-    plan: PlanID!
+    plan: ID!
     customer_id: String!
     status: SubscriptionStatus!
     current_period_start: DateTime

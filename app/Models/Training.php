@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Railgun\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Railgun\Billing\Stripe\Contracts\StripeSellable as StripeProductContract;
+use Railgun\Billing\Stripe\Models\StripeSellable;
 use Railgun\Models\Traits\Acquerable;
-use Railgun\Models\Traits\Randomizable;
+use Railgun\Models\Traits\Ownable;
 use Railgun\Models\Traits\Reorderable;
+use Railgun\Models\Traits\Sellable;
 use Railgun\Models\Traits\Sluggable;
 
 /**
@@ -22,19 +25,21 @@ use Railgun\Models\Traits\Sluggable;
  * @property      int                  $price
  * @property      int                  $order
  * @property      bool                 $visible
- * @property-read string               $created_at
- * @property-read string               $updated_at
+ * @property-read Carbon               $created_at
+ * @property-read Carbon               $updated_at
  * ---
  * @property-read Collection|Pack[]    $packs
  * @property-read Collection|Section[] $sections
  * @property-read Collection|Grade[]   $grades
  */
-class Training extends Model
+class Training extends BaseModel implements StripeProductContract
 {
     use Acquerable;
+    use Ownable;
     use Reorderable;
-    use Randomizable;
+    use Sellable;
     use Sluggable;
+    use StripeSellable;
 
     protected $fillable = [
         'name',

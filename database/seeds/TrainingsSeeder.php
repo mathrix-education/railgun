@@ -6,9 +6,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Railgun\Models\Coupon;
 use Railgun\Models\Lesson;
-use Railgun\Models\Pack;
 use Railgun\Models\Section;
-use Railgun\Models\Training;
 
 /**
  * Seed the training data (packs, trainings, sections and lessons).
@@ -20,24 +18,18 @@ use Railgun\Models\Training;
  */
 class TrainingsSeeder extends AdvancedSeeder
 {
-    private const PACK_COUNT            = 3;
-    private const TRAINING_COUNT        = 10;
     private const SECTIONS_PER_TRAINING = [1, 2];
     private const LESSONS_PER_SECTION   = [1, 2];
 
+    /**
+     * @throws JsonException
+     */
     public function run(): void
     {
-        // Packs
-        $this->seedFactory(Pack::class, ['seed' => false, 'count' => self::PACK_COUNT])
-            ->map(static fn($pack, int $order) => ['order' => $order] + $pack)
-            ->tap(fn() => $this->writeFactoryMessage(Pack::class))
-            ->tap(fn(Collection $packs) => $this->seedCollection($packs, 'packs'));
-
-        // Trainings
-        $this->seedFactory(Training::class, self::TRAINING_COUNT);
-
-        // Link packs <=> trainings
-        $this->link(Pack::class, Training::class, ['callback' => 'order']);
+        $this->seedFile('packs.json');
+        $this->seedFile('trainings.json');
+        $this->seedFile('pack_training.json');
+        $this->seedFile('grade_training.json');
 
         // Sections
         DB::table('trainings')
@@ -74,6 +66,6 @@ class TrainingsSeeder extends AdvancedSeeder
             ->tap(fn(Collection $lessons) => $this->seedCollection($lessons, 'lessons'));
 
         // Coupons
-        $this->seedFactory(Coupon::class, 15);
+        $this->seedFactory(Coupon::class, 60);
     }
 }

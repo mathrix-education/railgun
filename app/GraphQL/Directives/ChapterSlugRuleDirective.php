@@ -27,7 +27,7 @@ class ChapterSlugRuleDirective extends ValidationDirective
     {
         if (!array_key_exists('slug', $this->args)) {
             // There is no slug here, we can just exit.
-            return [];
+            return []; // @codeCoverageIgnore
         }
 
         return [

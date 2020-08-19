@@ -10,7 +10,6 @@ use function factory;
 use function serialize;
 
 /**
- * @testdox Model Notification
  * @coversDefaultClass \Railgun\Models\Notification
  */
 class NotificationTest extends ModelTestCase

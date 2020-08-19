@@ -18,7 +18,7 @@ $factory->define(Pack::class, static function (Faker $faker) {
     $timestamps = Timestamps::factory();
 
     return [
-        'name'       => $name,
+        'name'       => sprintf('%s (%s)', $name, $faker->randomNumber(6)),
         'slug'       => Str::slug($name),
         'available'  => $faker->boolean(90),
         'price'      => $faker->numberBetween(5, 7) * 1000,

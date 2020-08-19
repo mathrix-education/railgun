@@ -6,12 +6,12 @@ namespace Railgun\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Railgun\Models\Traits\Content;
+use Railgun\Models\Contracts\BelongsToChapter;
+use Railgun\Models\Contracts\Ownable as OwnableContract;
 use Railgun\Models\Traits\Interactable;
-use Railgun\Models\Traits\Randomizable;
+use Railgun\Models\Traits\Ownable;
 use Railgun\Models\Traits\Reorderable;
 use Railgun\Models\Traits\Sluggable;
 
@@ -22,6 +22,7 @@ use Railgun\Models\Traits\Sluggable;
  * @property      int                   $order
  * @property      bool                  $premium
  * @property      bool                  $visible
+ * @property      bool                  $protected
  * @property      int                   $notion_id
  * @property-read Carbon                $created_at
  * @property-read Carbon                $updated_at
@@ -29,28 +30,31 @@ use Railgun\Models\Traits\Sluggable;
  * @property-read Notion                $notion
  * @property-read Collection|Exercise[] $exercises
  */
-class Subject extends Model implements Content
+class Subject extends BaseModel implements BelongsToChapter, OwnableContract
 {
+    use Ownable;
     use Interactable;
-    use Randomizable;
     use Reorderable;
     use Sluggable;
 
     protected       $attributes     = [
-        'premium' => false,
-        'visible' => false,
+        'premium'   => false,
+        'protected' => false,
+        'visible'   => false,
     ];
     protected       $fillable       = [
         'name',
         'slug',
         'order',
         'premium',
+        'protected',
         'visible',
         'notion_id',
     ];
     protected       $casts          = [
-        'premium' => 'boolean',
-        'visible' => 'boolean',
+        'premium'   => 'boolean',
+        'protected' => 'boolean',
+        'visible'   => 'boolean',
     ];
     protected array $orderGroup     = ['notion_id'];
     protected array $orderRelations = [Course::class];
@@ -60,6 +64,10 @@ class Subject extends Model implements Content
         self::saving(static function (Subject $subject): void {
             if ($subject->isDirty('premium')) {
                 $subject->exercises()->update(['premium' => $subject->premium]);
+            }
+
+            if ($subject->isDirty('protected')) {
+                $subject->exercises()->update(['protected' => $subject->protected]);
             }
         });
     }

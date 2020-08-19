@@ -9,7 +9,6 @@ use Railgun\Models\User;
 use function factory;
 
 /**
- * @testdox Model Comment
  * @coversDefaultClass \Railgun\Models\Comment
  */
 class CommentTest extends ModelTestCase

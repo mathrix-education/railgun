@@ -1,29 +1,26 @@
-enum PlanID {
-    MONTHLY @enum(value: "v5_monthly")
-    ANNUALLY @enum(value: "v5_annually")
-    BIANNUALLY @enum(value: "v5_biannually")
-}
-
-enum PlanPeriod {
-    MONTH @enum(value: "month")
-    YEAR @enum(value: "year")
-}
-
 type Plan {
-    id: PlanID!
-    "The period between payments."
-    period: PlanPeriod!
-    "The price, **in cents** per period."
-    price_per_period: Int!
-    "The price, **in cents** per month."
-    price_per_month: Int!
-    "If the plan is prorated."
-    prorated: Boolean!
-    """
-    If the plan is prorated, the price for the period between now and the nex full payement.
-    See proration_anchor for the new full payment.
-    """
-    proration_price: Int
-    "If the plan is prorated, the date of the next full payment."
-    proration_anchor: DateTime
+    "The plan identifier."
+    id: ID! @rename(attribute: "lookup_key")
+    "The plan human-readable name."
+    name: String! @rename(attribute: "nickname")
+    "The plan [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html) currency code. In our case, always \"eur\"."
+    currency: String!
+    "The plan price per period **in cents.**"
+    price: Int! @rename(attribute: "unit_amount")
+    "The plan period details"
+    period: PlanPeriod! @rename(attribute: "recurring")
+}
+
+enum PlanInterval {
+    day @enum(value: "day")
+    week @enum(value: "week")
+    month @enum(value: "month")
+    year @enum(value: "year")
+}
+
+type PlanPeriod {
+    "The plan period unit."
+    unit: PlanInterval! @rename(attribute: "interval")
+    "The plan period length multiplier."
+    length: Int! @rename(attribute: "interval_count")
 }

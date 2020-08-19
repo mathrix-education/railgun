@@ -1,0 +1,14 @@
+extend type Mutation {
+    """
+    Checkout a cart using a payment method id.
+    A new payement method can be created using Stripe.js
+    [createPaymentMethod](https://stripe.com/docs/js/payment_methods/create_payment_method).
+
+    You should request for the `payement_intent.client_secret` and check the `payement_intent.status`.
+    See the [Payement Intent State Machine](https://stripe.com/docs/payments/intents) for further information.
+    """
+    checkout(
+        cart: CartInput!
+        paymentMethodId: String!
+    ): Invoice! @guard
+}

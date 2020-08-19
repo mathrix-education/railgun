@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Railgun\Billing\Exceptions;
 
 use Railgun\Exceptions\HttpException;
-use Stripe\Event;
 use Throwable;
 use function trans;
 
@@ -14,13 +13,11 @@ use function trans;
  */
 class UnsupportedEventException extends HttpException
 {
-    protected string $category = 'billing';
+    protected string $category   = 'billing';
+    protected int    $statusCode = 400;
 
-    public function __construct(Event $event, ?Throwable $previous = null)
+    public function __construct(string $event, ?Throwable $previous = null)
     {
-        parent::__construct(trans('billing.errors.unsupported_event', ['eventType' => $event->type]), $previous);
-
-        $this->setStatusCode(400);
-        $this->setData(['event' => $event->jsonSerialize()]);
+        parent::__construct(trans('billing.errors.unsupported_event', ['eventType' => $event]), $previous);
     }
 }

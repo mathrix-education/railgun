@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Railgun\Billing\Exceptions;
 
-use Illuminate\Support\Facades\Auth;
 use Psr\Log\LogLevel;
 use Railgun\Exceptions\HttpException;
 use Throwable;
@@ -21,19 +20,13 @@ class AlreadyBoughtException extends HttpException
 
     /**
      * @param string[]       $productNames The products name.
-     * @param int            $userId       The user ID.
      * @param Throwable|null $previous     The previous exception, if any.
      */
-    public function __construct(array $productNames, int $userId, ?Throwable $previous = null)
+    public function __construct(array $productNames, ?Throwable $previous = null)
     {
-        $names = implode(', ', $productNames);
-
-        if ($userId === Auth::id()) {
-            $message = trans('billing.errors.already_bought_you', ['name' => $names]);
-        } else {
-            $message = trans('billing.errors.already_bought', ['name' => $names, 'id' => $userId]);
-        }
-
-        parent::__construct($message, $previous);
+        parent::__construct(
+            trans('billing.errors.already_bought', ['name' => implode(', ', $productNames)]),
+            $previous,
+        );
     }
 }

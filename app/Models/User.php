@@ -9,7 +9,6 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\RoutesNotifications;
@@ -18,11 +17,11 @@ use Illuminate\Support\Facades\Queue;
 use Laravel\Lumen\Auth\Authorizable;
 use Railgun\Billing\Models\OwnsProducts;
 use Railgun\Billing\Models\OwnsSubscriptions;
-use Railgun\Billing\Models\StripeCustomer;
+use Railgun\Billing\Stripe\Models\StripeCustomer;
 use Railgun\Jobs\CleanUserSession;
+use Railgun\Models\Contracts\Cacheable as CacheableContract;
 use Railgun\Models\Traits\Cacheable;
 use Railgun\Models\Traits\HasDatabaseNotifications;
-use Railgun\Models\Traits\Randomizable;
 use Railgun\Support\LazyStdClass;
 use function uuid_create;
 use function uuid_is_valid;
@@ -46,7 +45,6 @@ use function uuid_is_valid;
  * @property-read Carbon                   $created_at
  * @property-read Carbon                   $updated_at
  * ---
- * @property-read string                   $full_name
  * @property-read bool                     $premium If the user is premium
  * @property-read string                   $provider
  * @property-read LazyStdClass             $statistics
@@ -57,7 +55,7 @@ use function uuid_is_valid;
  * @property-read Collection|Interaction[] $interactions
  * @property-read Collection|Session[]     $sessions
  */
-class User extends Model implements AuthenticatableContract, AuthorizableContract
+class User extends BaseModel implements AuthenticatableContract, AuthorizableContract, CacheableContract
 {
     use Authenticatable;
     use Authorizable;
@@ -65,7 +63,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     use HasDatabaseNotifications;
     use OwnsProducts;
     use OwnsSubscriptions;
-    use Randomizable;
     use RoutesNotifications;
     use StripeCustomer;
 
@@ -102,7 +99,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'settings'                  => 'array',
         'metadata'                  => 'array',
     ];
-    protected $appends    = ['provider'];
 
     public static function boot(): void
     {
@@ -165,18 +161,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /**
-     * full_name attribute.
-     */
-    public function getFullNameAttribute(): string
-    {
-        if (!$this->firstname && !$this->lastname) {
-            return $this->username;
-        }
-
-        return "{$this->firstname} {$this->lastname}";
-    }
-
-    /**
      * Hash the new password when setting it.
      *
      * @param string $password The new password.
@@ -188,8 +172,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     /**
      * Get the user statistics.
-     *
-     * @noinspection PhpUnused
      */
     public function getStatisticsAttribute(): LazyStdClass
     {

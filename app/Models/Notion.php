@@ -6,11 +6,11 @@ namespace Railgun\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Railgun\Models\Traits\Content;
-use Railgun\Models\Traits\Randomizable;
+use Railgun\Models\Contracts\BelongsToChapter;
+use Railgun\Models\Contracts\Ownable as OwnableContract;
+use Railgun\Models\Traits\Ownable;
 use Railgun\Models\Traits\Reorderable;
 
 /**
@@ -26,9 +26,9 @@ use Railgun\Models\Traits\Reorderable;
  * @property-read Collection|Course[]  $courses
  * @property-read Collection|Subject[] $subjects
  */
-class Notion extends Model implements Content
+class Notion extends BaseModel implements BelongsToChapter, OwnableContract
 {
-    use Randomizable;
+    use Ownable;
     use Reorderable;
 
     public const TYPE_STANDARD = 'standard';

@@ -6,13 +6,16 @@ namespace Railgun\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Railgun\Models\Traits\Content;
-use Railgun\Models\Traits\Randomizable;
+use Railgun\Billing\Stripe\Contracts\StripeSellable as StripeSellableContract;
+use Railgun\Billing\Stripe\Models\StripeSellable;
+use Railgun\Models\Contracts\BelongsToChapter;
+use Railgun\Models\Traits\Acquerable;
+use Railgun\Models\Traits\Ownable;
 use Railgun\Models\Traits\Reorderable;
+use Railgun\Models\Traits\Sellable;
 use Railgun\Models\Traits\Sluggable;
 
 /**
@@ -33,15 +36,19 @@ use Railgun\Models\Traits\Sluggable;
  * @property-read Collection|Exam[]      $exams
  * @property-read Collection|Session[]   $sessions
  */
-class Chapter extends Model implements Content
+class Chapter extends BaseModel implements BelongsToChapter, StripeSellableContract
 {
-    use Randomizable;
+    use Acquerable;
+    use Ownable;
     use Reorderable;
+    use Sellable;
     use Sluggable;
+    use StripeSellable;
 
     protected       $fillable   = [
         'name',
         'slug',
+        'price',
         'order',
         'visible',
         'theme_id',

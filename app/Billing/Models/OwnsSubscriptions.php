@@ -7,9 +7,9 @@ namespace Railgun\Billing\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Railgun\Models\Subscription;
+use Railgun\Models\Traits\Cacheable;
 use Railgun\Models\User;
 use Stripe\Subscription as StripeSubscription;
 use function count;
@@ -22,12 +22,14 @@ use function count;
  */
 trait OwnsSubscriptions
 {
+    use Cacheable;
+
     /**
      * @return HasMany<Subscription>
      */
     public function subscriptions(): HasMany
     {
-        return $this->hasMany(Subscription::class, 'customer_id', 'stripe_id');
+        return $this->hasMany(Subscription::class);
     }
 
     /**
@@ -36,7 +38,7 @@ trait OwnsSubscriptions
     public function getPremiumAttribute(): bool
     {
         if (count($this->permissions) > 0) {
-            // If the user has at least one permission, he is considered as premium
+            // If the user has at least one permission, he is considered as premium.
             return true;
         }
 
@@ -51,7 +53,7 @@ trait OwnsSubscriptions
         }
 
         // Cache for the current request
-        return Cache::store('request')->rememberForever('user.' . $this->id . '.premium', function (): bool {
+        return $this->getCache()->remember('premium', 3600, function (): bool {
             $customerIds = [];
 
             if ($this->stripe_id !== null) {

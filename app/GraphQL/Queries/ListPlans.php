@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Railgun\GraphQL\Queries;
 
-use Illuminate\Support\Collection;
-use Railgun\Billing\Models\Plan;
+use Railgun\Billing\Stripe\Models\ModeMachine;
 
 /**
  * Query listPlans.
@@ -14,10 +13,10 @@ use Railgun\Billing\Models\Plan;
 class ListPlans
 {
     /**
-     * @return Collection|Plan[] The available subscription plans.
+     * @return mixed[] The available subscription plans.
      */
-    public function __invoke(): Collection
+    public function __invoke(): array
     {
-        return Plan::all();
+        return ModeMachine::PRICES;
     }
 }

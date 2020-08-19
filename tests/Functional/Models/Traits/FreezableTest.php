@@ -13,7 +13,6 @@ use Railgun\Models\Traits\Freezable;
 use Tests\ApplicationTestCase;
 
 /**
- * @testdox Freezable Model trait
  * @coversDefaultClass \Railgun\Models\Traits\Freezable
  */
 class FreezableTest extends ApplicationTestCase

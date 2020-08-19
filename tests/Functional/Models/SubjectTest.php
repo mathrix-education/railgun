@@ -10,17 +10,13 @@ use Railgun\Models\Exercise;
 use Railgun\Models\Subject;
 use function factory;
 
-/**
- * @testdox Model Subject
- * @coversDefaultClass \Railgun\Models\Subject
+/** @coversDefaultClass \Railgun\Models\Subject
  */
 class SubjectTest extends ModelTestCase
 {
     use DatabaseTransactions;
 
-    /**
-     * @testdox syncs has its premium attribute sync with its exercises
-     * @covers ::booting
+    /** @covers ::booting
      */
     public function testExercisesPremiumSync(): void
     {
@@ -39,6 +35,28 @@ class SubjectTest extends ModelTestCase
         $exercises->each(function (Exercise $e): void {
             $e->refresh();
             $this->assertTrue($e->premium);
+        });
+    }
+
+    /** @covers ::booting
+     */
+    public function testExercisesProtectedSync(): void
+    {
+        /** @var Subject $subject */
+        $subject = factory(Subject::class)->create(['protected' => false]);
+        /** @var Collection|Exercise[] $exercises */
+        $exercises = factory(Exercise::class, 5)->create(['subject_id' => $subject->id]);
+        $exercises->each(function (Exercise $e): void {
+            $e->refresh();
+            $this->assertFalse($e->protected);
+        });
+
+        $subject->protected = true;
+        $subject->save();
+
+        $exercises->each(function (Exercise $e): void {
+            $e->refresh();
+            $this->assertTrue($e->protected);
         });
     }
 

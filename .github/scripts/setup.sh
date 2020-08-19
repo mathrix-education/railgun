@@ -21,10 +21,32 @@ fi
 short_sha=${sha:0:7}
 
 # Setup environment
-if [[ "$GITHUB_REF" == "refs/tags"* ]]; then
-  environment="production"
-else
-  environment="edge"
+deploy_force="0"
+environment=$(git log -1 --format=%B | sed -n -E 's/.*deploy: ([a-z]+).*/\1/p')
+
+if [[ -z $environment ]]; then
+    branch=${GITHUB_REF/refs\/heads\//}
+
+    if [[ $GITHUB_EVENT_NAME == "pull_request" ]]; then
+        # This is a pull_request event and we we should be able to retrieve the branch name form the event JSON
+        branch=$(jq -r .pull_request.head.ref "$GITHUB_EVENT_PATH")
+    fi
+
+    cmd="jq -r '.[\"$branch\"]' $root/../../environments.json"
+    mapped_environment=$(eval "$cmd")
+
+    if [[ "$mapped_environment" != "null" ]]; then
+        environment=$mapped_environment
+        deploy_force="1"
+    fi
+fi
+
+if [[ -z $environment ]]; then
+    if [[ "$GITHUB_REF" == "refs/tags"* ]]; then
+      environment="production"
+    else
+      environment="edge"
+    fi
 fi
 
 if [[ "$environment" == "production" ]]; then
@@ -69,6 +91,7 @@ set_output "image" "$image"
 set_output "image_latest" "$image_name:latest-$environment"
 set_output "image_version" "$image_name:$version"
 set_output "image_exists" "$image_exists"
+set_output "deploy_force" "$deploy_force"
 set_output "skip_lint" "$image_exists"
 set_output "skip_test" "$image_exists"
 set_output "skip_build" "$image_exists"

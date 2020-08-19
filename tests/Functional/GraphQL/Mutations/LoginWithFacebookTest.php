@@ -18,9 +18,7 @@ use Tests\Functional\GraphQL\GraphQLFunctionalTestCase;
 use function base64_encode;
 use function random_bytes;
 
-/**
- * @testdox Mutation loginWithFacebook
- * @coversDefaultClass \Railgun\GraphQL\Mutations\LoginWithFacebook
+/** @coversDefaultClass \Railgun\GraphQL\Mutations\LoginWithFacebook
  *
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
@@ -63,9 +61,7 @@ class LoginWithFacebookTest extends GraphQLFunctionalTestCase
         });
     }
 
-    /**
-     * @testdox creates a new user when there is no associated Facebook id
-     * @covers ::__construct
+    /** @covers ::__construct
      * @covers ::__invoke
      *
      * @throws Exception
@@ -97,9 +93,7 @@ class LoginWithFacebookTest extends GraphQLFunctionalTestCase
         $this->assertNotEmpty($data['token']);
     }
 
-    /**
-     * @testdox login an existing user when there is associated Facebook id
-     * @covers ::__construct
+    /** @covers ::__construct
      * @covers ::__invoke
      */
     public function testLoginSuccess(): void
@@ -127,9 +121,7 @@ class LoginWithFacebookTest extends GraphQLFunctionalTestCase
         $this->assertNotEmpty($data['token']);
     }
 
-    /**
-     * @testdox throws an error when providing an invalid Facebook token
-     * @covers ::__construct
+    /** @covers ::__construct
      * @covers ::__invoke
      * @uses    \Railgun\Exceptions\InvalidAuthTokenException
      */

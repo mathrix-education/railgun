@@ -1,10 +1,10 @@
 union Reportable = Course | Exercise | Flashcard | Exam
 
 enum ReportType {
-    COURSE @enum(value: "course")
-    EXERCISE @enum(value: "exercise")
-    FLASHCARD @enum(value: "flashcard")
-    EXAM @enum(value: "exam")
+    course @enum(value: "course")
+    exercise @enum(value: "exercise")
+    flashcard @enum(value: "flashcard")
+    exam @enum(value: "exam")
 }
 
 type Report {

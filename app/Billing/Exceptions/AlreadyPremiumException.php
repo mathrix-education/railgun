@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Railgun\Billing\Exceptions;
 
-use Illuminate\Support\Facades\Auth;
 use Psr\Log\LogLevel;
 use Railgun\Exceptions\HttpException;
 use Throwable;
@@ -18,14 +17,8 @@ class AlreadyPremiumException extends HttpException
     protected string $level    = LogLevel::NOTICE;
     protected string $category = 'cart';
 
-    public function __construct(int $userId, ?Throwable $previous = null)
+    public function __construct(?Throwable $previous = null)
     {
-        if ($userId === Auth::id()) {
-            $message = trans('billing.errors.already_premium_you');
-        } else {
-            $message = trans('billing.errors.already_premium', ['id' => $userId]);
-        }
-
-        parent::__construct($message, $previous);
+        parent::__construct(trans('billing.errors.already_premium'), $previous);
     }
 }

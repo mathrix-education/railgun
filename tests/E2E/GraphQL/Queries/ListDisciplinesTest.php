@@ -6,13 +6,22 @@ namespace Tests\E2E\GraphQL\Queries;
 
 use Illuminate\Support\Facades\DB;
 use Railgun\Models\Grade;
-use Tests\E2E\GraphQL\GraphQLIntegrationTestCase;
+use Tests\E2E\GraphQL\GraphQLTestCase;
 
-/**
- * @testdox Query listDisciplines
- */
-class ListDisciplinesTest extends GraphQLIntegrationTestCase
+class ListDisciplinesTest extends GraphQLTestCase
 {
+    public function testListAllDisciplines(): void
+    {
+        $this->executeListDisciplines();
+
+        $this->assertResponseOk();
+        $this->assertNoErrors();
+        $this->assertCount(
+            DB::table('disciplines')->count(),
+            $this->getData('listDisciplines'),
+        );
+    }
+
     /**
      * @param mixed[] $variables The listDisciplines variables
      */
@@ -28,21 +37,6 @@ class ListDisciplinesTest extends GraphQLIntegrationTestCase
             }
             GRAPHQL,
             $variables,
-        );
-    }
-
-    /**
-     * @testdox lists all the existing disciplines
-     */
-    public function testListAllDisciplines(): void
-    {
-        $this->executeListDisciplines();
-
-        $this->assertResponseOk();
-        $this->assertNoErrors();
-        $this->assertCount(
-            DB::table('disciplines')->count(),
-            $this->getData('listDisciplines'),
         );
     }
 

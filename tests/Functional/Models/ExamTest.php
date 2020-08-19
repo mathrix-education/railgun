@@ -9,7 +9,6 @@ use Railgun\Models\Exam;
 use function factory;
 
 /**
- * @testdox Model Exam
  * @coversDefaultClass \Railgun\Models\Exam
  */
 class ExamTest extends ModelTestCase

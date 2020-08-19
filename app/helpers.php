@@ -5,6 +5,9 @@ declare(strict_types=1);
 // phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
 // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName.NotCamelCaps
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
+
 if (!function_exists('prefix')) { // @codeCoverageIgnore
 
     /**
@@ -123,5 +126,22 @@ if (!function_exists('is_json')) { // @codeCoverageIgnore
         } catch (JsonException $exception) {
             return false;
         }
+    }
+}
+
+if (!function_exists('resolveMorph')) { // @codeCoverageIgnore
+
+    /**
+     * @param string|Model $model The model to resolve.
+     *
+     * @return string|null The model alias.
+     */
+    function resolveMorph($model): ?string
+    {
+        if (!is_string($model)) {
+            $model = get_class($model);
+        }
+
+        return array_search($model, Relation::$morphMap, true) ?: null;
     }
 }

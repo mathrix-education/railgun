@@ -20,6 +20,7 @@ $factory->define(Exercise::class, static function (Faker $faker) {
         'content'    => Silicate::wall(),
         'order'      => 99,
         'premium'    => $subject->premium,
+        'protected'  => false,
         'visible'    => $faker->boolean(90),
         'subject_id' => $subject->id,
         'created_at' => $timestamps->createdAt,

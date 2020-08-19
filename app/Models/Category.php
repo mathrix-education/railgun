@@ -6,9 +6,7 @@ namespace Railgun\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Railgun\Models\Traits\Randomizable;
 use Railgun\Models\Traits\Sluggable;
 
 /**
@@ -22,9 +20,8 @@ use Railgun\Models\Traits\Sluggable;
  * ---
  * @property Collection|Post[] $posts      The posts related to the category.
  */
-class Category extends Model
+class Category extends BaseModel
 {
-    use Randomizable;
     use Sluggable;
 
     protected $fillable = ['name', 'slug'];

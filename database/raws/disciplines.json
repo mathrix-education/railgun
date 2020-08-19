@@ -1,90 +1,138 @@
 [
-  {
-    "id": 1,
-    "name": "Mathématiques",
-    "slug": "maths",
-    "beta": 0,
-    "created_at": "2019-03-29 09:28:39",
-    "updated_at": "2019-03-29 09:28:39"
-  },
-  {
-    "id": 2,
-    "name": "Physique",
-    "slug": "physique",
-    "beta": 0,
-    "created_at": "2019-03-29 09:28:39",
-    "updated_at": "2019-03-29 09:28:39"
-  },
-  {
-    "id": 3,
-    "name": "SVT",
-    "slug": "svt",
-    "beta": 0,
-    "created_at": "2019-03-29 09:28:39",
-    "updated_at": "2019-03-29 09:28:39"
-  },
-  {
-    "id": 4,
-    "name": "Sciences de l'Ingénieur",
-    "slug": "science-ingenieur",
-    "beta": 0,
-    "created_at": "2019-03-29 09:28:39",
-    "updated_at": "2019-03-29 09:28:39"
-  },
-  {
-    "id": 5,
-    "name": "Sciences Economiques et Sociales",
-    "slug": "sciences-economiques-et-sociales",
-    "beta": 0,
-    "created_at": "2019-03-29 09:28:39",
-    "updated_at": "2019-03-29 09:28:39"
-  },
-  {
-    "id": 6,
-    "name": "Philosophie",
-    "slug": "philosophie",
-    "beta": 0,
-    "created_at": "2019-03-29 09:28:39",
-    "updated_at": "2019-03-29 09:28:39"
-  },
-  {
-    "id": 7,
-    "name": "Histoire",
-    "slug": "histoire",
-    "beta": 0,
-    "created_at": "2019-03-29 09:28:39",
-    "updated_at": "2019-03-29 09:28:39"
-  },
-  {
-    "id": 8,
-    "name": "Géographie",
-    "slug": "geographie",
-    "beta": 0,
-    "created_at": "2019-03-29 09:28:39",
-    "updated_at": "2019-03-29 09:28:39"
-  },
-  {
-    "id": 9,
-    "name": "Français",
-    "slug": "francais",
-    "beta": 1,
-    "created_at": "2019-03-29 09:28:39",
-    "updated_at": "2019-03-29 09:28:39"
-  },
-  {
-    "id": 10,
-    "name": "Anglais",
-    "slug": "anglais",
-    "beta": 1,
-    "created_at": "2019-03-29 09:28:39",
-    "updated_at": "2019-03-29 09:28:39"
-  },
-  {
-    "id": 11,
-    "name": "Chimie",
-    "slug": "chimie",
-    "beta": 0,
-    "created_at": "2019-03-29 09:28:39",
-    "updated_at": "2019-03-29 09:28:39"
-  }
+    {
+        "id": 1,
+        "name": "Math\u00e9matiques",
+        "slug": "maths",
+        "beta": 0,
+        "created_at": "2020-07-21 22:07:01",
+        "updated_at": "2020-07-21 22:07:02"
+    },
+    {
+        "id": 2,
+        "name": "Physique",
+        "slug": "physique-chimie",
+        "beta": 1,
+        "created_at": "2020-07-21 22:07:00",
+        "updated_at": "2020-07-21 13:06:29"
+    },
+    {
+        "id": 3,
+        "name": "SVT",
+        "slug": "svt",
+        "beta": 1,
+        "created_at": "2020-07-21 22:07:03",
+        "updated_at": "2020-07-21 22:07:04"
+    },
+    {
+        "id": 4,
+        "name": "Sciences de l'Ing\u00e9nieur",
+        "slug": "science-ingenieur",
+        "beta": 1,
+        "created_at": "2020-07-21 22:07:05",
+        "updated_at": "2020-07-21 22:07:05"
+    },
+    {
+        "id": 5,
+        "name": "Sciences Economiques et Sociales",
+        "slug": "sciences-economiques-et-sociales",
+        "beta": 1,
+        "created_at": "2020-07-21 22:07:06",
+        "updated_at": "2020-07-21 22:07:06"
+    },
+    {
+        "id": 6,
+        "name": "Philosophie",
+        "slug": "philosophie",
+        "beta": 1,
+        "created_at": "2020-07-21 22:07:07",
+        "updated_at": "2020-07-21 22:07:07"
+    },
+    {
+        "id": 7,
+        "name": "Histoire",
+        "slug": "histoire",
+        "beta": 1,
+        "created_at": "2020-07-21 22:07:08",
+        "updated_at": "2020-07-21 22:07:08"
+    },
+    {
+        "id": 8,
+        "name": "G\u00e9ographie",
+        "slug": "geographie",
+        "beta": 1,
+        "created_at": "2020-07-21 22:07:10",
+        "updated_at": "2020-07-21 22:07:12"
+    },
+    {
+        "id": 9,
+        "name": "Fran\u00e7ais",
+        "slug": "francais",
+        "beta": 1,
+        "created_at": "2020-07-21 22:07:09",
+        "updated_at": "2020-07-21 22:07:13"
+    },
+    {
+        "id": 10,
+        "name": "Anglais",
+        "slug": "anglais",
+        "beta": 1,
+        "created_at": "2020-07-21 22:07:16",
+        "updated_at": "2020-07-21 22:07:13"
+    },
+    {
+        "id": 11,
+        "name": "Chimie",
+        "slug": "chimie",
+        "beta": 0,
+        "created_at": "2020-07-21 22:07:16",
+        "updated_at": "2020-07-21 22:07:14"
+    },
+    {
+        "id": 12,
+        "name": "Technologie",
+        "slug": "techno",
+        "beta": 1,
+        "created_at": "2020-07-21 22:07:15",
+        "updated_at": "2020-07-21 22:07:14"
+    },
+    {
+        "id": 13,
+        "name": "Enseignement scientifique",
+        "slug": "enseignement-scientifique",
+        "beta": 1,
+        "created_at": "2019-04-18 11:01:12",
+        "updated_at": "2019-04-18 11:01:12"
+    },
+    {
+        "id": 14,
+        "name": "Biologie \u00e9cologie",
+        "slug": "biologie-ecologie",
+        "beta": 1,
+        "created_at": "2019-04-18 11:01:57",
+        "updated_at": "2019-04-18 11:01:57"
+    },
+    {
+        "id": 15,
+        "name": "Num\u00e9rique et sciences informatiques",
+        "slug": "informatique",
+        "beta": 1,
+        "created_at": "2019-04-22 17:49:18",
+        "updated_at": "2019-04-22 17:49:18"
+    },
+    {
+        "id": 16,
+        "name": "Math\u00e9matiques expertes",
+        "slug": "maths-expertes",
+        "beta": 1,
+        "created_at": "2020-07-30 11:16:09",
+        "updated_at": "2020-07-30 11:16:09"
+    },
+    {
+        "id": 17,
+        "name": "Math\u00e9matiques compl\u00e9mentaires",
+        "slug": "maths-complementaires",
+        "beta": 1,
+        "created_at": "2020-07-30 11:16:15",
+        "updated_at": "2020-07-30 11:16:15"
+    }
 ]

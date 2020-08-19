@@ -24,6 +24,11 @@ input CreateCourse {
     """
     premium: Boolean @permission(name: "courses:write:premium") @rules(apply: ["boolean"])
     """
+    If the course is only accessible for users who bought the parent chapter. Default value is `null`.
+    Requires the permission `courses:write:protected`.
+    """
+    protected: Boolean @permission(name: "courses:write:protected") @rules(apply: ["boolean"])
+    """
     The course frozen date. If set, only the users with the permission `course:freeze` will be allowed to edit the
     course. Set to `null` to disable.
     Requires the permission `courses:freeze`.
@@ -95,6 +100,11 @@ input UpdateCourse {
     Requires the permission `courses:write:premium`.
     """
     premium: Boolean @permission(name: "courses:write:premium") @rules(apply: ["boolean"])
+    """
+    If the course is only accessible for users who bought the parent chapter. Default value is `null`.
+    Requires the permission `courses:write:protected`.
+    """
+    protected: Boolean @permission(name: "courses:write:protected") @rules(apply: ["boolean"])
     """
     The course frozen date. If set, only the users with the permission `course:freeze` will be allowed to edit the
     course. Set to `null` to disable.

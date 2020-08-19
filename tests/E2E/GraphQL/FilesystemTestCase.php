@@ -15,36 +15,10 @@ use function trim;
 /**
  * Simple trait to enhance filesystem testing.
  *
- * @mixin GraphQLIntegrationTestCase
+ * @mixin GraphQLTestCase
  */
 trait FilesystemTestCase
 {
-    /**
-     * @return string Get the test root directory.
-     */
-    protected function getTestDirectory(): string
-    {
-        return 'tests/' . class_basename($this) . '/' . $this->getName();
-    }
-
-    /**
-     * Get the blob path relative to the current root directory.
-     *
-     * @param string $relative The relative path.
-     *
-     * @return string The current test root directory.
-     */
-    protected function getTestPath(string $relative): string
-    {
-        $root = $this->getTestDirectory();
-
-        if (Str::contains($relative, $root)) {
-            return $relative;
-        }
-
-        return $this->getTestDirectory() . '/' . trim($relative, '/');
-    }
-
     /**
      * @before
      */
@@ -66,6 +40,14 @@ trait FilesystemTestCase
     }
 
     /**
+     * @return string Get the test root directory.
+     */
+    protected function getTestDirectory(): string
+    {
+        return 'tests/' . class_basename($this) . '/' . $this->getName();
+    }
+
+    /**
      * @param string|string[] $files The files to upload.
      */
     public function seedTestDirectory($files = []): void
@@ -77,5 +59,23 @@ trait FilesystemTestCase
         collect($files)
             ->map(fn($f) => $this->getTestPath($f))
             ->each(fn($f) => Storage::put($f, $this->faker->text));
+    }
+
+    /**
+     * Get the blob path relative to the current root directory.
+     *
+     * @param string $relative The relative path.
+     *
+     * @return string The current test root directory.
+     */
+    protected function getTestPath(string $relative): string
+    {
+        $root = $this->getTestDirectory();
+
+        if (Str::contains($relative, $root)) {
+            return $relative;
+        }
+
+        return $this->getTestDirectory() . '/' . trim($relative, '/');
     }
 }

@@ -1,9 +1,9 @@
 enum NotionType {
-    STANDARD @enum(value: "standard")
-    SUMMARY @enum(value: "summary")
+    standard @enum(value: "standard")
+    summary @enum(value: "summary")
 }
 
-type Notion {
+type Notion implements Ownable {
     id: ID!
     type: NotionType!
     name: String!
@@ -11,6 +11,7 @@ type Notion {
     visible: Boolean!
     created_at: DateTime!
     updated_at: DateTime!
+    owned: Boolean!
     chapter: Chapter! @belongsTo
     courses: [Course!]! @hasMany
     subjects: [Subject!]! @hasMany

@@ -4,43 +4,38 @@ declare(strict_types=1);
 
 namespace Railgun\Jobs;
 
-use Railgun\Billing\Bridges\StripeSubscriptionBridge;
+use Braintree\Subscription as BraintreeSubscription;
 use Railgun\Models\Subscription;
 use Railgun\Models\User;
 use Stripe\Subscription as StripeSubscription;
-use function assert;
 use function config;
-use function is_string;
 
 /**
  * Update or insert a subscription.
  */
 class UpsertSubscription extends Job
 {
-    /** @var StripeSubscription|string $stripeSubscription The subscription object or id */
-    public $stripeSubscription;
+    /** @var StripeSubscription|BraintreeSubscription $entry The subscription object. */
+    public $entry;
 
     /**
-     * @param StripeSubscription|string $stripeSubscription The subscription object or id.
+     * @param StripeSubscription|BraintreeSubscription $entry The subscription object.
      */
-    public function __construct($stripeSubscription)
+    public function __construct($entry)
     {
-        $this->stripeSubscription = $stripeSubscription;
+        $this->entry = $entry;
     }
 
     public function handle(): Subscription
     {
-        if (is_string($this->stripeSubscription)) {
-            // If the subscription id was passed instead of the full object, retrieve from the Stripe API
-            $this->stripeSubscription = StripeSubscription::retrieve($this->stripeSubscription);
-        }
+        if ($this->entry instanceof BraintreeSubscription) {
+            $converted = Subscription::fromBraintree($this->entry);
+        } else {
+            $converted = Subscription::fromStripe($this->entry);
 
-        assert($this->stripeSubscription instanceof StripeSubscription);
-
-        $converted = StripeSubscriptionBridge::toEloquent($this->stripeSubscription);
-
-        if (config('services.stripe.sandbox') && !User::query()->where('stripe_id')->exists()) {
-            return new Subscription();
+            if (config('stripe.sandbox') && !User::query()->where('stripe_id')->exists()) {
+                return new Subscription(); // @codeCoverageIgnore
+            }
         }
 
         /** @var Subscription $subscription */
@@ -49,6 +44,8 @@ class UpsertSubscription extends Job
                 ['id' => $converted->id],
                 $converted->toArray(),
             );
+
+        $subscription->flushCache();
 
         return $subscription;
     }

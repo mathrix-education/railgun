@@ -1,12 +1,13 @@
-type Pack {
+type Pack implements Sellable & Ownable {
     id: ID!
     name: String!
     slug: String!
-    buyable: Boolean!
+    available: Boolean!
     price: Int!
     order: Int!
     visible: Boolean!
     created_at: DateTime!
     updated_at: DateTime!
+    owned: Boolean!
     trainings: [Training!]! @belongsToMany
 }

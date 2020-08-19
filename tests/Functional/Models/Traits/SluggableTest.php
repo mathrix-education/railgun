@@ -11,7 +11,6 @@ use Tests\ApplicationTestCase;
 use function strtoupper;
 
 /**
- * @testdox Sluggable Model Trait
  * @coversDefaultClass \Railgun\Models\Traits\Sluggable
  */
 class SluggableTest extends ApplicationTestCase
@@ -21,9 +20,6 @@ class SluggableTest extends ApplicationTestCase
         parent::setUp();
     }
 
-    /**
-     * @testdox generates a slug using the standard configuration (name => slug)
-     */
     public function testSlugIsGenerated(): void
     {
         $instance = new class extends Model {
@@ -40,9 +36,6 @@ class SluggableTest extends ApplicationTestCase
         $this->assertEquals('hello-world', $instance->slug);
     }
 
-    /**
-     * @testdox generates a slug using a custom configuration (foo => bar)
-     */
     public function testSlugCustomParams(): void
     {
         $instance = new class extends Model {
@@ -67,9 +60,6 @@ class SluggableTest extends ApplicationTestCase
         $this->assertEquals('HELLO WORLD', $instance->bar);
     }
 
-    /**
-     * @testdox fails to create a slug when there is no valid source provided
-     */
     public function testNoSlugSource(): void
     {
 

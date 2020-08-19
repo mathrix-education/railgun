@@ -25,6 +25,7 @@ $factory->define(Course::class, static function (Faker $faker) {
         'content'         => Silicate::wall(),
         'order'           => 99,
         'premium'         => $faker->boolean(90),
+        'protected'       => false,
         'visible'         => $visible,
         'seo_index'       => $visible ? $faker->boolean(90) : false,
         'seo_keywords'    => implode(',', $faker->words(3)),

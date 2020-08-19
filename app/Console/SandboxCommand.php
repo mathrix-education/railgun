@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Railgun\Console;
 
+use Braintree\Gateway;
 use Illuminate\Console\Command;
 
 /**
@@ -19,7 +20,7 @@ class SandboxCommand extends Command
      */
     protected $signature = 'sandbox';
 
-    public function handle(): void
+    public function handle(Gateway $client): void
     {
         // Implement sandbox command
     }

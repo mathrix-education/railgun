@@ -1,0 +1,6 @@
+extend type Query {
+    """
+    Validate a cart.
+    """
+    cart(cart: CartInput!): Cart!
+}

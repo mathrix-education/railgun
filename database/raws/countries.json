@@ -1,18 +1,10 @@
 [
-  {
-    "id": 1,
-    "name": "France",
-    "slug": "fr",
-    "visible": 1,
-    "created_at": "2019-03-29 09:28:39",
-    "updated_at": "2019-03-29 09:28:39"
-  },
-  {
-    "id": 2,
-    "name": "Belgique",
-    "slug": "be",
-    "visible": 0,
-    "created_at": "2019-03-29 09:28:39",
-    "updated_at": "2019-03-29 09:28:39"
-  }
+    {
+        "id": 1,
+        "name": "France",
+        "slug": "fr",
+        "visible": 1,
+        "created_at": null,
+        "updated_at": null
+    }
 ]

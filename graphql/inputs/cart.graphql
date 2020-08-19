@@ -1,0 +1,7 @@
+input CartInput {
+    packs: [ID!]
+    trainings: [ID!]
+    chapters: [ID!]
+    plan: ID
+    coupon: ID
+}

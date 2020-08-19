@@ -9,7 +9,6 @@ use Railgun\Models\Course;
 use function factory;
 
 /**
- * @testdox Model Course
  * @coversDefaultClass \Railgun\Models\Course
  */
 class CourseTest extends ModelTestCase

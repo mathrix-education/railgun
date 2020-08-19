@@ -10,14 +10,8 @@ use Railgun\Models\User;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\E2E\HttpIntegrationTestCase;
 
-/**
- * @testdox Impersonate middleware
- */
 class ImpersonateMiddlewareTest extends HttpIntegrationTestCase
 {
-    /**
-     * @testdox swaps the current authenticated user
-     */
     public function testHandle(): void
     {
         $user = User::random();

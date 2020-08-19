@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Functional\Models;
 
 /**
- * @testdox Pack Model
  * @coversDefaultClass \Railgun\Models\Pack
  */
 class PackTest extends ModelTestCase
