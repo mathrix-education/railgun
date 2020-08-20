@@ -13,7 +13,6 @@ use Faker\Factory as FakerFactory;
 use Railgun\Models\Subscription;
 use Railgun\Models\User;
 use RuntimeException;
-use Throwable;
 use function app;
 use function array_replace;
 use function factory;
@@ -47,33 +46,42 @@ class BraintreeGenerator
         $user->save();
 
         $btSubscription = null;
+        $sleep          = 1;
 
         do {
-            $sleep = isset($sleep) ? $sleep + 1 : 0;
+            $sleep *= 2;
 
-            try {
-                /** @var PaymentMethod $btPaymentMethod */
-                $btPaymentMethod = $gateway->paymentMethod()->create([
-                    'customerId'         => $btCustomer->id,
-                    'paymentMethodNonce' => $faker->randomElement([
-                        Nonces::$transactable,
-                        Nonces::$transactableVisa,
-                        Nonces::$transactableMasterCard,
-                        Nonces::$transactableAmEx,
-                        Nonces::$transactableDebit,
-                    ]),
-                ])->paymentMethod;
+            $result = $gateway->paymentMethod()->create([
+                'customerId'         => $btCustomer->id,
+                'paymentMethodNonce' => $faker->randomElement([
+                    Nonces::$transactable,
+                    Nonces::$transactableVisa,
+                    Nonces::$transactableMasterCard,
+                    Nonces::$transactableAmEx,
+                    Nonces::$transactableDebit,
+                ]),
+            ]);
 
-                /** @var BraintreeSubscription $btSubscription */
-                $btSubscription = $gateway->subscription()->create([
-                    'planId'             => $options['planId'],
-                    'paymentMethodToken' => $btPaymentMethod->token,
-                ])->subscription;
-                break;
-            } catch (Throwable $exception) {
+            if (!$result->success) {
                 continue;
             }
-        } while (sleep($sleep) === 0 && $sleep <= 15);
+
+            /** @var PaymentMethod $btPaymentMethod */
+            $btPaymentMethod = $result->paymentMethod;
+
+            $result = $gateway->subscription()->create([
+                'planId'             => $options['planId'],
+                'paymentMethodToken' => $btPaymentMethod->token,
+            ]);
+
+            if (!$result->success) {
+                continue;
+            }
+
+            /** @var BraintreeSubscription $btSubscription */
+            $btSubscription = $result->subscription;
+            break;
+        } while (sleep($sleep) === 0 && $sleep <= 32);
 
         if (!$btSubscription) {
             throw new RuntimeException('Unable to generate Braintree subscription');
