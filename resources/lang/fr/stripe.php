@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 return [
     'errors.card.generic'            => 'Paiement refusé par votre banque, veuillez vérifier vos informations.',
+    'errors.card.3ds2'               => 'Le paimeent doit être confirmé avec la technologie 3D Secure.',
     'errors.card.insufficient_funds' => "Il semble qu'il n'y ai pas de fonds suffisants sur votre carte, veuillez changez votre moyen de paiement",
     'errors.card.expired'            => 'Votre carte a expiré, veuillez changez votre moyen de paiement.',
     'errors.card.incorrect_exp'      => "La date d'expiration de votre carte est invalide, veuillez la vérifier",

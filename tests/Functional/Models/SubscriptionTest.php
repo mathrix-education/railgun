@@ -65,7 +65,7 @@ class SubscriptionTest extends ModelTestCase
     protected function getStripeLegacySubscription(string $paymentMethodId): StripeSubscription
     {
         /** @var StripeClient $client */
-        $client = $this->app->make(StripeClientRegistry::class)->make('secondary');
+        $client = $this->app->make(StripeClientRegistry::class)->make(StripeClientRegistry::CLIENT_LEGACY);
         /** @var User $user */
         $user     = factory(User::class)->create();
         $customer = $client->customers->create(['email' => $user->email]);

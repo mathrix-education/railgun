@@ -46,22 +46,20 @@ class CheckoutTest extends GraphQLTestCase
                     'paymentIntentStatus' => PaymentIntent::STATUS_SUCCEEDED,
                 ],
             ],
-            'products|3DS2'             => [
+            'products|3ds2'             => [
                 'products'        => ['chapters', 'packs', 'trainings', 'coupon'],
                 'plan'            => null,
                 'paymentMethodId' => 'pm_card_threeDSecure2Required',
                 'expectations'    => [
-                    'invoiceStatus'       => Invoice::STATUS_OPEN,
-                    'paymentIntentStatus' => PaymentIntent::STATUS_REQUIRES_ACTION,
+                    'error_message' => trans('stripe.errors.card.3ds2'),
                 ],
             ],
-            'full|3DS2'                 => [
+            'full|3ds2'                 => [
                 'products'        => ['chapters', 'packs', 'trainings', 'coupon'],
                 'plan'            => ModeMachine::PLAN_MONTH,
                 'paymentMethodId' => 'pm_card_threeDSecure2Required',
                 'expectations'    => [
-                    'invoiceStatus'       => Invoice::STATUS_OPEN,
-                    'paymentIntentStatus' => PaymentIntent::STATUS_REQUIRES_ACTION,
+                    'error_message' => trans('stripe.errors.card.3ds2'),
                 ],
             ],
             'products|charge_fail'      => [

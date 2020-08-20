@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Railgun\Billing\Stripe\Checkouts;
 
 use Railgun\Billing\Stripe\Contracts\StripeSellable;
+use Railgun\Billing\Stripe\Exceptions\ThreeDSecureException;
 use Railgun\Jobs\DispatchCart;
 use Railgun\Jobs\UpsertSubscription;
+use Stripe\PaymentIntent;
 use Stripe\Subscription;
 use function sprintf;
 use function trans_choice;
@@ -46,10 +48,13 @@ class SubscriptionCheckout extends Checkout
         /** @noinspection PhpFieldAssignmentTypeMismatchInspection */
         $this->invoice = $this->subscription->latest_invoice;
 
-        // TODO: check metadata webhook update
         $this->client->invoices->update($this->invoice->id, [
             'metadata' => $this->cart->toMetadata(),
         ]);
+
+        if ($this->invoice->payment_intent->status === PaymentIntent::STATUS_REQUIRES_ACTION) {
+            throw new ThreeDSecureException($this->invoice->payment_intent);
+        }
 
         return $this;
     }

@@ -11,9 +11,13 @@ use Braintree\Subscription;
 use Braintree\WebhookNotification;
 use Braintree\Xml;
 use Carbon\Carbon;
+use DateTimeInterface;
+use JsonSerializable;
+use Railgun\Billing\Braintree\BraintreeGatewayRegistry;
 use Tests\E2E\GraphQL\GraphQLTestCase;
 use function base64_encode;
 use function config;
+use function is_array;
 use function str_replace;
 
 class WebhooksTestCase extends GraphQLTestCase
@@ -28,12 +32,46 @@ class WebhooksTestCase extends GraphQLTestCase
     }
 
     /**
-     * @param string $type The event kind ({@see WebhookNotification}).
-     * @param Base   $data The event data object.
+     * Recursively serialize a Braintree object.
+     *
+     * @param mixed $object The input object.
+     *
+     * @return mixed|mixed[]
      */
-    protected function callBraintreeWebhook(string $type, Base $data): void
+    protected function serialize($object)
     {
-        if ($data instanceof Subscription) {
+        $data = [];
+
+        if ($object instanceof DateTimeInterface) {
+            return $object;
+        }
+
+        if (is_array($object)) {
+            foreach ($object as $key => $value) {
+                $data[$key] = $this->serialize($value);
+            }
+
+            return $data;
+        }
+
+        if ($object instanceof JsonSerializable) {
+            foreach ($object->jsonSerialize() as $key => $value) {
+                $data[$key] = $this->serialize($value);
+            }
+
+            return $data;
+        }
+
+        return $object;
+    }
+
+    /**
+     * @param string $type   The event kind ({@see WebhookNotification}).
+     * @param Base   $object The event data object.
+     */
+    protected function callBraintreeWebhook(string $type, Base $object): void
+    {
+        if ($object instanceof Subscription) {
             $subject = 'subscription';
         } else {
             $subject = 'unknown';
@@ -41,11 +79,11 @@ class WebhooksTestCase extends GraphQLTestCase
 
         $event = WebhookNotification::factory([
             'kind'      => $type,
-            'subject'   => [$subject => $data->jsonSerialize()],
+            'subject'   => [$subject => $this->serialize($object)],
             'timestamp' => Carbon::now(),
         ]);
 
-        $payload   = base64_encode(Xml::buildXmlFromArray(['notification' => $event->jsonSerialize()]));
+        $payload   = base64_encode(Xml::buildXmlFromArray(['notification' => $this->serialize($event)]));
         $signature = $this->sign($payload);
 
         $this->postBraintree($payload, $signature);
@@ -70,7 +108,11 @@ class WebhooksTestCase extends GraphQLTestCase
     {
         $this->call(
             'post',
-            str_replace('{gateway}', 'primary', config('braintree.webhooks_route.uri')),
+            str_replace(
+                '{gateway}',
+                BraintreeGatewayRegistry::BRAINTREE_GATEWAY_LEGACY,
+                config('braintree.webhooks_route.uri'),
+            ),
             [
                 'bt_payload'   => $payload,
                 'bt_signature' => $signature,

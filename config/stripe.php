@@ -2,18 +2,20 @@
 
 declare(strict_types=1);
 
+use Railgun\Billing\Stripe\StripeClientRegistry;
+
 return [
     'defaults'       => [
-        'client'   => 'primary',
-        'webhooks' => 'primary',
+        'client'   => StripeClientRegistry::CLIENT_MAIN,
+        'webhooks' => StripeClientRegistry::CLIENT_MAIN,
     ],
     'clients'        => [
-        'primary'   => env('STRIPE_PRIMARY_API_KEY'),
-        'secondary' => env('STRIPE_SECONDARY_API_KEY'),
+        StripeClientRegistry::CLIENT_MAIN   => env('STRIPE_API_KEY'),
+        StripeClientRegistry::CLIENT_LEGACY => env('STRIPE_LEGACY_API_KEY'),
     ],
     'webhooks'       => [
-        'primary'   => env('STRIPE_PRIMARY_WEBHOOKS_SECRET'),
-        'secondary' => env('STRIPE_PRIMARY_WEBHOOKS_SECRET'),
+        StripeClientRegistry::CLIENT_MAIN   => env('STRIPE_WEBHOOKS_SECRET'),
+        StripeClientRegistry::CLIENT_LEGACY => env('STRIPE_LEGACY_WEBHOOKS_SECRET'),
     ],
     'webhooks_route' => [
         'uri'  => '/webhooks/stripe/{account}',

@@ -9,6 +9,9 @@ use Stripe\StripeClient;
 
 class StripeClientRegistry extends Registry
 {
+    public const CLIENT_MAIN   = 'main';
+    public const CLIENT_LEGACY = 'legacy';
+
     protected string $defaultPath = 'stripe.defaults.client';
     protected string $configPath  = 'stripe.clients.%s';
 

@@ -30,20 +30,25 @@ class UpsertSubscription extends Job
     {
         if ($this->entry instanceof BraintreeSubscription) {
             $converted = Subscription::fromBraintree($this->entry);
-        } else {
+        } elseif ($this->entry instanceof StripeSubscription) {
             $converted = Subscription::fromStripe($this->entry);
 
             if (config('stripe.sandbox') && !User::query()->where('stripe_id')->exists()) {
                 return new Subscription(); // @codeCoverageIgnore
             }
+        } else {
+            /** @var Subscription $converted */
+            $converted = $this->entry;
+        }
+
+        // Do not override existing user_id
+        $data = $converted->toArray();
+        if ($data['user_id'] === null) {
+            unset($data['user_id']);
         }
 
         /** @var Subscription $subscription */
-        $subscription = Subscription::query()
-            ->updateOrCreate(
-                ['id' => $converted->id],
-                $converted->toArray(),
-            );
+        $subscription = Subscription::query()->updateOrCreate(['id' => $converted->id], $data);
 
         $subscription->flushCache();
 
