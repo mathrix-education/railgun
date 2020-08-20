@@ -20,6 +20,7 @@ class WebhooksController
         Event::CUSTOMER_SUBSCRIPTION_DELETED => SubscriptionsWebhook::class . '@delete',
         Event::INVOICE_PAID                  => InvoicesWebhook::class . '@process',
         Event::INVOICE_PAYMENT_SUCCEEDED     => InvoicesWebhook::class . '@process',
+        Event::SETUP_INTENT_SUCCEEDED        => SetupIntentWebhook::class . '@handle',
     ];
 
     /**

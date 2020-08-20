@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
+use Railgun\Billing\Braintree\BraintreeGatewayRegistry;
+
 return [
     'defaults'       => [
-        'gateway' => 'primary',
+        'gateway' => BraintreeGatewayRegistry::BRAINTREE_GATEWAY_LEGACY,
     ],
     'gateways'       => [
-        'primary' => [
+        BraintreeGatewayRegistry::BRAINTREE_GATEWAY_LEGACY => [
             'environment' => env('BRAINTREE_ENVIRONMENT', 'sandbox'),
             'merchantId'  => env('BRAINTREE_MERCHANT_ID'),
             'publicKey'   => env('BRAINTREE_PUBLIC_KEY'),

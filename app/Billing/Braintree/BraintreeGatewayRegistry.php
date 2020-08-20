@@ -9,6 +9,8 @@ use Railgun\Support\Registry;
 
 class BraintreeGatewayRegistry extends Registry
 {
+    public const BRAINTREE_GATEWAY_LEGACY = 'legacy';
+
     protected string $defaultPath = 'braintree.defaults.gateway';
     protected string $configPath  = 'braintree.gateways.%s';
 

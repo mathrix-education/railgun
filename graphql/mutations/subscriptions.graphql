@@ -1,12 +1,20 @@
 extend type Mutation {
     """
     Update an existing subscription payment method.
-    A new payement method can be created using Stripe.js
+    A new payment method has to be created using Stripe.js
     [createPaymentMethod](https://stripe.com/docs/js/payment_methods/create_payment_method).
 
-    You should request for the `latest_invoice.payement_intent.client_secret` and check the
-    `latest_invoice.payment_intent.status`.
-    See the [Payement Intent State Machine](https://stripe.com/docs/payments/intents) for further information.
+    This mutation may return a ThreeDSecureException error (category: `billing`, code: `THREE_D_SECURE`) containing the
+    extensions:
+    ```
+    {
+        "type": "setup_intent",
+        "client_secret": "seti_foobar",
+    }
+    ```
+
+    In this case, the `client_secret` must be passed to Stripe.js using
+    [confirmCardSetup](https://stripe.com/docs/js/setup_intents/confirm_card_setup).
     """
     updateSubscription(input: UpdateSubscription! @spread): Subscription_!
 }

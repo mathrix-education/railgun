@@ -24,7 +24,7 @@ use Stripe\Invoice;
 use Stripe\Price;
 use Stripe\Subscription as StripeSubscription;
 use function app;
-use function in_array;
+use function array_key_exists;
 use function str_pad;
 use const STR_PAD_LEFT;
 
@@ -54,14 +54,24 @@ class Subscription extends BaseModel implements CacheableContract
     public const PROCESSOR_STRIPE           = 'stripe';
     public const PROCESSOR_STRIPE_LEGACY    = 'stripe_legacy';
     public const PROCESSOR_BRAINTREE_LEGACY = 'braintree_legacy';
-    public const BRAINTREE_STATUS_MAP       = [
-        // Subscriptions
+    public const CONVERSION_MAPPINGS        = [
+        // Plans
+        'v3_monthly'                          => ModeMachine::PLAN_LEGACY_MONTHLY,
+        'v3_annually'                         => ModeMachine::PLAN_LEGACY_ANNUALLY,
+        'v3_biannually'                       => ModeMachine::PLAN_LEGACY_BIANNUALLY,
+        'v4_monthly'                          => ModeMachine::PLAN_LEGACY_MONTHLY,
+        'v4_annually'                         => ModeMachine::PLAN_LEGACY_ANNUALLY,
+        'v4_biannually'                       => ModeMachine::PLAN_LEGACY_BIANNUALLY,
+        'v5_monthly'                          => ModeMachine::PLAN_LEGACY_MONTHLY,
+        'v5_annually'                         => ModeMachine::PLAN_LEGACY_ANNUALLY,
+        'v5_biannually'                       => ModeMachine::PLAN_LEGACY_BIANNUALLY,
+        // Subscription status
         BraintreeSubscription::ACTIVE         => StripeSubscription::STATUS_ACTIVE,
         BraintreeSubscription::CANCELED       => StripeSubscription::STATUS_CANCELED,
         BraintreeSubscription::EXPIRED        => StripeSubscription::STATUS_CANCELED,
         BraintreeSubscription::PAST_DUE       => StripeSubscription::STATUS_PAST_DUE,
         BraintreeSubscription::PENDING        => StripeSubscription::STATUS_ACTIVE,
-        // Invoices
+        // Invoice status
         Transaction::AUTHORIZATION_EXPIRED    => Invoice::STATUS_UNCOLLECTIBLE,
         Transaction::AUTHORIZED               => Invoice::STATUS_OPEN,
         Transaction::AUTHORIZING              => Invoice::STATUS_OPEN,
@@ -112,7 +122,7 @@ class Subscription extends BaseModel implements CacheableContract
 
         return new self([
             'id'                   => $stripeSubscription->id,
-            'plan'                 => in_array($price->lookup_key, ModeMachine::PLANS, true)
+            'plan'                 => array_key_exists($price->lookup_key, ModeMachine::PRICES)
                 ? $price->lookup_key
                 : $price->id,
             'customer_id'          => $customerId,
@@ -130,7 +140,7 @@ class Subscription extends BaseModel implements CacheableContract
     {
         $gateway = app()->make(Gateway::class);
 
-        $status = self::BRAINTREE_STATUS_MAP[$btSubscription->status];
+        $status = self::CONVERSION_MAPPINGS[$btSubscription->status];
 
         // We need to use the customer search workaround
         $customerResults = $gateway->customer()->search([
@@ -217,7 +227,7 @@ class Subscription extends BaseModel implements CacheableContract
                     'invoice_pdf'        => null,
                     'payment_intent'     => null,
                     'number'             => $transaction->id,
-                    'status'             => self::BRAINTREE_STATUS_MAP[$transaction->status],
+                    'status'             => self::CONVERSION_MAPPINGS[$transaction->status],
                 ]);
             }
 
@@ -225,7 +235,9 @@ class Subscription extends BaseModel implements CacheableContract
             $localStripeClient = $this->client;
 
             if ($this->processor === self::PROCESSOR_STRIPE_LEGACY) {
-                $localStripeClient = app()->make(StripeClientRegistry::class)->make('secondary');
+                $localStripeClient = app()
+                    ->make(StripeClientRegistry::class)
+                    ->make(StripeClientRegistry::CLIENT_LEGACY);
             }
 
             try {
@@ -284,7 +296,9 @@ class Subscription extends BaseModel implements CacheableContract
             $localStripeClient = $this->client;
 
             if ($this->processor === self::PROCESSOR_STRIPE_LEGACY) {
-                $localStripeClient = app()->make(StripeClientRegistry::class)->make('secondary');
+                $localStripeClient = app()
+                    ->make(StripeClientRegistry::class)
+                    ->make(StripeClientRegistry::CLIENT_LEGACY);
             }
 
             try {

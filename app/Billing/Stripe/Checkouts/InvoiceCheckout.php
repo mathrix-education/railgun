@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Railgun\Billing\Stripe\Contracts\StripeSellable;
+use Railgun\Billing\Stripe\Exceptions\ThreeDSecureException;
 use Railgun\Jobs\DispatchCart;
 use Stripe\ErrorObject;
 use Stripe\Exception\ApiErrorException;
@@ -122,8 +123,7 @@ class InvoiceCheckout extends Checkout
             ]);
 
             if ($exception->getStripeCode() === ErrorObject::CODE_INVOICE_PAYMENT_INTENT_REQUIRES_ACTION) {
-                // invoice_payment_intent_requires_action is considered as a "valid" response
-                return $this;
+                throw new ThreeDSecureException($this->invoice->payment_intent);
             }
 
             throw $exception;
