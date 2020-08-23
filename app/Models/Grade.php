@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Railgun\Models\Traits\Reorderable;
 use Railgun\Models\Traits\Sluggable;
 
 /**
@@ -33,14 +32,14 @@ class Grade extends BaseModel
 {
     use Sluggable;
 
-    protected       $fillable   = [
+    protected       $fillable = [
         'name',
         'slug',
         'order',
         'visible',
         'parent_id',
     ];
-    protected       $casts      = ['visible' => 'boolean'];
+    protected       $casts    = ['visible' => 'boolean'];
 
     /**
      * The parent grade.
