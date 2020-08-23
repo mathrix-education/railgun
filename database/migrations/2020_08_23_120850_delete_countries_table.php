@@ -13,8 +13,8 @@ class DeleteCountriesTable extends Migration
      */
     public function up(): void
     {
-        Schema::table('grades', static function(Blueprint $table): void {
-            $table->dropForeign(['country_id']) ;
+        Schema::table('grades', static function (Blueprint $table): void {
+            $table->dropForeign(['country_id']);
             $table->dropColumn(['country_id']);
         });
 
@@ -35,8 +35,7 @@ class DeleteCountriesTable extends Migration
         });
 
         Schema::table('grades', static function (Blueprint $table): void {
-            $table->unsignedBigInteger('country_id');
-            $table->foreign('country_id')->references('id')->on('countries');
+            $table->foreignId('country_id')->constrained()->after('parent_id');
         });
     }
 }
