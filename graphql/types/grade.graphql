@@ -5,7 +5,6 @@ type Grade {
     order: Int!
     visible: Boolean!
     parent: Grade @belongsTo
-    country: Country! @belongsTo
     disciplines: [Discipline!]! @belongsToMany
     themes: [Theme!]! @hasMany
     trainings: [Training!]! @belongsToMany
