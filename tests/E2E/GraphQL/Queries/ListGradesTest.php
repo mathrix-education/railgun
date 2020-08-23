@@ -14,22 +14,18 @@ class ListGradesTest extends GraphQLTestCase
         $this->graphQL(
             <<<'GRAPHQL'
             query {
-                listGrade {
+                listGrades {
                     id
                     name
                     slug
                     order
                     visible
-                    created_at
-                    updated_at
                     parent {
                         id
                         name
                         slug
                         order
                         visible
-                        created_at
-                        updated_at
                     }
                 }
             }
@@ -45,7 +41,7 @@ class ListGradesTest extends GraphQLTestCase
         $this->assertNoErrors();
         $this->assertCount(
             DB::table('grades')->count(),
-            $this->getData(),
+            $this->getData('listGrades'),
         );
     }
 }
