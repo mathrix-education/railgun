@@ -2,219 +2,229 @@
   {
     "grade_id": 5,
     "discipline_id": 1,
-    "visible": 1,
-    "order": 0
+    "order": 0,
+    "visible": 1
   },
   {
-    "grade_id": 6,
-    "discipline_id": 1,
-    "visible": 1,
-    "order": 0
+    "grade_id": 5,
+    "discipline_id": 2,
+    "order": 1,
+    "visible": 1
   },
   {
-    "grade_id": 7,
-    "discipline_id": 1,
-    "visible": 1,
-    "order": 0
+    "grade_id": 5,
+    "discipline_id": 3,
+    "order": 2,
+    "visible": 1
+  },
+  {
+    "grade_id": 5,
+    "discipline_id": 7,
+    "order": 3,
+    "visible": 1
+  },
+  {
+    "grade_id": 5,
+    "discipline_id": 8,
+    "order": 4,
+    "visible": 1
+  },
+  {
+    "grade_id": 5,
+    "discipline_id": 11,
+    "order": 5,
+    "visible": 1
   },
   {
     "grade_id": 8,
     "discipline_id": 1,
-    "visible": 1,
-    "order": 0
+    "order": 0,
+    "visible": 1
   },
   {
     "grade_id": 8,
     "discipline_id": 2,
-    "visible": 1,
-    "order": 0
+    "order": 1,
+    "visible": 1
   },
-
+  {
+    "grade_id": 8,
+    "discipline_id": 3,
+    "order": 2,
+    "visible": 1
+  },
   {
     "grade_id": 8,
     "discipline_id": 4,
-    "visible": 1,
-    "order": 0
+    "order": 3,
+    "visible": 1
   },
   {
-    "grade_id": 9,
-    "discipline_id": 1,
-    "visible": 1,
-    "order": 0
+    "grade_id": 8,
+    "discipline_id": 7,
+    "order": 4,
+    "visible": 1
   },
   {
-    "grade_id": 9,
-    "discipline_id": 6,
-    "visible": 1,
-    "order": 0
-  },
-  {
-    "grade_id": 10,
-    "discipline_id": 1,
-    "visible": 1,
-    "order": 0
-  },
-  {
-    "grade_id": 10,
-    "discipline_id": 6,
-    "visible": 1,
-    "order": 0
+    "grade_id": 8,
+    "discipline_id": 8,
+    "order": 5,
+    "visible": 1
   },
   {
     "grade_id": 11,
     "discipline_id": 1,
-    "visible": 1,
-    "order": 0
+    "order": 0,
+    "visible": 1
   },
   {
     "grade_id": 11,
     "discipline_id": 2,
-    "visible": 1,
-    "order": 0
+    "order": 1,
+    "visible": 1
   },
   {
     "grade_id": 11,
     "discipline_id": 3,
-    "visible": 1,
-    "order": 0
+    "order": 2,
+    "visible": 1
   },
   {
     "grade_id": 11,
     "discipline_id": 4,
-    "visible": 1,
-    "order": 0
+    "order": 3,
+    "visible": 1
   },
   {
     "grade_id": 11,
     "discipline_id": 6,
-    "visible": 1,
-    "order": 0
+    "order": 4,
+    "visible": 1
+  },
+  {
+    "grade_id": 11,
+    "discipline_id": 7,
+    "order": 5,
+    "visible": 1
+  },
+  {
+    "grade_id": 11,
+    "discipline_id": 8,
+    "order": 6,
+    "visible": 1
+  },
+  {
+    "grade_id": 11,
+    "discipline_id": 16,
+    "order": 7,
+    "visible": 1
   },
   {
     "grade_id": 12,
     "discipline_id": 1,
-    "visible": 1,
-    "order": 0
+    "order": 0,
+    "visible": 1
+  },
+  {
+    "grade_id": 12,
+    "discipline_id": 2,
+    "order": 1,
+    "visible": 1
+  },
+  {
+    "grade_id": 12,
+    "discipline_id": 3,
+    "order": 2,
+    "visible": 1
+  },
+  {
+    "grade_id": 12,
+    "discipline_id": 9,
+    "order": 3,
+    "visible": 1
+  },
+  {
+    "grade_id": 12,
+    "discipline_id": 11,
+    "order": 4,
+    "visible": 1
   },
   {
     "grade_id": 13,
     "discipline_id": 1,
-    "visible": 1,
-    "order": 0
+    "order": 0,
+    "visible": 1
+  },
+  {
+    "grade_id": 13,
+    "discipline_id": 2,
+    "order": 1,
+    "visible": 1
+  },
+  {
+    "grade_id": 13,
+    "discipline_id": 3,
+    "order": 2,
+    "visible": 1
+  },
+  {
+    "grade_id": 13,
+    "discipline_id": 9,
+    "order": 3,
+    "visible": 1
+  },
+  {
+    "grade_id": 13,
+    "discipline_id": 11,
+    "order": 4,
+    "visible": 1
   },
   {
     "grade_id": 14,
     "discipline_id": 1,
-    "visible": 1,
-    "order": 0
-  },
-  
-  {
-    "grade_id": 5,
-    "discipline_id": 11,
-    "visible": 1,
-    "order": 0
-  },
-  {
-    "grade_id": 8,
-    "discipline_id": 11,
-    "visible": 1,
-    "order": 0
-  },
-  {
-    "grade_id": 10,
-    "discipline_id": 5,
-    "visible": 1,
-    "order": 0
-  },
-  {
-    "grade_id": 11,
-    "discipline_id": 7,
-    "visible": 1,
-    "order": 0
-  },
-  {
-    "grade_id": 11,
-    "discipline_id": 8,
-    "visible": 1,
-    "order": 0
-  },
-  {
-    "grade_id": 10,
-    "discipline_id": 7,
-    "visible": 1,
-    "order": 0
-  },
-  {
-    "grade_id": 10,
-    "discipline_id": 8,
-    "visible": 1,
-    "order": 0
-  },
-  {
-    "grade_id": 9,
-    "discipline_id": 7,
-    "visible": 1,
-    "order": 0
-  },
-  {
-    "grade_id": 9,
-    "discipline_id": 8,
-    "visible": 1,
-    "order": 0
-  },
-  {
-    "grade_id": 7,
-    "discipline_id": 7,
-    "visible": 1,
-    "order": 0
-  },
-  {
-    "grade_id": 7,
-    "discipline_id": 8,
-    "visible": 1,
-    "order": 0
-  },
-  {
-    "grade_id": 5,
-    "discipline_id": 7,
-    "visible": 1,
-    "order": 0
-  },
-  {
-    "grade_id": 5,
-    "discipline_id": 8,
-    "visible": 1,
-    "order": 0
+    "order": 0,
+    "visible": 1
   },
   {
     "grade_id": 14,
-    "discipline_id": 7,
-    "visible": 1,
-    "order": 0
-  },
-  {
-    "grade_id": 14,
-    "discipline_id": 8,
-    "visible": 1,
-    "order": 0
+    "discipline_id": 2,
+    "order": 1,
+    "visible": 1
   },
   {
     "grade_id": 14,
     "discipline_id": 3,
-    "visible": 1,
-    "order": 0
+    "order": 2,
+    "visible": 1
   },
   {
-    "grade_id": 5,
-    "discipline_id": 3,
-    "visible": 1,
-    "order": 0
+    "grade_id": 14,
+    "discipline_id": 9,
+    "order": 3,
+    "visible": 1
   },
   {
-    "grade_id": 11,
+    "grade_id": 14,
     "discipline_id": 11,
-    "visible": 1,
-    "order": 0
+    "order": 4,
+    "visible": 1
+  },
+  {
+    "grade_id": 14,
+    "discipline_id": 12,
+    "order": 5,
+    "visible": 1
+  },
+  {
+    "grade_id": 15,
+    "discipline_id": 1,
+    "order": 0,
+    "visible": 1
+  },
+  {
+    "grade_id": 15,
+    "discipline_id": 2,
+    "order": 1,
+    "visible": 1
   }
 ]

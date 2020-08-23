@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-
 
 class CreateDisciplineGradeTable extends Migration
 {
@@ -33,22 +33,30 @@ class CreateDisciplineGradeTable extends Migration
                 ->onDelete('cascade');
         });
 
-        collect()
-            ->merge(
-                DB::table('themes')
-                ->select(['grade_id', 'discipline_id', 'visible'])
-                ->groupBy(['grade_id', 'discipline_id'])
-                ->get()
-            ->each(static function (stdClass $disciplineGrade): void {
-                DB::table('discipline_grade')
-                    ->insert([
-                        'grade_id'      => $disciplineGrade->grade_id,
-                        'discipline_id' => $disciplineGrade->discipline_id,
-                        'visible'       => $disciplineGrade->visible,
-                        'order'         =>
-                    ]);
+        DB::table('themes')
+            ->selectRaw('grade_id, discipline_id, max(visible) as visible')
+            ->groupBy(['grade_id', 'discipline_id'])
+            ->orderByRaw('grade_id, discipline_id')
+            ->get()
+            ->map(static fn(stdClass $line) => array_merge((array)$line, ['visible' => true]))
+            ->pipe(static function (Collection $lines) {
+                $iterator = 0;
+                $gradeId  = null;
+
+                return $lines->map(static function ($line) use (&$iterator, &$gradeId) {
+                    if ($line['grade_id'] !== $gradeId) {
+                        $gradeId  = $line['grade_id'];
+                        $iterator = 0;
+                    }
+
+                    $line['order'] = $iterator++;
+
+                    return $line;
+                });
             })
-            );
+            ->tap(static function (Collection $lines): void {
+                DB::table('discipline_grade')->insert($lines->toArray());
+            });
     }
 
     /**
