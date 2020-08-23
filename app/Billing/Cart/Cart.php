@@ -116,6 +116,10 @@ class Cart extends Container
             $args['plan'] = $metadata['plan'];
         }
 
+        if (isset($metadata['coupon'])) {
+            $args['coupon'] = $metadata['coupon'];
+        }
+
         return static::build($args);
     }
 
@@ -276,6 +280,7 @@ class Cart extends Container
             'packs'      => $this->packs->pluck('id')->implode(','),
             'trainings'  => $this->trainings->pluck('id')->implode(','),
             'plan'       => $this->plan ? $this->plan->lookup_key : null,
+            'coupon'     => $this->coupon ? $this->coupon->id : null,
         ];
     }
 }

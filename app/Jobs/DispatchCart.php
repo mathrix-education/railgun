@@ -53,13 +53,24 @@ class DispatchCart extends Job
             });
 
         $products
-            ->map(fn(array $data) => array_merge($data, [
-                'user_id'        => $this->recipientId,
-                'transaction_id' => $this->transactionId,
-            ]))
-            ->map(static fn(array $data) => Acquisition::query()->updateOrCreate(
-                Arr::only($data, ['user_id', 'product_type', 'product_id']),
-                $data,
-            ));
+            ->map(function (array $data) {
+                $data = array_merge($data, [
+                    'user_id'        => $this->recipientId,
+                    'transaction_id' => $this->transactionId,
+                ]);
+
+                $exists = Acquisition::query()
+                    ->where(Arr::only($data, ['user_id', 'product_type', 'product_id']))
+                    ->exists();
+
+                return $exists ? $data : null;
+            })
+            ->reject(static fn(?array $data) => $data === null)
+            ->tap(static function (Collection $acquisitions): void {
+                if ($acquisitions->isNotEmpty()) {
+                    $this->cart->coupon->decrementCounter();
+                    Acquisition::query()->insert($acquisitions->toArray());
+                }
+            });
     }
 }
