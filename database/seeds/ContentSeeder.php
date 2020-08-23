@@ -49,7 +49,10 @@ class ContentSeeder extends AdvancedSeeder
         // Themes
         $this->seedFile('themes.json');
 
-        $gradeDisciplinePairs = DB::table('themes')->select(['grade_id', 'discipline_id'])->get();
+        $gradeDisciplinePairs = DB::table('themes')
+            ->select(['grade_id', 'discipline_id'])
+            ->groupBy(['grade_id', 'discipline_id'])
+            ->get();
 
         // Grade-discipline junction table
 
