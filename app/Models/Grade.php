@@ -87,8 +87,7 @@ class Grade extends BaseModel
      */
     public function disciplines(): BelongsToMany
     {
-        return $this->belongsToMany(Discipline::class, 'themes')
-            ->groupBy(['grade_id', 'discipline_id']);
+        return $this->belongsToMany(Discipline::class);
     }
 
     /**
