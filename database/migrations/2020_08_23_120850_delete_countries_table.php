@@ -34,7 +34,7 @@ class DeleteCountriesTable extends Migration
             $table->timestamps();
         });
 
-        Schema::table('grades', static function(Blueprint $table): void {
+        Schema::table('grades', static function (Blueprint $table): void {
             $table->unsignedBigInteger('country_id');
             $table->foreign('country_id')->references('id')->on('countries');
         });
