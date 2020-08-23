@@ -25,7 +25,7 @@ class DisciplineTest extends ModelTestCase
             'grades',
             [],
             [],
-            Arr::except(factory(Theme::class)->raw(), ['grade_id', 'discipline_id']),
+            ['order' => 99, 'visible' => true],
         );
     }
 
