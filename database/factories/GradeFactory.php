@@ -21,7 +21,6 @@ $factory->define(Grade::class, static function (Faker $faker) {
         'slug'       => Str::slug($name),
         'order'      => $faker->numberBetween(0, 100),
         'parent_id'  => null,
-        'country_id' => Country::random()->id,
         'visible'    => $faker->boolean(95),
     ];
 });
