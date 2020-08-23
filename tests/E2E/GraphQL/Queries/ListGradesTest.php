@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\E2E\GraphQL\Queries;
 
 use Illuminate\Support\Facades\DB;
