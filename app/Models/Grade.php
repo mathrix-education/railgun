@@ -23,7 +23,6 @@ use Railgun\Models\Traits\Sluggable;
  * @property-read Carbon                  $created_at
  * @property-read Carbon                  $updated_at
  * ---
- * @property-read Country                 $country
  * @property-read Grade|null              $parent
  * @property-read Collection|Grade[]      $children
  * @property-read Collection|Discipline[] $disciplines
@@ -32,7 +31,6 @@ use Railgun\Models\Traits\Sluggable;
  */
 class Grade extends BaseModel
 {
-    use Reorderable;
     use Sluggable;
 
     protected       $fillable   = [
@@ -41,10 +39,8 @@ class Grade extends BaseModel
         'order',
         'visible',
         'parent_id',
-        'country_id',
     ];
     protected       $casts      = ['visible' => 'boolean'];
-    protected array $orderGroup = ['country_id'];
 
     /**
      * The parent grade.
@@ -64,14 +60,6 @@ class Grade extends BaseModel
     public function children(): HasMany
     {
         return $this->hasMany(self::class, 'parent_id');
-    }
-
-    /**
-     * @return BelongsTo<Country>
-     */
-    public function country(): BelongsTo
-    {
-        return $this->belongsTo(Country::class);
     }
 
     /**

@@ -22,10 +22,6 @@ input CreateGrade {
     The grade related parent ID.
     """
     parent_id: ID @rules(apply: ["integer", "exists:grades,id"])
-    """
-    The grade related country ID.
-    """
-    country_id: ID! @rules(apply: ["integer", "exists:countries,id"])
 }
 
 input UpdateGrade {
@@ -56,8 +52,4 @@ input UpdateGrade {
     The grade related parent ID.
     """
     parent_id: ID @rules(apply: ["integer", "exists:grades,id"])
-    """
-    The grade related country ID.
-    """
-    country_id: ID @rules(apply: ["integer", "exists:countries,id"])
 }
