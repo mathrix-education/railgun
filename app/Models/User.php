@@ -67,7 +67,8 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     use StripeCustomer;
 
     public const DEFAULT_DATA = [
-      'id' => 0,
+        'id' => 0,
+        'username' => 'Utilisateur anonyme',
     ];
 
     protected $fillable   = [
