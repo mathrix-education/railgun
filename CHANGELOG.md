@@ -6,6 +6,9 @@
 - **disciplines**: `createDiscipline` and `updateDiscipline` mutations deleted
 - **grades**: `createGrade` and `updateGrade` mutations deleted
 
+### Bug fixes
+- **stripe**: do not trigger error on unknown webhook objects
+
 ## 12.0.1
 ### Bug fixes
 - **coupons**: coupons counters are now correctly decremented
