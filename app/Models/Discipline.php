@@ -41,7 +41,7 @@ class Discipline extends BaseModel
      */
     public function grades(): BelongsToMany
     {
-        return $this->belongsToMany(Grade::class);
+        return $this->belongsToMany(Grade::class)->orderBy('grades.order');
     }
 
     /**

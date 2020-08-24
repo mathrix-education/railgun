@@ -75,8 +75,9 @@ class Grade extends BaseModel
      */
     public function disciplines(): BelongsToMany
     {
-        return $this->belongsToMany(Discipline::class)->withPivot('order')
-            ->orderBy('discipline.order');
+        return $this->belongsToMany(Discipline::class)
+            ->withPivot('order')
+            ->orderBy('pivot_order');
     }
 
     /**

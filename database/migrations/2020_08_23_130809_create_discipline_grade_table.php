@@ -22,11 +22,10 @@ class CreateDisciplineGradeTable extends Migration
             $table->foreignId('discipline_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->primary(['grade_id', 'discipline_id']);
             $table->unsignedSmallInteger('order');
             $table->boolean('visible');
 
-
+            $table->primary(['grade_id', 'discipline_id']);
         });
 
         DB::table('themes')
