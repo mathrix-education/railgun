@@ -73,7 +73,10 @@ class DispatchCart extends Job
             ->reject(static fn(?array $data) => $data === null)
             ->tap(function (Collection $acquisitions): void {
                 if ($acquisitions->isNotEmpty()) {
-                    $this->cart->coupon->decrementCounter();
+                    if ($this->cart->coupon) {
+                        $this->cart->coupon->decrementCounter();
+                    }
+
                     Acquisition::query()->insert($acquisitions->toArray());
                 }
             });
