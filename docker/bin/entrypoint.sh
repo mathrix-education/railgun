@@ -13,7 +13,16 @@ case $mode in
 server)
     artisan lighthouse:clear-cache
     artisan migrate --force
-    cmd="ppm start ${*} | gcloud-logs &"
+
+    if [[ -n "$APP_ENV" ]]; then
+        args="--app-env=$APP_ENV ${*}"
+    else
+        args="${*}"
+    fi
+
+    echo "args: $args"
+
+    cmd="ppm start $args | gcloud-logs &"
     ;;
 worker)
     cmd="artisan queue:work ${*} | gcloud-logs &"

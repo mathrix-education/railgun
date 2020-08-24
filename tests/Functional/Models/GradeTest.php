@@ -30,14 +30,6 @@ class GradeTest extends ModelTestCase
     }
 
     /**
-     * @covers ::country
-     */
-    public function testCountry(): void
-    {
-        $this->assertBelongsTo('country');
-    }
-
-    /**
      * @covers ::themes
      */
     public function testThemes(): void

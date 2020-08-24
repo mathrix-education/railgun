@@ -2,7 +2,7 @@ extend type Query {
     """
     List all the existing grades.
     """
-    listGrades: [Grade!]! @all
+    listGrades: [Grade!]!
 
     """
     Read an existing grade.

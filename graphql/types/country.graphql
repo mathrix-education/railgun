@@ -1,9 +1,0 @@
-type Country {
-    id: ID!
-    name: String!
-    slug: String!
-    visible: Boolean!
-    created_at: DateTime!
-    updated_at: DateTime!
-    grades: [Grade!]! @hasMany
-}

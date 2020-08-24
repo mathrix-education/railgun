@@ -45,8 +45,8 @@ RUN composer global require hirak/prestissimo && \
     # Hardcode release
     sed -i "s/RELEASE_ALIAS/$RELEASE/g" /var/www/config/app.php /var/www/config/sentry.php && \
     # Move binaries
+    ln -s /var/www/artisan /usr/bin/artisan && \
     mv /var/www/docker/bin/entrypoint.sh /usr/bin/railgun && \
-    mv /var/www/docker/bin/artisan.php /var/www/vendor/bin/artisan && \
     mv /var/www/docker/bin/gcloud-logs.php /var/www/vendor/bin/gcloud-logs && \
     # Cleanup
     rm -rf /usr/bin/composer /root/.composer /var/www/docker

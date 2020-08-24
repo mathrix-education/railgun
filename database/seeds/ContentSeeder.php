@@ -12,11 +12,11 @@ use Railgun\Models\Notion;
 use Railgun\Models\Subject;
 
 /**
- * Seed the content data (countries, grades, disciplines, chapters, notions, courses, subjects, exercises, flashcards
+ * Seed the content data (grades, disciplines, chapters, notions, courses, subjects, exercises, flashcards
  * and exams.
  *
  * Schema:
- * countries <=> disciplines
+ * disciplines
  * └── themes
  *     └── chapters
  *         ├── notions
@@ -37,9 +37,6 @@ class ContentSeeder extends AdvancedSeeder
 
     public function run(): void
     {
-        // Countries
-        $this->seedFile('countries.json');
-
         // Grades
         $this->seedFile('grades.json');
 

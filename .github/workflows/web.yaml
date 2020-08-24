@@ -169,7 +169,7 @@ jobs:
   # ============================================================================
   deploy_gke:
     name: Deploy on Google Kubernetes Engine
-    if: github.event_name != 'pull_request' || needs.mappings.outputs.deploy_force
+    if: github.event_name != 'pull_request' || needs.mappings.outputs.deploy_force == '1'
     needs: [mappings, lint, tests, docker]
     runs-on: ubuntu-latest
     steps:
