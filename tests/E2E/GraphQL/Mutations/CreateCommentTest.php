@@ -40,6 +40,7 @@ class CreateCommentTest extends GraphQLTestCase
                 'commentable_id'   => $course->id,
             ],
         ]);
+
         $this->assertResponseOk();
         $this->assertNoErrors();
 
