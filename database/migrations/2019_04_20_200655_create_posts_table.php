@@ -17,15 +17,12 @@ class CreatePostsTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->string('slug');
-            $table->unsignedBigInteger('module_id');
-            $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
             // Foreign keys
-            $table->foreign('category_id')->references('id')->on('categories');
-            $table->foreign('module_id')->references('id')->on('modules');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignId('category_id')->constrained();
+            $table->foreignId('module_id')->constrained();
+            $table->foreignId('user_id')->constrained();
         });
     }
 

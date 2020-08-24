@@ -15,15 +15,13 @@ class RecreateVotesTable extends Migration
     {
         Schema::create('votes', static function (Blueprint $table): void {
             $table->uuid('id')->primary();
-            $table->unsignedBigInteger('comment_id');
-            $table->unsignedBigInteger('user_id');
             $table->tinyInteger('value');
             $table->timestamps();
             $table->unique(['comment_id', 'user_id']);
 
             // Foreign keys
-            $table->foreign('comment_id')->references('id')->on('comments');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignId('comment_id')->constrained();
+            $table->foreignId('user_id')->constrained();
         });
     }
 

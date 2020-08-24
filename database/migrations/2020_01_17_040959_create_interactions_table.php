@@ -15,7 +15,6 @@ class CreateInteractionsTable extends Migration
     {
         Schema::create('interactions', static function (Blueprint $table): void {
             $table->uuid('id')->primary();
-            $table->unsignedBigInteger('user_id');
             $table->morphs('interactable');
             $table->enum('comprehension', ['blur', 'clear'])->nullable();
             $table->unsignedTinyInteger('score')->nullable();
@@ -26,9 +25,8 @@ class CreateInteractionsTable extends Migration
             $table->unique(['user_id', 'interactable_type', 'interactable_id']);
 
             // Foreign keys
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
+            $table->foreignId('user_id')
+                ->constrained()
                 ->onDelete('cascade');
         });
     }

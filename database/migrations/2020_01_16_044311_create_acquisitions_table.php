@@ -15,14 +15,13 @@ class CreateAcquisitionsTable extends Migration
     {
         Schema::create('acquisitions', static function (Blueprint $table): void {
             $table->uuid('id')->primary();
-            $table->unsignedBigInteger('user_id');
             $table->morphs('product');
             $table->string('transaction_id')->nullable();
             $table->timestamps();
             $table->unique(['user_id', 'product_type', 'product_id']);
 
             // Foreign keys
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignId('user_id')->constrained();
         });
     }
 

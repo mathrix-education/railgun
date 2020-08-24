@@ -21,12 +21,11 @@ class CreateActivitiesTable extends Migration
             $table->unsignedSmallInteger('order');
             $table->boolean('premium');
             $table->boolean('reviewed');
-            $table->unsignedBigInteger('notion_id');
             $table->unsignedInteger('module_count')->default(0);
             $table->timestamps();
 
             // Foreign keys
-            $table->foreign('notion_id')->references('id')->on('notions');
+            $table->foreignId('notion_id')->constrained();
         });
     }
 

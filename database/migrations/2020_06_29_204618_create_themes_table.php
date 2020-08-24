@@ -22,13 +22,11 @@ class CreateThemesTable extends Migration
             $table->string('slug');
             $table->unsignedSmallInteger('order');
             $table->boolean('visible');
-            $table->unsignedBigInteger('grade_id');
-            $table->unsignedBigInteger('discipline_id');
             $table->timestamps();
 
             // Foreign keys
-            $table->foreign('grade_id')->references('id')->on('grades');
-            $table->foreign('discipline_id')->references('id')->on('disciplines');
+            $table->foreignId('grade_id')->constrained();
+            $table->foreignId('discipline_id')->constrained();
         });
 
         // Create themes
@@ -54,10 +52,8 @@ class CreateThemesTable extends Migration
             });
 
         Schema::table('chapters', static function (Blueprint $table): void {
-            $table->unsignedBigInteger('theme_id')->nullable()->after('visible');
-
             // Foreign keys
-            $table->foreign('theme_id')->references('id')->on('themes');
+            $table->foreignId('theme_id')->nullable()->after('visible')->constrained();
         });
 
         DB::table('themes')

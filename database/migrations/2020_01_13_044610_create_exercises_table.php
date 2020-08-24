@@ -23,12 +23,11 @@ class CreateExercisesTable extends Migration
             $table->unsignedTinyInteger('order');
             $table->boolean('premium');
             $table->boolean('visible');
-            $table->unsignedBigInteger('subject_id');
             $table->timestamps();
             $table->string('mapping');
 
             // Foreign keys
-            $table->foreign('subject_id')->references('id')->on('subjects');
+            $table->foreignId('subject_id')->constrained();
         });
     }
 

@@ -15,13 +15,11 @@ class CreateProductProductTable extends Migration
     {
         Schema::create('product_product', static function (Blueprint $table): void {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('child_id');
-            $table->unsignedBigInteger('parent_id');
             $table->unsignedSmallInteger('order');
 
             // Foreign keys
-            $table->foreign('child_id')->references('id')->on('products');
-            $table->foreign('parent_id')->references('id')->on('products');
+            $table->foreignId('child_id')->constrained();
+            $table->foreignId('parent_id')->constrained();
         });
     }
 

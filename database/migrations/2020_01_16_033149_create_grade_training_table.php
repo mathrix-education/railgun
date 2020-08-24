@@ -14,18 +14,14 @@ class CreateGradeTrainingTable extends Migration
     public function up(): void
     {
         Schema::create('grade_training', static function (Blueprint $table): void {
-            $table->unsignedBigInteger('grade_id');
-            $table->unsignedBigInteger('training_id');
             $table->primary(['grade_id', 'training_id']);
 
             // Foreign keys
-            $table->foreign('grade_id')
-                ->references('id')
-                ->on('grades')
+            $table->foreignId('grade_id')
+                ->constrained()
                 ->onDelete('cascade');
-            $table->foreign('training_id')
-                ->references('id')
-                ->on('trainings')
+            $table->foreignId('training_id')
+                ->constrained()
                 ->onDelete('cascade');
         });
     }

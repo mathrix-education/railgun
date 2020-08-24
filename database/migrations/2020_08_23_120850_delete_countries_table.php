@@ -35,7 +35,7 @@ class DeleteCountriesTable extends Migration
         });
 
         Schema::table('grades', static function (Blueprint $table): void {
-            $table->foreignId('country_id')->constrained()->after('parent_id');
+            $table->foreignId('country_id')->after('parent_id')->constrained();
         });
     }
 }

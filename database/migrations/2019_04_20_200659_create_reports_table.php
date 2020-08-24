@@ -19,11 +19,10 @@ class CreateReportsTable extends Migration
             $table->string('type');
             $table->text('content')->nullable();
             $table->string('status');
-            $table->unsignedBigInteger('module_id');
             $table->timestamps();
 
             // Foreign keys
-            $table->foreign('module_id')->references('id')->on('modules');
+            $table->foreignId('module_id')->constrained();
         });
     }
 

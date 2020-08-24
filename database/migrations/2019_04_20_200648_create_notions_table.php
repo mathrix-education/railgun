@@ -19,12 +19,11 @@ class CreateNotionsTable extends Migration
             $table->string('type');
             $table->boolean('visible');
             $table->unsignedSmallInteger('order');
-            $table->unsignedBigInteger('chapter_id');
             $table->unsignedSmallInteger('activity_count')->default(0);
             $table->timestamps();
 
             // Foreign keys
-            $table->foreign('chapter_id')->references('id')->on('chapters');
+            $table->foreignId('chapter_id')->constrained();
         });
     }
 

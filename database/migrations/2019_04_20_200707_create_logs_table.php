@@ -18,11 +18,10 @@ class CreateLogsTable extends Migration
             $table->string('event');
             $table->text('value')->nullable();
             $table->nullableMorphs('loggable');
-            $table->unsignedBigInteger('user_id');
             $table->timestamp('created_at')->nullable();
 
             // Foreign keys
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignId('user_id')->constrained();
         });
     }
 
