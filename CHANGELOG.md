@@ -1,5 +1,17 @@
 # Changelog
 
+## 12.0.1
+### Bug fixes
+- **coupons**: coupons counters are now correctly decremented
+
+## 12.0.0 - Laser
+### Features
+- **chapters**: make chapters sellable
+
+### Breaking changes
+- **stripe**: merge `createSubscription` and `checkoutCart` into `checkout`
+- **stripe**: rename `validateCart` to `cart`
+
 ## 11.0.2
 ### Bugfixes
 - **exams**: allow comprehension field for exam interactions
