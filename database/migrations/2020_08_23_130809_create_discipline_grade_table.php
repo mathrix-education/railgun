@@ -16,18 +16,17 @@ class CreateDisciplineGradeTable extends Migration
     public function up(): void
     {
         Schema::create('discipline_grade', static function (Blueprint $table): void {
-
-            $table->primary(['grade_id', 'discipline_id']);
-            $table->unsignedSmallInteger('order');
-            $table->boolean('visible');
-
-            // Foreign keys
             $table->foreignId('grade_id')
                 ->constrained()
                 ->onDelete('cascade');
             $table->foreignId('discipline_id')
                 ->constrained()
                 ->onDelete('cascade');
+            $table->primary(['grade_id', 'discipline_id']);
+            $table->unsignedSmallInteger('order');
+            $table->boolean('visible');
+
+
         });
 
         DB::table('themes')
