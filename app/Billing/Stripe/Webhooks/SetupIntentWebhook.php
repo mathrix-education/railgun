@@ -44,7 +44,7 @@ class SetupIntentWebhook
             ->where('id', '=', $object->metadata['previous_id'])
             ->first();
 
-        if (!$previous) {
+        if (!$previous || !$previous->user) {
             if (app()->environment('production')) {
                 // @codeCoverageIgnoreStart
                 throw new RuntimeException(
