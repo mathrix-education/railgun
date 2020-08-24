@@ -25,9 +25,7 @@ class CreateInteractionsTable extends Migration
             $table->unique(['user_id', 'interactable_type', 'interactable_id']);
 
             // Foreign keys
-            $table->foreignId('user_id')
-                ->constrained()
-                ->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
         });
     }
 

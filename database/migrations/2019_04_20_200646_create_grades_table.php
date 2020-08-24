@@ -22,7 +22,7 @@ class CreateGradesTable extends Migration
             $table->timestamps();
 
             // Foreign keys
-            $table->foreignId('parent_id')->nullable()->constrained();
+            $table->foreignId('parent_id')->nullable()->constrained('grades');
             $table->foreignId('country_id')->constrained();
         });
     }

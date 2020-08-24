@@ -15,26 +15,18 @@ class ForeignKeysCascade extends Migration
     {
         Schema::table('comments', static function (Blueprint $table): void {
             $table->dropForeign('comments_parent_id_foreign');
-            $table->foreignId('parent_id')
-                ->constrained()
-                ->onDelete('cascade');
+            $table->foreignId('parent_id')->constrained()->onDelete('cascade');
 
             $table->dropForeign('comments_user_id_foreign');
-            $table->foreignId('user_id')
-                ->constrained()
-                ->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
         });
 
         Schema::table('votes', static function (Blueprint $table): void {
             $table->dropForeign('votes_comment_id_foreign');
-            $table->foreignId('comment_id')
-                ->constrained()
-                ->onDelete('cascade');
+            $table->foreignId('comment_id')->constrained()->onDelete('cascade');
 
             $table->dropForeign('votes_user_id_foreign');
-            $table->foreignId('user_id')
-                ->constrained()
-                ->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
         });
     }
 

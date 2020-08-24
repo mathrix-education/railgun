@@ -25,6 +25,7 @@ class CreateLabelsTable extends Migration
             $table->primary(['label_id', 'labelable_type', 'labelable_id']);
             $table->timestamp('labeled_at');
 
+            // Foreign keys
             $table->foreignId('label_id')->constrained();
         });
     }

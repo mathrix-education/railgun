@@ -21,7 +21,7 @@ class CreateCommentsTable extends Migration
 
             // Foreign keys
             $table->foreignId('module_id')->constrained();
-            $table->foreignId('parent_id')->nullable()->constrained();
+            $table->foreignId('parent_id')->nullable()->constrained('comments');
             $table->foreignId('user_id')->constrained();
         });
     }

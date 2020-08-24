@@ -20,20 +20,9 @@ class CreateSessionsTable extends Migration
             $table->unique(['user_id', 'discipline_id']);
 
             // Foreign keys
-            $table->foreignId('user_id')
-                ->index()
-                ->constrained()
-                ->onDelete('cascade');
-
-            // Foreign keys
-            $table->foreignId('discipline_id')
-                ->constrained()
-                ->onDelete('cascade');
-
-            // Foreign keys
-            $table->foreignId('chapter_id')
-                ->constrained()
-                ->onDelete('cascade');
+            $table->foreignId('user_id')->index()->constrained()->onDelete('cascade');
+            $table->foreignId('discipline_id')->constrained()->onDelete('cascade');
+            $table->foreignId('chapter_id')->constrained()->onDelete('cascade');
         });
     }
 

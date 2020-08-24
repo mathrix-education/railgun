@@ -26,7 +26,7 @@ class CreateProductsTable extends Migration
             $table->timestamps();
 
             // Foreign keys
-            $table->foreignId('parent_id')->nullable()->constrained();
+            $table->foreignId('parent_id')->nullable()->constrained('products');
             $table->foreignId('module_id')->nullable()->constrained();
         });
     }
