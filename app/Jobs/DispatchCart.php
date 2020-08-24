@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Railgun\Jobs;
 
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Railgun\Billing\Cart\Cart;
@@ -13,6 +14,7 @@ use Railgun\Models\Pack;
 use Railgun\Models\Training;
 use function array_merge;
 use function resolveMorph;
+use function uuid_create;
 
 class DispatchCart extends Job
 {
@@ -55,18 +57,21 @@ class DispatchCart extends Job
         $products
             ->map(function (array $data) {
                 $data = array_merge($data, [
+                    'id'             => uuid_create(),
                     'user_id'        => $this->recipientId,
                     'transaction_id' => $this->transactionId,
+                    'created_at'     => Carbon::now(),
+                    'updated_at'     => Carbon::now(),
                 ]);
 
                 $exists = Acquisition::query()
                     ->where(Arr::only($data, ['user_id', 'product_type', 'product_id']))
                     ->exists();
 
-                return $exists ? $data : null;
+                return $exists ? null : $data;
             })
             ->reject(static fn(?array $data) => $data === null)
-            ->tap(static function (Collection $acquisitions): void {
+            ->tap(function (Collection $acquisitions): void {
                 if ($acquisitions->isNotEmpty()) {
                     $this->cart->coupon->decrementCounter();
                     Acquisition::query()->insert($acquisitions->toArray());
