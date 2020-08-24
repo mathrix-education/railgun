@@ -66,6 +66,10 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     use RoutesNotifications;
     use StripeCustomer;
 
+    public const DEFAULT_DATA = [
+      'id' => 0,
+    ];
+
     protected $fillable   = [
         'email',
         'username',
