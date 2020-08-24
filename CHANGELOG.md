@@ -1,5 +1,11 @@
 # Changelog
 
+## 13.0.0 - Hecate
+### Breaking changes
+- **countries**: everything related to `Country` type has been deleted
+- **disciplines**: `createDiscipline` and `updateDiscipline` mutations deleted
+- **grades**: `createGrade` and `updateGrade` mutations deleted
+
 ## 12.0.1
 ### Bug fixes
 - **coupons**: coupons counters are now correctly decremented
