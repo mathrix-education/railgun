@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Models;
 
-use Illuminate\Support\Arr;
 use Laravel\Lumen\Testing\DatabaseTransactions;
-use Railgun\Models\Theme;
-use function factory;
 
 /**
  * @coversDefaultClass \Railgun\Models\Grade
