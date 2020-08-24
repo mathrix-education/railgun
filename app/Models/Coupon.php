@@ -53,4 +53,14 @@ class Coupon extends BaseModel
     {
         return !$this->exhausted && !$this->expired;
     }
+
+    /**
+     * Decrement the counter if required.
+     */
+    public function decrementCounter(): void
+    {
+        if ($this->counter > 0) {
+            $this->decrement('counter');
+        }
+    }
 }
