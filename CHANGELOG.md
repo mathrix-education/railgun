@@ -3,6 +3,7 @@
 ## 12.0.1
 ### Bug fixes
 - **coupons**: coupons counters are now correctly decremented
+- **php-pm**: do not override `APP_ENV`
 
 ## 12.0.0 - Laser
 ### Features
