@@ -4,6 +4,7 @@ type Discipline {
     slug: String!
     beta: Boolean!
     sessions: [Session!]! @hasMany
+    grades: [Grade!]! @belongsToMany
     created_at: DateTime!
     updated_at: DateTime!
 }

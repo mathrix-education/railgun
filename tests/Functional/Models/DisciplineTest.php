@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Models;
 
-use Illuminate\Support\Arr;
 use Laravel\Lumen\Testing\DatabaseTransactions;
-use Railgun\Models\Theme;
-use function factory;
 
 /**
  * @coversDefaultClass \Railgun\Models\Discipline
@@ -25,7 +22,7 @@ class DisciplineTest extends ModelTestCase
             'grades',
             [],
             [],
-            Arr::except(factory(Theme::class)->raw(), ['grade_id', 'discipline_id']),
+            ['order' => 99, 'visible' => true],
         );
     }
 

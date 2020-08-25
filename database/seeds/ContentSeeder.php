@@ -46,6 +46,10 @@ class ContentSeeder extends AdvancedSeeder
         // Themes
         $this->seedFile('themes.json');
 
+        // Grade-discipline junction table
+
+        $this->seedFile('discipline_grade.json');
+
         // Chapters
         $this->seedFile('chapters.json');
 
