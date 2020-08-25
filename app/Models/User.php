@@ -66,11 +66,6 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     use RoutesNotifications;
     use StripeCustomer;
 
-    public const DEFAULT_DATA = [
-        'id' => 0,
-        'username' => 'Utilisateur anonyme',
-    ];
-
     protected $fillable   = [
         'email',
         'username',
@@ -104,6 +99,27 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         'settings'                  => 'array',
         'metadata'                  => 'array',
     ];
+
+    /**
+     * @return mixed[] The anonymous user data.
+     */
+    public static function anonymous(): array
+    {
+        return [
+            'id'                        => 0,
+            'uuid'                      => uuid_create(),
+            'username'                  => 'Utilisateur anonyme',
+            'email'                     => 'anonyme@mathrix.fr',
+            'firstname'                 => null,
+            'lastname'                  => null,
+            'password'                  => Hash::make(uuid_create()),
+            'premium_bypass'            => false,
+            'premium_bypass_expires_at' => null,
+            'grade_id'                  => Grade::random(),
+            'created_at'                => Carbon::now(),
+            'updated_at'                => Carbon::now(),
+        ];
+    }
 
     public static function boot(): void
     {

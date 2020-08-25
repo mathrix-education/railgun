@@ -86,7 +86,7 @@ class Comment extends BaseModel
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class)->withDefault(User::DEFAULT_DATA);
+        return $this->belongsTo(User::class)->withDefault(User::anonymous());
     }
 
     /**

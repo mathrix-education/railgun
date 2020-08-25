@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Mutations;
 
+use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Acquisition;
 use Railgun\Models\Comment;
 use Railgun\Models\Interaction;
@@ -16,6 +17,8 @@ use function factory;
 
 class DeleteUserTest extends GraphQLTestCase
 {
+    use DatabaseTransactions;
+
     public function testDeleteUser(): void
     {
         /** @var User $user */
@@ -45,29 +48,43 @@ class DeleteUserTest extends GraphQLTestCase
         );
 
         $this->assertResponseOk();
+        $this->assertNoErrors();
+        $this->assertEquals($user->id, $this->getData('id'));
 
+        // Database assertions
         $this->notSeeInDatabase('users', ['id' => $user->id]);
-        $this->notSeeInDatabase('acquisitions', ['user_id' => $user->id]);
-        $this->notSeeInDatabase('comments', ['user_id' => $user->id]);
-        $this->notSeeInDatabase('notes', ['user_id' => $user->id]);
-        $this->notSeeInDatabase('interactions', ['user_id' => $user->id]);
-        $this->notSeeInDatabase('sessions', ['user_id' => $user->id]);
-        $this->notSeeInDatabase('subscriptions', ['user_id' => $user->id]);
 
+        // acquisitions => set null
+        $this->notSeeInDatabase('acquisitions', ['user_id' => $user->id]);
         $this->seeInDatabase('acquisitions', [
-            'id' => $acquisition->id,
+            'id'      => $acquisition->id,
             'user_id' => null,
         ]);
+
+        // comments => set null
+        $this->notSeeInDatabase('comments', ['user_id' => $user->id]);
         $this->seeInDatabase('comments', [
-            'id' => $comment->id,
+            'id'      => $comment->id,
             'user_id' => null,
         ]);
+
+        // notes => set null
+        $this->notSeeInDatabase('notes', ['user_id' => $user->id]);
         $this->seeInDatabase('notes', [
-            'id' => $note->id,
+            'id'      => $note->id,
             'user_id' => null,
         ]);
+
+        // interactions => cascade
+        $this->notSeeInDatabase('interactions', ['user_id' => $user->id]);
+
+        // sessions => cascade
+        $this->notSeeInDatabase('sessions', ['user_id' => $user->id]);
+
+        // subscriptions => set null
+        $this->notSeeInDatabase('subscriptions', ['user_id' => $user->id]);
         $this->seeInDatabase('subscriptions', [
-            'id' => $subscription->id,
+            'id'      => $subscription->id,
             'user_id' => null,
         ]);
     }
