@@ -66,7 +66,7 @@ class UpdateSessionAfterInteractionTest extends ApplicationTestCase
 
         $this->seeInDatabase('sessions', [
             'user_id'       => $user->id,
-            'discipline_id' => $second->theme->discipline_id,
+            'discipline_id' => $theme->discipline_id,
             'chapter_id'    => $second->id,
         ]);
     }

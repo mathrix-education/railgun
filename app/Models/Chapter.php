@@ -29,7 +29,7 @@ use Railgun\Models\Traits\Sluggable;
  * @property-read Carbon                 $created_at
  * @property-read Carbon                 $updated_at
  * ---
- * @property-read Collection|Theme[]     $theme
+ * @property-read Collection|Theme[]     $themes
  * @property-read Collection|Notion[]    $notions
  * @property-read Collection|Flashcard[] $flashcards
  * @property-read Collection|Exam[]      $exams

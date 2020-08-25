@@ -35,22 +35,9 @@ class UpdateSessionAfterInteraction extends Job implements ShouldQueue
 
         $chapter = $this->interaction->interactable->getChapter();
 
-        $grade_id = User::query()
-            ->where('id', '=', $this->interaction->user_id)
-            ->get('grade_id')
-            ->first;
+        $grade_id = $this->interaction->user->grade_id;
 
-        $discipline_id = DB::table('themes')
-            ->join('grades', static function($join) use ($grade_id): void {
-                $join->on('grades.id', '=', 'themes.grade_id');
-                $join->on('grades.id', '=', $grade_id);
-            })
-            ->join('chapter_theme', static function($join) use ($chapter): void {
-                $join->on('chapter_theme.chapter_id', '=', $chapter->id);
-                $join->on('chapter_theme.theme_id', '=', 'themes.id');
-            })
-            ->select('discipline_id')
-            ->get();
+        $discipline_id = $chapter->themes()->where('grade_id', '=', $grade_id)->first()->discipline_id;
 
         Session::query()
             ->updateOrCreate(

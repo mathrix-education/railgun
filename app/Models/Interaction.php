@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Railgun\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Queue;
 use Railgun\Jobs\UpdateSessionAfterInteraction;
 use Railgun\Models\Contracts\BelongsToChapter;
 use Railgun\Models\Traits\UUID;
 use RuntimeException;
+use Stripe\Collection;
 use function get_class;
 
 /**
@@ -24,6 +26,7 @@ use function get_class;
  * @property-read Carbon $created_at
  * @property-read Carbon $updated_at
  * ---
+ * @property-read User $user
  * @property-read Course|Exercise|Flashcard|Exam|Subject $interactable
  */
 class Interaction extends BaseModel
@@ -50,6 +53,11 @@ class Interaction extends BaseModel
         self::saved(static function (Interaction $interaction): void {
             Queue::push(new UpdateSessionAfterInteraction($interaction));
         });
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function interactable(): MorphTo
