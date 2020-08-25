@@ -17,7 +17,7 @@ $factory->define(Session::class, static function (Faker $faker) {
 
         $key = [
             'user_id'       => User::random()->id,
-            'discipline_id' => $chapter->theme->discipline_id,
+            'discipline_id' => $chapter->themes()->first()->discipline_id,
         ];
     } while (Session::query()->where($key)->exists());
 

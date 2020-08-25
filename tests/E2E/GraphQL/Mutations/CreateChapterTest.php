@@ -52,14 +52,13 @@ class CreateChapterTest extends GraphQLTestCase
         $reference = Chapter::random();
         $input     = array_merge(
             Arr::only(factory(Chapter::class)->raw(), ['name', 'order', 'visible']),
-            Arr::only($reference->toArray(), ['slug', 'theme_id']),
+            Arr::only($reference->toArray(), ['slug']),
         );
 
         $this->withPermissions(['chapters:write', 'chapters:write:visible']);
         $this->executeCreateChapter($input);
 
         $this->assertResponseOk();
-        $this->assertErrorCode('VALIDATION');
-        $this->assertErrorCategory('validation');
+        $this->assertNoErrors();
     }
 }

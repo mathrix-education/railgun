@@ -35,7 +35,9 @@ class UpdateSessionAfterInteractionTest extends ApplicationTestCase
          * @var Chapter $first
          * @var Chapter $second
          */
-        [$first, $second] = factory(Chapter::class, 2)->create(['theme_id' => $theme->id]);
+        [$first, $second] = factory(Chapter::class, 2)->create();
+        $first->themes()->attach($theme->id, ['order' => 0]);
+        $second->themes()->attach($theme->id, ['order' => 0]);
 
         /** @var Flashcard $flashcard */
         $flashcard = factory(Flashcard::class)->create(['chapter_id' => $first->id]);

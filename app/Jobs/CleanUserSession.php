@@ -25,7 +25,7 @@ class CleanUserSession extends Job implements ShouldQueue
     {
         Session::query()
             ->where('user_id', '=', $this->user->id)
-            ->whereHas('chapter.theme', function (Builder $builder): void {
+            ->whereHas('chapter.themes', function (Builder $builder): void {
                 $builder->where('grade_id', '!=', $this->user->grade_id);
             })
             ->delete();
