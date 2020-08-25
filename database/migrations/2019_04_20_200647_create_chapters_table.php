@@ -19,15 +19,11 @@ class CreateChaptersTable extends Migration
             $table->string('slug');
             $table->unsignedSmallInteger('order');
             $table->boolean('visible');
-            $table->unsignedBigInteger('discipline_id');
-            $table->unsignedBigInteger('grade_id');
+            $table->foreignId('discipline_id')->constrained();
+            $table->foreignId('grade_id')->constrained();
             $table->unsignedBigInteger('notion_count')->default(0);
             $table->unsignedBigInteger('activity_count')->default(0);
             $table->timestamps();
-
-            // Foreign keys
-            $table->foreign('discipline_id')->references('id')->on('disciplines');
-            $table->foreign('grade_id')->references('id')->on('grades');
         });
     }
 

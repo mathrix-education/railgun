@@ -17,12 +17,10 @@ class CreateNotesTable extends Migration
             $table->id();
             $table->json('content');
             $table->uuid('brick_id')->nullable();
-            $table->unsignedBigInteger('user_id');
+            $table->foreignId('user_id')->constrained();
             $table->morphs('notable');
             $table->timestamps();
             $table->softDeletes();
-
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

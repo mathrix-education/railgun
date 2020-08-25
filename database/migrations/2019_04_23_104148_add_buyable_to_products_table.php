@@ -18,7 +18,7 @@ class AddBuyableToProductsTable extends Migration
             $table->boolean('buyable')->default(0)->after('visible');
         });
 
-        DB::update('UPDATE products SET buyable = 1 WHERE price IS NOT NULL');
+        DB::table('products')->whereNotNull('price')->update(['buyable' => true]);
     }
 
     /**

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class DropMappingColumns extends Migration
@@ -79,8 +78,13 @@ class DropMappingColumns extends Migration
         (new CreateModulesTable())->down();
         (new CreateActivitiesTable())->down();
 
-        DB::unprepared('alter table comments modify commentable_id bigint unsigned not null');
-        DB::unprepared('alter table reports modify reportable_id bigint unsigned not null');
+        Schema::table('comments', static function (Blueprint $table): void {
+            $table->unsignedBigInteger('commentable_id')->nullable(false)->change();
+        });
+
+        Schema::table('reports', static function (Blueprint $table): void {
+            $table->unsignedBigInteger('reportable_id')->nullable(false)->change();
+        });
 
         Schema::dropIfExists('notifications');
     }
@@ -90,10 +94,10 @@ class DropMappingColumns extends Migration
      */
     public function down(): void
     {
-        //        collect(self::MAPPINGS_TABLE)->each(static function (string $table) {
-        //            Schema::table($table, static function (Blueprint $table) {
-        //                $table->string('mapping');
-        //            });
-        //        });
+        // collect(self::MAPPINGS_TABLE)->each(static function (string $table) {
+        //     Schema::table($table, static function (Blueprint $table) {
+        //         $table->string('mapping');
+        //     });
+        // });
     }
 }

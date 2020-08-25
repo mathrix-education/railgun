@@ -17,11 +17,8 @@ class CreateMarksTable extends Migration
             $table->bigIncrements('id');
             $table->string('status');
             $table->morphs('markable');
-            $table->unsignedBigInteger('user_id');
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
-
-            // Foreign keys
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

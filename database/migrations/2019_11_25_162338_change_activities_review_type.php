@@ -21,7 +21,9 @@ class ChangeActivitiesReviewType extends Migration
 
         DB::table('activities')->update(['review' => '{}']);
 
-        DB::unprepared('ALTER TABLE activities MODIFY review JSON NOT NULL');
+        Schema::table('activities', static function (Blueprint $table): void {
+            $table->string('review')->nullable(false)->change();
+        });
     }
 
     /**

@@ -47,6 +47,28 @@ class ForeignKeysCascade extends Migration
      */
     public function down(): void
     {
-        // It is not possible to revert this one
+        Schema::table('comments', static function (Blueprint $table): void {
+            $table->dropForeign('comments_parent_id_foreign');
+            $table->foreign('parent_id')
+                ->references('id')
+                ->on('comments');
+
+            $table->dropForeign('comments_user_id_foreign');
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users');
+        });
+
+        Schema::table('votes', static function (Blueprint $table): void {
+            $table->dropForeign('votes_comment_id_foreign');
+            $table->foreign('comment_id')
+                ->references('id')
+                ->on('comments');
+
+            $table->dropForeign('votes_user_id_foreign');
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users');
+        });
     }
 }
