@@ -41,7 +41,7 @@ input CreateFlashcard {
     """
     The flashcard associated labels.
     """
-    labels: BelongsToMany
+    labels: CreateFlashcardLabels
 }
 
 input UpdateFlashcard {
@@ -97,10 +97,28 @@ input UpdateFlashcard {
     """
     The flashcard associated labels.
     """
-    labels: BelongsToMany
+    labels: UpdateFlashcardLabels
 }
 
 input FlashcardContentInput {
     front: Silicate!
     back: Silicate!
+}
+
+input CreateFlashcardLabels {
+    """
+    Add the passed ids to the linked model.
+    """
+    add: [ID!] @rename(attribute: "syncWithoutDetaching")
+}
+
+input UpdateFlashcardLabels {
+    """
+    Replace the related labels. Any previously linked label which is not in the passed [ID] will be detached.
+    """
+    replace: [ID!] @rename(attribute: "sync")
+    """
+    Add the passed ids to the linked model.
+    """
+    add: [ID!] @rename(attribute: "syncWithoutDetaching")
 }

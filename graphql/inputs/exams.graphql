@@ -50,7 +50,7 @@ input CreateExam {
     """
     The exam associated labels.
     """
-    labels: BelongsToMany
+    labels: CreateExamLabels
 }
 
 input UpdateExam {
@@ -110,5 +110,23 @@ input UpdateExam {
     """
     The exam associated labels.
     """
-    labels: BelongsToMany
+    labels: UpdateExamLabels
+}
+
+input CreateExamLabels {
+    """
+    Add the passed ids to the linked model.
+    """
+    add: [ID!] @rename(attribute: "syncWithoutDetaching")
+}
+
+input UpdateExamLabels {
+    """
+    Replace the related labels. Any previously linked label which is not in the passed [ID] will be detached.
+    """
+    replace: [ID!] @rename(attribute: "sync")
+    """
+    Add the passed ids to the linked model.
+    """
+    add: [ID!] @rename(attribute: "syncWithoutDetaching")
 }

@@ -60,7 +60,7 @@ class CreateChapterThemeTable extends Migration
                     ->update([
                         'theme_id' => $line['theme_id'],
                         'order' => $line['order'],
-                        ]);
+                    ]);
             });
 
         Schema::dropIfExists('chapter_theme');

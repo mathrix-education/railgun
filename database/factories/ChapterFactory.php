@@ -6,7 +6,6 @@ use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;
 use Railgun\Models\Chapter;
-use Railgun\Models\Theme;
 use Railgun\Support\Timestamps;
 
 /**
