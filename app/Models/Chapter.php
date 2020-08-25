@@ -14,7 +14,6 @@ use Railgun\Billing\Stripe\Models\StripeSellable;
 use Railgun\Models\Contracts\BelongsToChapter;
 use Railgun\Models\Traits\Acquerable;
 use Railgun\Models\Traits\Ownable;
-use Railgun\Models\Traits\Reorderable;
 use Railgun\Models\Traits\Sellable;
 use Railgun\Models\Traits\Sluggable;
 
