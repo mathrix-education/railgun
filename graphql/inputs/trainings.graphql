@@ -43,7 +43,7 @@ input CreateTraining {
     """
     The training associated labels.
     """
-    grades: BelongsToMany
+    grades: CreateTrainingLabels
 }
 
 input UpdateTraining {
@@ -95,5 +95,27 @@ input UpdateTraining {
     """
     The training associated labels.
     """
-    grades: BelongsToMany
+    grades: UpdateTrainingLabels
+}
+
+input CreateTrainingLabels {
+    """
+    Replace the related labels. Any previously linked label which is not in the passed [ID] will be detached.
+    """
+    replace: [ID!] @rename(attribute: "sync")
+    """
+    Add the passed ids to the linked model.
+    """
+    add: [ID!] @rename(attribute: "syncWithoutDetaching")
+}
+
+input UpdateTrainingLabels {
+    """
+    Replace the related models. Any previously linked model which is not in the passed [ID] will be detached.
+    """
+    replace: [ID!] @rename(attribute: "sync")
+    """
+    Add the passed ids to the linked model.
+    """
+    add: [ID!] @rename(attribute: "syncWithoutDetaching")
 }
