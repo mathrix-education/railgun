@@ -174,7 +174,7 @@ class Subscription extends BaseModel implements CacheableContract
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withDefault(User::anonymous());
     }
 
     /**

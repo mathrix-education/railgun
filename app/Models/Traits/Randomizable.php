@@ -19,7 +19,6 @@ trait Randomizable
      * @return static
      *
      * @noinspection PhpIncompatibleReturnTypeInspection
-     * @noinspection ReturnTypeCanBeDeclaredInspection
      * @noinspection PhpDocSignatureInspection
      */
     public static function random()

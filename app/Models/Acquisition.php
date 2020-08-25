@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Railgun\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Concerns\AsPivot;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Railgun\Models\Contracts\Sellable;
@@ -45,5 +46,13 @@ class Acquisition extends BaseModel
     public function product(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    /**
+     * @return BelongsTo<User>
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class)->withDefault(User::anonymous());
     }
 }

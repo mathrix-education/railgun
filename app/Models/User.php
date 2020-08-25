@@ -100,6 +100,27 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         'metadata'                  => 'array',
     ];
 
+    /**
+     * @return mixed[] The anonymous user data.
+     */
+    public static function anonymous(): array
+    {
+        return [
+            'id'                        => 0,
+            'uuid'                      => uuid_create(),
+            'username'                  => 'Utilisateur anonyme',
+            'email'                     => 'anonyme@mathrix.fr',
+            'firstname'                 => null,
+            'lastname'                  => null,
+            'password'                  => Hash::make(uuid_create()),
+            'premium_bypass'            => false,
+            'premium_bypass_expires_at' => null,
+            'grade_id'                  => Grade::random(),
+            'created_at'                => Carbon::now(),
+            'updated_at'                => Carbon::now(),
+        ];
+    }
+
     public static function boot(): void
     {
         parent::boot();
