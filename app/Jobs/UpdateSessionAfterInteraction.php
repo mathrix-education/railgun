@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Railgun\Jobs;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\DB;
 use Railgun\Models\Contracts\BelongsToChapter;
 use Railgun\Models\Interaction;
 use Railgun\Models\Session;
-use Railgun\Models\User;
 
 /**
  * After a user interacted with a {@see Interactable} model, update its session.

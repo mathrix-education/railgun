@@ -12,7 +12,6 @@ use Railgun\Jobs\UpdateSessionAfterInteraction;
 use Railgun\Models\Contracts\BelongsToChapter;
 use Railgun\Models\Traits\UUID;
 use RuntimeException;
-use Stripe\Collection;
 use function get_class;
 
 /**
