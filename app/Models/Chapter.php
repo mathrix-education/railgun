@@ -7,6 +7,7 @@ namespace Railgun\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Railgun\Billing\Stripe\Contracts\StripeSellable as StripeSellableContract;
@@ -30,7 +31,7 @@ use Railgun\Models\Traits\Sluggable;
  * @property-read Carbon                 $created_at
  * @property-read Carbon                 $updated_at
  * ---
- * @property-read Theme                  $theme
+ * @property-read Collection|Theme[]     $theme
  * @property-read Collection|Notion[]    $notions
  * @property-read Collection|Flashcard[] $flashcards
  * @property-read Collection|Exam[]      $exams
@@ -40,7 +41,6 @@ class Chapter extends BaseModel implements BelongsToChapter, StripeSellableContr
 {
     use Acquerable;
     use Ownable;
-    use Reorderable;
     use Sellable;
     use Sluggable;
     use StripeSellable;
@@ -57,11 +57,13 @@ class Chapter extends BaseModel implements BelongsToChapter, StripeSellableContr
     protected array $orderGroup = ['theme_id'];
 
     /**
-     * @return BelongsTo<Theme>
+     * @return BelongsToMany<Theme>
      */
-    public function theme(): BelongsTo
+    public function themes(): BelongsToMany
     {
-        return $this->belongsTo(Theme::class);
+        return $this->belongsToMany(Theme::class)
+            ->withPivot('order')
+            ->orderBy('pivot_order');
     }
 
     /**

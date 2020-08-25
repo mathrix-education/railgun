@@ -12,5 +12,5 @@ extend type Mutation {
     "Delete an existing theme."
     deleteTheme(
         id: ID!
-    ): Theme @permission(name: "categories:delete") @delete
+    ): Theme @permission(name: "themes:delete") @delete
 }

@@ -21,12 +21,14 @@ class UpdateChapterTest extends GraphQLTestCase
         $reference = $theme1->chapters()->inRandomOrder()->firstOrFail();
 
         /** @var Theme $theme2 */
-        $theme2  = Theme::query()
+        $theme2 = Theme::query()
             ->inRandomOrder()
             ->where('grade_id', '!=', $theme1->grade_id)
             ->where('discipline_id', '!=', $theme1->discipline_id)
             ->firstOrFail();
-        $chapter = factory(Chapter::class)->create(['theme_id' => $theme2->id]);
+        /** @var Chapter $chapter */
+        $chapter = factory(Chapter::class)->create();
+        $chapter->themes()->attach($theme2->id, ['order' => 0]);
 
         $this->withPermissions('chapters:write');
         $this->executeUpdateChapter([
@@ -56,22 +58,5 @@ class UpdateChapterTest extends GraphQLTestCase
             GRAPHQL,
             ['input' => $input],
         );
-    }
-
-    public function testChangeSlugToExistingSlug(): void
-    {
-        [$reference, $chapter] = factory(Chapter::class, 2)->create([
-            'theme_id' => factory(Theme::class)->create()->getKey(),
-        ]);
-
-        $this->withPermissions('chapters:write');
-        $this->executeUpdateChapter([
-            'id'   => $chapter->id,
-            'slug' => $reference->slug,
-        ]);
-
-        $this->assertResponseOk();
-        $this->assertErrorCode('VALIDATION');
-        $this->assertErrorCategory('validation');
     }
 }

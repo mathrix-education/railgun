@@ -14,20 +14,14 @@ input CreateChapter {
     """
     price: Int
     """
-    The chapter order. If not set, the chapter will be placed in the last position of the group [grade/discipline].
-    Must be positive (i.e. >=0).
-    """
-    order: Int @rules(apply: ["nullable", "integer", "min:0"])
-    """
     If the chapter should be displayed to the end users.
     Requires the permission `chapters:write:visible`.
     """
     visible: Boolean! @permission(name: "chapters:write:visible") @rules(apply: ["boolean"])
     """
-    The chapter related theme ID.
-    Must be a valid theme ID.
+    The chapter associated themes.
     """
-    theme_id: ID! @rules(apply: ["integer", "exists:themes,id"])
+    themes: BelongsToMany
 }
 
 input UpdateChapter {
@@ -50,18 +44,13 @@ input UpdateChapter {
     """
     price: Int
     """
-    The chapter new order. Status quo if not set.
-    Must be positive (i.e. >=0).
-    """
-    order: Int @rules(apply: ["nullable", "integer", "min:0"])
-    """
     If the chapter should be displayed to the end users.
     Requires the permission `chapters:write:visible`.
     """
     visible: Boolean @permission(name: "chapters:write:visible") @rules(apply: ["boolean"])
     """
-    The chapter new related theme ID.
-    Must be a valid theme ID.
+    The chapter new related themes IDs.
+    Must be valid themes IDs.
     """
-    theme_id: ID @rules(apply: ["integer", "exists:themes,id"])
+    themes: BelongsToMany
 }
