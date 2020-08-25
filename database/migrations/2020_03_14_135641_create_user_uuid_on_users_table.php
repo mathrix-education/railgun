@@ -21,7 +21,9 @@ class CreateUserUuidOnUsersTable extends Migration
 
         DB::table('users')->update(['uuid' => DB::raw('(SELECT UUID())')]);
 
-        DB::statement('ALTER TABLE `users` MODIFY `uuid` CHAR(36) NOT NULL');
+        Schema::table('users', static function (Blueprint $table): void {
+            $table->uuid('uuid')->nullable(false)->change();
+        });
     }
 
     /**

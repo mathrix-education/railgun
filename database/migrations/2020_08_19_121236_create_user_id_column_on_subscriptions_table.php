@@ -15,10 +15,7 @@ class CreateUserIdColumnOnSubscriptionsTable extends Migration
     public function up(): void
     {
         Schema::table('subscriptions', static function (Blueprint $table): void {
-            $table->unsignedBigInteger('user_id')->nullable()->after('current_period_end');
-
-            // Foreign keys
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignId('user_id')->nullable()->after('current_period_end')->constrained();
         });
 
         collect()

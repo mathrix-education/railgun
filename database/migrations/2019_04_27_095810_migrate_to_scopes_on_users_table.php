@@ -11,6 +11,8 @@ class MigrateToScopesOnUsersTable extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @throws JsonException
      */
     public function up(): void
     {
