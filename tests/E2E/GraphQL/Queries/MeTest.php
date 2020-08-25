@@ -63,7 +63,7 @@ class MeTest extends GraphQLTestCase
     public function testMeSession(): void
     {
         $chapter = Chapter::random();
-        $theme = $chapter->themes()->first();
+        $theme   = $chapter->themes()->first();
         $user    = $this->actingAsGetUser(['grade_id' => $theme->grade_id]);
         $session = new Session([
             'user_id'       => $user->id,
