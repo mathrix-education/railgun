@@ -19,10 +19,8 @@ class CreateReportsTable extends Migration
             $table->string('type');
             $table->text('content')->nullable();
             $table->string('status');
-            $table->timestamps();
-
-            // Foreign keys
             $table->foreignId('module_id')->constrained();
+            $table->timestamps();
         });
     }
 

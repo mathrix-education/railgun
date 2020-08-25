@@ -19,11 +19,9 @@ class CreateGradesTable extends Migration
             $table->string('slug');
             $table->unsignedSmallInteger('order');
             $table->boolean('visible');
-            $table->timestamps();
-
-            // Foreign keys
             $table->foreignId('parent_id')->nullable()->constrained('grades');
             $table->foreignId('country_id')->constrained();
+            $table->timestamps();
         });
     }
 

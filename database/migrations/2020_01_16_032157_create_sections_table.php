@@ -19,11 +19,9 @@ class CreateSectionsTable extends Migration
             $table->string('slug');
             $table->unsignedTinyInteger('order');
             $table->boolean('visible');
+            $table->foreignId('training_id')->constrained();
             $table->timestamps();
             $table->string('mapping');
-
-            // Foreign keys
-            $table->foreignId('training_id')->constrained();
         });
     }
 

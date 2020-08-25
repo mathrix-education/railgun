@@ -19,10 +19,8 @@ class CreateRecordsTable extends Migration
             $table->string('event');
             $table->string('status');
             $table->json('payload');
-            $table->timestamps();
-
-            // Foreign keys
             $table->foreignId('user_id')->constrained();
+            $table->timestamps();
         });
     }
 

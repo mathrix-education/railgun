@@ -29,7 +29,10 @@ class PatchNotionsTable extends Migration
             });
 
         DB::unprepared('alter table `notions` alter column `type` drop default');
-        DB::unprepared('alter table notions modify slug varchar(255) not null;');
+
+        Schema::table('notions', static function (Blueprint $table): void {
+            $table->string('slug')->nullable(false)->change();
+        });
     }
 
     /**

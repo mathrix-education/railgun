@@ -20,11 +20,9 @@ class CreateSubjectsTable extends Migration
             $table->unsignedTinyInteger('order');
             $table->boolean('premium');
             $table->boolean('visible');
+            $table->foreignId('notion_id')->constrained();
             $table->timestamps();
             $table->string('mapping');
-
-            // Foreign keys
-            $table->foreignId('notion_id')->constrained();
         });
     }
 

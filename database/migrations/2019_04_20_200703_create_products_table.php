@@ -23,11 +23,9 @@ class CreateProductsTable extends Migration
             $table->float('price')->nullable();
             $table->boolean('visible');
             $table->unsignedSmallInteger('order');
-            $table->timestamps();
-
-            // Foreign keys
             $table->foreignId('parent_id')->nullable()->constrained('products');
             $table->foreignId('module_id')->nullable()->constrained();
+            $table->timestamps();
         });
     }
 

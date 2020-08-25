@@ -22,11 +22,9 @@ class CreateFlashcardsTable extends Migration
             $table->unsignedTinyInteger('order');
             $table->boolean('premium');
             $table->boolean('visible');
+            $table->foreignId('chapter_id')->constrained();
             $table->timestamps();
             $table->string('mapping');
-
-            // Foreign keys
-            $table->foreignId('chapter_id')->constrained();
         });
     }
 

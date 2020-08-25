@@ -15,11 +15,9 @@ class CreateDiscountProductTable extends Migration
     {
         Schema::create('discount_product', static function (Blueprint $table): void {
             $table->bigIncrements('id');
-            $table->timestamps();
-
-            // Foreign keys
             $table->foreignId('discount_id')->constrained();
             $table->foreignId('product_id')->constrained();
+            $table->timestamps();
         });
     }
 

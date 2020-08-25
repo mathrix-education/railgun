@@ -20,7 +20,7 @@ class AddExerciseProofType extends Migration
      */
     public function down(): void
     {
-        DB::update("update exercises set `type` = 'mcq' where id > 0");
+        DB::table('exercises')->update(['type' => 'mcq']);
         DB::statement("alter table exercises modify column `type` enum('mcq') not null");
     }
 }

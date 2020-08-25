@@ -21,12 +21,10 @@ class CreateLabelsTable extends Migration
         });
 
         Schema::create('labelables', static function (Blueprint $table): void {
+            $table->foreignId('label_id')->constrained();
             $table->morphs('labelable');
             $table->primary(['label_id', 'labelable_type', 'labelable_id']);
             $table->timestamp('labeled_at');
-
-            // Foreign keys
-            $table->foreignId('label_id')->constrained();
         });
     }
 

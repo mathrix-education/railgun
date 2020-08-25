@@ -16,11 +16,9 @@ class CreateVotesTable extends Migration
         Schema::create('votes', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->tinyInteger('value');
-            $table->timestamps();
-
-            // Foreign keys
             $table->foreignId('comment_id')->constrained();
             $table->foreignId('user_id')->constrained();
+            $table->timestamps();
         });
     }
 

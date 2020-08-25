@@ -15,14 +15,12 @@ class CreateSessionsTable extends Migration
     {
         Schema::create('sessions', static function (Blueprint $table): void {
             $table->uuid('id')->primary();
-            $table->timestamp('updated_at');
-
-            $table->unique(['user_id', 'discipline_id']);
-
-            // Foreign keys
             $table->foreignId('user_id')->index()->constrained()->onDelete('cascade');
             $table->foreignId('discipline_id')->constrained()->onDelete('cascade');
             $table->foreignId('chapter_id')->constrained()->onDelete('cascade');
+            $table->timestamp('updated_at');
+
+            $table->unique(['user_id', 'discipline_id']);
         });
     }
 

@@ -20,11 +20,9 @@ class CreateLessonsTable extends Migration
             $table->json('content');
             $table->unsignedTinyInteger('order');
             $table->boolean('visible');
+            $table->foreignId('section_id')->constrained();
             $table->timestamps();
             $table->string('mapping');
-
-            // Foreign keys
-            $table->foreignId('section_id')->constrained();
         });
     }
 

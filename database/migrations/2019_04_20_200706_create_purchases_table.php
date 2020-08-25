@@ -15,11 +15,9 @@ class CreatePurchasesTable extends Migration
     {
         Schema::create('purchases', static function (Blueprint $table): void {
             $table->bigIncrements('id');
-            $table->timestamps();
-
-            // Foreign keys
             $table->foreignId('user_id')->constrained();
             $table->foreignId('product_id')->constrained();
+            $table->timestamps();
         });
     }
 

@@ -28,13 +28,11 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('daily_achievements')->default(0);
             $table->boolean('premium_bypass')->default(0);
             $table->timestamp('premium_bypass_expires_at')->nullable();
+            $table->foreignId('grade_id')->nullable()->constrained();
             $table->string('stripe_id')->nullable();
             $table->string('braintree_id')->nullable();
             $table->json('settings');
             $table->timestamps();
-
-            // Foreign keys
-            $table->foreignId('grade_id')->nullable()->constrained();
         });
     }
 

@@ -16,13 +16,11 @@ class CreateCommentsTable extends Migration
         Schema::create('comments', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->text('content');
-            $table->timestamp('deleted_at')->nullable();
-            $table->timestamps();
-
-            // Foreign keys
             $table->foreignId('module_id')->constrained();
             $table->foreignId('parent_id')->nullable()->constrained('comments');
             $table->foreignId('user_id')->constrained();
+            $table->timestamp('deleted_at')->nullable();
+            $table->timestamps();
         });
     }
 

@@ -25,11 +25,9 @@ class CreateCoursesTable extends Migration
             $table->string('seo_title')->nullable();
             $table->string('seo_keywords')->nullable();
             $table->string('seo_description')->nullable();
+            $table->foreignId('notion_id')->constrained();
             $table->timestamps();
             $table->string('mapping');
-
-            // Foreign keys
-            $table->foreignId('notion_id')->constrained();
         });
     }
 

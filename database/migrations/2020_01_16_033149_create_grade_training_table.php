@@ -14,15 +14,10 @@ class CreateGradeTrainingTable extends Migration
     public function up(): void
     {
         Schema::create('grade_training', static function (Blueprint $table): void {
-            $table->primary(['grade_id', 'training_id']);
+            $table->foreignId('grade_id')->constrained()->onDelete('cascade');
+            $table->foreignId('training_id')->constrained()->onDelete('cascade');
 
-            // Foreign keys
-            $table->foreignId('grade_id')
-                ->constrained()
-                ->onDelete('cascade');
-            $table->foreignId('training_id')
-                ->constrained()
-                ->onDelete('cascade');
+            $table->primary(['grade_id', 'training_id']);
         });
     }
 

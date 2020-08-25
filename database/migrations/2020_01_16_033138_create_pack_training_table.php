@@ -14,16 +14,11 @@ class CreatePackTrainingTable extends Migration
     public function up(): void
     {
         Schema::create('pack_training', static function (Blueprint $table): void {
+            $table->foreignId('pack_id')->constrained()->onDelete('cascade');
+            $table->foreignId('training_id')->constrained()->onDelete('cascade');
             $table->unsignedTinyInteger('order');
-            $table->primary(['pack_id', 'training_id']);
 
-            // Foreign keys
-            $table->foreignId('pack_id')
-                ->constrained()
-                ->onDelete('cascade');
-            $table->foreignId('training_id')
-                ->constrained()
-                ->onDelete('cascade');
+            $table->primary(['pack_id', 'training_id']);
         });
     }
 

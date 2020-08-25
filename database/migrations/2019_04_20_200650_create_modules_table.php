@@ -29,10 +29,8 @@ class CreateModulesTable extends Migration
             $table->string('seo_keywords')->nullable();
             $table->string('seo_description')->nullable();
             $table->unsignedSmallInteger('order');
-            $table->timestamps();
-
-            // Foreign keys
             $table->foreignId('activity_id')->nullable()->constrained();
+            $table->timestamps();
         });
     }
 

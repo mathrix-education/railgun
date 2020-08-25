@@ -16,6 +16,7 @@ class PolymorphicReports extends Migration
         Schema::table('reports', static function (Blueprint $table): void {
             $table->unsignedBigInteger('reportable_id')->nullable()->after('module_id');
             $table->enum('reportable_type', ['course', 'exercise', 'flashcard', 'exam'])->after('module_id');
+
             $table->index(['reportable_type', 'reportable_id']);
         });
     }
