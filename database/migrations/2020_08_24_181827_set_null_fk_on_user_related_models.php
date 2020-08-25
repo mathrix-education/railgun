@@ -13,7 +13,6 @@ class SetNullFkOnUserRelatedModels extends Migration
      */
     public function up(): void
     {
-
         Schema::table('acquisitions', static function (Blueprint $table): void {
             $table->dropForeign(['user_id']);
             $table->unsignedBigInteger('user_id')->nullable()->change();

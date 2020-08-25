@@ -33,12 +33,12 @@ class CreateDisciplineGradeTable extends Migration
             ->groupBy(['grade_id', 'discipline_id'])
             ->orderByRaw('grade_id, discipline_id')
             ->get()
-            ->map(static fn(stdClass $line) => array_merge((array)$line, ['visible' => true]))
             ->pipe(static function (Collection $lines) {
                 $iterator = 0;
                 $gradeId  = null;
 
                 return $lines->map(static function ($line) use (&$iterator, &$gradeId) {
+                    $line = (array)$line;
                     if ($line['grade_id'] !== $gradeId) {
                         $gradeId  = $line['grade_id'];
                         $iterator = 0;
