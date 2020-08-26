@@ -13,7 +13,8 @@ use Railgun\Models\User;
  */
 $factory->define(Session::class, static function (Faker $faker) {
     do {
-        $chapter = Chapter::random();
+        /** @var Chapter $chapter */
+        $chapter = Chapter::query()->inRandomOrder()->has('themes')->firstOrFail();
 
         $key = [
             'user_id'       => User::random()->id,

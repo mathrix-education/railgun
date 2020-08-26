@@ -3,7 +3,7 @@ input CreateTheme {
     The theme human-readable name.
     Maximum 150 caracters.
     """
-    name: String!@rules(apply: ["string", "max:150"])
+    name: String! @rules(apply: ["string", "max:150"])
     """
     The theme order. If not set, the theme will be placed in the last position of the group [grade/discipline].
     Must be positive (i.e. >=0).
@@ -27,7 +27,7 @@ input CreateTheme {
     """
     The theme related chapters
     """
-    chapters: CreateThemeChapters
+    chapters: ThemeChapters
 }
 
 input UpdateTheme {
@@ -39,7 +39,7 @@ input UpdateTheme {
     The theme new human-readable name.
     Maximum 150 caracters.
     """
-    name: String@rules(apply: ["string", "max:150"])
+    name: String @rules(apply: ["string", "max:150"])
     """
     The theme new order. Status quo if not set.
     Must be positive (i.e. >=0).
@@ -63,19 +63,21 @@ input UpdateTheme {
     """
     The theme related chapters.
     """
-    chapters: UpdateThemeChapters
+    chapters: ThemeChapters
 }
 
-input CreateThemeChapters {
-    add: [SyncThemeChapters!] @rename(attribute: "syncWithoutDetaching")
-}
-
-input UpdateThemeChapters {
-    add: [SyncThemeChapters!] @rename(attribute: "syncWithoutDetaching")
-    replace: [SyncThemeChapters!] @rename(attribute: "sync")
-}
-
-input SyncThemeChapters {
-    id: ID!
-    order: Int
+input ThemeChapters {
+    """
+    Replace the related chapters. Any previously linked chapters which is not in the passed [ID] will be detached.
+    `replace` takes precedence over the more specific `add` and `delete`.
+    """
+    replace: [ID!]
+    """
+    Attach chapters to the theme. They will be placed at the end of theme.
+    """
+    add: [ID!]
+    """
+    Detach chapters from the theme.
+    """
+    delete: [ID!]
 }

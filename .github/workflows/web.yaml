@@ -108,19 +108,12 @@ jobs:
           echo "::set-env name=STRIPE_API_KEY::${{ secrets.STRIPE_API_KEY }}"
           echo "::set-env name=STRIPE_LEGACY_API_KEY::${{ secrets.STRIPE_LEGACY_API_KEY }}"
           echo "::set-env name=BRAINTREE_PRIVATE_KEY::${{ secrets.BRAINTREE_PRIVATE_KEY }}"
-      - name: Seed database
+      - name: Seed database, synchronize Stripe products
         if: needs.mappings.outputs.skip_test != '1'
-        run: php artisan migrate --seed
-      - name: Synchronize Stripe products
-        if: needs.mappings.outputs.skip_test != '1'
-        run: php artisan stripe:sync:products
+        run: php artisan reseed
       - name: Test with PHPUnit
         if: needs.mappings.outputs.skip_test != '1'
-        run: |
-          vendor/bin/paratest -f \
-            --log-junit=storage/artifacts/phpunit-junit.xml \
-            --coverage-clover=storage/artifacts/phpunit-coverage.xml \
-            --coverage-text
+        run: vendor/bin/paratest --processes=4 --coverage-clover=storage/artifacts/phpunit-coverage.xml
       - name: Upload coverage report to Codecov
         if: needs.mappings.outputs.skip_test != '1'
         uses: codecov/codecov-action@v1.0.13

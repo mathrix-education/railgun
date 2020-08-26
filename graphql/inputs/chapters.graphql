@@ -18,10 +18,6 @@ input CreateChapter {
     Requires the permission `chapters:write:visible`.
     """
     visible: Boolean! @permission(name: "chapters:write:visible") @rules(apply: ["boolean"])
-    """
-    The chapter associated themes.
-    """
-    themes: BelongsToMany
 }
 
 input UpdateChapter {
@@ -48,9 +44,4 @@ input UpdateChapter {
     Requires the permission `chapters:write:visible`.
     """
     visible: Boolean @permission(name: "chapters:write:visible") @rules(apply: ["boolean"])
-    """
-    The chapter new related themes IDs.
-    Must be valid themes IDs.
-    """
-    themes: BelongsToMany
 }

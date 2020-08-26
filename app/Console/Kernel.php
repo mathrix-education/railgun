@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         SandboxCommand::class,
+        ReseedCommand::class,
         ExportFixturesCommand::class,
     ];
 }

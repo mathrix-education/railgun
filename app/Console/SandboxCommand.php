@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Railgun\Console;
 
 use Illuminate\Console\Command;
+use Railgun\Jobs\GravityJob;
 
 /**
  * Dummy Command which is only used to test behavioral code.
@@ -22,5 +23,6 @@ class SandboxCommand extends Command
     public function handle(): void
     {
         // Implement sandbox command
+        dispatch_now(new GravityJob('discipline_grade', ['grade_id']));
     }
 }

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Railgun\Models\Traits\Reorderable;
+use function collect;
 
 /**
  * @property-read int                  $id
@@ -60,5 +61,22 @@ class Theme extends BaseModel
     public function chapters(): BelongsToMany
     {
         return $this->belongsToMany(Chapter::class)->orderBy('order');
+    }
+
+    /**
+     * @param mixed[] $links The chapters links
+     * @param int     $delta The order delta (default "0", used for syncWithoutDetaching)
+     *
+     * @return mixed[] The Laravel "sync" data.
+     */
+    public function parseChapterLinks(array $links, int $delta = 0): array
+    {
+        return collect($links)
+            ->mapWithKeys(static function (string $id, int $order) use ($delta) {
+                return [
+                    $id => ['order' => $order + $delta],
+                ];
+            })
+            ->toArray();
     }
 }

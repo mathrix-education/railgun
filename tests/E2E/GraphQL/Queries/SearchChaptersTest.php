@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Queries;
 
+use Illuminate\Support\Str;
 use Railgun\Models\Chapter;
 use Railgun\Models\Course;
 use Railgun\Models\Grade;
 use Tests\E2E\GraphQL\GraphQLTestCase;
 use function count;
 use function explode;
-use function mb_strtolower;
 use function substr_count;
 
 class SearchChaptersTest extends GraphQLTestCase
@@ -48,7 +48,7 @@ class SearchChaptersTest extends GraphQLTestCase
         $this->assertNoErrors();
         $this->assertGreaterThanOrEqual(
             count($this->getData('data')),
-            substr_count(mb_strtolower($this->response->getContent()), $query),
+            substr_count(Str::lower($this->response->getContent()), $query),
         );
     }
 }

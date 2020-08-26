@@ -29,13 +29,13 @@ class ReadChapter
         }
 
         if (array_key_exists('disciplineSlug', $args)) {
-            $query->whereHas('theme.discipline', static function (Builder $builder) use ($args): void {
+            $query->whereHas('themes.discipline', static function (Builder $builder) use ($args): void {
                 $builder->where('slug', '=', $args['disciplineSlug']);
             });
         }
 
         if (array_key_exists('gradeSlug', $args)) {
-            $query->whereHas('theme.grade', static function (Builder $builder) use ($args): void {
+            $query->whereHas('themes.grade', static function (Builder $builder) use ($args): void {
                 $builder->where('slug', '=', $args['gradeSlug']);
             });
         }

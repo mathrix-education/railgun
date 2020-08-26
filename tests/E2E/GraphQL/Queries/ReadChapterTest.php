@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Queries;
 
+use Illuminate\Support\Arr;
 use Railgun\Models\Chapter;
 use Tests\E2E\GraphQL\GraphQLTestCase;
 
@@ -41,7 +42,7 @@ class ReadChapterTest extends GraphQLTestCase
                 ) {
                     id
                     slug
-                    theme {
+                    themes {
                         discipline {
                             id
                             slug
@@ -60,20 +61,25 @@ class ReadChapterTest extends GraphQLTestCase
 
     public function testWithSlugs(): void
     {
-        $chapter = Chapter::random();
+        /** @var Chapter $chapter */
+        $chapter = Chapter::query()
+            ->has('themes')
+            ->inRandomOrder()
+            ->firstOrFail();
 
         $this->executeReadChapter([
             'chapterSlug'    => $chapter->slug,
-            'gradeSlug'      => $chapter->theme->grade->slug,
-            'disciplineSlug' => $chapter->theme->discipline->slug,
+            'gradeSlug'      => $chapter->themes[0]->grade->slug,
+            'disciplineSlug' => $chapter->themes[0]->discipline->slug,
         ]);
 
         $this->assertResponseOk();
         $this->assertNoErrors();
+
         $this->assertEquals($chapter->id, $this->getData('id'));
         $this->assertEquals($chapter->slug, $this->getData('slug'));
-        $this->assertEquals($chapter->theme->grade->slug, $this->getData('theme.grade.slug'));
-        $this->assertEquals($chapter->theme->discipline->slug, $this->getData('theme.discipline.slug'));
+        $this->assertEquals($chapter->themes[0]->grade->slug, $this->getData('themes.0.grade.slug'));
+        $this->assertEquals($chapter->themes[0]->discipline->slug, $this->getData('themes.0.discipline.slug'));
     }
 
     public function testAvailable(): void

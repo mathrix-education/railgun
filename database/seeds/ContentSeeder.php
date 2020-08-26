@@ -43,15 +43,17 @@ class ContentSeeder extends AdvancedSeeder
         // Disciplines
         $this->seedFile('disciplines.json');
 
+        // Grade <=> discipline junction table
+        $this->seedFile('discipline_grade.json');
+
         // Themes
         $this->seedFile('themes.json');
 
-        // Grade-discipline junction table
-
-        $this->seedFile('discipline_grade.json');
-
         // Chapters
         $this->seedFile('chapters.json');
+
+        // Themes <=> chapters junction table
+        $this->seedFile('chapter_theme.json');
 
         $chapterIds = DB::table('chapters')->get(['id'])->pluck('id');
 

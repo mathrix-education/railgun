@@ -34,6 +34,6 @@ class ThemeTest extends ModelTestCase
      */
     public function testChapters(): void
     {
-        $this->assertHasMany('chapters');
+        $this->assertBelongsToMany('chapters');
     }
 }
