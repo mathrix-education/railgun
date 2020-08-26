@@ -66,6 +66,10 @@ input UpdateExercise {
 
 input CreateExerciseLabels {
     """
+    Replace the related labels. Any previously linked label which is not in the passed [ID] will be detached.
+    """
+    replace: [ID!] @rename(attribute: "sync")
+    """
     Add the passed ids to the linked model.
     """
     add: [ID!] @rename(attribute: "syncWithoutDetaching")
@@ -73,7 +77,7 @@ input CreateExerciseLabels {
 
 input UpdateExerciseLabels {
     """
-    Replace the related labels. Any previously linked label which is not in the passed [ID] will be detached.
+    Replace the related models. Any previously linked model which is not in the passed [ID] will be detached.
     """
     replace: [ID!] @rename(attribute: "sync")
     """
