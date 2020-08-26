@@ -57,7 +57,8 @@ class SitemapAction extends Controller
         DB::table('courses')
             ->join('notions', 'courses.notion_id', '=', 'notions.id')
             ->join('chapters', 'notions.chapter_id', '=', 'chapters.id')
-            ->join('themes', 'chapters.theme_id', '=', 'themes.id')
+            ->join('chapter_theme', 'chapters.id', '=', 'chapter_theme.chapter_id')
+            ->join('themes', 'chapter_theme.theme_id', '=', 'themes.id')
             ->join('disciplines', 'themes.discipline_id', '=', 'disciplines.id')
             ->selectRaw(implode(', ', [
                 'courses.id AS id',

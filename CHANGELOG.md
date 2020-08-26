@@ -1,5 +1,9 @@
 # Changelog
 
+## 13.0.1 - Hecate
+### Bug fixes
+- **graphql**: update delete permission for themes to `themes:delete`
+
 ## 13.0.0 - Hecate
 ### Breaking changes
 - **countries**: everything related to `Country` type has been deleted
@@ -9,7 +13,7 @@
 ### Bug fixes
 - **stripe**: do not trigger error on unknown webhook objects
 
-## 12.0.1
+## 12.0.1 - Laser
 ### Bug fixes
 - **coupons**: coupons counters are now correctly decremented
 - **php-pm**: do not override `APP_ENV`

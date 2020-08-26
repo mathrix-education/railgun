@@ -6,6 +6,7 @@ namespace Railgun\Console;
 
 use Illuminate\Console\Command;
 use Railgun\Jobs\GravityJob;
+use function dispatch_now;
 
 /**
  * Dummy Command which is only used to test behavioral code.

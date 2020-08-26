@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Railgun\GraphQL\Mutations;
 
 use Illuminate\Bus\Dispatcher;

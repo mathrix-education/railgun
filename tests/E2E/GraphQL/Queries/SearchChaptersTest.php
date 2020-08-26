@@ -32,7 +32,7 @@ class SearchChaptersTest extends GraphQLTestCase
                         id
                         name
                         slug
-                        theme {
+                        themes {
                             grade {
                                 name
                             }

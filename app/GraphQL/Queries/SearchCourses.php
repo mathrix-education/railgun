@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Railgun\GraphQL\Queries;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Query\JoinClause;
-use Illuminate\Support\Facades\DB;
+use Railgun\Models\Chapter;
 use Railgun\Models\Course;
-use Railgun\Support\GradeWeights;
 
 /**
  * Query searchCourses.
@@ -24,36 +22,14 @@ class SearchCourses
      */
     public function __invoke($_, array $args): Builder
     {
-        $query    = $args['query'];
-        $like     = "%{$query}%";
-        $graph    = new GradeWeights();
-        $weights1 = $graph->getSql($args['grade_id'], '`themes`.`grade_id`');
-        $weights2 = $graph->getSql($args['grade_id'], '`themes_inner`.`grade_id`');
+        $query = $args['query'];
+        $like  = "%{$query}%";
 
-        return Course::query()
-            ->selectRaw('`courses`.*')
-            ->join('notions', 'notions.id', '=', 'courses.notion_id')
-            ->crossJoin('chapters', 'chapters.id', '=', 'notions.chapter_id')
-            ->join('themes', 'chapters.theme_id', '=', 'themes.id')
-            ->join(DB::raw('`chapters` as chapters_inner'), 'chapters.slug', '=', 'chapters_inner.slug')
-            ->join(DB::raw('`themes` as themes_inner'), 'chapters_inner.theme_id', '=', 'themes_inner.id')
-            ->join(DB::raw("`chapters` as chapter_compare"), static function (JoinClause $join) use (
-                $weights1,
-                $weights2
-            ): void {
-                $join->on('chapters.slug', '=', 'chapter_compare.slug')
-                    ->whereRaw("$weights1 < $weights2");
-            })
+        return Chapter::query()
+            ->where('visible', '=', true)
             ->where(static function (Builder $query) use ($like): void {
-                $query->orWhere('courses.name', 'LIKE', $like)
-                    ->orWhere('courses.slug', 'LIKE', $like)
-                    ->orWhere('courses.seo_title', 'LIKE', $like)
-                    ->orWhere('courses.seo_keywords', 'LIKE', $like)
-                    ->orWhere('courses.seo_description', 'LIKE', $like)
-                    ->orWhere('courses.content', 'LIKE', $like);
-            })
-            ->where('chapters.visible', '=', true)
-            ->where('courses.visible', '=', true)
-            ->groupBy('courses.id');
+                $query->orWhere('name', 'like', $like)
+                    ->orWhere('slug', 'like', $like);
+            });
     }
 }
