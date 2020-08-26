@@ -7,7 +7,7 @@ namespace Railgun\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Railgun\Models\Traits\Reorderable;
 
 /**
@@ -55,10 +55,10 @@ class Theme extends BaseModel
     }
 
     /**
-     * @return HasMany<Chapter>
+     * @return BelongsToMany<Chapter>
      */
-    public function chapters(): HasMany
+    public function chapters(): BelongsToMany
     {
-        return $this->hasMany(Chapter::class)->orderBy('order');
+        return $this->belongsToMany(Chapter::class)->orderBy('order');
     }
 }

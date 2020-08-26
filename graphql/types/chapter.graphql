@@ -4,16 +4,20 @@ type Chapter implements Sellable & Ownable {
     slug: String!
     "The chapter price **in cents**. May be null if the chapter is not sellable."
     price: Int
-    order: Int!
     visible: Boolean!
     created_at: DateTime!
     updated_at: DateTime!
     available: Boolean!
     owned: Boolean!
-    theme: Theme! @belongsTo
+    order: Int
+    themes: [Theme!]! @belongsToMany
     notions: [Notion!]! @hasMany
     summary: Notion @belongsTo
     flashcards: [Flashcard!]! @hasMany
     exams: [Exam!]! @hasMany
     sessions: [Session!]! @hasMany
 }
+#
+#type ThemeChapterPivot {
+#    order: Int!
+#}

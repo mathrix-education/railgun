@@ -7,5 +7,5 @@ type Theme {
     updated_at: DateTime!
     discipline: Discipline @belongsTo
     grade: Grade! @belongsTo
-    chapters: [Chapter!]! @hasMany
+    chapters: [Chapter!]! @belongsToMany
 }

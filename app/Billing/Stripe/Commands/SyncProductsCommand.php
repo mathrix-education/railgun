@@ -52,7 +52,7 @@ class SyncProductsCommand extends Command
 
         // TODO: remove the Chapter auto-pricing
         Chapter::query()
-            ->whereHas('theme.grade', static fn($q) => $q->where('grades.slug', '=', 'postbac'))
+            ->whereHas('themes.grade', static fn($q) => $q->where('grades.slug', '=', 'postbac'))
             ->update([
                 'price'   => 4700,
                 'visible' => true,

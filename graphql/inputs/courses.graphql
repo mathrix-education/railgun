@@ -67,7 +67,7 @@ input CreateCourse {
     """
     The course associated labels.
     """
-    labels: BelongsToMany
+    labels: CreateCourseLabels
 }
 
 input UpdateCourse {
@@ -144,5 +144,23 @@ input UpdateCourse {
     """
     The course associated labels.
     """
-    labels: BelongsToMany
+    labels: UpdateCourseLabels
+}
+
+input CreateCourseLabels {
+    """
+    Add the passed ids to the linked model.
+    """
+    add: [ID!] @rename(attribute: "syncWithoutDetaching")
+}
+
+input UpdateCourseLabels {
+    """
+    Replace the related labels. Any previously linked label which is not in the passed [ID] will be detached.
+    """
+    replace: [ID!] @rename(attribute: "sync")
+    """
+    Add the passed ids to the linked model.
+    """
+    add: [ID!] @rename(attribute: "syncWithoutDetaching")
 }

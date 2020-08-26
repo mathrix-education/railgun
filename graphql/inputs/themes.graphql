@@ -24,6 +24,10 @@ input CreateTheme {
     Must be a valid grade ID.
     """
     grade_id: ID! @rules(apply: ["integer", "exists:grades,id"])
+    """
+    The theme related chapters
+    """
+    chapters: CreateThemeChapters
 }
 
 input UpdateTheme {
@@ -56,4 +60,22 @@ input UpdateTheme {
     Must be a valid grade ID.
     """
     grade_id: ID @rules(apply: ["integer", "exists:grades,id"])
+    """
+    The theme related chapters.
+    """
+    chapters: UpdateThemeChapters
+}
+
+input CreateThemeChapters {
+    add: [SyncThemeChapters!] @rename(attribute: "syncWithoutDetaching")
+}
+
+input UpdateThemeChapters {
+    add: [SyncThemeChapters!] @rename(attribute: "syncWithoutDetaching")
+    replace: [SyncThemeChapters!] @rename(attribute: "sync")
+}
+
+input SyncThemeChapters {
+    id: ID!
+    order: Int
 }
