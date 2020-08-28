@@ -16,6 +16,7 @@ use Railgun\Models\Traits\Sluggable;
  * @property-read int                     $id
  * @property      string                  $name
  * @property      string                  $slug
+ * @property      int                     $priority
  * @property      int                     $order
  * @property      bool                    $visible
  * @property      int|null                $parent_id
