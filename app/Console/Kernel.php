@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Railgun\Console;
 
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
+use Railgun\Console\GCloud\DatabaseSeedCommand;
+use Railgun\Console\GCloud\DatabaseSynchronizeCommand;
 
 /**
  * Console Kernel, where the application commands are declared commands and cron tasks.
@@ -18,6 +20,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         SandboxCommand::class,
         ReseedCommand::class,
-        ExportFixturesCommand::class,
+        DatabaseSynchronizeCommand::class,
+        DatabaseSeedCommand::class,
     ];
 }
