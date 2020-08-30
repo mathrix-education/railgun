@@ -2,6 +2,7 @@ type Grade {
     id: ID!
     name: String!
     slug: String!
+    priority: Int!
     order: Int!
     visible: Boolean!
     parent: Grade @belongsTo
