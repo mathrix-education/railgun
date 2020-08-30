@@ -16,7 +16,8 @@ class UpdateChapterTest extends GraphQLTestCase
 
     public function testChangeToExistingSlugNoConflict(): void
     {
-        $theme1 = Theme::random();
+        /** @var Theme $theme1 */
+        $theme1 = Theme::query()->has('chapters')->inRandomOrder()->first();
         /** @var Chapter $reference */
         $reference = $theme1->chapters()->inRandomOrder()->firstOrFail();
 
@@ -25,7 +26,8 @@ class UpdateChapterTest extends GraphQLTestCase
             ->inRandomOrder()
             ->where('grade_id', '!=', $theme1->grade_id)
             ->where('discipline_id', '!=', $theme1->discipline_id)
-            ->firstOrFail();
+            ->first();
+
         /** @var Chapter $chapter */
         $chapter = factory(Chapter::class)->create();
         $chapter->themes()->attach($theme2->id, ['order' => 0]);
@@ -60,3 +62,4 @@ class UpdateChapterTest extends GraphQLTestCase
         );
     }
 }
+
