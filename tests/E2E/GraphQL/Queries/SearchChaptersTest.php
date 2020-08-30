@@ -7,7 +7,6 @@ namespace Tests\E2E\GraphQL\Queries;
 use Illuminate\Support\Str;
 use Railgun\Models\Chapter;
 use Railgun\Models\Course;
-use Railgun\Models\Grade;
 use Tests\E2E\GraphQL\GraphQLTestCase;
 use function count;
 use function explode;
@@ -26,8 +25,8 @@ class SearchChaptersTest extends GraphQLTestCase
 
         $this->graphQL(
             <<<'GRAPHQL'
-            query($query: String!, $grade_id: ID!) {
-                searchChapters(query: $query, grade_id: $grade_id, first: 100) {
+            query($query: String!) {
+                searchChapters(query: $query, first: 100) {
                     data {
                         id
                         name
@@ -41,7 +40,7 @@ class SearchChaptersTest extends GraphQLTestCase
                 }
             }
             GRAPHQL,
-            ['query' => $query, 'grade_id' => Grade::random()->id],
+            ['query' => $query],
         );
 
         $this->assertResponseOk();

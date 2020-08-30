@@ -6,7 +6,6 @@ namespace Tests\E2E\GraphQL\Queries;
 
 use Illuminate\Support\Str;
 use Railgun\Models\Course;
-use Railgun\Models\Grade;
 use Tests\E2E\GraphQL\GraphQLTestCase;
 use function explode;
 use function json_encode;
@@ -29,8 +28,8 @@ class SearchCoursesTest extends GraphQLTestCase
 
         $this->graphQL(
             <<<'GRAPHQL'
-            query($query: String!, $grade_id: ID!) {
-                searchCourses(query: $query, grade_id: $grade_id, first: 100) {
+            query($query: String!) {
+                searchCourses(query: $query, first: 100) {
                     data {
                         name
                         slug
@@ -42,7 +41,7 @@ class SearchCoursesTest extends GraphQLTestCase
                 }
             }
             GRAPHQL,
-            ['query' => $query, 'grade_id' => Grade::random()->id],
+            ['query' => $query],
         );
 
         $this->assertResponseOk();
