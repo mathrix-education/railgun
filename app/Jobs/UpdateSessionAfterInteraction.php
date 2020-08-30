@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Railgun\Models\Contracts\BelongsToChapter;
 use Railgun\Models\Interaction;
 use Railgun\Models\Session;
+use Railgun\Models\Theme;
 
 /**
  * After a user interacted with a {@see Interactable} model, update its session.
@@ -31,9 +32,15 @@ class UpdateSessionAfterInteraction extends Job implements ShouldQueue
             return; // @codeCoverageIgnore
         }
 
-        $chapter = $this->interaction->interactable->getChapter();
-
+        $chapter  = $this->interaction->interactable->getChapter();
         $grade_id = $this->interaction->user->grade_id;
+        /** @var Theme|null $theme */
+        $theme = $chapter->themes()->where('grade_id', '=', $grade_id)->first();
+
+        if (!$theme) {
+            // User interacted with a content model which is not linked in a theme
+            return;
+        }
 
         $discipline_id = $chapter->themes()->where('grade_id', '=', $grade_id)->first()->discipline_id;
 
