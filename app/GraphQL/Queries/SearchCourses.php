@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Railgun\GraphQL\Queries;
 
 use Illuminate\Database\Eloquent\Builder;
-use Railgun\Models\Chapter;
 use Railgun\Models\Course;
 
 /**
@@ -25,11 +24,12 @@ class SearchCourses
         $query = $args['query'];
         $like  = "%{$query}%";
 
-        return Chapter::query()
+        return Course::query()
             ->where('visible', '=', true)
             ->where(static function (Builder $query) use ($like): void {
                 $query->orWhere('name', 'like', $like)
-                    ->orWhere('slug', 'like', $like);
+                    ->orWhere('slug', 'like', $like)
+                    ->orWhere('content', 'like', $like);
             });
     }
 }
