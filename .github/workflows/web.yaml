@@ -111,9 +111,9 @@ jobs:
       - name: Seed database, synchronize Stripe products
         if: needs.mappings.outputs.skip_test != '1'
         run: php artisan reseed
-      - name: Setup PHPUnit problem matcher
-        if: needs.mappings.outputs.skip_test != '1'
-        uses: decnorton/phpunit-problem-matcher@v1.0.1
+#      - name: Setup PHPUnit problem matcher
+#        if: needs.mappings.outputs.skip_test != '1'
+#        uses: decnorton/phpunit-problem-matcher@v1.0.1
       - name: Test with PHPUnit
         if: needs.mappings.outputs.skip_test != '1'
         run: vendor/bin/paratest --processes=4 --coverage-clover=storage/artifacts/phpunit-coverage.xml
