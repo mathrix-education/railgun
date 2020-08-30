@@ -7,7 +7,7 @@ extend type Query {
     """
     Search for courses.
     """
-    searchCourses(query: String!, grade_id: ID!): [Course!]! @paginate(
+    searchCourses(query: String!): [Course!]! @paginate(
         builder: "\\Railgun\\GraphQL\\Queries\\SearchCourses"
     )
 }
