@@ -17,7 +17,7 @@ class CreateTheme
      */
     public function __invoke($_, array $args): Theme
     {
-        $chapterLinks = Arr::pull($args, 'chapters');
+        $chapterLinks = Arr::pull($args, 'chapters') ?? [];
 
         $theme = new Theme($args);
         $theme->save();

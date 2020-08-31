@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\E2E\GraphQL\Mutations;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 use Railgun\Models\Chapter;
 use Railgun\Models\Theme;
 use Tests\E2E\GraphQL\GraphQLTestCase;
@@ -32,6 +33,27 @@ class UpdateThemeTest extends GraphQLTestCase
             GRAPHQL,
             ['input' => $input],
         );
+    }
+
+    public function testUpdateNoChapters(): void
+    {
+        $this->withPermissions(['themes:write']);
+
+        $theme   = Theme::random();
+        $newName = Str::ucfirst($this->faker->words(3, true));
+
+        $this->execute([
+            'id'   => $theme->id,
+            'name' => $newName,
+        ]);
+
+        $this->assertResponseOk();
+        $this->assertNoErrors();
+
+        $this->seeInDatabase('themes', [
+            'id'   => $theme->id,
+            'name' => $newName,
+        ]);
     }
 
     public function testUpdateWithChapters(): void

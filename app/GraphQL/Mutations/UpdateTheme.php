@@ -27,7 +27,7 @@ class UpdateTheme
      */
     public function __invoke($_, array $args): Theme
     {
-        $chapterLinks = Arr::pull($args, 'chapters');
+        $chapterLinks = Arr::pull($args, 'chapters') ?? [];
 
         /** @var Theme $theme */
         $theme = Theme::query()->findOrFail(Arr::pull($args, 'id'));
