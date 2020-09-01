@@ -68,7 +68,7 @@ class ModeMachine
                 'interval'       => 'month',
                 'interval_count' => 6,
             ],
-            'unit_amount' => 11830,
+            'unit_amount' => 10140,
         ],
         self::PLAN_YEAR              => [
             'currency'    => 'eur',
