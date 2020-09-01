@@ -9,7 +9,6 @@ use Railgun\Models\Acquisition;
 use Railgun\Models\Comment;
 use Railgun\Models\Interaction;
 use Railgun\Models\Note;
-use Railgun\Models\Session;
 use Railgun\Models\Subscription;
 use Railgun\Models\User;
 use Tests\E2E\GraphQL\GraphQLTestCase;
@@ -29,8 +28,7 @@ class DeleteUserTest extends GraphQLTestCase
         $comment = factory(Comment::class)->create(['user_id' => $user->id]);
         /** @var Note $note */
         $note = factory(Note::class)->create(['user_id' => $user->id]);
-        factory(Interaction::class)->create(['user_id' => $user->id]);
-        factory(Session::class)->create(['user_id' => $user->id]);
+        factory(Interaction::class)->create(['user_id' => $user->id]); // also creates a Session
         /** @var Subscription $subscription */
         $subscription = factory(Subscription::class)->create(['user_id' => $user->id]);
 
