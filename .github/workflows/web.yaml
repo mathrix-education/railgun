@@ -1,10 +1,10 @@
 name: Web pipeline
 on:
   push:
-    branches: ['main']
-    tags: ['**']
+    branches: [ 'main' ]
+    tags: [ '**' ]
   pull_request:
-    branches: ['**']
+    branches: [ '**' ]
 jobs:
   # ============================================================================
   # Setup the mappings for all the subsequent jobs.
@@ -50,7 +50,7 @@ jobs:
   # ============================================================================
   lint:
     name: Lint with PHP_CodeSniffer
-    needs: [mappings]
+    needs: [ mappings ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -75,7 +75,7 @@ jobs:
   # ============================================================================
   tests:
     name: Test with PHPUnit
-    needs: [mappings]
+    needs: [ mappings ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -116,11 +116,7 @@ jobs:
         run: php artisan stripe:sync:products
       - name: Test with PHPUnit
         if: needs.mappings.outputs.skip_test != '1'
-        run: |
-          vendor/bin/paratest -f \
-            --log-junit=storage/artifacts/phpunit-junit.xml \
-            --coverage-clover=storage/artifacts/phpunit-coverage.xml \
-            --coverage-text
+        run: vendor/bin/paratest --processes=4 --coverage-clover=storage/artifacts/phpunit-coverage.xml --coverage-text
       - name: Upload coverage report to Codecov
         if: needs.mappings.outputs.skip_test != '1'
         uses: codecov/codecov-action@v1.0.13
@@ -133,7 +129,7 @@ jobs:
   # ============================================================================
   docker:
     name: Build Docker image
-    needs: [mappings, lint, tests]
+    needs: [ mappings, lint, tests ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -174,7 +170,7 @@ jobs:
   deploy_gke:
     name: Deploy on Google Kubernetes Engine
     if: github.event_name != 'pull_request' || needs.mappings.outputs.deploy_force == '1'
-    needs: [mappings, lint, tests, docker]
+    needs: [ mappings, lint, tests, docker ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
