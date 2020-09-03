@@ -15,8 +15,5 @@ class Kernel extends ConsoleKernel
      * @var string[] The Artisan commands.
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      */
-    protected $commands = [
-        SandboxCommand::class,
-        ExportFixturesCommand::class,
-    ];
+    protected $commands = [];
 }
