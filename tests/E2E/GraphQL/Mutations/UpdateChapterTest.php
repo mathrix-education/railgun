@@ -82,8 +82,7 @@ class UpdateChapterTest extends GraphQLTestCase
     {
         $this->withPermissions('chapters:write');
         $chapter = Chapter::random();
-        $theme   = ClonesGenerator::themeForClone($chapter);
-        $clone   = $chapter->clone(['theme_id' => $theme->id]);
+        $clone   = ClonesGenerator::cloneChapter($chapter);
         $newName = Str::ucfirst($this->faker->words(3, true));
 
         $this->executeUpdateChapter(['id' => $chapter->id, 'name' => $newName]);
