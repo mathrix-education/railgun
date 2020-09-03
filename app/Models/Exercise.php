@@ -73,6 +73,10 @@ class Exercise extends BaseModel implements BelongsToChapter, ClonableContract, 
         self::updating($premiumSync);
 
         self::created(static function (Exercise $exercise): void {
+            if (self::$cloning) {
+                return;
+            }
+
             // Duplicate exercise if created in a cloned notion
             $exercise->subject->clones->each(static function (Subject $clone) use ($exercise): void {
                 $exercise->clone([

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Mutations;
 
+use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Chapter;
 use Railgun\Models\Grade;
 use Railgun\Models\Theme;
@@ -11,6 +12,8 @@ use Tests\E2E\GraphQL\GraphQLTestCase;
 
 class CloneChapterTest extends GraphQLTestCase
 {
+    use DatabaseTransactions;
+
     /**
      * Execute the clone chapter mutation.
      *

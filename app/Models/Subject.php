@@ -75,6 +75,10 @@ class Subject extends BaseModel implements BelongsToChapter, ClonableContract, O
         });
 
         self::created(static function (Subject $subject): void {
+            if (self::$cloning) {
+                return;
+            }
+
             // Duplicate subject if created in a cloned notion
             $subject->notion->clones->each(static function (Notion $clone) use ($subject): void {
                 $subject->clone([

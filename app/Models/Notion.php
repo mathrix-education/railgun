@@ -53,6 +53,10 @@ class Notion extends BaseModel implements BelongsToChapter, ClonableContract, Ow
         parent::boot();
 
         self::created(static function (Notion $notion): void {
+            if (self::$cloning) {
+                return;
+            }
+
             // Duplicate notion if created in a cloned chapter
             $notion->chapter->clones->each(static function (Chapter $clone) use ($notion): void {
                 $notion->clone([

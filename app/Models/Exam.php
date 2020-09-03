@@ -76,6 +76,10 @@ class Exam extends BaseModel implements BelongsToChapter, ClonableContract, Owna
         parent::boot();
 
         self::created(static function (Exam $exam): void {
+            if (self::$cloning) {
+                return;
+            }
+
             // Duplicate exam if created in a cloned chapter
             $exam->chapter->clones->each(static function (Chapter $clone) use ($exam): void {
                 $exam->clone([

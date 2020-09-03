@@ -71,6 +71,10 @@ class Flashcard extends BaseModel implements BelongsToChapter, ClonableContract,
         parent::boot();
 
         self::created(static function (Flashcard $flashcard): void {
+            if (self::$cloning) {
+                return;
+            }
+
             // Duplicate flashcard if created in a cloned chapter
             $flashcard->chapter->clones->each(static function (Chapter $clone) use ($flashcard): void {
                 $flashcard->clone([

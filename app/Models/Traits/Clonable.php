@@ -11,12 +11,6 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Railgun\Models\Contracts\Clonable as ClonableContract;
-use Railgun\Models\Course;
-use Railgun\Models\Exam;
-use Railgun\Models\Exercise;
-use Railgun\Models\Flashcard;
-use Railgun\Models\Notion;
-use Railgun\Models\Subject;
 use function array_replace;
 use function property_exists;
 use function resolveMorph;
@@ -27,29 +21,10 @@ use function resolveMorph;
  */
 trait Clonable
 {
+    protected static bool $cloning = false;
+
     public static function bootClonable(): void
     {
-        self::created(static function (ClonableContract $model): void {
-            if ($model instanceof Notion || $model instanceof Flashcard || $model instanceof Exam) {
-                $relation = $model->chapter();
-            } elseif ($model instanceof Course || $model instanceof Subject) {
-                $relation = $model->notion();
-            } elseif ($model instanceof Exercise) {
-                $relation = $model->subject();
-            } else {
-                // Chapter don't have parents
-                return;
-            }
-
-            /** @var ClonableContract $parent */
-            $parent = $relation->getParent();
-            $parent->clones->each(static function (ClonableContract $parentClone) use ($relation, $model): void {
-                $model->clone([
-                    $relation->getForeignKeyName() => $parentClone->getKey(),
-                ]);
-            });
-        });
-
         self::updated(static function (ClonableContract $model): void {
             // A clonable model was updated, update its clones.
             $model->clones->each(static function (ClonableContract $clone) use ($model): void {
@@ -143,10 +118,12 @@ trait Clonable
             $attributes,
         ));
 
+        static::$cloning = true;
         $this->fireModelEvent('cloning', false);
         $clone->save();
         $this->registerClone($clone);
         $this->fireModelEvent('cloned', false);
+        static::$cloning = false;
 
         return $clone;
     }

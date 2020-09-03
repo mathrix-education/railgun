@@ -95,6 +95,10 @@ class Course extends BaseModel implements BelongsToChapter, ClonableContract, Ow
         parent::boot();
 
         self::created(static function (Course $course): void {
+            if (self::$cloning) {
+                return;
+            }
+
             // Duplicate course if created in a cloned notion
             $course->notion->clones->each(static function (Notion $clone) use ($course): void {
                 $course->clone([
