@@ -33,7 +33,7 @@ class ClonesGenerator
      *
      * @param Chapter $chapter The chapter to clone.
      *
-     * @return Chapter
+     * @return Chapter The cloned chapter instance.
      */
     public static function cloneChapter(Chapter $chapter): Chapter
     {
