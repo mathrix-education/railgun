@@ -4,19 +4,107 @@ declare(strict_types=1);
 
 namespace Railgun\Models\Traits;
 
+use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Arr;
-use Railgun\Models\Contracts\BelongsToChapter;
+use Illuminate\Support\Facades\DB;
+use Railgun\Models\Contracts\Clonable as ClonableContract;
+use Railgun\Models\Course;
+use Railgun\Models\Exam;
+use Railgun\Models\Exercise;
+use Railgun\Models\Flashcard;
+use Railgun\Models\Notion;
+use Railgun\Models\Subject;
 use function array_replace;
 use function property_exists;
+use function resolveMorph;
 
 /**
  * @mixin Model
- * @mixin BelongsToChapter
+ * @mixin ClonableContract
  */
 trait Clonable
 {
+    public static function bootClonable(): void
+    {
+        self::created(static function (ClonableContract $model): void {
+            if ($model instanceof Notion || $model instanceof Flashcard || $model instanceof Exam) {
+                $relation = $model->chapter();
+            } elseif ($model instanceof Course || $model instanceof Subject) {
+                $relation = $model->notion();
+            } elseif ($model instanceof Exercise) {
+                $relation = $model->subject();
+            } else {
+                // Chapter don't have parents
+                return;
+            }
+
+            /** @var ClonableContract $parent */
+            $parent = $relation->getParent();
+            $parent->clones->each(static function (ClonableContract $parentClone) use ($relation, $model): void {
+                $model->clone([
+                    $relation->getForeignKeyName() => $parentClone->getKey(),
+                ]);
+            });
+        });
+
+        self::updated(static function (ClonableContract $model): void {
+            // A clonable model was updated, update its clones.
+            $model->clones->each(static function (ClonableContract $clone) use ($model): void {
+                // Clonable model has been updated, update its clones
+                $clone->update($model->getClonableAttributes());
+            });
+        });
+
+        self::deleted(static function (ClonableContract $model): void {
+            // A clonable model was deleted, the clones declarations from the clones table
+            DB::table('clones')
+                ->where('type', '=', resolveMorph($model))
+                ->where(static function (Builder $query) use ($model): void {
+                    $query->where('source_id', '=', $model->getKey())
+                        ->orWhere('destination_id', '=', $model->getKey());
+                })
+                ->delete();
+        });
+    }
+
+    /**
+     * Register an cloning model event with the dispatcher.
+     *
+     * @param Closure|string $callback
+     */
+    public static function cloning($callback): void
+    {
+        static::registerModelEvent('cloning', $callback);
+    }
+
+    /**
+     * Register an cloned model event with the dispatcher.
+     *
+     * @param Closure|string $callback
+     */
+    public static function cloned($callback): void
+    {
+        static::registerModelEvent('cloned', $callback);
+    }
+
+    /**
+     * The cloned relation.
+     *
+     * @return BelongsToMany<static>
+     */
+    public function clones(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            static::class,
+            'clones',
+            'source_id',
+            'clone_id',
+        )->where('clones.type', '=', resolveMorph($this));
+    }
+
     /**
      * @return string[] The clonable attributes.
      */
@@ -29,28 +117,72 @@ trait Clonable
     }
 
     /**
+     * Get the clonable attributes values.
+     *
+     * @see Clonable::getClonable
+     *
+     * @return mixed[] The clonable attributes.
+     */
+    public function getClonableAttributes(): array
+    {
+        return Arr::only($this->attributesToArray(), $this->getClonable());
+    }
+
+    /**
+     * Clone the current model.
+     *
      * @param mixed[] $attributes The clone overridden attributes.
      *
-     * @return static
+     * @return static The new clone.
      */
-    public function newClone(array $attributes = [])
+    public function clone(array $attributes = []): self
     {
+        /** @var static $clone */
         $clone = $this->newInstance(array_replace(
-            Arr::only($this->attributesToArray(), $this->getClonable()),
+            $this->getClonableAttributes(),
             $attributes,
         ));
+
+        $this->fireModelEvent('cloning', false);
         $clone->save();
+        $this->registerClone($clone);
+        $this->fireModelEvent('cloned', false);
 
         return $clone;
     }
 
-    public function clones(): BelongsToMany
+    /**
+     * Register the clone in the "clones" table.
+     *
+     * @param static $clone The new clone.
+     */
+    protected function registerClone(self $clone): void
     {
-        return $this->belongsToMany(
-            static::class,
-            'clones',
-            'source_id',
-            'clone_id',
-        );
+        // Register the clones into the "clones" table
+        DB::table('clones')
+            ->where([
+                ['source_id', '=', $this->getKey()],
+                ['type', '=', resolveMorph($clone)],
+            ])
+            ->pluck('clone_id')
+            ->prepend($this->getKey())
+            ->map(function ($cloneId) use ($clone) {
+                return [
+                    [
+                        'type'      => resolveMorph($this),
+                        'source_id' => $cloneId,
+                        'clone_id'  => $clone->getKey(),
+                    ],
+                    [
+                        'type'      => resolveMorph($this),
+                        'source_id' => $clone->getKey(),
+                        'clone_id'  => $cloneId,
+                    ],
+                ];
+            })
+            ->flatten(1)
+            ->each(static function (array $declaration): void {
+                DB::table('clones')->updateOrInsert($declaration, $declaration);
+            });
     }
 }

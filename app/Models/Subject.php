@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Railgun\Models\Contracts\BelongsToChapter;
+use Railgun\Models\Contracts\Clonable as ClonableContract;
 use Railgun\Models\Contracts\Ownable as OwnableContract;
 use Railgun\Models\Traits\Clonable;
 use Railgun\Models\Traits\Interactable;
@@ -31,7 +32,7 @@ use Railgun\Models\Traits\Sluggable;
  * @property-read Notion                $notion
  * @property-read Collection|Exercise[] $exercises
  */
-class Subject extends BaseModel implements BelongsToChapter, OwnableContract
+class Subject extends BaseModel implements BelongsToChapter, ClonableContract, OwnableContract
 {
     use Clonable;
     use Interactable;
@@ -71,6 +72,26 @@ class Subject extends BaseModel implements BelongsToChapter, OwnableContract
             if ($subject->isDirty('protected')) {
                 $subject->exercises()->update(['protected' => $subject->protected]);
             }
+        });
+
+        self::created(static function (Subject $subject): void {
+            // Duplicate subject if created in a cloned notion
+            $subject->notion->clones->each(static function (Notion $clone) use ($subject): void {
+                $subject->clone([
+                    'notion_id' => $clone->getKey(),
+                ]);
+            });
+        });
+
+        self::cloned(static function (Subject $subject): void {
+            $subject->unsetRelation('clones');
+            $subject->load(['clones', 'exercises']);
+
+            $subject->clones->each(static function (Subject $clone) use ($subject): void {
+                $subject->exercises->each(static function (Exercise $exercise) use ($clone): void {
+                    $exercise->clone(['subject_id' => $clone->getKey()]);
+                });
+            });
         });
     }
 

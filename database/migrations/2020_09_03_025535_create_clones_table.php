@@ -15,9 +15,10 @@ class CreateClonesTable extends Migration
     {
         Schema::create('clones', static function (Blueprint $table): void {
             $table->string('type');
-            $table->foreignId('source_id')->constrained('chapters');
-            $table->foreignId('clone_id')->constrained('chapters');
+            $table->unsignedBigInteger('source_id');
+            $table->unsignedBigInteger('clone_id');
             $table->primary(['type', 'source_id', 'clone_id']);
+            $table->index(['type', 'source_id']);
         });
     }
 

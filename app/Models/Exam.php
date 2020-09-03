@@ -7,6 +7,7 @@ namespace Railgun\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Contracts\BelongsToChapter;
+use Railgun\Models\Contracts\Clonable as ClonableContract;
 use Railgun\Models\Contracts\Ownable as OwnableContract;
 use Railgun\Models\Traits\Clonable;
 use Railgun\Models\Traits\Commentable;
@@ -34,7 +35,7 @@ use Railgun\Models\Traits\Sluggable;
  * ---
  * @property-read Chapter $chapter
  */
-class Exam extends BaseModel implements BelongsToChapter, OwnableContract
+class Exam extends BaseModel implements BelongsToChapter, ClonableContract, OwnableContract
 {
     use Clonable;
     use Commentable;
@@ -69,6 +70,20 @@ class Exam extends BaseModel implements BelongsToChapter, OwnableContract
         'visible'   => 'boolean',
     ];
     protected array $orderGroup = ['chapter_id'];
+
+    public static function boot(): void
+    {
+        parent::boot();
+
+        self::created(static function (Exam $exam): void {
+            // Duplicate exam if created in a cloned chapter
+            $exam->chapter->clones->each(static function (Chapter $clone) use ($exam): void {
+                $exam->clone([
+                    'chapter_id' => $clone->getKey(),
+                ]);
+            });
+        });
+    }
 
     /**
      * @return BelongsTo<Chapter>

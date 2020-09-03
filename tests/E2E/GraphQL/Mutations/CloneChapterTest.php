@@ -65,6 +65,9 @@ class CloneChapterTest extends GraphQLTestCase
         );
     }
 
+    /**
+     * phpcs:disable Generic.Metrics.CyclomaticComplexity
+     */
     public function testCloneChapter(): void
     {
         /** @var Chapter $chapter */
@@ -107,7 +110,7 @@ class CloneChapterTest extends GraphQLTestCase
         $this->assertNotEquals($chapter->theme->id, $this->getData('theme.id'));
         $this->assertEquals($newTheme->id, $this->getData('theme.id'));
 
-        // Check the chapter content
+        // Check response validity
         foreach ($chapter->notions as $n => $notion) {
             $this->assertNotEquals($notion->id, (int)$this->getData("notions.$n.id"));
             $this->assertEquals($notion->name, $this->getData("notions.$n.name"));
@@ -145,6 +148,113 @@ class CloneChapterTest extends GraphQLTestCase
             $this->assertNotEquals($exam->id, (int)$this->getData("exams.$e.id"));
             $this->assertEquals($exam->name, $this->getData("exams.$e.name"));
             $this->assertEquals($exam->content, $this->getData("exams.$e.content"));
+        }
+
+        // Check database
+        $chapter->refresh();
+        /** @var Chapter $clone */
+        $clone = Chapter::query()->findOrFail($this->getData('id'));
+
+        $this->assertFalse($chapter->is($clone));
+        $this->seeInDatabase('clones', [
+            'type'      => 'chapter',
+            'source_id' => $chapter->id,
+            'clone_id'  => $clone->id,
+        ]);
+        $this->seeInDatabase('clones', [
+            'type'      => 'chapter',
+            'source_id' => $clone->id,
+            'clone_id'  => $chapter->id,
+        ]);
+
+        foreach ($chapter->notions as $n => $notion) {
+            $this->assertNotEmpty($notion->clones);
+            $this->assertFalse($notion->is($clone->notions[$n]));
+            $this->seeInDatabase('clones', [
+                'type'      => 'notion',
+                'source_id' => $notion->id,
+                'clone_id'  => $clone->notions[$n]->id,
+            ]);
+            $this->seeInDatabase('clones', [
+                'type'      => 'notion',
+                'source_id' => $clone->notions[$n]->id,
+                'clone_id'  => $notion->id,
+            ]);
+
+            foreach ($notion->courses as $c => $course) {
+                $this->assertNotEmpty($course->clones);
+                $this->assertFalse($course->is($clone->notions[$n]->courses[$c]));
+                $this->seeInDatabase('clones', [
+                    'type'      => 'course',
+                    'source_id' => $course->id,
+                    'clone_id'  => $clone->notions[$n]->courses[$c]->id,
+                ]);
+                $this->seeInDatabase('clones', [
+                    'type'      => 'course',
+                    'source_id' => $clone->notions[$n]->courses[$c]->id,
+                    'clone_id'  => $course->id,
+                ]);
+            }
+
+            foreach ($notion->subjects as $s => $subject) {
+                $this->assertNotEmpty($subject->clones);
+                $this->assertFalse($subject->is($clone->notions[$n]->subjects[$s]));
+                $this->seeInDatabase('clones', [
+                    'type'      => 'subject',
+                    'source_id' => $subject->id,
+                    'clone_id'  => $clone->notions[$n]->subjects[$s]->id,
+                ]);
+                $this->seeInDatabase('clones', [
+                    'type'      => 'subject',
+                    'source_id' => $clone->notions[$n]->subjects[$s]->id,
+                    'clone_id'  => $subject->id,
+                ]);
+
+                foreach ($subject->exercises as $e => $exercise) {
+                    $this->assertNotEmpty($exercise->clones);
+                    $this->assertFalse($exercise->is($clone->notions[$n]->subjects[$s]->exercises[$e]));
+                    $this->seeInDatabase('clones', [
+                        'type'      => 'exercise',
+                        'source_id' => $exercise->id,
+                        'clone_id'  => $clone->notions[$n]->subjects[$s]->exercises[$e]->id,
+                    ]);
+                    $this->seeInDatabase('clones', [
+                        'type'      => 'exercise',
+                        'source_id' => $clone->notions[$n]->subjects[$s]->exercises[$e]->id,
+                        'clone_id'  => $exercise->id,
+                    ]);
+                }
+            }
+        }
+
+        foreach ($chapter->flashcards as $f => $flashcard) {
+            $this->assertNotEmpty($flashcard->clones);
+            $this->assertFalse($flashcard->is($clone->flashcards[$f]));
+            $this->seeInDatabase('clones', [
+                'type'      => 'flashcard',
+                'source_id' => $flashcard->id,
+                'clone_id'  => $clone->flashcards[$f]->id,
+            ]);
+            $this->seeInDatabase('clones', [
+                'type'      => 'flashcard',
+                'source_id' => $clone->flashcards[$f]->id,
+                'clone_id'  => $flashcard->id,
+            ]);
+        }
+
+        foreach ($chapter->exams as $f => $exam) {
+            $this->assertNotEmpty($exam->clones);
+            $this->assertFalse($exam->is($clone->exams[$f]));
+            $this->seeInDatabase('clones', [
+                'type'      => 'exam',
+                'source_id' => $exam->id,
+                'clone_id'  => $clone->exams[$f]->id,
+            ]);
+            $this->seeInDatabase('clones', [
+                'type'      => 'exam',
+                'source_id' => $clone->exams[$f]->id,
+                'clone_id'  => $exam->id,
+            ]);
         }
     }
 }

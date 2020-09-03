@@ -7,6 +7,7 @@ namespace Railgun\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Contracts\BelongsToChapter;
+use Railgun\Models\Contracts\Clonable as ClonableContract;
 use Railgun\Models\Contracts\Ownable as OwnableContract;
 use Railgun\Models\Traits\Clonable;
 use Railgun\Models\Traits\Commentable;
@@ -31,7 +32,7 @@ use Railgun\Models\Traits\Reorderable;
  * ---
  * @property-read Chapter $chapter
  */
-class Flashcard extends BaseModel implements BelongsToChapter, OwnableContract
+class Flashcard extends BaseModel implements BelongsToChapter, ClonableContract, OwnableContract
 {
     use Clonable;
     use Commentable;
@@ -64,6 +65,20 @@ class Flashcard extends BaseModel implements BelongsToChapter, OwnableContract
         'visible'   => 'boolean',
     ];
     protected array $orderGroup = ['chapter_id'];
+
+    public static function boot(): void
+    {
+        parent::boot();
+
+        self::created(static function (Flashcard $flashcard): void {
+            // Duplicate flashcard if created in a cloned chapter
+            $flashcard->chapter->clones->each(static function (Chapter $clone) use ($flashcard): void {
+                $flashcard->clone([
+                    'chapter_id' => $clone->getKey(),
+                ]);
+            });
+        });
+    }
 
     /**
      * @return BelongsTo<Chapter>

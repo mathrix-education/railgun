@@ -7,6 +7,7 @@ namespace Railgun\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Contracts\BelongsToChapter;
+use Railgun\Models\Contracts\Clonable as ClonableContract;
 use Railgun\Models\Contracts\Ownable as OwnableContract;
 use Railgun\Models\Traits\Clonable;
 use Railgun\Models\Traits\Commentable;
@@ -36,7 +37,7 @@ use Railgun\Models\Traits\Sluggable;
  * ---
  * @property-read Notion $notion
  */
-class Course extends BaseModel implements BelongsToChapter, OwnableContract
+class Course extends BaseModel implements BelongsToChapter, ClonableContract, OwnableContract
 {
     use Clonable;
     use Commentable;
@@ -88,6 +89,20 @@ class Course extends BaseModel implements BelongsToChapter, OwnableContract
         'seo_keywords',
         'seo_description',
     ];
+
+    public static function boot(): void
+    {
+        parent::boot();
+
+        self::created(static function (Course $course): void {
+            // Duplicate course if created in a cloned notion
+            $course->notion->clones->each(static function (Notion $clone) use ($course): void {
+                $course->clone([
+                    'notion_id' => $clone->getKey(),
+                ]);
+            });
+        });
+    }
 
     /**
      * @return BelongsTo<Notion>

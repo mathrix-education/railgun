@@ -7,6 +7,7 @@ namespace Railgun\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Contracts\BelongsToChapter;
+use Railgun\Models\Contracts\Clonable as ClonableContract;
 use Railgun\Models\Contracts\Ownable as OwnableContract;
 use Railgun\Models\Traits\Clonable;
 use Railgun\Models\Traits\Commentable;
@@ -31,7 +32,7 @@ use Railgun\Models\Traits\Reorderable;
  * ---
  * @property-read Subject $subject
  */
-class Exercise extends BaseModel implements BelongsToChapter, OwnableContract
+class Exercise extends BaseModel implements BelongsToChapter, ClonableContract, OwnableContract
 {
     use Clonable;
     use Commentable;
@@ -70,6 +71,15 @@ class Exercise extends BaseModel implements BelongsToChapter, OwnableContract
 
         self::creating($premiumSync);
         self::updating($premiumSync);
+
+        self::created(static function (Exercise $exercise): void {
+            // Duplicate exercise if created in a cloned notion
+            $exercise->subject->clones->each(static function (Subject $clone) use ($exercise): void {
+                $exercise->clone([
+                    'subject_id' => $clone->getKey(),
+                ]);
+            });
+        });
     }
 
     /**
