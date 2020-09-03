@@ -15,6 +15,8 @@ use function preg_match;
 
 /**
  * @mixin GoogleCloudCommand
+ *
+ * @codeCoverageIgnore
  */
 trait InteractsWithCloudSQL
 {

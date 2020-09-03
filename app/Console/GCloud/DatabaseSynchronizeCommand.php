@@ -6,6 +6,11 @@ namespace Railgun\Console\GCloud;
 
 use Illuminate\Support\Str;
 
+/**
+ * Synchronize two remote databases.
+ *
+ * @codeCoverageIgnore
+ */
 class DatabaseSynchronizeCommand extends GoogleCloudCommand
 {
     use InteractsWithCloudSQL;

@@ -8,6 +8,12 @@ use Illuminate\Console\Command;
 use function env;
 use function in_array;
 
+/**
+ * Perform a clean database seed (migrate:fresh + Stripe Product synchronization).
+ * This is escpially useful to ensure that you have a clean database in order to run tests.
+ *
+ * @codeCoverageIgnore
+ */
 class ReseedCommand extends Command
 {
     protected const SAFE_HOSTS = ['localhost', '127.0.0.1'];

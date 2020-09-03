@@ -7,6 +7,11 @@ namespace Railgun\Console\GCloud;
 use Symfony\Component\Process\Process;
 use function env;
 
+/**
+ * Seed the local database using of the online database on Google Cloud.
+ *
+ * @codeCoverageIgnore
+ */
 class DatabaseSeedCommand extends GoogleCloudCommand
 {
     use InteractsWithCloudSQL;

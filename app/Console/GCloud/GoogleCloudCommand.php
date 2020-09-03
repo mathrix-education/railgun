@@ -12,7 +12,10 @@ use function json_decode;
 use function trim;
 use const JSON_THROW_ON_ERROR;
 
-class GoogleCloudCommand extends Command
+/**
+ * Base command for Google Cloud-based Artisan commands.
+ */
+abstract class GoogleCloudCommand extends Command
 {
     /**
      * Write a string as error output and exit.
