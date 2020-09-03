@@ -31,6 +31,7 @@ use Railgun\Models\Traits\Sluggable;
  * ---
  * @property-read Notion                $notion
  * @property-read Collection|Exercise[] $exercises
+ * @property-read Collection|Subject[]  $clones
  */
 class Subject extends BaseModel implements BelongsToChapter, ClonableContract, OwnableContract
 {

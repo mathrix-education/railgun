@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Railgun\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Contracts\BelongsToChapter;
 use Railgun\Models\Contracts\Clonable as ClonableContract;
@@ -20,22 +21,23 @@ use Railgun\Models\Traits\Reorderable;
 use Railgun\Models\Traits\Sluggable;
 
 /**
- * @property-read int    $id
- * @property      string $name
- * @property      string $slug
- * @property      array  $content
- * @property      int    $order
- * @property      bool   $premium
- * @property      bool   $protected
- * @property      bool   $visible
- * @property      bool   $seo_index
- * @property      string $seo_title
- * @property      string $seo_description
- * @property      int    $notion_id
- * @property-read Carbon $created_at
- * @property-read Carbon $updated_at
+ * @property-read int                 $id
+ * @property      string              $name
+ * @property      string              $slug
+ * @property      array               $content
+ * @property      int                 $order
+ * @property      bool                $premium
+ * @property      bool                $protected
+ * @property      bool                $visible
+ * @property      bool                $seo_index
+ * @property      string              $seo_title
+ * @property      string              $seo_description
+ * @property      int                 $notion_id
+ * @property-read Carbon              $created_at
+ * @property-read Carbon              $updated_at
  * ---
- * @property-read Notion $notion
+ * @property-read Notion              $notion
+ * @property-read Collection|Course[] $clones
  */
 class Course extends BaseModel implements BelongsToChapter, ClonableContract, OwnableContract
 {

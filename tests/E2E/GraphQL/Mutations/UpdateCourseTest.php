@@ -8,13 +8,38 @@ use Carbon\Carbon;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Course;
 use Railgun\Models\Label;
+use Railgun\Support\Silicate;
 use Tests\E2E\GraphQL\GraphQLTestCase;
+use Tests\Utils\ClonesGenerator;
 use function factory;
 use function implode;
 
 class UpdateCourseTest extends GraphQLTestCase
 {
     use DatabaseTransactions;
+
+    /**
+     * @param mixed[] $input The UpdateCourse input.
+     */
+    private function executeUpdateCourse(array $input): void
+    {
+        $this->graphQL(
+            <<<'GRAPHQL'
+            mutation($input: UpdateCourse!) {
+                updateCourse(input: $input) {
+                    id
+                    content
+                    seo_keywords
+                    labels {
+                        id
+                        name
+                    }
+                }
+            }
+            GRAPHQL,
+            ['input' => $input],
+        );
+    }
 
     public function testConnectCourse(): void
     {
@@ -36,28 +61,6 @@ class UpdateCourseTest extends GraphQLTestCase
             'labelable_type' => 'course',
             'label_id'       => $label->id,
         ]);
-    }
-
-    /**
-     * @param mixed[] $input The UpdateCourse input.
-     */
-    private function executeUpdateCourse(array $input): void
-    {
-        $this->graphQL(
-            <<<'GRAPHQL'
-            mutation($input: UpdateCourse!) {
-                updateCourse(input: $input) {
-                    id
-                    seo_keywords
-                    labels {
-                        id
-                        name
-                    }
-                }
-            }
-            GRAPHQL,
-            ['input' => $input],
-        );
     }
 
     public function testUpdateFrozenCourse(): void
@@ -101,5 +104,36 @@ class UpdateCourseTest extends GraphQLTestCase
 
         $this->assertEquals($keywords, $this->getData('seo_keywords'));
         $this->seeInDatabase('courses', ['id' => $course->id, 'seo_keywords' => $keywords]);
+    }
+
+    public function testCloneContentIsUpdated(): void
+    {
+        /** @var Course $course */
+        $course = Course::query()
+            ->with('notion.chapter')
+            ->inRandomOrder()
+            ->firstOrFail();
+        ClonesGenerator::cloneChapter($course->notion->chapter);
+        $newContent = Silicate::wall();
+
+        $this->withPermissions('courses:write');
+        $this->graphQL(
+            <<<'GRAPHQL'
+            mutation($id: ID!, $content: Silicate!) {
+                updateCourse(input: {id: $id, content: $content}) {
+                    content
+                }
+            }
+            GRAPHQL,
+            ['id' => $course->id, 'content' => $newContent],
+        );
+
+        $this->assertResponseOk();
+        $this->assertNoErrors();
+        $this->assertEquals($newContent, $this->getData('content'));
+
+        foreach ($course->clones as $clone) {
+            $this->assertEquals($course->content, $clone->content);
+        }
     }
 }

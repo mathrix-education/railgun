@@ -27,6 +27,7 @@ use Railgun\Models\Traits\Reorderable;
  * @property-read Chapter              $chapter
  * @property-read Collection|Course[]  $courses
  * @property-read Collection|Subject[] $subjects
+ * @property-read Collection|Notion[]  $clones
  */
 class Notion extends BaseModel implements BelongsToChapter, ClonableContract, OwnableContract
 {

@@ -4,15 +4,38 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Mutations;
 
+use Illuminate\Support\Str;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Chapter;
 use Railgun\Models\Theme;
 use Tests\E2E\GraphQL\GraphQLTestCase;
+use Tests\Utils\ClonesGenerator;
 use function factory;
 
 class UpdateChapterTest extends GraphQLTestCase
 {
     use DatabaseTransactions;
+
+    /**
+     * Execute the updateChapter mutation.
+     *
+     * @param mixed[] $input The UpdateChapter input.
+     */
+    private function executeUpdateChapter(array $input): void
+    {
+        $this->graphQL(
+            <<<'GRAPHQL'
+            mutation($input: UpdateChapter!) {
+                updateChapter(input: $input) {
+                    id
+                    name
+                    slug
+                }
+            }
+            GRAPHQL,
+            ['input' => $input],
+        );
+    }
 
     public function testChangeToExistingSlugNoConflict(): void
     {
@@ -38,26 +61,6 @@ class UpdateChapterTest extends GraphQLTestCase
         $this->assertNoErrors();
     }
 
-    /**
-     * Execute the updateChapter mutation.
-     *
-     * @param mixed[] $input The UpdateChapter input.
-     */
-    private function executeUpdateChapter(array $input): void
-    {
-        $this->graphQL(
-            <<<'GRAPHQL'
-            mutation($input: UpdateChapter!) {
-                updateChapter(input: $input) {
-                    id
-                    slug
-                }
-            }
-            GRAPHQL,
-            ['input' => $input],
-        );
-    }
-
     public function testChangeSlugToExistingSlug(): void
     {
         [$reference, $chapter] = factory(Chapter::class, 2)->create([
@@ -73,5 +76,21 @@ class UpdateChapterTest extends GraphQLTestCase
         $this->assertResponseOk();
         $this->assertErrorCode('VALIDATION');
         $this->assertErrorCategory('validation');
+    }
+
+    public function testClonedNameIsUpdated(): void
+    {
+        $this->withPermissions('chapters:write');
+        $chapter = Chapter::random();
+        $theme   = ClonesGenerator::themeForClone($chapter);
+        $clone   = $chapter->clone(['theme_id' => $theme->id]);
+        $newName = Str::ucfirst($this->faker->words(3, true));
+
+        $this->executeUpdateChapter(['id' => $chapter->id, 'name' => $newName]);
+
+        $this->assertResponseOk();
+        $this->assertNoErrors();
+        $this->assertEquals($newName, $this->getData('name'));
+        $this->assertEquals($newName, $clone->refresh()->name);
     }
 }

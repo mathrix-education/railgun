@@ -29,4 +29,5 @@ type Exercise implements Ownable {
     """
     notes: [Note!] @morphMany @permission(name: "notes:read")
     interaction: Interaction @belongsTo
+    clones: [Exercise!]! @belongsToMany @permission(name: "exercises:read")
 }

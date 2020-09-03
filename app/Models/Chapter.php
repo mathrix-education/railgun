@@ -37,6 +37,7 @@ use Railgun\Models\Traits\Sluggable;
  * @property-read Collection|Flashcard[] $flashcards
  * @property-read Collection|Exam[]      $exams
  * @property-read Collection|Session[]   $sessions
+ * @property-read Collection|Chapter[]   $clones
  */
 class Chapter extends BaseModel implements BelongsToChapter, ClonableContract, StripeSellableContract
 {

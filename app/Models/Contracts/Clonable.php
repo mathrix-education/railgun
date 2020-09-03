@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Railgun\Models\Contracts;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * @property-read Clonable[]|Collection $clones
  * @mixin Model
  */
 interface Clonable
