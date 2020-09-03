@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Railgun\Models\Contracts\BelongsToChapter;
 use Railgun\Models\Contracts\Ownable as OwnableContract;
+use Railgun\Models\Traits\Clonable;
 use Railgun\Models\Traits\Ownable;
 use Railgun\Models\Traits\Reorderable;
 
@@ -28,6 +29,7 @@ use Railgun\Models\Traits\Reorderable;
  */
 class Notion extends BaseModel implements BelongsToChapter, OwnableContract
 {
+    use Clonable;
     use Ownable;
     use Reorderable;
 

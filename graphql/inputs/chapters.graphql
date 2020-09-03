@@ -65,3 +65,14 @@ input UpdateChapter {
     """
     theme_id: ID @rules(apply: ["integer", "exists:themes,id"])
 }
+
+input CloneChapter {
+    """
+    The chapter id to clone.
+    """
+    id: ID!
+    """
+    The clone theme id.
+    """
+    theme_id: ID! @rules(apply: ["integer", "exists:themes,id"])
+}

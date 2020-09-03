@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Contracts\BelongsToChapter;
 use Railgun\Models\Contracts\Ownable as OwnableContract;
+use Railgun\Models\Traits\Clonable;
 use Railgun\Models\Traits\Commentable;
 use Railgun\Models\Traits\Freezable;
 use Railgun\Models\Traits\Interactable;
@@ -32,6 +33,7 @@ use Railgun\Models\Traits\Reorderable;
  */
 class Flashcard extends BaseModel implements BelongsToChapter, OwnableContract
 {
+    use Clonable;
     use Commentable;
     use Freezable;
     use Interactable;

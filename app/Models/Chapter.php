@@ -13,6 +13,7 @@ use Railgun\Billing\Stripe\Contracts\StripeSellable as StripeSellableContract;
 use Railgun\Billing\Stripe\Models\StripeSellable;
 use Railgun\Models\Contracts\BelongsToChapter;
 use Railgun\Models\Traits\Acquerable;
+use Railgun\Models\Traits\Clonable;
 use Railgun\Models\Traits\Ownable;
 use Railgun\Models\Traits\Reorderable;
 use Railgun\Models\Traits\Sellable;
@@ -39,6 +40,7 @@ use Railgun\Models\Traits\Sluggable;
 class Chapter extends BaseModel implements BelongsToChapter, StripeSellableContract
 {
     use Acquerable;
+    use Clonable;
     use Ownable;
     use Reorderable;
     use Sellable;
@@ -55,6 +57,13 @@ class Chapter extends BaseModel implements BelongsToChapter, StripeSellableContr
     ];
     protected       $casts      = ['visible' => 'boolean'];
     protected array $orderGroup = ['theme_id'];
+    protected array $clonable   = [
+        'name',
+        'slug',
+        'price',
+        'order',
+        'visible',
+    ];
 
     /**
      * @return BelongsTo<Theme>

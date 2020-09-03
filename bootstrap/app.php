@@ -64,7 +64,7 @@ $app->register(CacheFallbackServiceProvider::class);
 
 // GraphQL
 $app->register(LighthouseServiceProvider::class);
-if (!$app->environment('production')) {
+if (!$app->environment('production') && !$app->runningUnitTests()) {
     $app->register(TracingServiceProvider::class);
 }
 $app->register(GraphQLPlaygroundServiceProvider::class);

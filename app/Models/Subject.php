@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Railgun\Models\Contracts\BelongsToChapter;
 use Railgun\Models\Contracts\Ownable as OwnableContract;
+use Railgun\Models\Traits\Clonable;
 use Railgun\Models\Traits\Interactable;
 use Railgun\Models\Traits\Ownable;
 use Railgun\Models\Traits\Reorderable;
@@ -32,8 +33,9 @@ use Railgun\Models\Traits\Sluggable;
  */
 class Subject extends BaseModel implements BelongsToChapter, OwnableContract
 {
-    use Ownable;
+    use Clonable;
     use Interactable;
+    use Ownable;
     use Reorderable;
     use Sluggable;
 

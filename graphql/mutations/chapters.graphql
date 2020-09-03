@@ -13,4 +13,9 @@ extend type Mutation {
     deleteChapter(
         id: ID!
     ): Chapter @permission(name: "categories:delete") @delete
+
+    "Clone an existing chapter"
+    cloneChapter(
+        input: CloneChapter! @spread
+    ): Chapter! @permission(name: "chapters:write") @chapterSlugRule
 }

@@ -23,8 +23,14 @@ class ReadCourseTest extends GraphQLTestCase
         Queue::fake();
 
         // Create an interaction
-        $user        = $this->actingAsGetUser();
-        $course      = Course::random();
+        $user = $this->actingAsGetUser();
+
+        /** @var Course $course */
+        $course = Course::query()
+            ->where('premium', '=', false)
+            ->inRandomOrder()
+            ->firstOrFail();
+
         $interaction = new Interaction([
             'user_id'           => $user->id,
             'interactable_type' => 'course',
@@ -38,6 +44,7 @@ class ReadCourseTest extends GraphQLTestCase
             <<<'QUERY'
             query($courseId: ID!) {
                 readCourse(id: $courseId) {
+                    content
                     interaction {
                         interactable_type
                         interactable_id
