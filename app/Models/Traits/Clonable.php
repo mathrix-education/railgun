@@ -39,7 +39,7 @@ trait Clonable
                 ->where('type', '=', resolveMorph($model))
                 ->where(static function (Builder $query) use ($model): void {
                     $query->where('source_id', '=', $model->getKey())
-                        ->orWhere('destination_id', '=', $model->getKey());
+                        ->orWhere('clone_id', '=', $model->getKey());
                 })
                 ->delete();
         });
