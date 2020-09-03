@@ -143,7 +143,7 @@ class UpdateCourseTest extends GraphQLTestCase
         /** @var Course $course */
         $course = Course::query()
             ->with('notion.chapter')
-            ->whereHas('notion', static function (Builder $query) {
+            ->whereHas('notion', static function (Builder $query): void {
                 $query->where('notions.type', '=', 'standard');
             })
             ->inRandomOrder()->firstOrFail();
