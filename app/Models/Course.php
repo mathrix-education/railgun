@@ -108,6 +108,13 @@ class Course extends BaseModel implements BelongsToChapter, ClonableContract, Ow
                 ]);
             });
         });
+
+        self::saved(static function (Course $course): void {
+            if ($course->seo_index && $course->wasChanged('seo_index')) {
+                // set all the clones to seo_index = false
+                $course->clones()->update(['seo_index' => false]);
+            }
+        });
     }
 
     /**

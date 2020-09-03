@@ -118,12 +118,12 @@ trait Clonable
             $attributes,
         ));
 
-        static::$cloning = true;
+        self::$cloning = true;
         $this->fireModelEvent('cloning', false);
         $clone->save();
         $this->registerClone($clone);
         $this->fireModelEvent('cloned', false);
-        static::$cloning = false;
+        self::$cloning = false;
 
         return $clone;
     }

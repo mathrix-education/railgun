@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\E2E\GraphQL\Mutations;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Course;
 use Railgun\Models\Label;
@@ -135,5 +136,44 @@ class UpdateCourseTest extends GraphQLTestCase
         foreach ($course->clones as $clone) {
             $this->assertEquals($course->content, $clone->content);
         }
+    }
+
+    public function testSeoIndexIsTransfered(): void
+    {
+        /** @var Course $course */
+        $course = Course::query()
+            ->with('notion.chapter')
+            ->whereHas('notion', static function (Builder $query) {
+                $query->where('notions.type', '=', 'standard');
+            })
+            ->inRandomOrder()->firstOrFail();
+
+        ClonesGenerator::cloneChapter($course->notion->chapter);
+
+        $course->seo_index = true;
+        $course->save();
+        $clone = $course->refresh()->clones[0];
+
+        $this->assertTrue($course->seo_index);
+        $this->assertFalse($clone->seo_index);
+
+        $this->withPermissions(['courses:write', 'courses:write:seo_index']);
+        $this->graphQL(
+            <<<'GRAPQHL'
+            mutation($id: ID!) {
+                updateCourse(input: {id: $id, seo_index: true}) {
+                    id
+                    seo_index
+                }
+            }
+            GRAPQHL,
+            ['id' => $clone->id],
+        );
+
+        $this->assertResponseOk();
+        $this->assertNoErrors();
+        $this->assertTrue($this->getData('seo_index'));
+        $this->assertFalse($course->refresh()->seo_index);
+        $this->assertTrue($clone->refresh()->seo_index);
     }
 }
