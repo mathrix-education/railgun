@@ -14,6 +14,8 @@ use const JSON_THROW_ON_ERROR;
 
 /**
  * Base command for Google Cloud-based Artisan commands.
+ *
+ * @codeCoverageIgnore
  */
 abstract class GoogleCloudCommand extends Command
 {
