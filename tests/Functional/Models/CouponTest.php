@@ -59,4 +59,20 @@ class CouponTest extends ModelTestCase
         $this->assertEquals($expectExpired, $coupon->expired);
         $this->assertEquals(!$expectExhausted && !$expectExpired, $coupon->valid);
     }
+
+    /**
+     * @testWith [3, 2]
+     *           [-1, -1]
+     * @covers ::decrementCounter
+     *
+     * @param int $counter         The initial coupon counter.
+     * @param int $expectedCounter The expected counter after decrement.
+     */
+    public function testDecrementCounter(int $counter, int $expectedCounter): void
+    {
+        $coupon = factory(Coupon::class)->create(['counter' => $counter]);
+        $coupon->decrementCounter();
+
+        $this->assertEquals($expectedCounter, $coupon->counter);
+    }
 }
