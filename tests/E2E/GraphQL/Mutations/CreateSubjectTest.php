@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Mutations;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
+use Railgun\Models\Notion;
 use Railgun\Models\Subject;
 use Tests\E2E\GraphQL\GraphQLTestCase;
 use Tests\Utils\ClonesGenerator;
@@ -14,7 +16,14 @@ class CreateSubjectTest extends GraphQLTestCase
 {
     public function testCreateCloned(): void
     {
-        $ref = Subject::random();
+        /** @var Subject $ref */
+        $ref = Subject::query()
+            ->whereHas('notion', static function(Builder $query): void {
+                $query->where('notions.type', '=', Notion::TYPE_STANDARD);
+            })
+            ->inRandomOrder()
+            ->firstOrFail();
+
         ClonesGenerator::cloneChapter($ref->notion->chapter);
 
         $input = Arr::except(
