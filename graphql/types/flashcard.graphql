@@ -30,6 +30,7 @@ type Flashcard implements Ownable {
     """
     notes: [Note!] @morphMany @permission(name: "notes:read")
     interaction: Interaction @belongsTo
+    clones: [Flashcard!]! @belongsToMany @permission(name: "flashcards:read")
 }
 
 type FlashcardContent {

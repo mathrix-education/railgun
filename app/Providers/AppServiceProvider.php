@@ -26,6 +26,7 @@ use Railgun\Models\Exam;
 use Railgun\Models\Exercise;
 use Railgun\Models\Flashcard;
 use Railgun\Models\Lesson;
+use Railgun\Models\Notion;
 use Railgun\Models\Pack;
 use Railgun\Models\Subject;
 use Railgun\Models\Training;
@@ -90,6 +91,7 @@ class AppServiceProvider extends ServiceProvider
              * @see Reportable
              */
             'chapter'   => Chapter::class,
+            'notion'    => Notion::class,
             'subject'   => Subject::class,
             'course'    => Course::class,
             'exercise'  => Exercise::class,

@@ -26,6 +26,7 @@ use Railgun\Models\Traits\UUID;
  * @property-read Carbon      $updated_at     The date/time when the acquisition was last updated.
  * ---
  * @property-read Sellable    $product        The acquired product.
+ * @property-read User        $user           The user who owns the acquisition.
  */
 class Acquisition extends BaseModel
 {

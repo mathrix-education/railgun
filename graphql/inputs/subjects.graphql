@@ -21,9 +21,9 @@ input CreateSubject {
     premium: Boolean @permission(name: "subjects:write:premium") @rules(apply: ["boolean"])
     """
     If the exam is only accessible for users who bought the parent chapter. Default value is `false`.
-    Requires the permission `exam:write:protected`.
+    Requires the permission `subjects:write:protected`.
     """
-    protected: Boolean @permission(name: "exam:write:protected") @rules(apply: ["boolean"])
+    protected: Boolean @permission(name: "subjects:write:protected") @rules(apply: ["boolean"])
     """
     If the subject should be displayed to the end users. Default value is `false`.
     Requires the permission `subjects:write:visible`.
@@ -62,9 +62,9 @@ input UpdateSubject {
     premium: Boolean @permission(name: "subjects:write:premium") @rules(apply: ["boolean"])
     """
     If the exam is only accessible for users who bought the parent chapter. Default value is `false`.
-    Requires the permission `exam:write:protected`.
+    Requires the permission `subjects:write:protected`.
     """
-    protected: Boolean @permission(name: "exam:write:protected") @rules(apply: ["boolean"])
+    protected: Boolean @permission(name: "subjects:write:protected") @rules(apply: ["boolean"])
     """
     If the subject should be displayed to the end users.
     Requires the permission `subjects:write:visible`.

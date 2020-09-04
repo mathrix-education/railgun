@@ -21,6 +21,7 @@ use Railgun\Billing\Stripe\StripeServiceProvider;
 use Railgun\Providers\AppServiceProvider;
 use Railgun\Providers\AuthServiceProvider;
 use Railgun\Providers\CryptoServiceProvider;
+use Railgun\Providers\DevelopmentServiceProvider;
 use Railgun\Providers\FacebookServiceProvider;
 use Railgun\Providers\GoogleServiceProvider;
 use Railgun\Providers\RouterServiceProvider;
@@ -63,7 +64,7 @@ $app->register(CacheFallbackServiceProvider::class);
 
 // GraphQL
 $app->register(LighthouseServiceProvider::class);
-if ($app->environment(['stage', 'edge']) && !$app->runningUnitTests()) {
+if (!$app->environment('production') && !$app->runningUnitTests()) {
     $app->register(TracingServiceProvider::class);
 }
 $app->register(GraphQLPlaygroundServiceProvider::class);
@@ -111,5 +112,9 @@ if ($app->runningInConsole() && class_exists(TinkerServiceProvider::class)) {
 }
 
 $app->register(RouterServiceProvider::class); // Called in last position to override any defined route
+
+if (!$app->environment('production')) {
+    $app->register(DevelopmentServiceProvider::class);
+}
 
 return $app;

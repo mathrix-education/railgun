@@ -12,7 +12,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Railgun\Billing\Stripe\Contracts\StripeSellable as StripeSellableContract;
 use Railgun\Billing\Stripe\Models\StripeSellable;
 use Railgun\Models\Contracts\BelongsToChapter;
+use Railgun\Models\Contracts\Clonable as ClonableContract;
 use Railgun\Models\Traits\Acquerable;
+use Railgun\Models\Traits\Clonable;
 use Railgun\Models\Traits\Ownable;
 use Railgun\Models\Traits\Reorderable;
 use Railgun\Models\Traits\Sellable;
@@ -35,10 +37,12 @@ use Railgun\Models\Traits\Sluggable;
  * @property-read Collection|Flashcard[] $flashcards
  * @property-read Collection|Exam[]      $exams
  * @property-read Collection|Session[]   $sessions
+ * @property-read Collection|Chapter[]   $clones
  */
-class Chapter extends BaseModel implements BelongsToChapter, StripeSellableContract
+class Chapter extends BaseModel implements BelongsToChapter, ClonableContract, StripeSellableContract
 {
     use Acquerable;
+    use Clonable;
     use Ownable;
     use Reorderable;
     use Sellable;
@@ -55,6 +59,37 @@ class Chapter extends BaseModel implements BelongsToChapter, StripeSellableContr
     ];
     protected       $casts      = ['visible' => 'boolean'];
     protected array $orderGroup = ['theme_id'];
+    protected array $clonable   = [
+        'name',
+        'slug',
+        'price',
+        'order',
+        'visible',
+    ];
+
+    public static function boot(): void
+    {
+        parent::boot();
+
+        self::cloned(static function (Chapter $chapter): void {
+            $chapter->unsetRelation('clones'); // ensure we got a fresh clones
+            $chapter->load(['clones', 'notions', 'flashcards', 'exams']);
+
+            $chapter->clones->each(static function (Chapter $clone) use ($chapter): void {
+                $chapter->notions->each(static function (Notion $notion) use ($clone): void {
+                    $notion->clone(['chapter_id' => $clone->getKey()]);
+                });
+
+                $chapter->flashcards->each(static function (Flashcard $flashcard) use ($clone): void {
+                    $flashcard->clone(['chapter_id' => $clone->getKey()]);
+                });
+
+                $chapter->exams->each(static function (Exam $exam) use ($clone): void {
+                    $exam->clone(['chapter_id' => $clone->getKey()]);
+                });
+            });
+        });
+    }
 
     /**
      * @return BelongsTo<Theme>

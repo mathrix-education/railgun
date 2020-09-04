@@ -7,6 +7,7 @@ namespace Tests\Functional\Models;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Models\Acquisition;
 use Railgun\Models\Contracts\Sellable;
+use Railgun\Models\User;
 use function factory;
 
 /**
@@ -23,5 +24,14 @@ class AcquisitionTest extends ModelTestCase
     {
         $acquisition = factory(Acquisition::class)->create();
         $this->assertInstanceOf(Sellable::class, $acquisition->product);
+    }
+
+    /**
+     * @covers ::user
+     */
+    public function testUser(): void
+    {
+        $acquisition = factory(Acquisition::class)->create();
+        $this->assertInstanceOf(User::class, $acquisition->user);
     }
 }

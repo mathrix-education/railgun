@@ -35,4 +35,5 @@ type Course implements Ownable {
     """
     notes: [Note!] @morphMany @permission(name: "notes:read")
     interaction: Interaction @belongsTo
+    clones: [Course!]! @belongsToMany @permission(name: "courses:read")
 }

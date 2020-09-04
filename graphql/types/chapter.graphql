@@ -16,4 +16,5 @@ type Chapter implements Sellable & Ownable {
     flashcards: [Flashcard!]! @hasMany
     exams: [Exam!]! @hasMany
     sessions: [Session!]! @hasMany
+    clones: [Chapter!]! @belongsToMany @permission(name: "chapters:read")
 }

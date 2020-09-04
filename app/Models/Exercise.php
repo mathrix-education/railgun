@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Railgun\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Contracts\BelongsToChapter;
+use Railgun\Models\Contracts\Clonable as ClonableContract;
 use Railgun\Models\Contracts\Ownable as OwnableContract;
+use Railgun\Models\Traits\Clonable;
 use Railgun\Models\Traits\Commentable;
 use Railgun\Models\Traits\Freezable;
 use Railgun\Models\Traits\Interactable;
@@ -17,21 +20,23 @@ use Railgun\Models\Traits\Ownable;
 use Railgun\Models\Traits\Reorderable;
 
 /**
- * @property-read int     $id
- * @property      string  $type
- * @property      mixed[] $content
- * @property      int     $order
- * @property      bool    $premium
- * @property      bool    $protected
- * @property      bool    $visible
- * @property      int     $subject_id
- * @property-read Carbon  $created_at
- * @property-read Carbon  $updated_at
+ * @property-read int                   $id
+ * @property      string                $type
+ * @property      mixed[]               $content
+ * @property      int                   $order
+ * @property      bool                  $premium
+ * @property      bool                  $protected
+ * @property      bool                  $visible
+ * @property      int                   $subject_id
+ * @property-read Carbon                $created_at
+ * @property-read Carbon                $updated_at
  * ---
- * @property-read Subject $subject
+ * @property-read Subject               $subject
+ * @property-read Collection|Exercise[] $clones
  */
-class Exercise extends BaseModel implements BelongsToChapter, OwnableContract
+class Exercise extends BaseModel implements BelongsToChapter, ClonableContract, OwnableContract
 {
+    use Clonable;
     use Commentable;
     use Freezable;
     use Interactable;
@@ -68,6 +73,19 @@ class Exercise extends BaseModel implements BelongsToChapter, OwnableContract
 
         self::creating($premiumSync);
         self::updating($premiumSync);
+
+        self::created(static function (Exercise $exercise): void {
+            if (self::$cloning) {
+                return;
+            }
+
+            // Duplicate exercise if created in a cloned notion
+            $exercise->subject->clones->each(static function (Subject $clone) use ($exercise): void {
+                $exercise->clone([
+                    'subject_id' => $clone->getKey(),
+                ]);
+            });
+        });
     }
 
     /**

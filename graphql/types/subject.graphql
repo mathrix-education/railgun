@@ -18,4 +18,5 @@ type Subject implements Ownable {
     notion: Notion! @belongsTo
     exercises: [Exercise!]! @hasMany
     interaction: Interaction @belongsTo
+    clones: [Subject!]! @belongsToMany @permission(name: "subjects:read")
 }

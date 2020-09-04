@@ -29,9 +29,9 @@ input CreateExam {
     premium: Boolean @permission(name: "exams:write:premium") @rules(apply: ["boolean"])
     """
     If the exam is only accessible for users who bought the parent chapter. Default value is `null`.
-    Requires the permission `exam:write:protected`.
+    Requires the permission `exams:write:protected`.
     """
-    protected: Boolean @permission(name: "exam:write:protected") @rules(apply: ["boolean"])
+    protected: Boolean @permission(name: "exams:write:protected") @rules(apply: ["boolean"])
     """
     The exam frozen date. If set, only the users with the permission `exams:freeze` will be allowed to edit the exam.
     Set to `null` to disable.
