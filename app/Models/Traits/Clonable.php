@@ -33,6 +33,10 @@ trait Clonable
             });
         });
 
+        self::deleting(static function (ClonableContract $model): void {
+            $model->clones()->delete();
+        });
+
         self::deleted(static function (ClonableContract $model): void {
             // A clonable model was deleted, the clones declarations from the clones table
             DB::table('clones')
