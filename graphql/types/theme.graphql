@@ -5,7 +5,7 @@ type Theme {
     visible: Boolean!
     created_at: DateTime!
     updated_at: DateTime!
-    discipline: Discipline @belongsTo
+    discipline: Discipline! @belongsTo
     grade: Grade! @belongsTo
     chapters: [Chapter!]! @hasMany
 }
