@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Railgun\Models\Contracts\BelongsToChapter;
 use Railgun\Models\Contracts\Clonable as ClonableContract;
+use Railgun\Models\Contracts\Labelable as LabelableContract;
 use Railgun\Models\Contracts\Ownable as OwnableContract;
 use Railgun\Models\Traits\Clonable;
 use Railgun\Models\Traits\Commentable;
@@ -37,7 +38,7 @@ use Railgun\Models\Traits\Sluggable;
  * @property-read Chapter           $chapter
  * @property-read Collection|Exam[] $clones
  */
-class Exam extends BaseModel implements BelongsToChapter, ClonableContract, OwnableContract
+class Exam extends BaseModel implements BelongsToChapter, ClonableContract, LabelableContract, OwnableContract
 {
     use Clonable;
     use Commentable;
