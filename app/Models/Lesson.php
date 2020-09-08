@@ -6,6 +6,7 @@ namespace Railgun\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Railgun\Models\Contracts\Labelable as LabelableContract;
 use Railgun\Models\Contracts\Ownable as OwnableContract;
 use Railgun\Models\Traits\Commentable;
 use Railgun\Models\Traits\Labelable;
@@ -27,7 +28,7 @@ use Railgun\Models\Traits\Sluggable;
  * ---
  * @property-read Section $section
  */
-class Lesson extends BaseModel implements OwnableContract
+class Lesson extends BaseModel implements LabelableContract, OwnableContract
 {
     use Commentable;
     use Labelable;

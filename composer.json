@@ -1,7 +1,7 @@
 {
   "name": "mathrix-education/railgun",
   "description": "Railgun-fast paced GraphQL API for Mathrix Education.",
-  "version": "13.0.2",
+  "version": "13.1.0",
   "type": "project",
   "keywords": [
     "education",
@@ -60,6 +60,7 @@
     "braintree/braintree_php": "^5.2",
     "doctrine/dbal": "^2.10",
     "facebook/graph-sdk": "^5.7",
+    "fruitcake/laravel-cors": "^2.0",
     "google/apiclient": "^2.4",
     "guzzlehttp/guzzle": "^6.3.3",
     "haydenpierce/class-finder": "^0.4.0",

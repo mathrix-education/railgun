@@ -4,11 +4,13 @@
   "port": 8080,
   "workers": 4,
   "debug": 0,
-  "logging": 0,
+  "logging": 1,
   "static": true,
   "static-directory": "public",
   "bootstrap": "laravel",
   "max-requests": 1000,
   "concurrent-requests": true,
-  "request-body-buffer": 10485760
+  "request-body-buffer": 10485760,
+  "socket-path": "storage/ppm/run",
+  "pidfile": "storage/ppm/ppm.pid"
 }

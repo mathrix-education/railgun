@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Railgun\Providers;
 
 use Exception;
+use Fruitcake\Cors\HandleCors;
 use Illuminate\Cache\Repository as CacheImplementation;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
 use Illuminate\Contracts\Console\Kernel as KernelContract;
@@ -63,6 +64,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // Middleware
         $middleware = [
+            HandleCors::class,
             TeardownMiddleware::class,
             LanguageMiddleware::class,
             CorrelationMiddleware::class,

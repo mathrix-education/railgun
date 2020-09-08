@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use Fruitcake\Cors\CorsServiceProvider;
 use Illuminate\Filesystem\FilesystemServiceProvider;
 use Illuminate\Mail\MailServiceProvider;
 use Illuminate\Notifications\NotificationServiceProvider;
@@ -61,6 +62,10 @@ $app->register(FilesystemServiceProvider::class);
 $app->register(RedisServiceProvider::class);
 $app->register(NotificationServiceProvider::class);
 $app->register(CacheFallbackServiceProvider::class);
+
+// CORS
+$app->configure('cors');
+$app->register(CorsServiceProvider::class);
 
 // GraphQL
 $app->register(LighthouseServiceProvider::class);

@@ -7,10 +7,12 @@ namespace Railgun\Handlers;
 use Closure;
 use Railgun\Exceptions\MethodNotAllowedException;
 use Railgun\Exceptions\NotFoundException;
+use Railgun\Exceptions\SessionExpiredException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException as SymfonyMethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException as SymfonyMethodNotAllowedException;
 use Throwable;
+use Windy\Guardian\Exceptions\InvalidSignatureException;
 use function implode;
 
 class RailgunTransformer implements TransformsExceptions
@@ -35,6 +37,8 @@ class RailgunTransformer implements TransformsExceptions
         } elseif ($original instanceof SymfonyMethodNotAllowedException) {
             $exception = new MethodNotAllowedException($original->getMessage(), $original);
             $exception->setHeaders(['Allow' => implode(',', $original->getAllowedMethods())]);
+        } elseif ($original instanceof InvalidSignatureException) {
+            $exception = new SessionExpiredException();
         }
 
         return $next($exception ?? $original);
