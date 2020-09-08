@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Railgun\Exceptions;
 
 use Throwable;
+use function trans;
 
 class SessionExpiredException extends HttpException
 {
