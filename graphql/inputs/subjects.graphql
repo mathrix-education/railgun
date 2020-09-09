@@ -8,7 +8,7 @@ input CreateSubject {
     The subject slug, which will be used in the URL generation.
     Maximum 150 caracters.
     """
-    slug: String! @rules(apply: ["string", "max:150"])
+    slug: String @rules(apply: ["string", "max:150"])
     """
     The subject order. If not set, the section will be placed in the last position of the group [notion].
     Must be positive (i.e. >=0).
