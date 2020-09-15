@@ -25,14 +25,7 @@ input CreateUser {
     """
     The user password.
     """
-    password: String! @rules(apply: ["string"])
-    """
-    **Deprecated: use `permissions` instead. Will be removed in version 8.0.0.**
-    The user permissions.
-    Requires the permission `*`.
-    """
-    scopes: [String!] @deprecated(reason: "Use `permissions` instead. Will be removed in version 8.0.0.")
-    @permission(name: "*")
+    password: String! @rules(apply: ["string", "min:6"])
     """
     The user permissions.
     Requires the permission `*`.
@@ -75,14 +68,7 @@ input UpdateUser {
     """
     The user new password.
     """
-    password: String @rules(apply: ["sometimes", "required"])
-    """
-    **Deprecated: use `permissions` instead. Will be removed in version 8.0.0.**
-    The user new permissions.
-    Requires the permission `*`.
-    """
-    scopes: [String!] @deprecated(reason: "Use `permissions` instead. Will be removed in version 8.0.0.")
-    @permission(name: "*")
+    password: String @rules(apply: ["string", "min:6"])
     """
     The user new permissions.
     Requires the permission `*`.
@@ -120,7 +106,7 @@ input UpdateMe {
     """
     The user new password.
     """
-    password: String @rules(apply: ["string"])
+    password: String @rules(apply: ["string", "min:6"])
     """
     The user new related grade ID.
     """
