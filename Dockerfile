@@ -38,7 +38,7 @@ COPY docker/etc/. /usr/local/etc/
 COPY . /var/www/
 
 # Install dependencies with composer, set release
-COPY --from=composer /usr/bin/composer /usr/bin/composer
+COPY --from=composer:1 /usr/bin/composer /usr/bin/composer
 RUN composer global require hirak/prestissimo && \
     composer install --no-suggest --prefer-dist --no-dev --optimize-autoloader && \
     composer clear-cache && \

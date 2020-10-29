@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\E2E\GraphQL\Mutations;
 
 use Laravel\Lumen\Testing\DatabaseTransactions;
+use Railgun\Billing\Stripe\Models\Academy;
 use Railgun\Billing\Stripe\Models\ModeMachine;
 use Railgun\Models\Chapter;
 use Railgun\Models\Pack;
@@ -15,6 +16,7 @@ use Tests\E2E\GraphQL\GraphQLTestCase;
 use Tests\Utils\CartInputGenerator;
 use function array_merge;
 use function collect;
+use function in_array;
 use function resolveMorph;
 use function trans;
 
@@ -102,6 +104,15 @@ class CheckoutTest extends GraphQLTestCase
                     'error_message' => trans('stripe.errors.card.generic'),
                 ],
             ],
+            'academy|visa'              => [
+                'products'        => [],
+                'plan'            => Academy::PLAN_MONTH,
+                'paymentMethodId' => 'pm_card_visa_credit_fr_cartesBancaires',
+                'expectations'    => [
+                    'invoiceStatus'       => Invoice::STATUS_PAID,
+                    'paymentIntentStatus' => PaymentIntent::STATUS_SUCCEEDED,
+                ],
+            ],
         ];
     }
 
@@ -153,12 +164,17 @@ class CheckoutTest extends GraphQLTestCase
                 $acquisitions->each(fn(array $acquisition) => $this->seeInDatabase('acquisitions', $acquisition));
 
                 if (isset($cart['plan'])) {
-                    $this->assertTrue($user->premium);
+                    if (in_array($cart['plan'], ModeMachine::PLANS, true)) {
+                        $this->assertTrue($user->premium);
+                    } elseif (in_array($cart['plan'], Academy::PLANS, true)) {
+                        $this->assertTrue($user->academy);
+                    }
                 }
             }
         } else {
             $acquisitions->each(fn(array $acquisition) => $this->notSeeInDatabase('acquisitions', $acquisition));
             $this->assertFalse($user->premium);
+            $this->assertFalse($user->academy);
         }
 
         if (isset($expectations['error_message'])) {

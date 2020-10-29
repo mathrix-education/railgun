@@ -13,6 +13,7 @@ use Railgun\Billing\Exceptions\EmptyCartException;
 use Railgun\Billing\Exceptions\InvalidCouponCodeException;
 use Railgun\Billing\Exceptions\UnavailableProductsException;
 use Railgun\Billing\Stripe\Contracts\StripeSellable;
+use Railgun\Billing\Stripe\Models\Academy;
 use Railgun\Billing\Stripe\Models\ModeMachine;
 use Railgun\Models\Chapter;
 use Railgun\Models\Contracts\Ownable;
@@ -51,12 +52,14 @@ class Cart extends Container
     public const IDENTIFIER = 'cart_laser';
 
     protected ModeMachine $modeMachine;
+    protected Academy $academy;
 
     protected function __construct()
     {
         parent::__construct();
 
         $this->modeMachine = app()->make(ModeMachine::class);
+        $this->academy     = app()->make(Academy::class);
     }
 
     /**
@@ -76,7 +79,7 @@ class Cart extends Container
         $cart->trainings = Training::query()->whereIn('id', array_unique($cartInput['trainings'] ?? [0]))->get();
 
         if (isset($cartInput['plan'])) {
-            $cart->plan = $cart->modeMachine->get($cartInput['plan']);
+            $cart->plan = $cart->modeMachine->get($cartInput['plan']) ?? $cart->academy->get($cartInput['plan']);
         }
 
         // Set the coupon code; coupon validation is handled here

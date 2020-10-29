@@ -13,6 +13,7 @@ use Braintree\Transaction;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
+use Railgun\Billing\Stripe\Models\Academy;
 use Railgun\Billing\Stripe\Models\InteractsWithStripe;
 use Railgun\Billing\Stripe\Models\ModeMachine;
 use Railgun\Billing\Stripe\StripeClientRegistry;
@@ -120,16 +121,23 @@ class Subscription extends BaseModel implements CacheableContract
         $price      = $stripeSubscription->items->data[0]->price;
         $canceledAt = $stripeSubscription->cancel_at ?? $subscription->canceled_at ?? null;
 
+        if (
+            array_key_exists($price->lookup_key, ModeMachine::PRICES)
+            || array_key_exists($price->lookup_key, Academy::PRICES)
+        ) {
+            $plan = $price->lookup_key;
+        } else {
+            $plan = $price->id;
+        }
+
         return new self([
             'id'                   => $stripeSubscription->id,
-            'plan'                 => array_key_exists($price->lookup_key, ModeMachine::PRICES)
-                ? $price->lookup_key
-                : $price->id,
+            'plan'                 => $plan,
             'customer_id'          => $customerId,
             'status'               => $stripeSubscription->status,
             'current_period_start' => Carbon::createFromTimestamp($stripeSubscription->current_period_start),
             'current_period_end'   => Carbon::createFromTimestamp($stripeSubscription->current_period_end),
-            'user_id'              => $user ? $user->id : null,
+            'user_id'              => $user->id ?? null,
             'created_at'           => Carbon::createFromTimestamp($stripeSubscription->created),
             'updated_at'           => Carbon::createFromTimestamp($stripeSubscription->created),
             'canceled_at'          => $canceledAt ? Carbon::createFromTimestamp($canceledAt) : null,
