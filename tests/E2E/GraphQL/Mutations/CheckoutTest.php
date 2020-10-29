@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Mutations;
 
+use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Billing\Stripe\Models\Academy;
 use Railgun\Billing\Stripe\Models\ModeMachine;
 use Railgun\Models\Chapter;
@@ -21,7 +22,7 @@ use function trans;
 
 class CheckoutTest extends GraphQLTestCase
 {
-    // use DatabaseTransactions;
+    use DatabaseTransactions;
 
     /**
      * @return mixed[][] The payment methods dataset.
