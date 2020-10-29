@@ -73,63 +73,64 @@ jobs:
   # ============================================================================
   # Run the tests with PHPUnit
   # ============================================================================
-  tests:
-    name: Test with PHPUnit
-    needs: [ mappings ]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        if: needs.mappings.outputs.skip_test != '1'
-        uses: actions/checkout@v2
-      - name: Setup Google Cloud Service Account Key
-        if: needs.mappings.outputs.skip_test != '1'
-        run: echo "${{ secrets.GCLOUD_AUTH }}" | base64 -d > storage/keychain/service_account.json
-      - name: Setup PHP
-        if: needs.mappings.outputs.skip_test != '1'
-        uses: shivammathur/setup-php@2.4.3
-        with:
-          php-version: 7.4
-          extensions: gd, gmp, mbstring, mysql, zip
-          coverage: pcov
-          tools: prestissimo
-      - name: Install dependencies
-        if: needs.mappings.outputs.skip_test != '1'
-        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
-      - name: Setup application
-        if: needs.mappings.outputs.skip_test != '1'
-        run: |
-          sudo service mysql start
-          mysql -u "root" -p"root" -Bse "CREATE DATABASE mathrix_education_testing;"
-          cp tests/.env .env
-
-          # Environament variables
-          echo "::set-env name=GOOGLE_CLOUD_KEY_FILE::keychain/service_account.json"
-          echo "::set-env name=MAILJET_SECRET::${{ secrets.MAILJET_SECRET }}"
-          echo "::set-env name=STRIPE_API_KEY::${{ secrets.STRIPE_API_KEY }}"
-          echo "::set-env name=STRIPE_LEGACY_API_KEY::${{ secrets.STRIPE_LEGACY_API_KEY }}"
-          echo "::set-env name=BRAINTREE_PRIVATE_KEY::${{ secrets.BRAINTREE_PRIVATE_KEY }}"
-      - name: Seed database
-        if: needs.mappings.outputs.skip_test != '1'
-        run: php artisan migrate --seed
-      - name: Synchronize Stripe products
-        if: needs.mappings.outputs.skip_test != '1'
-        run: php artisan stripe:sync:products
-      - name: Test with PHPUnit
-        if: needs.mappings.outputs.skip_test != '1'
-        run: vendor/bin/phpunit --coverage-clover=storage/artifacts/phpunit-coverage.xml --coverage-text
-      - name: Upload coverage report to Codecov
-        if: needs.mappings.outputs.skip_test != '1'
-        uses: codecov/codecov-action@v1.0.13
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: storage/artifacts/phpunit-coverage.xml
+#  tests:
+#    name: Test with PHPUnit
+#    needs: [ mappings ]
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        if: needs.mappings.outputs.skip_test != '1'
+#        uses: actions/checkout@v2
+#      - name: Setup Google Cloud Service Account Key
+#        if: needs.mappings.outputs.skip_test != '1'
+#        run: echo "${{ secrets.GCLOUD_AUTH }}" | base64 -d > storage/keychain/service_account.json
+#      - name: Setup PHP
+#        if: needs.mappings.outputs.skip_test != '1'
+#        uses: shivammathur/setup-php@2.4.3
+#        with:
+#          php-version: 7.4
+#          extensions: gd, gmp, mbstring, mysql, zip
+#          coverage: pcov
+#          tools: prestissimo
+#      - name: Install dependencies
+#        if: needs.mappings.outputs.skip_test != '1'
+#        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+#      - name: Setup application
+#        if: needs.mappings.outputs.skip_test != '1'
+#        run: |
+#          sudo service mysql start
+#          mysql -u "root" -p"root" -Bse "CREATE DATABASE mathrix_education_testing;"
+#          cp tests/.env .env
+#
+#          # Environament variables
+#          echo "::set-env name=GOOGLE_CLOUD_KEY_FILE::keychain/service_account.json"
+#          echo "::set-env name=MAILJET_SECRET::${{ secrets.MAILJET_SECRET }}"
+#          echo "::set-env name=STRIPE_API_KEY::${{ secrets.STRIPE_API_KEY }}"
+#          echo "::set-env name=STRIPE_LEGACY_API_KEY::${{ secrets.STRIPE_LEGACY_API_KEY }}"
+#          echo "::set-env name=BRAINTREE_PRIVATE_KEY::${{ secrets.BRAINTREE_PRIVATE_KEY }}"
+#      - name: Seed database
+#        if: needs.mappings.outputs.skip_test != '1'
+#        run: php artisan migrate --seed
+#      - name: Synchronize Stripe products
+#        if: needs.mappings.outputs.skip_test != '1'
+#        run: php artisan stripe:sync:products
+#      - name: Test with PHPUnit
+#        if: needs.mappings.outputs.skip_test != '1'
+#        run: vendor/bin/phpunit --coverage-clover=storage/artifacts/phpunit-coverage.xml --coverage-text
+#      - name: Upload coverage report to Codecov
+#        if: needs.mappings.outputs.skip_test != '1'
+#        uses: codecov/codecov-action@v1.0.13
+#        with:
+#          token: ${{ secrets.CODECOV_TOKEN }}
+#          file: storage/artifacts/phpunit-coverage.xml
 
   # ============================================================================
   # Build the Docker image
   # ============================================================================
   docker:
     name: Build Docker image
-    needs: [ mappings, lint, tests ]
+#    needs: [ mappings, lint, tests ]
+    needs: [ mappings, lint ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -170,7 +171,8 @@ jobs:
   deploy_gke:
     name: Deploy on Google Kubernetes Engine
     if: github.event_name != 'pull_request' || needs.mappings.outputs.deploy_force == '1'
-    needs: [ mappings, lint, tests, docker ]
+#    needs: [ mappings, lint, tests, docker ]
+    needs: [ mappings, lint, docker ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
