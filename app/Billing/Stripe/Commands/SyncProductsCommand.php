@@ -10,6 +10,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Railgun\Billing\Stripe\Contracts\StripeSellable;
+use Railgun\Billing\Stripe\Models\Academy;
 use Railgun\Billing\Stripe\Models\ModeMachine;
 use Railgun\Billing\Stripe\StripeClientRegistry;
 use Railgun\Models\Chapter;
@@ -59,6 +60,7 @@ class SyncProductsCommand extends Command
             ]);
 
         $this->syncPremium();
+        $this->syncAcademy();
         $this->syncProducts(Pack::class);
         $this->syncProducts(Training::class);
         $this->syncProducts(Chapter::class);
@@ -82,6 +84,44 @@ class SyncProductsCommand extends Command
         $progress->setMessage('');
 
         collect(ModeMachine::PRICES)->each(function (array $payload, string $lookupKey) use ($progress): void {
+            $progress->setMessage("Pushing <info>{$lookupKey}</info> price");
+            $price = $this->getPrice($lookupKey, false);
+
+            if ($price === null) {
+                $this->stripe->prices->create($payload);
+            } else {
+                $this->stripe->prices->update(
+                    $price->id,
+                    Arr::except($payload, ['product', 'recurring', 'billing_scheme', 'currency', 'unit_amount']),
+                );
+            }
+
+            $progress->advance();
+        });
+
+        $progress->finish();
+        unset($progress);
+        $this->getOutput()->newLine(2);
+    }
+
+    /**
+     * Synchronize the premium product with Stripe.
+     *
+     * @throws ApiErrorException
+     */
+    public function syncAcademy(): void
+    {
+        $this->line('Synchronizing <info>academy</info> product');
+
+        if ($this->getProduct(Academy::PRODUCT['id']) === null) {
+            $this->stripe->products->create(Academy::PRODUCT);
+        }
+
+        $progress = $this->getOutput()->createProgressBar(count(Academy::PRICES));
+        $progress->setFormat(' %current%/%max% [%bar%] %message%');
+        $progress->setMessage('');
+
+        collect(Academy::PRICES)->each(function (array $payload, string $lookupKey) use ($progress): void {
             $progress->setMessage("Pushing <info>{$lookupKey}</info> price");
             $price = $this->getPrice($lookupKey, false);
 

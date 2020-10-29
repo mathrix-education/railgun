@@ -20,6 +20,10 @@ type User {
     premium: Boolean! @policy(ability: "read")
     premium_bypass: Boolean! @policy(ability: "read")
     premium_bypass_expires_at: DateTime @policy(ability: "read")
+    """
+    If the user has access to the academy group.
+    """
+    academy: Boolean! @policy(ability: "read")
     stripe_id: String @permission(name: "users:read")
     braintree_id: String @permission(name: "users:read")
     created_at: DateTime!

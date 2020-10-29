@@ -161,7 +161,7 @@ class ModeMachine
      *
      * @throws ApiErrorException
      */
-    public function get(string $idOrLookupKey): Price
+    public function get(string $idOrLookupKey): ?Price
     {
         $idOrLookupKey = self::PLAN_MAPPINGS[$idOrLookupKey] ?? $idOrLookupKey;
 
