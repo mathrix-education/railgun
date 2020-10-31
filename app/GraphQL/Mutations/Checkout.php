@@ -33,7 +33,7 @@ class Checkout
         $cart = Cart::build($args['cart'])->validate($user);
 
         /** @var StripeCheckout $checkout */
-        $checkout = $cart->plan
+        $checkout = $cart->plans->isNotEmpty()
             ? new SubscriptionCheckout($cart, $user, $paymentMethodId)
             : new InvoiceCheckout($cart, $user, $paymentMethodId);
 

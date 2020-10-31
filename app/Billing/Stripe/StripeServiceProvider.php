@@ -9,7 +9,8 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application;
 use Psr\Log\LoggerInterface;
 use Railgun\Billing\Stripe\Commands\SyncProductsCommand;
-use Railgun\Billing\Stripe\Models\ModeMachine;
+use Railgun\Billing\Stripe\Repositories\PricesRepository;
+use Railgun\Billing\Stripe\Repositories\ProductsRepository;
 use Railgun\Billing\Stripe\Webhooks\WebhooksController;
 use Stripe\Stripe;
 use Stripe\StripeClient;
@@ -31,7 +32,8 @@ class StripeServiceProvider extends ServiceProvider
             return $this->app->make(StripeWebhookRegistry::class)->make();
         });
 
-        $this->app->singleton(ModeMachine::class);
+        $this->app->singleton(ProductsRepository::class);
+        $this->app->singleton(PricesRepository::class);
     }
 
     public function boot(): void

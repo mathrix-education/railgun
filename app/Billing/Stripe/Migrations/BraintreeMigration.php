@@ -43,7 +43,7 @@ class BraintreeMigration extends Migration
         $this->stripeSubscription = $this->client->subscriptions->create([
             'customer'               => $this->customer->id,
             'items'                  => [
-                ['price' => $this->modeMachine->get($btSubscription->planId)->id],
+                ['price' => $this->prices->get($btSubscription->planId)->id],
             ],
             'default_payment_method' => $this->paymentMethodId,
             'billing_cycle_anchor'   => $btSubscription->billingPeriodEndDate->getTimestamp(),

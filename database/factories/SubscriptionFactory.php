@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Carbon;
-use Railgun\Billing\Stripe\Models\ModeMachine;
+use Railgun\Billing\Stripe\Repositories\PricesRepository;
 use Railgun\Models\Subscription;
 use Stripe\Subscription as StripeSubscription;
 
@@ -17,7 +17,7 @@ $factory->define(Subscription::class, static function (Faker $faker) {
 
     return [
         'id'                   => $faker->regexify('sub_[a-z0-9]{14}'),
-        'plan'                 => $faker->randomElement(ModeMachine::PLANS),
+        'plan'                 => $faker->randomElement(PricesRepository::PREMIUM_PLANS),
         'customer_id'          => $faker->regexify('cus_[a-z0-9]{14}'),
         'status'               => StripeSubscription::STATUS_ACTIVE,
         'current_period_start' => $ref,

@@ -7,16 +7,12 @@ namespace Tests\E2E\Billing\Stripe\Webhooks;
 use Railgun\Billing\Cart\Cart;
 use Railgun\Models\User;
 use Stripe\Event;
-use Stripe\Exception\ApiErrorException;
 use Stripe\Invoice;
 use Tests\Utils\CartInputGenerator;
 use function factory;
 
 class InvoicesWebhookTest extends WebhookTestCase
 {
-    /**
-     * @throws ApiErrorException
-     */
     public function testCartInvoice(): void
     {
         $cart = Cart::build(CartInputGenerator::make('trainings'));
@@ -57,9 +53,6 @@ class InvoicesWebhookTest extends WebhookTestCase
         $this->assertEquals('Invoice ignored', $this->getContent('message'));
     }
 
-    /**
-     * @throws ApiErrorException
-     */
     public function testUserDoesNotExists(): void
     {
         $cart = Cart::build(CartInputGenerator::make('trainings'));

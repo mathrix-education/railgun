@@ -7,7 +7,7 @@ namespace Tests\E2E\Billing\Stripe\Webhooks;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Laravel\Lumen\Testing\DatabaseTransactions;
-use Railgun\Billing\Stripe\Models\ModeMachine;
+use Railgun\Billing\Stripe\Repositories\PricesRepository;
 use Railgun\Models\Subscription;
 use Stripe\Event;
 use Stripe\Exception\ApiErrorException;
@@ -49,18 +49,18 @@ class SubscriptionsWebhookTest extends WebhookTestCase
      */
     protected function getSubscriptionPayload(): array
     {
-        $modeMachine = $this->app->make(ModeMachine::class);
+        $modeMachine = $this->app->make(PricesRepository::class);
 
         return [
             'object'               => StripeSubscription::OBJECT_NAME,
             'id'                   => $this->faker->regexify('sub_[a-zA-Z0-9]{14}'),
             'items'                => [
                 'data' => [
-                    ['price' => $modeMachine->get(ModeMachine::PLAN_MONTH)->jsonSerialize()],
+                    ['price' => $modeMachine->get(PricesRepository::PREMIUM_MONTH)->jsonSerialize()],
                 ],
             ],
             'plan'                 => [
-                'id' => $modeMachine->get(ModeMachine::PLAN_MONTH)->id,
+                'id' => $modeMachine->get(PricesRepository::PREMIUM_MONTH)->id,
             ],
             'customer'             => $this->faker->regexify('cus_[a-zA-Z0-9]{14}'),
             'status'               => StripeSubscription::STATUS_CANCELED,

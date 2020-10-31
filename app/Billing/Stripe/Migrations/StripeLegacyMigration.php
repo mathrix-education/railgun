@@ -40,7 +40,7 @@ class StripeLegacyMigration extends Migration
         $this->stripeSubscription = $this->client->subscriptions->create([
             'customer'               => $this->customer->id,
             'items'                  => [
-                ['price' => $this->modeMachine->get($stripeSubscription->plan->id)->id],
+                ['price' => $this->prices->get($stripeSubscription->plan->id)->id],
             ],
             'default_payment_method' => $this->paymentMethodId,
             'billing_cycle_anchor'   => $stripeSubscription->current_period_end,

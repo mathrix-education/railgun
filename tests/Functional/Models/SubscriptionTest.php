@@ -10,7 +10,7 @@ use Braintree\Test\Nonces;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Laravel\Lumen\Testing\DatabaseTransactions;
-use Railgun\Billing\Stripe\Models\ModeMachine;
+use Railgun\Billing\Stripe\Repositories\PricesRepository;
 use Railgun\Billing\Stripe\StripeClientRegistry;
 use Railgun\Models\Subscription;
 use Railgun\Models\User;
@@ -40,8 +40,8 @@ class SubscriptionTest extends ModelTestCase
     {
         /** @var StripeClient $client */
         $client = $this->app->make(StripeClient::class);
-        /** @var ModeMachine $modeMachine */
-        $modeMachine = $this->app->make(ModeMachine::class);
+        /** @var PricesRepository $prices */
+        $prices = $this->app->make(PricesRepository::class);
         /** @var User $user */
         $user = factory(User::class)->create();
         $user->ensureStripeCustomer($paymentMethodId);
@@ -49,7 +49,7 @@ class SubscriptionTest extends ModelTestCase
         return $client->subscriptions->create([
             'customer'               => $user->stripe_id,
             'default_payment_method' => $paymentMethodId,
-            'items'                  => [['price' => $modeMachine->get(ModeMachine::PLAN_MONTH)->id]],
+            'items'                  => [['price' => $prices->get(PricesRepository::PREMIUM_MONTH)->id]],
         ]);
     }
 
@@ -123,7 +123,7 @@ class SubscriptionTest extends ModelTestCase
 
         $subscription = new Subscription([
             'id'                   => $subscriptionId,
-            'plan'                 => ModeMachine::PLAN_MONTH,
+            'plan'                 => PricesRepository::PREMIUM_MONTH,
             'customer_id'          => $customerId,
             'status'               => StripeSubscription::STATUS_ACTIVE,
             'current_period_start' => $anchor->subMonth(),
@@ -149,7 +149,7 @@ class SubscriptionTest extends ModelTestCase
 
         $subscription = new Subscription([
             'id'                   => $subscriptionId,
-            'plan'                 => ModeMachine::PLAN_MONTH,
+            'plan'                 => PricesRepository::PREMIUM_MONTH,
             'customer_id'          => $customerId,
             'status'               => StripeSubscription::STATUS_ACTIVE,
             'current_period_start' => $anchor->subMonth(),

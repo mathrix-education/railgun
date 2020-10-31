@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Queries;
 
-use Railgun\Billing\Stripe\Models\ModeMachine;
+use Railgun\Billing\Stripe\Repositories\PricesRepository;
 use Tests\E2E\GraphQL\GraphQLTestCase;
 use Tests\Utils\CartInputGenerator;
 use function array_merge;
@@ -43,7 +43,7 @@ class CartTest extends GraphQLTestCase
 
     public function testPlan(): void
     {
-        $this->executeCart(['plan' => ModeMachine::PLAN_MONTH]);
+        $this->executeCart(['plans' => PricesRepository::PREMIUM_MONTH]);
 
         $this->assertResponseOk();
         $this->assertNoErrors();
