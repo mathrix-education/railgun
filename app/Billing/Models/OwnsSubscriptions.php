@@ -15,6 +15,7 @@ use Railgun\Models\Traits\Cacheable;
 use Railgun\Models\User;
 use Stripe\Subscription as StripeSubscription;
 use function array_keys;
+use function array_unique;
 use function array_values;
 use function count;
 
@@ -70,11 +71,11 @@ trait OwnsSubscriptions
             }
 
             return DB::table('subscriptions')
-                ->whereIn('plan', [
+                ->whereIn('plan', array_unique([
                     ...ModeMachine::PLANS,
                     ...array_keys(ModeMachine::PLAN_MAPPINGS),
                     ...array_values(ModeMachine::PLAN_MAPPINGS),
-                ])
+                ]))
                 ->whereIn('status', [StripeSubscription::STATUS_ACTIVE, StripeSubscription::STATUS_TRIALING])
                 ->whereIn('customer_id', $customerIds)
                 ->exists();

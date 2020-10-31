@@ -14,17 +14,20 @@ use function collect;
 
 class Academy
 {
-    public const PLAN_MONTH = 'academy_month';
-    public const PLANS      = [
+    public const PLAN_MONTH    = 'academy_month';
+    public const PLAN_QUARTER  = 'academy_quarter';
+    public const PLAN_SEMESTER = 'academy_semester';
+    public const PLAN_YEAR     = 'academy_year';
+    public const PLANS         = [
         self::PLAN_MONTH,
     ];
-    public const PRODUCT    = [
+    public const PRODUCT       = [
         'id'          => 'academy',
         'name'        => 'Academy',
         'active'      => true,
         'description' => 'Accès au contenu des lives.',
     ];
-    public const PRICES     = [
+    public const PRICES        = [
         self::PLAN_MONTH => [
             'currency'    => 'eur',
             'lookup_key'  => self::PLAN_MONTH,
@@ -35,6 +38,39 @@ class Academy
                 'interval_count' => 1,
             ],
             'unit_amount' => 1990,
+        ],
+        self::PLAN_QUARTER           => [
+            'currency'    => 'eur',
+            'lookup_key'  => self::PLAN_QUARTER,
+            'nickname'    => 'Plan trimestriel',
+            'product'     => self::PRODUCT['id'],
+            'recurring'   => [
+                'interval'       => 'month',
+                'interval_count' => 3,
+            ],
+            'unit_amount' => 4990,
+        ],
+        self::PLAN_SEMESTER          => [
+            'currency'    => 'eur',
+            'lookup_key'  => self::PLAN_SEMESTER,
+            'nickname'    => 'Plan semestriel',
+            'product'     => self::PRODUCT['id'],
+            'recurring'   => [
+                'interval'       => 'month',
+                'interval_count' => 6,
+            ],
+            'unit_amount' => 9590,
+        ],
+        self::PLAN_YEAR              => [
+            'currency'    => 'eur',
+            'lookup_key'  => self::PLAN_YEAR,
+            'nickname'    => 'Plan annuel',
+            'product'     => self::PRODUCT['id'],
+            'recurring'   => [
+                'interval'       => 'year',
+                'interval_count' => 1,
+            ],
+            'unit_amount' => 15990,
         ],
     ];
 
