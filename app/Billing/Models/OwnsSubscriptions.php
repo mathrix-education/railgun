@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
-use Railgun\Billing\Stripe\Repositories\PricesRepository;
 use Railgun\Models\Subscription;
 use Railgun\Models\Traits\Cacheable;
 use Railgun\Models\User;

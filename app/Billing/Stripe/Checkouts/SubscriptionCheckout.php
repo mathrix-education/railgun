@@ -33,21 +33,6 @@ class SubscriptionCheckout extends Checkout
             ]);
         }
 
-        $payload = [
-            'customer'               => $this->customer->id,
-            'items'                  => $this->cart->plans->map(static function (Price $price) {
-                return ['price' => $price->id];
-            })->toArray(),
-            'default_payment_method' => $this->paymentMethodId,
-            'add_invoice_items'      => $this->cart->products->map(static function (StripeSellable $product) {
-                return [
-                    'price'    => $product->stripe_price_id,
-                    'quantity' => 1,
-                ];
-            })->toArray(),
-            'expand'                 => ['latest_invoice.payment_intent'],
-        ];
-
         $this->subscription = $this->client->subscriptions->create([
             'customer'               => $this->customer->id,
             'items'                  => $this->cart->plans->map(static function (Price $price) {
