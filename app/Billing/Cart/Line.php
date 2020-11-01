@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Railgun\Billing\Cart;
 
+use Illuminate\Support\Str;
 use Railgun\Billing\Stripe\Contracts\StripeSellable;
 use Railgun\Billing\Stripe\Repositories\CouponsRepository;
 use Railgun\Models\Coupon;
@@ -39,7 +40,7 @@ class Line extends Container
     {
         $line = new self();
 
-        $line->description = "{$price->nickname} : {$price->product->description}";
+        $line->description = "{$price->product->description} : " . Str::lower($price->nickname);
         $line->price       = $price->unit_amount;
 
         return $line;
