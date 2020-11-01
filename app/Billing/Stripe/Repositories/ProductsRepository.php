@@ -17,7 +17,7 @@ class ProductsRepository
         ],
         self::ACADEMY      => [
             'id'          => self::ACADEMY,
-            'name'        => 'Academy',
+            'name'        => 'Mathrix Academy',
             'active'      => true,
             'description' => 'Accès au contenu des lives.',
         ],

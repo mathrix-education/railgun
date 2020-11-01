@@ -13,7 +13,7 @@ class CouponsRepository
             'duration'   => 'forever',
             'amount_off' => 1400,
             'currency'   => 'eur',
-            'name'       => 'Promotion Mode Machine & Academy',
+            'name'       => 'Promotion Mode Machine & Mathrix Academy',
             'applies_to' => ['products' => [ProductsRepository::MODE_MACHINE, ProductsRepository::ACADEMY]],
         ],
     ];
