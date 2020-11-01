@@ -11,14 +11,6 @@ use function array_merge;
 
 class CartTest extends GraphQLTestCase
 {
-    public function testInvalidCouponCode(): void
-    {
-        $this->executeCart(array_merge(CartInputGenerator::make('trainings'), ['coupon' => 'wrong']));
-
-        $this->assertResponseOk();
-        $this->assertErrorCode('INVALID_COUPON_CODE');
-    }
-
     /**
      * @param mixed[] $cartInput The CartInput GraphQL input.
      */
@@ -41,10 +33,27 @@ class CartTest extends GraphQLTestCase
         );
     }
 
+    public function testInvalidCouponCode(): void
+    {
+        $this->executeCart(array_merge(CartInputGenerator::make('trainings'), ['coupon' => 'wrong']));
+
+        $this->assertResponseOk();
+        $this->assertErrorCode('INVALID_COUPON_CODE');
+    }
+
     public function testPlan(): void
     {
-        $this->executeCart(['plans' => PricesRepository::PREMIUM_MONTH]);
+        $this->executeCart(['plans' => [PricesRepository::PREMIUM_MONTH]]);
 
+        $this->assertResponseOk();
+        $this->assertNoErrors();
+    }
+
+    public function testCombo(): void
+    {
+        $this->executeCart(['plans' => [PricesRepository::PREMIUM_MONTH, PricesRepository::ACADEMY_MONTH]]);
+
+        $this->dump();
         $this->assertResponseOk();
         $this->assertNoErrors();
     }
