@@ -7,14 +7,13 @@ namespace Railgun\Billing\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 use Railgun\Billing\Stripe\Repositories\PricesRepository;
 use Railgun\Models\Subscription;
 use Railgun\Models\Traits\Cacheable;
 use Railgun\Models\User;
 use Stripe\Subscription as StripeSubscription;
-use function array_keys;
-use function array_unique;
 use function count;
 
 /**
@@ -69,11 +68,13 @@ trait OwnsSubscriptions
             }
 
             return DB::table('subscriptions')
-                ->whereIn('plan', array_unique([
-                    ...PricesRepository::PREMIUM_PLANS,
-                    ...PricesRepository::PREMIUM_LEGACY_PLANS,
-                    ...array_keys(PricesRepository::MAPPINGS),
-                ]))
+                ->where(static function (Builder $query): void {
+                    $query->where('plan', 'like', '%laser%')
+                        ->orWhere('plan', 'like', '%legacy%')
+                        ->orWhere('plan', 'like', '%v3%')
+                        ->orWhere('plan', 'like', '%v4%')
+                        ->orWhere('plan', 'like', '%v5%');
+                })
                 ->whereIn('status', [StripeSubscription::STATUS_ACTIVE, StripeSubscription::STATUS_TRIALING])
                 ->whereIn('customer_id', $customerIds)
                 ->exists();
@@ -100,7 +101,7 @@ trait OwnsSubscriptions
             }
 
             return DB::table('subscriptions')
-                ->whereIn('plan', PricesRepository::ACADEMY_PLANS)
+                ->where('plan', 'like', '%academy%')
                 ->whereIn('status', [StripeSubscription::STATUS_ACTIVE, StripeSubscription::STATUS_TRIALING])
                 ->whereIn('customer_id', $customerIds)
                 ->exists();

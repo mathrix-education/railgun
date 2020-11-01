@@ -72,6 +72,15 @@ class CheckoutTest extends GraphQLTestCase
                     'paymentIntentStatus' => PaymentIntent::STATUS_SUCCEEDED,
                 ],
             ],
+            'combo|visa'              => [
+                'products'        => [],
+                'plans'           => [PricesRepository::PREMIUM_MONTH, PricesRepository::ACADEMY_MONTH],
+                'paymentMethodId' => 'pm_card_visa_credit_fr_cartesBancaires',
+                'expectations'    => [
+                    'invoiceStatus'       => Invoice::STATUS_PAID,
+                    'paymentIntentStatus' => PaymentIntent::STATUS_SUCCEEDED,
+                ],
+            ],
             'products|charge_fail'      => [
                 'products'        => ['chapters', 'packs', 'trainings'],
                 'plans'           => [],
