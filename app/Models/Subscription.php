@@ -13,19 +13,18 @@ use Braintree\Transaction;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
-use Railgun\Billing\Stripe\Models\Academy;
 use Railgun\Billing\Stripe\Models\InteractsWithStripe;
-use Railgun\Billing\Stripe\Models\ModeMachine;
+use Railgun\Billing\Stripe\Repositories\PricesRepository;
 use Railgun\Billing\Stripe\StripeClientRegistry;
 use Railgun\Models\Contracts\Cacheable as CacheableContract;
 use Railgun\Models\Traits\Cacheable;
 use Stripe\Customer;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Invoice;
-use Stripe\Price;
+use Stripe\StripeObject;
 use Stripe\Subscription as StripeSubscription;
 use function app;
-use function array_key_exists;
+use function collect;
 use function str_pad;
 use const STR_PAD_LEFT;
 
@@ -57,15 +56,15 @@ class Subscription extends BaseModel implements CacheableContract
     public const PROCESSOR_BRAINTREE_LEGACY = 'braintree_legacy';
     public const CONVERSION_MAPPINGS        = [
         // Plans
-        'v3_monthly'                          => ModeMachine::PLAN_LEGACY_MONTHLY,
-        'v3_annually'                         => ModeMachine::PLAN_LEGACY_ANNUALLY,
-        'v3_biannually'                       => ModeMachine::PLAN_LEGACY_BIANNUALLY,
-        'v4_monthly'                          => ModeMachine::PLAN_LEGACY_MONTHLY,
-        'v4_annually'                         => ModeMachine::PLAN_LEGACY_ANNUALLY,
-        'v4_biannually'                       => ModeMachine::PLAN_LEGACY_BIANNUALLY,
-        'v5_monthly'                          => ModeMachine::PLAN_LEGACY_MONTHLY,
-        'v5_annually'                         => ModeMachine::PLAN_LEGACY_ANNUALLY,
-        'v5_biannually'                       => ModeMachine::PLAN_LEGACY_BIANNUALLY,
+        'v3_monthly'                          => PricesRepository::PREMIUM_LEGACY_MONTHLY,
+        'v3_annually'                         => PricesRepository::PREMIUM_LEGACY_ANNUALLY,
+        'v3_biannually'                       => PricesRepository::PREMIUM_LEGACY_BIANNUALLY,
+        'v4_monthly'                          => PricesRepository::PREMIUM_LEGACY_MONTHLY,
+        'v4_annually'                         => PricesRepository::PREMIUM_LEGACY_ANNUALLY,
+        'v4_biannually'                       => PricesRepository::PREMIUM_LEGACY_BIANNUALLY,
+        'v5_monthly'                          => PricesRepository::PREMIUM_LEGACY_MONTHLY,
+        'v5_annually'                         => PricesRepository::PREMIUM_LEGACY_ANNUALLY,
+        'v5_biannually'                       => PricesRepository::PREMIUM_LEGACY_BIANNUALLY,
         // Subscription status
         BraintreeSubscription::ACTIVE         => StripeSubscription::STATUS_ACTIVE,
         BraintreeSubscription::CANCELED       => StripeSubscription::STATUS_CANCELED,
@@ -114,25 +113,18 @@ class Subscription extends BaseModel implements CacheableContract
             ? $stripeSubscription->customer->id
             : $stripeSubscription->customer;
         /** @var User $user */
-        $user = User::query()
+        $user       = User::query()
             ->where('stripe_id', '=', $customerId)
             ->first();
-        /** @var Price $price */
-        $price      = $stripeSubscription->items->data[0]->price;
         $canceledAt = $stripeSubscription->cancel_at ?? $subscription->canceled_at ?? null;
-
-        if (
-            array_key_exists($price->lookup_key, ModeMachine::PRICES)
-            || array_key_exists($price->lookup_key, Academy::PRICES)
-        ) {
-            $plan = $price->lookup_key;
-        } else {
-            $plan = $price->id;
-        }
+        $plans      = collect($stripeSubscription->items->data)
+            ->map(static fn(StripeObject $item) => $item->price)
+            ->map(static fn(StripeObject $price) => $price->lookup_key ?? $price->id)
+            ->implode(',');
 
         return new self([
             'id'                   => $stripeSubscription->id,
-            'plan'                 => $plan,
+            'plan'                 => $plans,
             'customer_id'          => $customerId,
             'status'               => $stripeSubscription->status,
             'current_period_start' => Carbon::createFromTimestamp($stripeSubscription->current_period_start),
@@ -168,7 +160,7 @@ class Subscription extends BaseModel implements CacheableContract
             'status'               => $status,
             'current_period_start' => Carbon::instance($btSubscription->billingPeriodStartDate),
             'current_period_end'   => Carbon::instance($btSubscription->billingPeriodEndDate),
-            'user_id'              => $user ? $user->id : null,
+            'user_id'              => $user->id ?? null,
             'created_at'           => Carbon::instance($btSubscription->createdAt),
             'updated_at'           => Carbon::instance($btSubscription->updatedAt),
             'canceled_at'          => $status === StripeSubscription::STATUS_CANCELED

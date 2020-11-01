@@ -13,8 +13,7 @@ use Railgun\Billing\Exceptions\EmptyCartException;
 use Railgun\Billing\Exceptions\InvalidCouponCodeException;
 use Railgun\Billing\Exceptions\UnavailableProductsException;
 use Railgun\Billing\Stripe\Contracts\StripeSellable;
-use Railgun\Billing\Stripe\Models\Academy;
-use Railgun\Billing\Stripe\Models\ModeMachine;
+use Railgun\Billing\Stripe\Repositories\PricesRepository;
 use Railgun\Models\Chapter;
 use Railgun\Models\Contracts\Ownable;
 use Railgun\Models\Contracts\Sellable;
@@ -23,10 +22,10 @@ use Railgun\Models\Pack;
 use Railgun\Models\Training;
 use Railgun\Models\User;
 use Railgun\Support\Container;
-use Stripe\Exception\ApiErrorException;
 use Stripe\Price;
 use function app;
 use function array_unique;
+use function collect;
 use function config;
 use function explode;
 use function in_array;
@@ -38,7 +37,7 @@ use function round;
  * @property      Collection|Pack[]     $packs
  * @property      Collection|Training[] $trainings
  * @property-read Collection|Sellable[] $products
- * @property-read Price|null            $plan
+ * @property-read Collection|Price[]    $plans
  * @property-read Coupon|null           $coupon
  * @property-read Collection|Line[]     $lines
  * @property-read int                   $subTotal
@@ -51,23 +50,19 @@ class Cart extends Container
 
     public const IDENTIFIER = 'cart_laser';
 
-    protected ModeMachine $modeMachine;
-    protected Academy $academy;
+    protected PricesRepository $prices;
 
     protected function __construct()
     {
         parent::__construct();
 
-        $this->modeMachine = app()->make(ModeMachine::class);
-        $this->academy     = app()->make(Academy::class);
+        $this->prices = app()->make(PricesRepository::class);
     }
 
     /**
      * @param mixed[] $cartInput The CartInput GraphQL input.
      *
      * @return Cart The new Cart instance.
-     *
-     * @throws ApiErrorException
      */
     public static function build(array $cartInput): Cart
     {
@@ -78,9 +73,8 @@ class Cart extends Container
         $cart->packs     = Pack::query()->whereIn('id', array_unique($cartInput['packs'] ?? [0]))->get();
         $cart->trainings = Training::query()->whereIn('id', array_unique($cartInput['trainings'] ?? [0]))->get();
 
-        if (isset($cartInput['plan'])) {
-            $cart->plan = $cart->modeMachine->get($cartInput['plan']) ?? $cart->academy->get($cartInput['plan']);
-        }
+        $prices      = app()->make(PricesRepository::class);
+        $cart->plans = collect($cartInput['plans'] ?? [])->map(static fn($id) => $prices->get($id));
 
         // Set the coupon code; coupon validation is handled here
         if (isset($cartInput['coupon'])) {
@@ -96,8 +90,6 @@ class Cart extends Container
      * @param mixed[] $metadata The cart metadata.
      *
      * @return Cart The new Cart instance.
-     *
-     * @throws ApiErrorException
      */
     public static function fromMetadata(array $metadata): Cart
     {
@@ -116,7 +108,12 @@ class Cart extends Container
         }
 
         if (isset($metadata['plan'])) {
-            $args['plan'] = $metadata['plan'];
+            // Compatibility with previous version
+            $args['plan'] = [$metadata['plan']];
+        }
+
+        if (isset($metadata['plans']) && $metadata['plans'] !== '') {
+            $args['plans'] = explode(',', $metadata['plans']);
         }
 
         if (isset($metadata['coupon'])) {
@@ -142,13 +139,10 @@ class Cart extends Container
      */
     protected function getLines(): Collection
     {
-        $lines = $this->products->map(static function (StripeSellable $sellable) {
-            return Line::fromProduct($sellable);
-        });
+        $lines = collect();
 
-        if ($this->plan) {
-            $lines->push(Line::fromPrice($this->plan));
-        }
+        $lines->push(...$this->products->map(static fn(StripeSellable $sellable) => Line::fromProduct($sellable)));
+        $lines->push(...$this->plans->map(static fn(Price $price) => Line::fromPrice($price)));
 
         if ($this->couponAmount > 0) {
             $lines->push(Line::fromCoupon($this->coupon, $this->couponAmount));
@@ -162,13 +156,7 @@ class Cart extends Container
      */
     protected function getSubTotal(): int
     {
-        $sum = $this->products->sum('price');
-
-        if ($this->plan) {
-            $sum += $this->plan->unit_amount;
-        }
-
-        return $sum;
+        return $this->products->sum('price') + $this->plans->sum('unit_amount');
     }
 
     /**
@@ -231,7 +219,7 @@ class Cart extends Container
     public function validate(?User $user = null): self
     {
         // Check that the cart is not empty
-        if ($this->plan === null && $this->products->isEmpty()) {
+        if ($this->plans->isEmpty() && $this->products->isEmpty()) {
             throw new EmptyCartException();
         }
 
@@ -263,7 +251,7 @@ class Cart extends Container
             }
 
             // Check that the user is already premium
-            if ($this->plan && $user->premium) {
+            if ($this->plans && $user->premium) {
                 throw new AlreadyPremiumException();
             }
         }
@@ -282,8 +270,8 @@ class Cart extends Container
             'chapters'   => $this->chapters->pluck('id')->implode(','),
             'packs'      => $this->packs->pluck('id')->implode(','),
             'trainings'  => $this->trainings->pluck('id')->implode(','),
-            'plan'       => $this->plan ? $this->plan->lookup_key : null,
-            'coupon'     => $this->coupon ? $this->coupon->id : null,
+            'plans'      => $this->plans->pluck('lookup_key')->implode(','),
+            'coupon'     => $this->coupon->id ?? null,
         ];
     }
 }

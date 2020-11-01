@@ -7,16 +7,12 @@ namespace Railgun\Billing\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
-use Railgun\Billing\Stripe\Models\Academy;
-use Railgun\Billing\Stripe\Models\ModeMachine;
 use Railgun\Models\Subscription;
 use Railgun\Models\Traits\Cacheable;
 use Railgun\Models\User;
 use Stripe\Subscription as StripeSubscription;
-use function array_keys;
-use function array_unique;
-use function array_values;
 use function count;
 
 /**
@@ -71,11 +67,13 @@ trait OwnsSubscriptions
             }
 
             return DB::table('subscriptions')
-                ->whereIn('plan', array_unique([
-                    ...ModeMachine::PLANS,
-                    ...array_keys(ModeMachine::PLAN_MAPPINGS),
-                    ...array_values(ModeMachine::PLAN_MAPPINGS),
-                ]))
+                ->where(static function (Builder $query): void {
+                    $query->where('plan', 'like', '%laser%')
+                        ->orWhere('plan', 'like', '%legacy%')
+                        ->orWhere('plan', 'like', '%v3%')
+                        ->orWhere('plan', 'like', '%v4%')
+                        ->orWhere('plan', 'like', '%v5%');
+                })
                 ->whereIn('status', [StripeSubscription::STATUS_ACTIVE, StripeSubscription::STATUS_TRIALING])
                 ->whereIn('customer_id', $customerIds)
                 ->exists();
@@ -102,7 +100,7 @@ trait OwnsSubscriptions
             }
 
             return DB::table('subscriptions')
-                ->whereIn('plan', Academy::PLANS)
+                ->where('plan', 'like', '%academy%')
                 ->whereIn('status', [StripeSubscription::STATUS_ACTIVE, StripeSubscription::STATUS_TRIALING])
                 ->whereIn('customer_id', $customerIds)
                 ->exists();

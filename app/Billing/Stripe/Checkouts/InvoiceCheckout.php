@@ -20,7 +20,7 @@ use function trans_choice;
 use function ucfirst;
 
 /**
- * Used when the user wants to buy products without subscribing to {@see ModeMachine}.
+ * Used when the user wants to buy products without subscription.
  */
 class InvoiceCheckout extends Checkout
 {

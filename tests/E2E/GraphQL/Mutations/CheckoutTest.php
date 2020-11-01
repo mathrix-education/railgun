@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\E2E\GraphQL\Mutations;
 
+use Illuminate\Support\Str;
 use Laravel\Lumen\Testing\DatabaseTransactions;
-use Railgun\Billing\Stripe\Models\Academy;
-use Railgun\Billing\Stripe\Models\ModeMachine;
+use Railgun\Billing\Stripe\Repositories\PricesRepository;
 use Railgun\Models\Chapter;
 use Railgun\Models\Pack;
 use Railgun\Models\Training;
@@ -16,7 +16,6 @@ use Tests\E2E\GraphQL\GraphQLTestCase;
 use Tests\Utils\CartInputGenerator;
 use function array_merge;
 use function collect;
-use function in_array;
 use function resolveMorph;
 use function trans;
 
@@ -32,7 +31,7 @@ class CheckoutTest extends GraphQLTestCase
         return [
             'products|visa'             => [
                 'products'        => ['chapters', 'packs', 'trainings', 'coupon'],
-                'plan'            => null,
+                'plans'           => [],
                 'paymentMethodId' => 'pm_card_visa_credit_fr_cartesBancaires',
                 'expectations'    => [
                     'invoiceStatus'       => Invoice::STATUS_PAID,
@@ -41,7 +40,7 @@ class CheckoutTest extends GraphQLTestCase
             ],
             'full|mastercard'           => [
                 'products'        => ['chapters', 'packs', 'trainings', 'coupon'],
-                'plan'            => ModeMachine::PLAN_MONTH,
+                'plans'           => [PricesRepository::PREMIUM_MONTH],
                 'paymentMethodId' => 'pm_card_visa_credit_fr_cartesBancaires',
                 'expectations'    => [
                     'invoiceStatus'       => Invoice::STATUS_PAID,
@@ -50,7 +49,7 @@ class CheckoutTest extends GraphQLTestCase
             ],
             'products|3ds2'             => [
                 'products'        => ['chapters', 'packs', 'trainings', 'coupon'],
-                'plan'            => null,
+                'plans'           => [],
                 'paymentMethodId' => 'pm_card_threeDSecure2Required',
                 'expectations'    => [
                     'error_message' => trans('stripe.errors.card.3ds2'),
@@ -58,15 +57,33 @@ class CheckoutTest extends GraphQLTestCase
             ],
             'full|3ds2'                 => [
                 'products'        => ['chapters', 'packs', 'trainings', 'coupon'],
-                'plan'            => ModeMachine::PLAN_MONTH,
+                'plans'           => [PricesRepository::PREMIUM_MONTH],
                 'paymentMethodId' => 'pm_card_threeDSecure2Required',
                 'expectations'    => [
                     'error_message' => trans('stripe.errors.card.3ds2'),
                 ],
             ],
+            'academy|visa'              => [
+                'products'        => [],
+                'plans'           => [PricesRepository::ACADEMY_MONTH],
+                'paymentMethodId' => 'pm_card_visa_credit_fr_cartesBancaires',
+                'expectations'    => [
+                    'invoiceStatus'       => Invoice::STATUS_PAID,
+                    'paymentIntentStatus' => PaymentIntent::STATUS_SUCCEEDED,
+                ],
+            ],
+            'combo|visa'              => [
+                'products'        => [],
+                'plans'           => [PricesRepository::PREMIUM_MONTH, PricesRepository::ACADEMY_MONTH],
+                'paymentMethodId' => 'pm_card_visa_credit_fr_cartesBancaires',
+                'expectations'    => [
+                    'invoiceStatus'       => Invoice::STATUS_PAID,
+                    'paymentIntentStatus' => PaymentIntent::STATUS_SUCCEEDED,
+                ],
+            ],
             'products|charge_fail'      => [
                 'products'        => ['chapters', 'packs', 'trainings'],
-                'plan'            => null,
+                'plans'           => [],
                 'paymentMethodId' => 'pm_card_chargeDeclined',
                 'expectations'    => [
                     'error_message' => trans('stripe.errors.card.generic'),
@@ -74,7 +91,7 @@ class CheckoutTest extends GraphQLTestCase
             ],
             'products|incorrect_cvc'    => [
                 'products'        => ['chapters', 'packs', 'trainings'],
-                'plan'            => null,
+                'plans'           => [],
                 'paymentMethodId' => 'pm_card_cvcCheckFail',
                 'expectations'    => [
                     'error_message' => trans('stripe.errors.card.incorrect_cvc'),
@@ -82,7 +99,7 @@ class CheckoutTest extends GraphQLTestCase
             ],
             'products|expired'          => [
                 'products'        => ['chapters', 'packs', 'trainings'],
-                'plan'            => null,
+                'plans'           => [],
                 'paymentMethodId' => 'pm_card_chargeDeclinedExpiredCard',
                 'expectations'    => [
                     'error_message' => trans('stripe.errors.card.expired'),
@@ -90,7 +107,7 @@ class CheckoutTest extends GraphQLTestCase
             ],
             'products|risk_level'       => [
                 'products'        => ['chapters', 'packs', 'trainings'],
-                'plan'            => null,
+                'plans'           => [],
                 'paymentMethodId' => 'pm_card_riskLevelHighest',
                 'expectations'    => [
                     'error_message' => trans('stripe.errors.card.generic'),
@@ -98,19 +115,10 @@ class CheckoutTest extends GraphQLTestCase
             ],
             'products|processing_error' => [
                 'products'        => ['chapters', 'packs', 'trainings'],
-                'plan'            => null,
+                'plans'           => [],
                 'paymentMethodId' => 'pm_card_chargeDeclinedProcessingError',
                 'expectations'    => [
                     'error_message' => trans('stripe.errors.card.generic'),
-                ],
-            ],
-            'academy|visa'              => [
-                'products'        => [],
-                'plan'            => Academy::PLAN_MONTH,
-                'paymentMethodId' => 'pm_card_visa_credit_fr_cartesBancaires',
-                'expectations'    => [
-                    'invoiceStatus'       => Invoice::STATUS_PAID,
-                    'paymentIntentStatus' => PaymentIntent::STATUS_SUCCEEDED,
                 ],
             ],
         ];
@@ -119,19 +127,19 @@ class CheckoutTest extends GraphQLTestCase
     /**
      * @dataProvider checkoutDataset
      *
-     * @param string[]    $products        The product options ({@see cartInputFactory()})
-     * @param string|null $plan            The Mode Machine plan lookup key.
-     * @param string      $paymentMethodId The Stripe {@see PaymentMethod} id.
-     * @param mixed[]     $expectations    The expectations.
+     * @param string[] $products        The product options ({@see cartInputFactory()})
+     * @param string[] $plans           Ths plans lookup keys.
+     * @param string   $paymentMethodId The Stripe {@see PaymentMethod} id.
+     * @param mixed[]  $expectations    The expectations.
      */
     public function testCheckout(
         array $products,
-        ?string $plan,
+        array $plans,
         string $paymentMethodId,
         array $expectations
     ): void
     {
-        $cart = CartInputGenerator::make($products, $plan);
+        $cart = CartInputGenerator::make($products, $plans);
 
         $user = $this->actingAsGetUser();
 
@@ -163,13 +171,15 @@ class CheckoutTest extends GraphQLTestCase
                 // Assert that products have been delivered
                 $acquisitions->each(fn(array $acquisition) => $this->seeInDatabase('acquisitions', $acquisition));
 
-                if (isset($cart['plan'])) {
-                    if (in_array($cart['plan'], ModeMachine::PLANS, true)) {
-                        $this->assertTrue($user->premium);
-                    } elseif (in_array($cart['plan'], Academy::PLANS, true)) {
-                        $this->assertTrue($user->academy);
-                    }
-                }
+                $expectPremium = collect($cart['plans'])
+                    ->filter(static fn(string $plan) => Str::contains($plan, ['laser', 'legacy']))
+                    ->isNotEmpty();
+                $this->assertEquals($expectPremium, $user->premium);
+
+                $expectAcademy = collect($cart['plans'])
+                    ->filter(static fn(string $plan) => Str::contains($plan, 'academy'))
+                    ->isNotEmpty();
+                $this->assertEquals($expectAcademy, $user->academy);
             }
         } else {
             $acquisitions->each(fn(array $acquisition) => $this->notSeeInDatabase('acquisitions', $acquisition));

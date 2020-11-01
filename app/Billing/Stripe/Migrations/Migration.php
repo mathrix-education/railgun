@@ -6,7 +6,7 @@ namespace Railgun\Billing\Stripe\Migrations;
 
 use Illuminate\Bus\Dispatcher;
 use Railgun\Billing\Stripe\Exceptions\ThreeDSecureException;
-use Railgun\Billing\Stripe\Models\ModeMachine;
+use Railgun\Billing\Stripe\Repositories\PricesRepository;
 use Railgun\Models\Subscription;
 use Railgun\Models\User;
 use Stripe\Customer;
@@ -18,9 +18,9 @@ use function app;
 
 abstract class Migration
 {
-    protected Dispatcher   $dispatcher;
-    protected StripeClient $client;
-    protected ModeMachine  $modeMachine;
+    protected Dispatcher       $dispatcher;
+    protected StripeClient     $client;
+    protected PricesRepository $prices;
 
     protected Subscription $previous;
     protected User         $user;
@@ -38,9 +38,9 @@ abstract class Migration
         bool $useSetupIntent = true
     )
     {
-        $this->dispatcher  = app()->make(Dispatcher::class);
-        $this->client      = app()->make(StripeClient::class);
-        $this->modeMachine = app()->make(ModeMachine::class);
+        $this->dispatcher = app()->make(Dispatcher::class);
+        $this->client     = app()->make(StripeClient::class);
+        $this->prices     = app()->make(PricesRepository::class);
 
         $this->previous        = $previous;
         $this->user            = $user;

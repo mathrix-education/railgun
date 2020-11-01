@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Utils;
 
 use Faker\Factory as FakerFactory;
-use Railgun\Billing\Stripe\Models\ModeMachine;
+use Railgun\Billing\Stripe\Repositories\PricesRepository;
 use Railgun\Billing\Stripe\StripeClientRegistry;
 use Railgun\Models\Subscription;
 use Railgun\Models\User;
@@ -35,14 +35,14 @@ class StripeGenerator
         $client = $options['client'] ?? StripeClientRegistry::CLIENT_MAIN;
 
         $plansPool = $client === StripeClientRegistry::CLIENT_MAIN
-            ? ModeMachine::PLANS
+            ? PricesRepository::PREMIUM_PLANS
             : ['v5_monthly', 'v5_annually', 'v5_biannually'];
 
-        $modeMachine = app()->make(ModeMachine::class);
+        $prices = app()->make(PricesRepository::class);
 
         $options = array_replace([
             'price'           => $client === StripeClientRegistry::CLIENT_MAIN
-                ? $modeMachine->get($faker->randomElement($plansPool))->id
+                ? $prices->get($faker->randomElement($plansPool))->id
                 : $faker->randomElement($plansPool),
             'client'          => $client,
             'paymentMethodId' => 'pm_card_fr',

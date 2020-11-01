@@ -12,7 +12,7 @@ use Railgun\Billing\Exceptions\DuplicateProductsException;
 use Railgun\Billing\Exceptions\EmptyCartException;
 use Railgun\Billing\Exceptions\InvalidCouponCodeException;
 use Railgun\Billing\Exceptions\UnavailableProductsException;
-use Railgun\Billing\Stripe\Models\ModeMachine;
+use Railgun\Billing\Stripe\Repositories\PricesRepository;
 use Railgun\Models\Acquisition;
 use Railgun\Models\Coupon;
 use Railgun\Models\Pack;
@@ -36,7 +36,7 @@ class CartTest extends ApplicationTestCase
     {
         $cart = Cart::build(CartInputGenerator::make(
             ['chapters', 'packs', 'trainings', 'coupon'],
-            ModeMachine::PLAN_MONTH,
+            [PricesRepository::PREMIUM_MONTH],
         ));
         $cart->validate();
 
@@ -58,9 +58,6 @@ class CartTest extends ApplicationTestCase
         // $this->assertCount($cart->products->count() + 2, $cart->lines); // TODO: unstable??
     }
 
-    /**
-     * @throws ApiErrorException
-     */
     public function testNoCoupon(): void
     {
         /** @var Training $training */
@@ -76,9 +73,6 @@ class CartTest extends ApplicationTestCase
         $this->assertEquals($training->price, $cart->total);
     }
 
-    /**
-     * @throws ApiErrorException
-     */
     public function testCouponAmountPercent(): void
     {
         /** @var Coupon $coupon */
@@ -103,9 +97,6 @@ class CartTest extends ApplicationTestCase
         $this->assertEquals($training->price * 0.7, $cart->total);
     }
 
-    /**
-     * @throws ApiErrorException
-     */
     public function testCouponAmountAbsolute(): void
     {
         $expectedCouponAmount = 500;
@@ -132,9 +123,6 @@ class CartTest extends ApplicationTestCase
         $this->assertEquals($training->price - $expectedCouponAmount, $cart->total);
     }
 
-    /**
-     * @throws ApiErrorException
-     */
     public function testInvalidCoupon(): void
     {
         $this->expectException(InvalidCouponCodeException::class);
@@ -145,11 +133,6 @@ class CartTest extends ApplicationTestCase
         ));
     }
 
-    /**
-     * @covers \Railgun\Billing\Exceptions\EmptyCartException
-     *
-     * @throws ApiErrorException
-     */
     public function testEmpty(): void
     {
         $cart = Cart::build([]);
@@ -160,8 +143,6 @@ class CartTest extends ApplicationTestCase
 
     /**
      * @covers \Railgun\Billing\Exceptions\DuplicateProductsException
-     *
-     * @throws ApiErrorException
      */
     public function testDuplicateProducts(): void
     {
@@ -178,8 +159,6 @@ class CartTest extends ApplicationTestCase
 
     /**
      * @covers \Railgun\Billing\Exceptions\UnavailableProductsException
-     *
-     * @throws ApiErrorException
      */
     public function testUnavailableProducts(): void
     {
@@ -193,8 +172,6 @@ class CartTest extends ApplicationTestCase
 
     /**
      * @covers \Railgun\Billing\Exceptions\AlreadyBoughtException
-     *
-     * @throws ApiErrorException
      */
     public function testOwnedProducts(): void
     {
@@ -216,13 +193,11 @@ class CartTest extends ApplicationTestCase
 
     /**
      * @covers \Railgun\Billing\Exceptions\AlreadyPremiumException
-     *
-     * @throws ApiErrorException
      */
     public function testAlreadyPremium(): void
     {
         $user = factory(User::class)->create(['premium_bypass' => true]);
-        $cart = Cart::build(['plan' => ModeMachine::PLAN_MONTH]);
+        $cart = Cart::build(['plans' => [PricesRepository::PREMIUM_MONTH]]);
 
         $this->expectException(AlreadyPremiumException::class);
         $cart->validate($user);
@@ -235,7 +210,7 @@ class CartTest extends ApplicationTestCase
     {
         $cart1     = Cart::build(CartInputGenerator::make(
             ['chapters', 'packs', 'trainings', 'coupon'],
-            ModeMachine::PLAN_MONTH,
+            [PricesRepository::PREMIUM_MONTH],
         ));
         $metadata1 = $cart1->toMetadata();
 

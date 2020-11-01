@@ -9,6 +9,7 @@ use Railgun\Billing\Stripe\Exceptions\ThreeDSecureException;
 use Railgun\Jobs\DispatchCart;
 use Railgun\Jobs\UpsertSubscription;
 use Stripe\PaymentIntent;
+use Stripe\Price;
 use Stripe\Subscription;
 use function sprintf;
 use function trans_choice;
@@ -34,7 +35,9 @@ class SubscriptionCheckout extends Checkout
 
         $this->subscription = $this->client->subscriptions->create([
             'customer'               => $this->customer->id,
-            'items'                  => [['price' => $this->cart->plan->id]],
+            'items'                  => $this->cart->plans->map(static function (Price $price) {
+                return ['price' => $price->id];
+            })->toArray(),
             'default_payment_method' => $this->paymentMethodId,
             'add_invoice_items'      => $this->cart->products->map(static function (StripeSellable $product) {
                 return [

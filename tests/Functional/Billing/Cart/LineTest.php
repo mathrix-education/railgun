@@ -6,7 +6,7 @@ namespace Tests\Functional\Billing\Cart;
 
 use Laravel\Lumen\Testing\DatabaseTransactions;
 use Railgun\Billing\Cart\Line;
-use Railgun\Billing\Stripe\Models\ModeMachine;
+use Railgun\Billing\Stripe\Repositories\PricesRepository;
 use Railgun\Models\Coupon;
 use Railgun\Models\Training;
 use Tests\ApplicationTestCase;
@@ -35,7 +35,7 @@ class LineTest extends ApplicationTestCase
      */
     public function testFromPrice(): void
     {
-        $price = $this->app->make(ModeMachine::class)->get(ModeMachine::PLAN_MONTH);
+        $price = $this->app->make(PricesRepository::class)->get(PricesRepository::PREMIUM_MONTH);
         $line  = Line::fromPrice($price);
 
         $this->assertEquals($price->unit_amount, $line->price);

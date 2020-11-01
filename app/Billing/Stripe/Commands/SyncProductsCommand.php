@@ -10,8 +10,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Railgun\Billing\Stripe\Contracts\StripeSellable;
-use Railgun\Billing\Stripe\Models\Academy;
-use Railgun\Billing\Stripe\Models\ModeMachine;
+use Railgun\Billing\Stripe\Repositories\PricesRepository;
+use Railgun\Billing\Stripe\Repositories\ProductsRepository;
 use Railgun\Billing\Stripe\StripeClientRegistry;
 use Railgun\Models\Chapter;
 use Railgun\Models\Contracts\Sellable;
@@ -23,7 +23,6 @@ use Stripe\Product;
 use Stripe\StripeClient;
 use function class_basename;
 use function collect;
-use function count;
 use function preg_match;
 
 /**
@@ -59,87 +58,52 @@ class SyncProductsCommand extends Command
                 'visible' => true,
             ]);
 
-        $this->syncPremium();
-        $this->syncAcademy();
+        $this->setup();
         $this->syncProducts(Pack::class);
         $this->syncProducts(Training::class);
         $this->syncProducts(Chapter::class);
     }
 
     /**
-     * Synchronize the premium product with Stripe.
-     *
      * @throws ApiErrorException
      */
-    public function syncPremium(): void
+    private function setup(): void
     {
-        $this->line('Synchronizing <info>premium</info> product');
+        collect(ProductsRepository::DATA)->each(function (array $plan, string $id): void {
+            $this->line("Synchronizing <info>$id</info>");
 
-        if ($this->getProduct(ModeMachine::PRODUCT['id']) === null) {
-            $this->stripe->products->create(ModeMachine::PRODUCT);
-        }
-
-        $progress = $this->getOutput()->createProgressBar(count(ModeMachine::PRICES));
-        $progress->setFormat(' %current%/%max% [%bar%] %message%');
-        $progress->setMessage('');
-
-        collect(ModeMachine::PRICES)->each(function (array $payload, string $lookupKey) use ($progress): void {
-            $progress->setMessage("Pushing <info>{$lookupKey}</info> price");
-            $price = $this->getPrice($lookupKey, false);
-
-            if ($price === null) {
-                $this->stripe->prices->create($payload);
-            } else {
-                $this->stripe->prices->update(
-                    $price->id,
-                    Arr::except($payload, ['product', 'recurring', 'billing_scheme', 'currency', 'unit_amount']),
-                );
+            if ($this->getProduct($id) === null) {
+                $this->stripe->products->create($plan);
             }
 
-            $progress->advance();
+            $prices = collect(PricesRepository::DATA)->filter(static function (array $price) use ($id) {
+                return $price['product'] === $id;
+            });
+
+            $progress = $this->getOutput()->createProgressBar($prices->count());
+            $progress->setFormat(' %current%/%max% [%bar%] %message%');
+            $progress->setMessage('');
+
+            $prices->each(function (array $payload, string $lookupKey) use ($progress): void {
+                $progress->setMessage("Pushing <info>{$lookupKey}</info> price");
+                $price = $this->getPrice($lookupKey, false);
+
+                if ($price === null) {
+                    $this->stripe->prices->create($payload);
+                } else {
+                    $this->stripe->prices->update(
+                        $price->id,
+                        Arr::except($payload, ['product', 'recurring', 'billing_scheme', 'currency', 'unit_amount']),
+                    );
+                }
+
+                $progress->advance();
+            });
+
+            $progress->finish();
+            unset($progress);
+            $this->getOutput()->newLine(2);
         });
-
-        $progress->finish();
-        unset($progress);
-        $this->getOutput()->newLine(2);
-    }
-
-    /**
-     * Synchronize the premium product with Stripe.
-     *
-     * @throws ApiErrorException
-     */
-    public function syncAcademy(): void
-    {
-        $this->line('Synchronizing <info>academy</info> product');
-
-        if ($this->getProduct(Academy::PRODUCT['id']) === null) {
-            $this->stripe->products->create(Academy::PRODUCT);
-        }
-
-        $progress = $this->getOutput()->createProgressBar(count(Academy::PRICES));
-        $progress->setFormat(' %current%/%max% [%bar%] %message%');
-        $progress->setMessage('');
-
-        collect(Academy::PRICES)->each(function (array $payload, string $lookupKey) use ($progress): void {
-            $progress->setMessage("Pushing <info>{$lookupKey}</info> price");
-            $price = $this->getPrice($lookupKey, false);
-
-            if ($price === null) {
-                $this->stripe->prices->create($payload);
-            } else {
-                $this->stripe->prices->update(
-                    $price->id,
-                    Arr::except($payload, ['product', 'recurring', 'billing_scheme', 'currency', 'unit_amount']),
-                );
-            }
-
-            $progress->advance();
-        });
-
-        $progress->finish();
-        unset($progress);
-        $this->getOutput()->newLine(2);
     }
 
     /**

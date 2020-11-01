@@ -8,9 +8,10 @@ use Braintree\Exception\NotFound;
 use Braintree\Gateway;
 use Braintree\Subscription as BraintreeSubscription;
 use Illuminate\Contracts\Bus\Dispatcher;
-use Railgun\Billing\Stripe\Models\ModeMachine;
+use Railgun\Billing\Stripe\Repositories\PricesRepository;
 use Railgun\Billing\Stripe\StripeClientRegistry;
 use Railgun\Models\Subscription;
+use Stripe\Exception\ApiErrorException;
 use Stripe\StripeClient;
 use Stripe\Subscription as StripeSubscription;
 use Tests\E2E\GraphQL\GraphQLTestCase;
@@ -19,18 +20,18 @@ use Tests\Utils\StripeGenerator;
 
 class UpdateSubscriptionPaymentMethodTest extends GraphQLTestCase
 {
-    protected Dispatcher   $dispatcher;
-    protected ModeMachine  $modeMachine;
-    protected StripeClient $client;
-    protected StripeClient $clientLegacy;
-    protected Gateway      $gateway;
+    protected Dispatcher       $dispatcher;
+    protected PricesRepository $prices;
+    protected StripeClient     $client;
+    protected StripeClient     $clientLegacy;
+    protected Gateway          $gateway;
 
     public function setUp(): void
     {
         parent::setUp();
 
         $this->dispatcher   = $this->app->make(Dispatcher::class);
-        $this->modeMachine  = $this->app->make(ModeMachine::class);
+        $this->prices       = $this->app->make(PricesRepository::class);
         $this->client       = $this->app->make(StripeClient::class);
         $this->clientLegacy = $this->app->make(StripeClientRegistry::class)->make(StripeClientRegistry::CLIENT_LEGACY);
         $this->gateway      = $this->app->make(Gateway::class);
@@ -65,10 +66,16 @@ class UpdateSubscriptionPaymentMethodTest extends GraphQLTestCase
         );
     }
 
+    /**
+     * @throws ApiErrorException
+     */
     public function testStripeLegacyMigrationSuccess(): void
     {
         $user    = $this->actingAsGetUser();
-        $context = StripeGenerator::subscription(['user' => $user, 'client' => StripeClientRegistry::CLIENT_LEGACY]);
+        $context = StripeGenerator::subscription([
+            'user'   => $user,
+            'client' => StripeClientRegistry::CLIENT_LEGACY,
+        ]);
         /** @var Subscription $previous */
         $previous = $context['subscription'];
 

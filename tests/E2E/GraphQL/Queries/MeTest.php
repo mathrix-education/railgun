@@ -6,7 +6,7 @@ namespace Tests\E2E\GraphQL\Queries;
 
 use Illuminate\Database\Eloquent\Collection;
 use Laravel\Lumen\Testing\DatabaseTransactions;
-use Railgun\Billing\Stripe\Models\ModeMachine;
+use Railgun\Billing\Stripe\Repositories\PricesRepository;
 use Railgun\Jobs\UpsertSubscription;
 use Railgun\Models\Chapter;
 use Railgun\Models\Comment;
@@ -63,7 +63,7 @@ class MeTest extends GraphQLTestCase
     public function testMeSession(): void
     {
         $chapter = Chapter::random();
-        $user    = $this->actingAsGetUser(['grade_id' => $chapter->grade_id]);
+        $user    = $this->actingAsGetUser(['grade_id' => $chapter->theme->grade_id]);
         $session = new Session([
             'user_id'       => $user->id,
             'discipline_id' => $chapter->theme->discipline_id,
@@ -187,7 +187,7 @@ class MeTest extends GraphQLTestCase
         $customer        = $user->ensureStripeCustomer($paymentMethodId);
         $user->refresh();
 
-        $modeMachine = $this->app->make(ModeMachine::class);
+        $modeMachine = $this->app->make(PricesRepository::class);
 
         $subscription = $this->client->subscriptions->create([
             'customer'               => $customer->id,

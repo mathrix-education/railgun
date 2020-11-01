@@ -17,11 +17,11 @@ class CartInputGenerator
      * Generate a valid CartInput GraphQL input.
      *
      * @param string|string[] $options The products to include in the cart.
-     * @param string|null     $plan    The subscription plan.
+     * @param string[]|null   $plans   The subscription plan.
      *
      * @return mixed[] A valid CartInput GraphQL input.
      */
-    public static function make($options = [], ?string $plan = null): array
+    public static function make($options = [], array $plans = []): array
     {
         if (is_string($options)) {
             $options = [$options];
@@ -80,9 +80,7 @@ class CartInputGenerator
                 ->getKey();
         }
 
-        if ($plan) {
-            $cart['plan'] = $plan;
-        }
+        $cart['plans'] = $plans;
 
         return $cart;
     }
