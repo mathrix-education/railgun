@@ -10,6 +10,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Railgun\Billing\Stripe\Contracts\StripeSellable;
+use Railgun\Billing\Stripe\Repositories\CouponsRepository;
 use Railgun\Billing\Stripe\Repositories\PricesRepository;
 use Railgun\Billing\Stripe\Repositories\ProductsRepository;
 use Railgun\Billing\Stripe\StripeClientRegistry;
@@ -69,6 +70,7 @@ class SyncProductsCommand extends Command
      */
     private function setup(): void
     {
+        // Create products and associated prices
         collect(ProductsRepository::DATA)->each(function (array $plan, string $id): void {
             $this->line("Synchronizing <info>$id</info>");
 
@@ -104,6 +106,22 @@ class SyncProductsCommand extends Command
             unset($progress);
             $this->getOutput()->newLine(2);
         });
+
+        // Create coupons
+        $this->line("Synchronizing <info>coupons</info>");
+        $coupons  = collect(CouponsRepository::DATA);
+        $progress = $this->getOutput()->createProgressBar($coupons->count());
+        $progress->setFormat(' %current%/%max% [%bar%] %message%');
+        $progress->setMessage('');
+
+        $coupons->each(function (array $coupon) use ($progress): void {
+            $progress->setMessage("Pushing <info>{$coupon['id']}</info> coupon");
+            $this->stripe->coupons->create($coupon);
+            $progress->advance();
+        });
+        $progress->finish();
+        unset($progress);
+        $this->getOutput()->newLine(2);
     }
 
     /**

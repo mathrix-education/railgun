@@ -33,7 +33,7 @@ class SubscriptionCheckout extends Checkout
             ]);
         }
 
-        $this->subscription = $this->client->subscriptions->create([
+        $payload = [
             'customer'               => $this->customer->id,
             'items'                  => $this->cart->plans->map(static function (Price $price) {
                 return ['price' => $price->id];
@@ -46,7 +46,13 @@ class SubscriptionCheckout extends Checkout
                 ];
             })->toArray(),
             'expand'                 => ['latest_invoice.payment_intent'],
-        ]);
+        ];
+
+        if ($this->cart->getComboCouponId()) {
+            $payload['coupon'] = $this->cart->getComboCouponId();
+        }
+
+        $this->subscription = $this->client->subscriptions->create($payload);
 
         /** @noinspection PhpFieldAssignmentTypeMismatchInspection */
         $this->invoice = $this->subscription->latest_invoice;

@@ -13,13 +13,13 @@ class ProductsRepository
             'id'          => self::MODE_MACHINE,
             'name'        => 'Mode Machine',
             'active'      => true,
-            'description' => 'Accès au contenu premium de Mathrix.fr en illimité.',
+            'description' => 'Mode Machine',
         ],
         self::ACADEMY      => [
             'id'          => self::ACADEMY,
-            'name'        => 'Academy',
+            'name'        => 'Mathrix Academy',
             'active'      => true,
-            'description' => 'Accès au contenu des lives.',
+            'description' => 'Mathrix Academy',
         ],
     ];
 }

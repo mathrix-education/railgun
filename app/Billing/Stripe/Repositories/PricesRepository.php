@@ -143,41 +143,41 @@ class PricesRepository
                 'interval'       => 'month',
                 'interval_count' => 1,
             ],
-            'unit_amount' => 1990,
+            'unit_amount' => 2990,
         ],
-        self::ACADEMY_QUARTER           => [
-            'currency'    => 'eur',
-            'lookup_key'  => self::ACADEMY_QUARTER,
-            'nickname'    => 'Plan trimestriel',
-            'product'     => ProductsRepository::ACADEMY,
-            'recurring'   => [
-                'interval'       => 'month',
-                'interval_count' => 3,
-            ],
-            'unit_amount' => 4990,
-        ],
-        self::ACADEMY_SEMESTER          => [
-            'currency'    => 'eur',
-            'lookup_key'  => self::ACADEMY_SEMESTER,
-            'nickname'    => 'Plan semestriel',
-            'product'     => ProductsRepository::ACADEMY,
-            'recurring'   => [
-                'interval'       => 'month',
-                'interval_count' => 6,
-            ],
-            'unit_amount' => 9590,
-        ],
-        self::ACADEMY_YEAR              => [
-            'currency'    => 'eur',
-            'lookup_key'  => self::ACADEMY_YEAR,
-            'nickname'    => 'Plan annuel',
-            'product'     => ProductsRepository::ACADEMY,
-            'recurring'   => [
-                'interval'       => 'year',
-                'interval_count' => 1,
-            ],
-            'unit_amount' => 15990,
-        ],
+        //self::ACADEMY_QUARTER           => [
+        //    'currency'    => 'eur',
+        //    'lookup_key'  => self::ACADEMY_QUARTER,
+        //    'nickname'    => 'Plan trimestriel',
+        //    'product'     => ProductsRepository::ACADEMY,
+        //    'recurring'   => [
+        //        'interval'       => 'month',
+        //        'interval_count' => 3,
+        //    ],
+        //    'unit_amount' => 4990,
+        //],
+        //self::ACADEMY_SEMESTER          => [
+        //    'currency'    => 'eur',
+        //    'lookup_key'  => self::ACADEMY_SEMESTER,
+        //    'nickname'    => 'Plan semestriel',
+        //    'product'     => ProductsRepository::ACADEMY,
+        //    'recurring'   => [
+        //        'interval'       => 'month',
+        //        'interval_count' => 6,
+        //    ],
+        //    'unit_amount' => 9590,
+        //],
+        //self::ACADEMY_YEAR              => [
+        //    'currency'    => 'eur',
+        //    'lookup_key'  => self::ACADEMY_YEAR,
+        //    'nickname'    => 'Plan annuel',
+        //    'product'     => ProductsRepository::ACADEMY,
+        //    'recurring'   => [
+        //        'interval'       => 'year',
+        //        'interval_count' => 1,
+        //    ],
+        //    'unit_amount' => 15990,
+        //],
     ];
 
     protected StripeClient $client;

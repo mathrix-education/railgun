@@ -6,6 +6,7 @@ namespace Railgun\Billing\Cart;
 
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Railgun\Billing\Exceptions\AlreadyBoughtException;
 use Railgun\Billing\Exceptions\AlreadyPremiumException;
 use Railgun\Billing\Exceptions\DuplicateProductsException;
@@ -13,6 +14,7 @@ use Railgun\Billing\Exceptions\EmptyCartException;
 use Railgun\Billing\Exceptions\InvalidCouponCodeException;
 use Railgun\Billing\Exceptions\UnavailableProductsException;
 use Railgun\Billing\Stripe\Contracts\StripeSellable;
+use Railgun\Billing\Stripe\Repositories\CouponsRepository;
 use Railgun\Billing\Stripe\Repositories\PricesRepository;
 use Railgun\Models\Chapter;
 use Railgun\Models\Contracts\Ownable;
@@ -24,6 +26,7 @@ use Railgun\Models\User;
 use Railgun\Support\Container;
 use Stripe\Price;
 use function app;
+use function array_key_exists;
 use function array_unique;
 use function collect;
 use function config;
@@ -41,6 +44,7 @@ use function round;
  * @property-read Coupon|null           $coupon
  * @property-read Collection|Line[]     $lines
  * @property-read int                   $subTotal
+ * @property-read int                   $stripeCouponAmount
  * @property-read int                   $couponAmount
  * @property-read int                   $total
  */
@@ -144,6 +148,10 @@ class Cart extends Container
         $lines->push(...$this->products->map(static fn(StripeSellable $sellable) => Line::fromProduct($sellable)));
         $lines->push(...$this->plans->map(static fn(Price $price) => Line::fromPrice($price)));
 
+        if ($this->stripeCouponAmount > 0) {
+            $lines->push(Line::fromStripeCoupon($this->getComboCouponId(), $this->stripeCouponAmount));
+        }
+
         if ($this->couponAmount > 0) {
             $lines->push(Line::fromCoupon($this->coupon, $this->couponAmount));
         }
@@ -186,6 +194,52 @@ class Cart extends Container
     }
 
     /**
+     * Check if the cart has a premium AND an academy plan and return the associated {@see \Stripe\Coupon} id.
+     *
+     * @return string|null The {@see \Stripe\Coupon} id.
+     */
+    public function getComboCouponId(): ?string
+    {
+        $plans = $this->plans->pluck('lookup_key');
+
+        if ($plans->count() < 2) {
+            return null;
+        }
+
+        $premium = $plans->first(static fn(string $lk) => Str::contains($lk, 'laser'));
+        $academy = $plans->first(static fn(string $lk) => Str::contains($lk, 'academy'));
+
+        if (!$premium || !$academy) {
+            return null;
+        }
+
+        switch ($academy) {
+            case PricesRepository::ACADEMY_MONTH:
+                return CouponsRepository::COMBO_MONTH;
+        }
+
+        return null;
+    }
+
+    /**
+     * @return int Get the Stripe coupon amount provided by combo.
+     */
+    protected function getStripeCouponAmount(): int
+    {
+        if (!$this->getComboCouponId()) {
+            return 0;
+        }
+
+        $coupon = CouponsRepository::DATA[$this->getComboCouponId()];
+
+        if (array_key_exists('percent_off', $coupon)) {
+            return (int)round($coupon['percent_off'] / 100 * $this->subTotal);
+        }
+
+        return $coupon['amount_off'];
+    }
+
+    /**
      * @return int Get the coupon amount as a positive integer.
      */
     protected function getCouponAmount(): int
@@ -206,7 +260,7 @@ class Cart extends Container
      */
     protected function getTotal(): int
     {
-        return $this->subTotal - $this->couponAmount;
+        return $this->subTotal - $this->stripeCouponAmount - $this->couponAmount;
     }
 
     /**
