@@ -61,7 +61,10 @@ class SubscriptionCheckout extends Checkout
             'metadata' => $this->cart->toMetadata(),
         ]);
 
-        if ($this->invoice->payment_intent->status === PaymentIntent::STATUS_REQUIRES_ACTION) {
+        if (
+            $this->cart->total > 0 // There wont be a payment intent if the subscription is free
+            && $this->invoice->payment_intent->status === PaymentIntent::STATUS_REQUIRES_ACTION
+        ) {
             throw new ThreeDSecureException($this->invoice->payment_intent);
         }
 
