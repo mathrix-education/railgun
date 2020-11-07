@@ -7,6 +7,7 @@ namespace Railgun\Billing\Cart;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Railgun\Billing\Exceptions\AlreadyAcademyException;
 use Railgun\Billing\Exceptions\AlreadyBoughtException;
 use Railgun\Billing\Exceptions\AlreadyPremiumException;
 use Railgun\Billing\Exceptions\DuplicateProductsException;
@@ -305,8 +306,13 @@ class Cart extends Container
             }
 
             // Check that the user is already premium
-            if ($this->plans && $user->premium) {
+            if ($user->premium && $this->plans->first(static fn(string $plan) => Str::contains($plan, 'laser'))) {
                 throw new AlreadyPremiumException();
+            }
+
+            // Check that the user is registered at the academy
+            if ($user->academy && $this->plans->first(static fn(string $plan) => Str::contains($plan, 'academy'))) {
+                throw new AlreadyAcademyException();
             }
         }
 
