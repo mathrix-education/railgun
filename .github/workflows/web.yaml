@@ -208,28 +208,28 @@ jobs:
           log_url: https://github.com/${{ github.repository	}}/actions/runs/${{ github.run_id }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Setup Sentry CLI
-        uses: mathrix-education/setup-sentry-cli@0.1.1
-        with:
-          token: ${{ SECRETS.SENTRY_TOKEN }}
-          organization: mathrix-tech
-          project: railgun
-      - name: Create Sentry Release
-        run: |
-          sentry-cli releases new ${{ needs.mappings.outputs.semver }}
-          sentry-cli releases set-commits ${{ needs.mappings.outputs.semver }} --auto
-          sentry-cli releases finalize ${{ needs.mappings.outputs.semver }}
-      - name: Change image version
-        run: |
-          gcloud container clusters get-credentials teknoid --zone=europe-west1-b
-          kubectl set image -n ${{ needs.mappings.outputs.environment }} \
-            deployment/railgun-server "server=${{ needs.mappings.outputs.image }}"
-          kubectl set image -n ${{ needs.mappings.outputs.environment }} \
-            deployment/railgun-worker "worker=${{ needs.mappings.outputs.image }}"
-      - name: Deploy Sentry Release
-        run: |
-          sentry-cli releases deploys ${{ needs.mappings.outputs.semver }} \
-            new -e ${{ needs.mappings.outputs.environment }}
+      #- name: Setup Sentry CLI
+      #  uses: mathrix-education/setup-sentry-cli@0.1.1
+      #  with:
+      #    token: ${{ SECRETS.SENTRY_TOKEN }}
+      #    organization: mathrix-tech
+      #    project: railgun
+      #- name: Create Sentry Release
+      #  run: |
+      #    sentry-cli releases new ${{ needs.mappings.outputs.semver }}
+      #    sentry-cli releases set-commits ${{ needs.mappings.outputs.semver }} --auto
+      #    sentry-cli releases finalize ${{ needs.mappings.outputs.semver }}
+      #- name: Change image version
+      #  run: |
+      #    gcloud container clusters get-credentials teknoid --zone=europe-west1-b
+      #    kubectl set image -n ${{ needs.mappings.outputs.environment }} \
+      #      deployment/railgun-server "server=${{ needs.mappings.outputs.image }}"
+      #    kubectl set image -n ${{ needs.mappings.outputs.environment }} \
+      #      deployment/railgun-worker "worker=${{ needs.mappings.outputs.image }}"
+      #- name: Deploy Sentry Release
+      #  run: |
+      #    sentry-cli releases deploys ${{ needs.mappings.outputs.semver }} \
+      #      new -e ${{ needs.mappings.outputs.environment }}
       - name: Set deployment status to "success"
         uses: avakar/set-deployment-status@v1
         with:
