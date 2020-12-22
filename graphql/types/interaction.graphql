@@ -4,6 +4,7 @@ enum InteractionType {
     exercise @enum(value: "exercise")
     flashcard @enum(value: "flashcard")
     subject @enum(value: "subject")
+    problem @enum(value: "problem")
 }
 
 enum InteractionComprehension {

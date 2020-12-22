@@ -1,0 +1,6 @@
+extend type Query {
+    """
+    Read an existing problem.
+    """
+    readProblem(id: ID @eq): Problem @find
+}
