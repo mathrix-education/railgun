@@ -79,7 +79,7 @@ class Course extends BaseModel implements BelongsToChapter, ClonableContract, La
         'seo_index' => 'boolean',
     ];
     protected array $orderGroup     = ['notion_id'];
-    protected array $orderRelations = [Subject::class];
+    protected array $orderRelations = [Subject::class, Problem::class];
     protected array $clonable       = [
         'name',
         'slug',

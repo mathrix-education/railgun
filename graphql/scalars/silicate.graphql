@@ -1,4 +1,4 @@
 """
 Silicate wall plain object.
 """
-scalar Silicate @scalar(class: "MLL\\GraphQLScalars\\Mixed")
+scalar Silicate @scalar(class: "MLL\\GraphQLScalars\\MixedScalar")

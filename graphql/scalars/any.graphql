@@ -1,4 +1,4 @@
 """
 An arbitrary object.
 """
-scalar Any @scalar(class: "MLL\\GraphQLScalars\\Mixed")
+scalar Any @scalar(class: "MLL\\GraphQLScalars\\MixedScalar")

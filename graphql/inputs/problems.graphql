@@ -1,0 +1,114 @@
+input CreateProblem {
+    """
+    The problem human-readable name.
+    Maximum 150 caracters.
+    """
+    name: String! @rules(apply: ["string", "max:150"])
+    """
+    The problem slug, which will be used in the URL generation.
+    Maximum 150 caracters.
+    """
+    slug: String! @rules(apply: ["string", "max:150"])
+    """
+    The problem duration in minutes. If set, must be greater than 0.
+    """
+    duration: Int @rules(apply: ["nullable", "min:0"])
+    """
+    The problem content.
+    """
+    content: Silicate!
+    """
+    The problem order. If not set, the chapter will be placed in the last position of the group [chapter].
+    Must be positive (i.e. >=0).
+    """
+    order: Int @rules(apply: ["nullable", "integer", "min:0"])
+    """
+    If the problem is only accessible for premium users. Default value is `false`.
+    Requires the permission `problems:write:premium`.
+    """
+    premium: Boolean @permission(name: "problems:write:premium") @rules(apply: ["boolean"])
+    """
+    If the problem is only accessible for users who bought the parent chapter. Default value is `null`.
+    Requires the permission `problems:write:protected`.
+    """
+    protected: Boolean @permission(name: "problems:write:protected") @rules(apply: ["boolean"])
+    """
+    The problem frozen date. If set, only the users with the permission `problems:freeze` will be allowed to edit the problem.
+    Set to `null` to disable.
+    Requires the permission `problems:freeze`.
+    """
+    frozen_at: DateTime @permission(name: "problems:freeze")
+    """
+    If the problem should be displayed to the end users.
+    Requires the permission `problems:write:visible`.
+    """
+    visible: Boolean @permission(name: "problems:write:visible")
+    """
+    The problem related notion ID.
+    """
+    notion_id: ID! @rules(apply: ["integer", "exists:notions,id"])
+    """
+    The problem associated labels.
+    """
+    labels: BelongsToMany
+}
+
+input UpdateProblem {
+    """
+    The targeted problem ID.
+    """
+    id: ID! @rules(apply: ["integer"])
+    """
+    The problem new human-readable name.
+    Maximum 150 caracters.
+    """
+    name: String @rules(apply: ["string", "max:150"])
+    """
+    The problem new slug, which will be used in the URL generation.
+    Requires the permission `problems:write:slug`.
+    Maximum 150 caracters.
+    """
+    slug: String @permission(name: "problems:write:slug") @rules(apply: ["string", "max:150"])
+    """
+    The problem new duration in minutes. If set, must be greater than 0.
+    """
+    duration: Int @rules(apply: ["nullable", "min:0"])
+    """
+    The problem new content.
+    """
+    content: Silicate @rules(apply: ["array"])
+    """
+    The problem new order.
+    Must be positive (i.e. >=0).
+    """
+    order: Int @rules(apply: ["nullable", "integer", "min:0"])
+    """
+    If the problem is only accessible for premium users.
+    Requires the permission `problems:write:premium`.
+    """
+    premium: Boolean @permission(name: "problems:write:premium") @rules(apply: ["boolean"])
+    """
+    If the problem is only accessible for users who bought the parent chapter. Default value is `null`.
+    Requires the permission `problem:write:protected`.
+    """
+    protected: Boolean @permission(name: "problem:write:protected") @rules(apply: ["boolean"])
+    """
+    The problem frozen date. If set, only the users with the permission `problems:freeze` will be allowed to edit the problem.
+    Set to `null` to disable.
+    Requires the permission `problems:freeze`.
+    """
+    frozen_at: DateTime @permission(name: "problems:freeze")
+    """
+    If the problem should be displayed to the end users.
+    Requires the permission `problems:write:visible`.
+    """
+    visible: Boolean @permission(name: "problems:write:visible")
+    """
+    The problem new related notion ID.
+    """
+    notion_id: ID @rules(apply: ["integer", "exists:notions,id"])
+    """
+    The problem associated labels.
+    """
+    labels: BelongsToMany
+}

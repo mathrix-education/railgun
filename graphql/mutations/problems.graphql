@@ -1,0 +1,16 @@
+extend type Mutation {
+    "Create a new problem."
+    createProblem(
+        input: CreateProblem! @spread
+    ): Problem @permission(name: "problems:write") @create
+
+    "Update an existing problem."
+    updateProblem(
+        input: UpdateProblem! @spread
+    ): Problem @permission(name: "problems:write") @update
+
+    "Delete an existing problem."
+    deleteProblem(
+        id: ID!
+    ): Problem  @permission(name: "problems:delete") @delete
+}

@@ -1,7 +1,7 @@
 {
   "name": "mathrix-education/railgun",
   "description": "Railgun-fast paced GraphQL API for Mathrix Education.",
-  "version": "14.0.1",
+  "version": "14.1.0",
   "type": "project",
   "keywords": [
     "education",
@@ -72,7 +72,7 @@
     "mathieu-bour/laravel-mailjet": "^1.0",
     "mathrix-education/lumen-healthz": "^0.1.0",
     "mathrix-education/lumen-prometheus-exporter": "^0.1",
-    "mll-lab/graphql-php-scalars": "^3.0",
+    "mll-lab/graphql-php-scalars": "^4.0",
     "mll-lab/laravel-graphql-playground": "^2.0",
     "nuwave/lighthouse": "^4.8",
     "php-pm/httpkernel-adapter": "^2.0",

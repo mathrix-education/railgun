@@ -61,7 +61,7 @@ class Subject extends BaseModel implements BelongsToChapter, ClonableContract, O
         'visible'   => 'boolean',
     ];
     protected array $orderGroup     = ['notion_id'];
-    protected array $orderRelations = [Course::class];
+    protected array $orderRelations = [Course::class, Problem::class];
 
     public static function booting(): void
     {
