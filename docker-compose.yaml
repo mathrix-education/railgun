@@ -1,40 +1,20 @@
 version: '3'
 services:
-  railgun:
-    build:
-      context: .
-      args:
-        RELEASE: local-release
-    ports:
-      - 8080:8080
-    env_file: .env.compose
-    depends_on:
-      - redis
-      - mysql
-    entrypoint:
-      - ash
-      - -c
-      - |
-        echo "Installing composer"
-        wget https://getcomposer.org/installer -O ./installer
-        php ./installer
-        mv ./composer.phar /usr/bin/composer
-        chmod +x /usr/bin/composer
-        composer global require hirak/prestissimo
-        composer install --no-suggest --prefer-dist --optimize-autoloader
-
-        echo "Installing wait-for"
-        wget https://raw.githubusercontent.com/eficode/wait-for/master/wait-for -O /usr/bin/wait-for
-        chmod +x /usr/bin/wait-for
-        wait-for mysql:3306 -- echo "Database is ready"
-
-        echo "Setup database"
-        artisan migrate:fresh --seed
-        railgun server
   redis:
     image: library/redis:5-alpine
+    volumes:
+      - railgun_redis_data:/data
+    ports:
+      - 16379:6379
   mysql:
     image: library/mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: salome3004
       MYSQL_DATABASE: education_local
+    ports:
+      - 13306:3306
+    volumes:
+      - railgun_mysql_data:/var/lib/mysql
+volumes:
+  railgun_redis_data:
+  railgun_mysql_data:

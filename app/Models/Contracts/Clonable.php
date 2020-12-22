@@ -36,7 +36,7 @@ interface Clonable
     /**
      * @param mixed[] $attributes The clone overridden attributes.
      *
-     * @return Clonable The new clone.
+     * @return static The new clone.
      */
     public function clone(array $attributes = []): Clonable;
 }

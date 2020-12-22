@@ -112,9 +112,9 @@ trait Clonable
      *
      * @param mixed[] $attributes The clone overridden attributes.
      *
-     * @return static The new clone.
+     * @return ClonableContract The new clone.
      */
-    public function clone(array $attributes = []): self
+    public function clone(array $attributes = []): ClonableContract
     {
         /** @var static $clone */
         $clone = $this->newInstance(array_replace(
