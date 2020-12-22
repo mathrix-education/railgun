@@ -15,5 +15,6 @@ type Notion implements Ownable {
     chapter: Chapter! @belongsTo
     courses: [Course!]! @hasMany
     subjects: [Subject!]! @hasMany
+    problems: [Problem!]! @hasMany
     clones: [Notion!]! @belongsToMany @permission(name: "notions:read")
 }

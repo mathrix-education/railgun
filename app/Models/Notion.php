@@ -27,6 +27,7 @@ use Railgun\Models\Traits\Reorderable;
  * @property-read Chapter              $chapter
  * @property-read Collection|Course[]  $courses
  * @property-read Collection|Subject[] $subjects
+ * @property-read Collection|Problem[] $problems
  * @property-read Collection|Notion[]  $clones
  */
 class Notion extends BaseModel implements BelongsToChapter, ClonableContract, OwnableContract
@@ -104,6 +105,14 @@ class Notion extends BaseModel implements BelongsToChapter, ClonableContract, Ow
     public function subjects(): HasMany
     {
         return $this->hasMany(Subject::class)->orderBy('order');
+    }
+
+    /**
+     * @return HasMany<Problem>
+     */
+    public function problems(): HasMany
+    {
+        return $this->hasMany(Problem::class)->orderBy('order');
     }
 
     /**
