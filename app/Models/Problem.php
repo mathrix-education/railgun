@@ -50,12 +50,12 @@ class Problem extends BaseModel implements BelongsToChapter, ClonableContract, L
     use Reorderable;
     use Sluggable;
 
-    protected $attributes = [
+    protected $attributes           = [
         'premium'   => false,
         'protected' => false,
         'visible'   => false,
     ];
-    protected $fillable = [
+    protected $fillable             = [
         'name',
         'slug',
         'duration',
@@ -66,13 +66,13 @@ class Problem extends BaseModel implements BelongsToChapter, ClonableContract, L
         'visible',
         'notion_id',
     ];
-    protected $casts = [
+    protected $casts                = [
         'content'   => 'array',
         'premium'   => 'boolean',
         'protected' => 'boolean',
         'visible'   => 'boolean',
     ];
-    protected array $orderGroup = ['notion_id'];
+    protected array $orderGroup     = ['notion_id'];
     protected array $orderRelations = [Course::class, Subject::class];
 
     public static function boot(): void
