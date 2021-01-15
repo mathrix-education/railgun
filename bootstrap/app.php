@@ -28,8 +28,8 @@ use Railgun\Providers\GoogleServiceProvider;
 use Railgun\Providers\RouterServiceProvider;
 use Sentry\Laravel\ServiceProvider as SentryServiceProvider;
 use Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider;
+use Windy\CacheFallback\CacheFallbackServiceProvider;
 use Windy\Guardian\GuardianServiceProvider;
-use Windy\LaravelCacheFallback\CacheFallbackServiceProvider;
 use Windy\Mailjet\MailjetServiceProvider;
 
 (new LoadEnvironmentVariables(dirname(__DIR__)))->bootstrap();
