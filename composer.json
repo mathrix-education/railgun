@@ -68,7 +68,7 @@
     "illuminate/redis": "^7.0",
     "laravel/lumen-framework": "^7.0",
     "mathieu-bour/guardian": "^0.1.0",
-    "mathieu-bour/laravel-cache-fallback": "dev-master",
+    "mathieu-bour/laravel-cache-fallback": "^1.0",
     "mathieu-bour/laravel-mailjet": "^1.0",
     "mathrix-education/lumen-healthz": "^0.1.0",
     "mathrix-education/lumen-prometheus-exporter": "^0.1",
