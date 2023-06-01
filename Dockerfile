@@ -1,7 +1,7 @@
 FROM php:7.4-alpine
 
 LABEL Maintainer="Mathieu Bour <mathieu@mathrix.fr>" \
-      Description="Mathrix Education API image"
+    Description="Mathrix Education API image"
 
 ARG RELEASE="no-release"
 ARG EXT_REDIS_VERSION="5.3.1"
@@ -25,10 +25,10 @@ RUN mkdir -p /usr/src/php/ext && \
     docker-php-ext-install -j$(nproc) pcntl pdo_mysql zip opcache gmp redis && \
     apk del gmp-dev pcre-dev libzip-dev ${PHPIZE_DEPS} && \
     rm -rf /usr/src \
-        /tmp/redis.tar.gz \
-        /usr/local/bin/docker-php-entrypoint \
-        /var/www/* \
-        /var/cache/apk/* && \
+    /tmp/redis.tar.gz \
+    /usr/local/bin/docker-php-entrypoint \
+    /var/www/* \
+    /var/cache/apk/* && \
     php -m
 
 # Copy configuriations and scripts
@@ -38,9 +38,8 @@ COPY docker/etc/. /usr/local/etc/
 COPY . /var/www/
 
 # Install dependencies with composer, set release
-COPY --from=composer:1 /usr/bin/composer /usr/bin/composer
-RUN composer global require hirak/prestissimo && \
-    composer install --no-suggest --prefer-dist --no-dev --optimize-autoloader && \
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+RUN composer install --no-suggest --prefer-dist --no-dev --optimize-autoloader && \
     composer clear-cache && \
     # Hardcode release
     sed -i "s/RELEASE_ALIAS/$RELEASE/g" /var/www/config/app.php /var/www/config/sentry.php && \

@@ -4,7 +4,7 @@
 
 # Configuration
 google_cloud_project="mathrix-education"
-google_cloud_repository="eu.gcr.io"
+google_cloud_repository="europe-west1-docker.pkg.dev/mathrix-education/docker"
 google_cloud_image_name="railgun"
 
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
