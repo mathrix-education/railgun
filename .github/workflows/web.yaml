@@ -1,10 +1,15 @@
 name: Web pipeline
 on:
   push:
-    branches: [ 'main' ]
-    tags: [ '**' ]
+    branches: ["main"]
+    tags: ["**"]
   pull_request:
-    branches: [ '**' ]
+    branches: ["**"]
+
+env:
+  GCP_PROJECT: mathrix-education
+  GCP_REGISTRY: europe-west1-docker.pkg.dev/mathrix-education/docker
+
 jobs:
   # ============================================================================
   # Setup the mappings for all the subsequent jobs.
@@ -50,7 +55,7 @@ jobs:
   # ============================================================================
   lint:
     name: Lint with PHP_CodeSniffer
-    needs: [ mappings ]
+    needs: [mappings]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -58,11 +63,10 @@ jobs:
         uses: actions/checkout@v2
       - name: Setup PHP
         if: needs.mappings.outputs.skip_lint != '1'
-        uses: shivammathur/setup-php@2.9.0
+        uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.4
+          php-version: "7.4"
           coverage: none
-          tools: prestissimo
       - name: Install dependencies
         if: needs.mappings.outputs.skip_lint != '1'
         run: composer install --ignore-platform-reqs --no-progress --no-suggest --prefer-dist
@@ -71,180 +75,121 @@ jobs:
         run: vendor/bin/phpcs
 
   # ============================================================================
-  # Run the tests with PHPUnit
-  # ============================================================================
-#  tests:
-#    name: Test with PHPUnit
-#    needs: [ mappings ]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout
-#        if: needs.mappings.outputs.skip_test != '1'
-#        uses: actions/checkout@v2
-#      - name: Setup Google Cloud Service Account Key
-#        if: needs.mappings.outputs.skip_test != '1'
-#        run: echo "${{ secrets.GCLOUD_AUTH }}" | base64 -d > storage/keychain/service_account.json
-#      - name: Setup PHP
-#        if: needs.mappings.outputs.skip_test != '1'
-#        uses: shivammathur/setup-php@2.9.0
-#        with:
-#          php-version: 7.4
-#          extensions: gd, gmp, mbstring, mysql, zip
-#          coverage: pcov
-#          tools: prestissimo
-#      - name: Install dependencies
-#        if: needs.mappings.outputs.skip_test != '1'
-#        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
-#      - name: Setup application
-#        if: needs.mappings.outputs.skip_test != '1'
-#        run: |
-#          sudo service mysql start
-#          mysql -u "root" -p"root" -Bse "CREATE DATABASE mathrix_education_testing;"
-#          cp tests/.env .env
-#
-#          # Environament variables
-#          echo "::set-env name=GOOGLE_CLOUD_KEY_FILE::keychain/service_account.json"
-#          echo "::set-env name=MAILJET_SECRET::${{ secrets.MAILJET_SECRET }}"
-#          echo "::set-env name=STRIPE_API_KEY::${{ secrets.STRIPE_API_KEY }}"
-#          echo "::set-env name=STRIPE_LEGACY_API_KEY::${{ secrets.STRIPE_LEGACY_API_KEY }}"
-#          echo "::set-env name=BRAINTREE_PRIVATE_KEY::${{ secrets.BRAINTREE_PRIVATE_KEY }}"
-#      - name: Seed database
-#        if: needs.mappings.outputs.skip_test != '1'
-#        run: php artisan migrate --seed
-#      - name: Synchronize Stripe products
-#        if: needs.mappings.outputs.skip_test != '1'
-#        run: php artisan stripe:sync:products
-#      - name: Test with PHPUnit
-#        if: needs.mappings.outputs.skip_test != '1'
-#        run: vendor/bin/phpunit --coverage-clover=storage/artifacts/phpunit-coverage.xml --coverage-text
-#      - name: Upload coverage report to Codecov
-#        if: needs.mappings.outputs.skip_test != '1'
-#        uses: codecov/codecov-action@v1.0.13
-#        with:
-#          token: ${{ secrets.CODECOV_TOKEN }}
-#          file: storage/artifacts/phpunit-coverage.xml
-
-  # ============================================================================
   # Build the Docker image
   # ============================================================================
   docker:
     name: Build Docker image
-#    needs: [ mappings, lint, tests ]
-    needs: [ mappings, lint ]
+    needs: [mappings, lint]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         if: needs.mappings.outputs.skip_build != '1'
-        uses: actions/checkout@v2
-      - name: Setup Google Cloud SDK
-        uses: mathrix-education/setup-gcloud@1.2.0
+        uses: actions/checkout@v3
+      - name: Authenticate to Google Cloud SDK
+        if: needs.mappings.outputs.skip_build != '1'
+        id: auth
+        uses: google-github-actions/auth@v1
         with:
-          version: local
-          service-account-key: ${{ secrets.GCLOUD_AUTH }}
-          configure-docker: true
+          credentials_json: ${{ secrets.GCLOUD_AUTH }}
+      # - name: Docker login
+      #   if: needs.mappings.outputs.skip_build != '1'
+      #   uses: docker/login-action@v2
+      #   with:
+      #     registry: ${{ env.GCP_REGISTRY }}
+      #     username: _json_key
+      #     password: ${{ secrets.GCLOUD_AUTH }}
+      - name: Docker login
+        if: needs.mappings.outputs.skip_build != '1'
+        run: gcloud auth configure-docker europe-west1-docker.pkg.dev
       - name: Build Docker image
         if: needs.mappings.outputs.skip_build != '1'
-        run: |
-          docker build \
-            --build-arg "RELEASE=${{ needs.mappings.outputs.semver }}" \
-            --tag ${{ needs.mappings.outputs.image }} \
-            .
-      - name: Push Docker image to Google Cloud Container Registry
-        if: needs.mappings.outputs.skip_build != '1'
-        run: docker push ${{ needs.mappings.outputs.image }}
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: ${{ needs.mappings.outputs.skip_build != '1' }}
+          tags: ${{ needs.mappings.outputs.image }}
+          build-args: RELEASE=${{ needs.mappings.outputs.semver }}
       - name: Add "latest" tag
         if: github.event_name == 'push'
         run: |
-          gcloud container images add-tag \
+          gcloud artifacts docker tags add \
             ${{ needs.mappings.outputs.image }} \
             ${{ needs.mappings.outputs.image_latest }}
       - name: Add "version" tag
         if: needs.mappings.outputs.environment == 'production'
         run: |
-          gcloud container images add-tag \
+          gcloud artifacts docker tags add  \
             ${{ needs.mappings.outputs.image }} \
             ${{ needs.mappings.outputs.image_version }}
 
   # ============================================================================
-  # Deploy the container to the Google Cloud Kubernetes Cluster.
+  # Deploy the container to Google Cloud Run.
   # ============================================================================
-  deploy_gke:
-    name: Deploy on Google Kubernetes Engine
+  deploy_cloud_run:
+    name: Deploy on Google Cloud Run
     if: github.event_name != 'pull_request' || needs.mappings.outputs.deploy_force == '1'
-#    needs: [ mappings, lint, tests, docker ]
-    needs: [ mappings, lint, docker ]
+    needs: [mappings, lint, docker]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - name: Authenticate to Google Cloud SDK
+        if: needs.mappings.outputs.skip_build != '1'
+        id: auth
+        uses: google-github-actions/auth@v1
         with:
-          fetch-depth: '0'
-      - name: Setup Google Cloud SDK
-        uses: mathrix-education/setup-gcloud@1.2.0
+          credentials_json: ${{ secrets.GCLOUD_AUTH }}
+      - name: Deploy railgun service
+        uses: google-github-actions/deploy-cloudrun@v1
         with:
-          version: local
-          service-account-key: ${{ secrets.GCLOUD_AUTH }}
-      - name: Trigger deployment event
-        id: deployment
-        if: github.event_name != 'pull_request' || needs.mappings.outputs.deploy_force
-        uses: avakar/create-deployment@v1
-        with:
-          ref: ${{ github.ref }}
-          task: deploy
-          auto_merge: false
-          required_contexts: ''
-          payload: ${{ toJson(needs.mappings.outputs) }}
-          environment: ${{ needs.mappings.outputs.environment }}
-          description: Deploy ${{ needs.mappings.outputs.semver }} on ${{ needs.mappings.outputs.environment }}
-          production_environment: ${{ needs.mappings.outputs.environment == 'production' }}
-          transient_environment: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-      - name: Set deployment status to "in_progress"
-        uses: avakar/set-deployment-status@v1
-        with:
-          state: in_progress
-          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
-          log_url: https://github.com/${{ github.repository	}}/actions/runs/${{ github.run_id }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #- name: Setup Sentry CLI
-      #  uses: mathrix-education/setup-sentry-cli@0.1.1
-      #  with:
-      #    token: ${{ SECRETS.SENTRY_TOKEN }}
-      #    organization: mathrix-tech
-      #    project: railgun
-      #- name: Create Sentry Release
-      #  run: |
-      #    sentry-cli releases new ${{ needs.mappings.outputs.semver }}
-      #    sentry-cli releases set-commits ${{ needs.mappings.outputs.semver }} --auto
-      #    sentry-cli releases finalize ${{ needs.mappings.outputs.semver }}
-      - name: Change image version
-        run: |
-          gcloud container clusters get-credentials teknoid --zone=europe-west1-b
-          kubectl set image -n ${{ needs.mappings.outputs.environment }} \
-            deployment/railgun-server "server=${{ needs.mappings.outputs.image }}"
-          kubectl set image -n ${{ needs.mappings.outputs.environment }} \
-            deployment/railgun-worker "worker=${{ needs.mappings.outputs.image }}"
-      #- name: Deploy Sentry Release
-      #  run: |
-      #    sentry-cli releases deploys ${{ needs.mappings.outputs.semver }} \
-      #      new -e ${{ needs.mappings.outputs.environment }}
-      - name: Set deployment status to "success"
-        uses: avakar/set-deployment-status@v1
-        with:
-          state: success
-          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
-          environment_url: ${{ needs.mappings.outputs.url }}
-          log_url: https://github.com/${{ github.repository	}}/actions/runs/${{ github.run_id }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Set deployment status to "failure"
-        uses: avakar/set-deployment-status@v1
-        if: failure()
-        with:
-          state: failure
-          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
-          log_url: https://github.com/${{ github.repository	}}/actions/runs/${{ github.run_id }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          service: railgun-v2
+          image: ${{ needs.mappings.outputs.image }}
+          region: europe-west1
+          env_vars: |
+            ANGULAR_URL=https://mathrix.fr
+            APP_DEBUG=true
+            APP_ENV=production
+            APP_FALLBACK_LOCALE=en
+            APP_LOCALE=fr
+            APP_NAME=railgun
+            APP_TIMEZONE=Europe/Paris
+            APP_URL=https://api.mathrix.fr
+            CACHE_DRIVER=redis
+            FILESYSTEM_DRIVER=cdn
+            GRAPHQL_PLAYGROUND_ENDPOINT=https://api.mathrix.fr
+            LOG_CHANNEL=google-cloud
+            MAILJET_CALL=true 
+            PROMETHEUS_ADAPTER=redis
+            PROMETHEUS_REDIS_HOST=hot-feline-31418.upstash.io
+            QUEUE_DRIVER=sync
+            REDIS_HOST=hot-feline-31418.upstash.io
+            REDIS_PORT=31418
+            SENTRY_DSN=https://df675efb69af4d2f8dc92b149db5c35a@o374006.ingest.sentry.io/5217542
+          secrets: |
+            APP_KEY=PROD_BACK_APP_KEY:latest
+            BRAINTREE_ENVIRONMENT=PROD_BACK_BRAINTREE_ENVIRONMENT:latest
+            BRAINTREE_MERCHANT_ACCOUNT=PROD_BACK_BRAINTREE_MERCHANT_ACCOUNT:latest
+            BRAINTREE_MERCHANT_ID=PROD_BACK_BRAINTREE_MERCHANT_ID:latest
+            BRAINTREE_PRIVATE_KEY=PROD_BACK_BRAINTREE_PRIVATE_KEY:latest
+            BRAINTREE_PUBLIC_KEY=PROD_BACK_BRAINTREE_PUBLIC_KEY:latest
+            DB_DATABASE=PROD_MYSQL_DATABASE:latest
+            DB_HOST=PROD_MYSQL_HOST:latest
+            DB_PASSWORD=PROD_MYSQL_PASSWORD:latest
+            DB_USERNAME=PROD_MYSQL_USER:latest
+            FACEBOOK_APP_ID=PROD_FACEBOOK_APP_ID:latest
+            FACEBOOK_APP_SECRET=PROD_BACK_FACEBOOK_APP_SECRET:latest
+            GOOGLE_CLIENT_ID=PROD_GOOGLE_CLIENT_ID:latest
+            GOOGLE_CLIENT_SECRET=PROD_BACK_GOOGLE_CLIENT_SECRET:latest
+            MAILJET_KEY=PROD_BACK_MAILJET_KEY:latest
+            MAILJET_SECRET=PROD_BACK_MAILJET_SECRET:latest
+            REDIS_PASSWORD=PROD_REDIS_PASSWORD:latest
+            STRIPE_API_KEY=PROD_BACK_STRIPE_API_KEY:latest
+            STRIPE_LEGACY_API_KEY=PROD_BACK_STRIPE_LEGACY_API_KEY:latest
+            STRIPE_LEGACY_WEBHOOKS_SECRET=PROD_BACK_STRIPE_LEGACY_WEBHOOKS_SECRET:latest
+            STRIPE_WEBHOOKS_SECRET=PROD_BACK_STRIPE_WEBHOOKS_SECRET:latest
+          flags: >-
+            --cpu=2
+            --memory=2048Mi
+            --concurrency=1
+            --min-instances=1
+            --no-cpu-throttling
+            --service-account=railgun-production@${{ env.GCP_PROJECT }}.iam.gserviceaccount.com
+            --vpc-connector=internal-euw1
